@@ -1,0 +1,47 @@
+{
+  "title": "Earth Has More Trees Than the Milky Way Has Stars",
+  "format": "short",
+  "description": "Scientists estimate there are about three trillion trees on Earth, far more than the stars in our galaxy.",
+  "tags": [
+    "trees",
+    "milky way",
+    "stars",
+    "nature facts",
+    "space facts",
+    "weird facts",
+    "forests",
+    "mind blowing facts"
+  ],
+  "hashtags": [
+    "nature",
+    "facts"
+  ],
+  "thumbnail_text": "More trees than stars",
+  "scenes": [
+    {
+      "on_screen": "Trees vs stars",
+      "visual": "forest from above",
+      "text": "There are more trees on Earth than stars in our galaxy."
+    },
+    {
+      "on_screen": "About 3 trillion trees",
+      "visual": "green forest",
+      "text": "A large study estimated there are about three trillion trees on our planet."
+    },
+    {
+      "on_screen": "100 to 400 billion stars",
+      "visual": "milky way galaxy",
+      "text": "The Milky Way is thought to have somewhere between one hundred and four hundred billion stars."
+    },
+    {
+      "on_screen": "But we're losing them",
+      "visual": "tree stumps",
+      "text": "The same study found that billions of trees are cut down every year, so that number keeps shrinking."
+    },
+    {
+      "on_screen": "Follow for more",
+      "visual": "tree sunlight",
+      "text": "Every one of those trees counts. Follow for more weird facts."
+    }
+  ]
+}

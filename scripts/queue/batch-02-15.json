@@ -1,0 +1,47 @@
+{
+  "title": "Water Can Boil and Freeze at the Same Time",
+  "format": "short",
+  "description": "At one special temperature and pressure, water can be solid, liquid and gas all at once.",
+  "tags": [
+    "water",
+    "triple point",
+    "physics",
+    "chemistry",
+    "science facts",
+    "weird facts",
+    "ice",
+    "mind blowing facts"
+  ],
+  "hashtags": [
+    "science",
+    "facts"
+  ],
+  "thumbnail_text": "Boil and freeze",
+  "scenes": [
+    {
+      "on_screen": "Boiling ice?",
+      "visual": "ice cubes water",
+      "text": "Water can boil and freeze at the exact same time."
+    },
+    {
+      "on_screen": "The triple point",
+      "visual": "science laboratory",
+      "text": "It happens at something called the triple point, where ice, liquid water and water vapor can all exist together."
+    },
+    {
+      "on_screen": "Very low pressure",
+      "visual": "glass of water bubbles",
+      "text": "It needs a temperature just above zero degrees Celsius, and a pressure far lower than the air around us."
+    },
+    {
+      "on_screen": "Seen in labs",
+      "visual": "frozen water",
+      "text": "In a lab with a vacuum pump, you can watch water bubble like it is boiling while ice forms on top."
+    },
+    {
+      "on_screen": "Follow for more",
+      "visual": "water drop",
+      "text": "Water is weirder than it looks. Follow for more weird facts."
+    }
+  ]
+}
