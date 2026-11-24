@@ -62,7 +62,7 @@ shorts:
   max_seconds: 180           # YouTube Shorts সর্বোচ্চ ৩ মিনিট
 
 run:
-  videos_per_run: 1          # প্রতিবার চালালে কয়টা ভিডিও বানাবে
+  videos_per_run: 3          # প্রতিদিন (প্রতিবার চালালে) কয়টা ভিডিও বানাবে আর আপলোড করবে
   # কিউ খালি হলে রানটা "failed" দেখাবে, যাতে GitHub তোমাকে ইমেইল করে
   fail_when_queue_empty: true
   # private বা unlisted। ইচ্ছা করেই public রাখার ব্যবস্থা নেই।

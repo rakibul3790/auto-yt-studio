@@ -165,7 +165,15 @@ def pixabay_photo(query: str, portrait: bool, seed: int) -> Image.Image | None:
 
 def stock_photo(query: str, portrait: bool, seed: int) -> Image.Image | None:
     """Pexels if its key is set, then Pixabay, else None (gradient slide)."""
-    return pexels_photo(query, portrait, seed) or pixabay_photo(query, portrait, seed)
+    for name, fetch in (("Pexels", pexels_photo), ("Pixabay", pixabay_photo)):
+        photo = fetch(query, portrait, seed)
+        if photo is not None:
+            log(f"Photo from {name} for '{query}' ({photo.width}x{photo.height})")
+            return photo
+    if not (os.environ.get("PEXELS_API_KEY", "").strip()
+            or os.environ.get("PIXABAY_API_KEY", "").strip()):
+        log(f"No photo key set: slide for '{query}'")
+    return None
 
 
 # ------------------------------------------------------------------- public
