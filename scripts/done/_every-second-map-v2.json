@@ -145,5 +145,10 @@
         "just one second"
       ]
     }
-  ]
+  ],
+  "result": {
+    "uploaded_at": "2026-11-24T12:31:37Z",
+    "short_id": "fcvtuWpngHc",
+    "short_url": "https://youtube.com/shorts/fcvtuWpngHc"
+  }
 }
