@@ -17,6 +17,12 @@ on:
         type: choice
         options: ["yes", "no"]
         default: "yes"
+      voice:
+        description: "Voice for this run only, e.g. Ava or Guy (empty = normal voice test)"
+        default: ""
+      file:
+        description: "Make only this script, e.g. scripts/queue/_sample.json (empty = next in queue)"
+        default: ""
 
 permissions:
   contents: write                # to move finished scripts to scripts/done/
@@ -58,8 +64,12 @@ jobs:
           PIXABAY_API_KEY: ${{ secrets.PIXABAY_API_KEY }}
           COUNT: ${{ inputs.count }}
           UPLOAD: ${{ inputs.upload }}
+          VOICE: ${{ inputs.voice }}
+          FILE: ${{ inputs.file }}
         run: |
           args=()
+          if [[ "$VOICE" =~ ^[A-Za-z0-9\ ()-]+$ ]]; then args+=(--voice "$VOICE"); fi
+          if [[ "$FILE" =~ ^scripts/queue/[A-Za-z0-9._-]+\.json$ ]]; then args+=(--file "$FILE"); fi
           if [[ "$COUNT" =~ ^[0-9]+$ ]]; then args+=(--count "$COUNT"); fi
           if [[ "$UPLOAD" == "no" ]]; then args+=(--no-upload); fi
           python -m studio.main "${args[@]}"

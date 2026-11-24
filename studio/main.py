@@ -29,10 +29,20 @@ def description_for(data: dict, cfg: dict, shorts: bool = False) -> str:
     return "\n\n".join(p for p in parts if p)
 
 
-def process(path: Path, cfg: dict, upload: bool) -> None:
-    from . import render, visuals, youtube   # heavy imports only when rendering
+def process(path: Path, cfg: dict, upload: bool, voice: str | None = None) -> None:
+    from . import render, visuals, voices, youtube   # heavy imports only when rendering
 
     data = queue.load(path)
+    # Voice: a voice asked for by name (not counted in the test), else the voice test's turn
+    test_voice = None
+    if voice:
+        chosen = voices.find(cfg, voice)
+        if chosen is None:
+            chosen = {"label": voice, "voice": voice}
+        cfg = voices.apply(cfg, chosen)
+    else:
+        test_voice = voices.next_voice(cfg)
+        cfg = voices.apply(cfg, test_voice)
     slug = path.stem
     work = WORK_DIR / slug
     OUTPUT_DIR.mkdir(parents=True, exist_ok=True)
@@ -85,6 +95,9 @@ def process(path: Path, cfg: dict, upload: bool) -> None:
             log(f"Short upload failed: {e}")
             result["short_error"] = str(e)[:300]
     queue.mark_done(path, data, result)
+    if test_voice:
+        voices.record(test_voice, path.name, data["title"],
+                      result.get("short_url") or result.get("video_url", ""))
     shutil.rmtree(work, ignore_errors=True)
 
 
@@ -94,6 +107,7 @@ def main() -> int:
     ap.add_argument("--no-upload", action="store_true", help="render only")
     ap.add_argument("--validate", action="store_true", help="check queue files")
     ap.add_argument("--file", type=Path, help="process just this script file")
+    ap.add_argument("--voice", help="use this voice (a label from voice_test, or a voice name)")
     args = ap.parse_args()
 
     cfg = load_config()
@@ -135,7 +149,7 @@ def main() -> int:
             break
         try:
             log(f"=== {f.name} ===")
-            process(f, cfg, upload)
+            process(f, cfg, upload, args.voice)
             done += 1
         except queue.ScriptError as e:
             log(f"Skipping broken script: {e}")

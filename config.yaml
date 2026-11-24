@@ -15,9 +15,9 @@ channel:
   #   American (মেয়ে):  en-US-AvaNeural (পরিষ্কার, স্বাভাবিক), en-US-EmmaNeural, en-US-JennyNeural
   #   British:          en-GB-RyanNeural (ছেলে), en-GB-SoniaNeural (মেয়ে)
   #   বাংলা চাইলে:      bn-BD-NabanitaNeural, bn-BD-PradeepNeural (language: "bn" করো)
-  voice: "en-US-AndrewNeural"
-  voice_rate: "+0%"      # কথার গতি, যেমন "+10%" বা "-5%"
-  voice_pitch: "+0Hz"
+  voice: "en-US-GuyNeural"   # ভয়েস টেস্ট শেষ হলে এই ভয়েস চলবে
+  voice_rate: "-4%"      # কথার গতি, যেমন "+10%" বা "-5%"
+  voice_pitch: "-8Hz"    # কম মানে ভারী গলা
 
   # YouTube ক্যাটাগরি নম্বর: 27 = Education, 22 = People & Blogs,
   # 24 = Entertainment, 28 = Science & Technology, 26 = Howto & Style
@@ -32,6 +32,23 @@ channel:
   made_for_kids: false
   # AI ভয়েস/ছবি থাকলে YouTube-কে জানানো নিয়ম; true রাখাই নিরাপদ
   synthetic_media: true
+
+
+# ভয়েস টেস্ট: প্রতিটা ভিডিওতে পালা করে ছেলে আর মেয়ের ভয়েস (ছেলে, মেয়ে, ছেলে, পরের দিন মেয়ে ...)।
+# কোন ভিডিওতে কোন ভয়েস গেল, logs/voice-test.csv-এ লেখা থাকে। days দিন পর নিজে থেকে থামবে,
+# তখন উপরের channel: voice চলবে। এখনই থামাতে enabled: false করো।
+voice_test:
+  enabled: true
+  days: 10
+  voices:
+    - label: "Guy (man)"
+      voice: "en-US-GuyNeural"
+      rate: "-4%"
+      pitch: "-8Hz"
+    - label: "Ava (woman)"
+      voice: "en-US-AvaNeural"
+      rate: "+0%"
+      pitch: "+0Hz"
 
 video:
   width: 1920
