@@ -1,7 +1,7 @@
 # Fabelo Studio — YouTube channel description
 
 Paste the text between the lines into **YouTube Studio → Customization → Basic info → Description**
-(limit: 1000 characters; this one is about 850).
+(limit: 1000 characters; this one is about 750).
 
 ---
 
