@@ -5,6 +5,7 @@
  *   npm i puppeteer            (or puppeteer-core + a Chrome path)
  *   node record.js demo.html out.mp4 --w 1920 --h 1080 --fps 30
  *   node record.js demo.html shorts.mp4 --w 1080 --h 1920   (9:16 works too)
+ *   node record.js film.html part.mp4 --start 38.6 --end 131   (record only a time range)
  *
  * Needs ffmpeg on PATH. The page must call scene.exposeForRecording().
  */
@@ -39,14 +40,15 @@ function arg(name, def) {
   await page.evaluate(() => Promise.race([document.fonts ? document.fonts.ready : null, new Promise((r) => setTimeout(r, 5000))]));
   const duration = await page.evaluate(() => window.__duration);
   if (!duration) throw new Error('Page did not call scene.exposeForRecording()');
-  const frames = Math.round(duration * FPS);
-  console.log(`Recording ${duration}s @ ${FPS}fps = ${frames} frames, ${W}x${H}`);
+  const T0 = +arg('start', 0), T1 = Math.min(duration, +arg('end', duration));
+  const frames = Math.round((T1 - T0) * FPS);
+  console.log(`Recording ${T0}s → ${T1}s @ ${FPS}fps = ${frames} frames, ${W}x${H}`);
 
   const ff = spawn('ffmpeg', ['-y', '-f', 'image2pipe', '-framerate', String(FPS), '-i', '-',
     '-c:v', 'libx264', '-preset', 'veryfast', '-crf', '18', '-pix_fmt', 'yuv420p', out_], { stdio: ['pipe', 'inherit', 'inherit'] });
 
   for (let i = 0; i < frames; i++) {
-    await page.evaluate((t) => window.__seek(t), i / FPS);
+    await page.evaluate((t) => window.__seek(t), T0 + i / FPS);
     const buf = await page.screenshot({ type: 'jpeg', quality: 92 }); // JPEG frames: ~6x faster than PNG
     if (!ff.stdin.write(buf)) await new Promise((r) => ff.stdin.once('drain', r));
     if (i % FPS === 0) process.stdout.write(`\r${Math.round((i / frames) * 100)}%`);
