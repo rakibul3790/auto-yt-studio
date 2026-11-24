@@ -1,8 +1,9 @@
 """Pictures for each scene, and the thumbnail.
 
-- With a free PEXELS_API_KEY secret, each scene's English "visual" hint is
-  searched on Pexels (free stock photos, free for YouTube use).
-- Without it (or if nothing is found) a clean gradient slide is drawn.
+- With a free PEXELS_API_KEY or PIXABAY_API_KEY secret, each scene's English
+  "visual" hint is searched on Pexels first, then Pixabay (free stock photos,
+  free for YouTube use, no credit needed).
+- Without a key (or if nothing is found) a clean gradient slide is drawn.
 The scene's short "on_screen" headline is written on the picture.
 """
 from __future__ import annotations
@@ -19,6 +20,7 @@ from PIL import Image, ImageDraw, ImageFilter, ImageFont
 from .common import font_family_for, font_file, log
 
 PEXELS_URL = "https://api.pexels.com/v1/search"
+PIXABAY_URL = "https://pixabay.com/api/"
 
 
 # ------------------------------------------------------------------ helpers
@@ -132,6 +134,40 @@ def pexels_photo(query: str, portrait: bool, seed: int) -> Image.Image | None:
         return None
 
 
+# ------------------------------------------------------------------ pixabay
+def pixabay_photo(query: str, portrait: bool, seed: int) -> Image.Image | None:
+    key = os.environ.get("PIXABAY_API_KEY", "").strip()
+    query = " ".join(query.split())[:100]          # Pixabay allows max 100 chars
+    if not key or not query:
+        return None
+    try:
+        r = requests.get(PIXABAY_URL, timeout=30, params={
+            "key": key, "q": query, "image_type": "photo", "safesearch": "true",
+            "orientation": "vertical" if portrait else "horizontal",
+            "order": "popular", "per_page": 20})
+        if r.status_code != 200:
+            # Pixabay answers errors as plain text; never log the URL (it holds the key)
+            log(f"Pixabay error {r.status_code} for '{query}': {r.text.strip()[:120]}")
+            return None
+        hits = r.json().get("hits", [])
+        if not hits:
+            log(f"Pixabay: nothing for '{query}', using a slide")
+            return None
+        hit = random.Random(seed).choice(hits[:8])
+        url = hit.get("largeImageURL") or hit.get("webformatURL")
+        img = requests.get(url, timeout=60)
+        img.raise_for_status()
+        return Image.open(BytesIO(img.content)).convert("RGB")
+    except Exception as e:
+        log(f"Pixabay failed for '{query}': {type(e).__name__}")
+        return None
+
+
+def stock_photo(query: str, portrait: bool, seed: int) -> Image.Image | None:
+    """Pexels if its key is set, then Pixabay, else None (gradient slide)."""
+    return pexels_photo(query, portrait, seed) or pixabay_photo(query, portrait, seed)
+
+
 # ------------------------------------------------------------------- public
 def scene_image(scene: dict, index: int, title: str, cfg: dict,
                 size: tuple[int, int], out: Path) -> Path:
@@ -143,7 +179,7 @@ def scene_image(scene: dict, index: int, title: str, cfg: dict,
 
     photo = None
     if cfg["video"].get("visuals", "auto") == "auto":
-        photo = pexels_photo(str(scene.get("visual", "")), portrait, seed)
+        photo = stock_photo(str(scene.get("visual", "")), portrait, seed)
 
     bg_path = out.with_name(out.stem + "_bg.jpg")   # clean copy for the thumbnail
     if photo is not None:

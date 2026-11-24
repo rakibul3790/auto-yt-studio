@@ -42,8 +42,9 @@ video:
   subtitle_max_chars: 42     # এক লাইনে সর্বোচ্চ কত অক্ষর
   music_volume: 0.10         # assets/music-এর গানের আওয়াজ (0 = বন্ধ)
   fade_seconds: 0.8          # শুরুতে ফেড-ইন, শেষে ফেড-আউট
-  # ছবির উৎস: "auto" = PEXELS_API_KEY থাকলে Pexels-এর ফ্রি ছবি, না থাকলে
-  # নিজে বানানো রঙিন স্লাইড। "slides" = সবসময় নিজে বানানো স্লাইড।
+  # ছবির উৎস: "auto" = PIXABAY_API_KEY (বা PEXELS_API_KEY) Secret থাকলে ফ্রি
+  # সত্যিকারের ছবি, না থাকলে নিজে বানানো রঙিন স্লাইড। দুটোই থাকলে আগে Pexels,
+  # না পেলে Pixabay। "slides" = সবসময় নিজে বানানো স্লাইড।
   visuals: "auto"
   # নিজে বানানো স্লাইডের রঙ (একেক দৃশ্যে একেকটা)
   palette:
