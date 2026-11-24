@@ -173,6 +173,34 @@ Actions থেকে নিজে চালানোর সময় `voice` ঘ
 
 ---
 
+## Fabelo Studio চ্যানেল (দ্বিতীয় চ্যানেল, Scribble-এর ভিডিও)
+
+Fabelo Studio-র ভিডিও যায় `ready-fabelo/` ফোল্ডার থেকে, নিজস্ব secret দিয়ে। MindBlip-এর secret এখানে কখনো ব্যবহার হয় না।
+তাই ভুল চ্যানেলে আপলোড হওয়ার সুযোগ নেই।
+
+| ফোল্ডার | চ্যানেল | Secret | Workflow |
+|---|---|---|---|
+| `ready/` | MindBlip | `YT_REFRESH_TOKEN` | Upload ready video |
+| `ready-fabelo/` | Fabelo Studio | `FABELO_YT_REFRESH_TOKEN` | Upload Fabelo Studio video |
+
+**একবারের সেটআপ (ফোনেই হয়):**
+
+1. developers.google.com/oauthplayground খোলো → ⚙ → **Use your own OAuth credentials** →
+   আগের সেই একই Client ID আর Client secret বসাও (ধাপ ২.৪-এর)।
+2. Step 1-এ লেখো `https://www.googleapis.com/auth/youtube.upload` → **Authorize APIs**।
+3. তোমার Google অ্যাকাউন্ট বেছে নাও → চ্যানেলের তালিকা এলে **Fabelo Studio** বেছে নাও (MindBlip নয়!)।
+4. "Google hasn't verified this app" এলে → **Advanced** → **Go to Auto YT Studio (unsafe)** → **Continue**।
+5. Step 2 → **Exchange authorization code for tokens** → **Refresh token** কপি করো।
+6. রিপো → Settings → Secrets and variables → Actions → **New repository secret** →
+   Name: `FABELO_YT_REFRESH_TOKEN`, Value: সেই refresh token → **Add secret**।
+
+Client secret হারিয়ে গেলে: Google Cloud → Clients → তোমার client → **Add secret** দিয়ে নতুন একটা বানাও,
+আর সেটা `FABELO_YT_CLIENT_SECRET` নামে রাখো (Client ID বদলায়নি, তাই আর কিছু লাগবে না)।
+
+Fabelo চ্যানেলে কাস্টম থাম্বনেইল চাইলে Fabelo Studio চ্যানেলে থাকা অবস্থায় youtube.com/verify-এ ফোন ভেরিফাই করো।
+
+---
+
 ## সমস্যা হলে
 
 | দেখাচ্ছে | মানে | করণীয় |
@@ -203,6 +231,9 @@ scripts/example.json       নমুনা স্ক্রিপ্ট
 prompts/                   Claude-কে দেওয়ার প্রম্পট
 studio/                    ভিডিও বানানো আর আপলোডের কোড
 tools/get_token.py         PC-তে টোকেন নেওয়ার বিকল্প উপায়
+tools/upload_ready.py      ready/ বা ready-fabelo/ থেকে তৈরি ভিডিও Private আপলোড
+ready-fabelo/              Fabelo Studio চ্যানেলের আপলোড ফোল্ডার
+fabelo/                    Scribble লাইব্রেরি + ভিডিও বানানোর টুল (Fabelo Studio)
 logs/uploads.csv           কবে কী আপলোড হলো
 .github/workflows/         রোজ চালানোর নিয়ম
 ```

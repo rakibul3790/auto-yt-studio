@@ -1,0 +1,49 @@
+# Uploads finished videos from ready/ to YouTube as PRIVATE.
+# Runs by itself when a ready/*.json file is pushed; you can also run it from the Actions tab.
+name: Upload ready video
+
+on:
+  push:
+    paths:
+      - "ready/*.json"
+  workflow_dispatch:
+
+permissions:
+  contents: write                # to save the YouTube link back into the JSON and logs/
+
+concurrency:
+  group: upload-ready
+  cancel-in-progress: false
+
+jobs:
+  upload:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 60
+    steps:
+      - uses: actions/checkout@v5
+
+      - uses: actions/setup-python@v6
+        with:
+          python-version: "3.11"
+          cache: pip
+
+      - name: Install Python packages
+        run: pip install -r requirements.txt
+
+      - name: Upload to YouTube (Private)
+        env:
+          YT_CLIENT_ID: ${{ secrets.YT_CLIENT_ID }}
+          YT_CLIENT_SECRET: ${{ secrets.YT_CLIENT_SECRET }}
+          YT_REFRESH_TOKEN: ${{ secrets.YT_REFRESH_TOKEN }}
+        run: python tools/upload_ready.py
+
+      - name: Save the YouTube link
+        if: always()
+        run: |
+          git config user.name  "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add -A ready logs
+          if git diff --cached --quiet; then echo "Nothing to save"; exit 0; fi
+          git commit -m "Uploaded ready video(s) as Private"
+          git pull --rebase --autostash
+          git push

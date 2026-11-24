@@ -1,0 +1,60 @@
+# Uploads finished Fabelo Studio videos from ready-fabelo/ to the Fabelo Studio channel as PRIVATE.
+# Uses ONLY the FABELO_* secrets, so nothing can land on MindBlip by mistake.
+# Runs by itself when a ready-fabelo/*.json file is pushed; you can also run it from the Actions tab.
+name: Upload Fabelo Studio video
+
+on:
+  push:
+    paths:
+      - "ready-fabelo/*.json"
+  workflow_dispatch:
+
+permissions:
+  contents: write                # to save the YouTube link back into the JSON and logs/
+
+concurrency:
+  group: upload-fabelo
+  cancel-in-progress: false
+
+jobs:
+  upload:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 60
+    steps:
+      - uses: actions/checkout@v5
+
+      - name: Check Fabelo Studio secret
+        env:
+          FABELO_YT_REFRESH_TOKEN: ${{ secrets.FABELO_YT_REFRESH_TOKEN }}
+        run: |
+          if [ -z "$FABELO_YT_REFRESH_TOKEN" ]; then
+            echo "::error::FABELO_YT_REFRESH_TOKEN secret is missing. Add it (README: Fabelo Studio channel) - nothing was uploaded."
+            exit 1
+          fi
+
+      - uses: actions/setup-python@v6
+        with:
+          python-version: "3.11"
+          cache: pip
+
+      - name: Install Python packages
+        run: pip install -r requirements.txt
+
+      - name: Upload to Fabelo Studio (Private)
+        env:
+          # same Google Cloud OAuth client as MindBlip unless FABELO_YT_CLIENT_ID/SECRET are set
+          YT_CLIENT_ID: ${{ secrets.FABELO_YT_CLIENT_ID || secrets.YT_CLIENT_ID }}
+          YT_CLIENT_SECRET: ${{ secrets.FABELO_YT_CLIENT_SECRET || secrets.YT_CLIENT_SECRET }}
+          YT_REFRESH_TOKEN: ${{ secrets.FABELO_YT_REFRESH_TOKEN }}
+        run: python tools/upload_ready.py --folder ready-fabelo --channel "Fabelo Studio"
+
+      - name: Save the YouTube link
+        if: always()
+        run: |
+          git config user.name  "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add -A ready-fabelo logs
+          if git diff --cached --quiet; then echo "Nothing to save"; exit 0; fi
+          git commit -m "Uploaded Fabelo Studio video(s) as Private"
+          git pull --rebase --autostash
+          git push
