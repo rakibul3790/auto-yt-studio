@@ -60,6 +60,12 @@ video:
   subtitle_max_chars: 42     # এক লাইনে সর্বোচ্চ কত অক্ষর
   highlight: true            # দরকারি শব্দ হলুদ বক্সে (স্ক্রিপ্টের "highlight", না থাকলে সংখ্যা)
   music_volume: 0.10         # assets/music-এর গানের আওয়াজ (0 = বন্ধ)
+  map_music_volume: 0.14     # ম্যাপ-স্টাইলের ভিডিওতে গানের আওয়াজ
+  sfx_volume: 0.5            # পপ, হুশ ইত্যাদি সাউন্ড ইফেক্টের আওয়াজ (0 = বন্ধ)
+  clips: true                # Pixabay থেকে ছবির বদলে ছোট ভিডিও ক্লিপ (না পেলে ছবি)
+  cut_after_seconds: 5.5     # এর চেয়ে লম্বা দৃশ্যে মাঝখানে নতুন ক্লিপে কাট
+  transitions: true          # দৃশ্য বদলের সময় স্লাইড/জুম ট্রানজিশন আর হুশ শব্দ
+  transition_seconds: 0.35
   fade_seconds: 0.8          # শুরুতে ফেড-ইন, শেষে ফেড-আউট
   # ছবির উৎস: "auto" = PIXABAY_API_KEY (বা PEXELS_API_KEY) Secret থাকলে ফ্রি
   # সত্যিকারের ছবি, না থাকলে নিজে বানানো রঙিন স্লাইড। দুটোই থাকলে আগে Pexels,

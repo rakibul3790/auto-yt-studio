@@ -95,11 +95,12 @@ Format: Layer, Start, End, Style, Name, MarginL, MarginR, MarginV, Effect, Text
     for start, end, text in cues:
         safe = text.replace("{", "(").replace("}", ")").replace("\n", " ")
         t0, t1 = _ass_time(start), _ass_time(end)
-        lines.append(f"Dialogue: 0,{t0},{t1},Default,,0,0,0,,{safe.replace(JOIN, chr(92) + 'h')}")
+        pop = r"{\fscx82\fscy82\t(0,130,\fscx100\fscy100)}"    # each line pops in
+        lines.append(f"Dialogue: 0,{t0},{t1},Default,,0,0,0,,{pop}{safe.replace(JOIN, chr(92) + 'h')}")
         # yellow boxes: same text on a top layer, only the glued phrases visible
         parts = re.split(r"(\S*" + JOIN + r"\S*)", safe)
         if len(parts) > 1:
-            hi = hide
+            hi = pop + hide
             for k, part in enumerate(parts):
                 if k % 2:
                     word = part.strip(".,!?;:")
@@ -122,7 +123,6 @@ def render(data: dict, cfg: dict, work: Path, out_file: Path,
     w, h = size
     tag = f"{w}x{h}"
 
-    clips: list[Path] = []
     all_cues: list[tuple[float, float, str]] = []
     t0 = 0.0
     first_img: Path | None = None
@@ -130,6 +130,7 @@ def render(data: dict, cfg: dict, work: Path, out_file: Path,
     map_style = str(data.get("style", "")).lower() == "map"
     timings: list[tuple[float, float]] = []
     voice_parts: list[Path] = []
+    segments: list[dict] = []     # picture pieces for the photo/clip style
 
     for i, scene in enumerate(data["scenes"]):
         text = str(scene["text"]).strip()
@@ -145,56 +146,32 @@ def render(data: dict, cfg: dict, work: Path, out_file: Path,
             log(f"Stopping at scene {i} to stay under {max_seconds}s")
             break
 
-        if map_style:
-            part = work / f"voice{i:02d}.wav"
+        part = work / f"voice{i:02d}.wav"
+        if not part.exists():
             run(["ffmpeg", "-y", "-loglevel", "error", "-i", str(audio), "-af",
                  f"apad=whole_dur={scene_len:.3f}", "-t", f"{scene_len:.3f}",
                  "-ar", "48000", "-ac", "1", str(part)])
-            voice_parts.append(part)
-            timings.append((t0, t0 + scene_len))
-            if vcfg.get("highlight", True):
-                phrases = scene_highlights(scene, text)
-                cues = [(cs, ce, protect(ct, phrases)) for cs, ce, ct in cues]
-            for s_, e_, c_ in tts.split_cues(cues, int(vcfg.get("subtitle_max_chars", 42))):
-                all_cues.append((t0 + s_, t0 + min(e_, dur), c_))
-            t0 += scene_len
-            continue
+        voice_parts.append(part)
+        timings.append((t0, t0 + scene_len))
 
-        img = visuals.scene_image(scene, i, data["title"], cfg, size, work / f"img{i:02d}_{tag}.jpg")
-        first_img = first_img or img
-
-        frames = max(int(scene_len * fps), 1)
-        zoom = (f"1+0.07*on/{frames}" if i % 2 == 0 else f"1.07-0.07*on/{frames}")
-        clip = work / f"clip{i:02d}_{tag}.mp4"
-        run(["ffmpeg", "-y", "-loglevel", "error", "-i", str(img), "-i", str(audio),
-             "-filter_complex",
-             f"[0:v]zoompan=z='{zoom}':x='iw/2-(iw/zoom/2)':y='ih/2-(ih/zoom/2)'"
-             f":d={frames}:s={w}x{h}:fps={fps},setsar=1[v];"
-             f"[1:a]apad=whole_dur={scene_len:.3f}[a]",
-             "-map", "[v]", "-map", "[a]", "-t", f"{scene_len:.3f}",
-             *ENC, *AUD, str(clip)])
-        clips.append(clip)
+        if not map_style:
+            segments += _scene_segments(scene, i, data["title"], cfg, size, scene_len, work, tag)
+            if first_img is None:
+                first_img = next((sg["thumb"] for sg in segments if sg.get("thumb")), None)
 
         if vcfg.get("highlight", True):
             phrases = scene_highlights(scene, text)
             cues = [(cs, ce, protect(ct, phrases)) for cs, ce, ct in cues]
-        for s, e, c in tts.split_cues(cues, int(vcfg.get("subtitle_max_chars", 42))):
-            all_cues.append((t0 + s, t0 + min(e, dur), c))
+        for s_, e_, c_ in tts.split_cues(cues, int(vcfg.get("subtitle_max_chars", 42))):
+            all_cues.append((t0 + s_, t0 + min(e_, dur), c_))
         t0 += scene_len
 
-    joined = work / f"joined_{tag}.mp4"
+    if not voice_parts:
+        raise RuntimeError("No scenes fit into the video")
     if map_style:
-        if not voice_parts:
-            raise RuntimeError("No scenes fit into the video")
         joined, first_img = _map_joined(data, voice_parts, timings, t0, size, fps, vcfg, work, tag)
     else:
-        if not clips:
-            raise RuntimeError("No scenes fit into the video")
-        # Join scenes (no re-encode)
-        lst = work / f"list_{tag}.txt"
-        lst.write_text("".join(f"file '{c.name}'\n" for c in clips), encoding="utf-8")
-        run(["ffmpeg", "-y", "-loglevel", "error", "-f", "concat", "-safe", "0",
-             "-i", lst.name, "-c", "copy", joined.name], cwd=work)
+        joined = _photo_joined(segments, voice_parts, t0, size, fps, vcfg, work, tag)
     total = media_duration(joined)
 
     # Final pass: subtitles + music + fades
@@ -227,17 +204,127 @@ def render(data: dict, cfg: dict, work: Path, out_file: Path,
     return {"duration": total, "first_image": first_img, "music": track.name if track else None}
 
 
+def _voice_track(voice_parts: list[Path], work: Path) -> Path:
+    lst = work / "voice_list.txt"
+    lst.write_text("".join(f"file '{p.name}'\n" for p in voice_parts), encoding="utf-8")
+    voice = work / f"voice_all_{len(voice_parts)}.wav"
+    if not voice.exists():
+        run(["ffmpeg", "-y", "-loglevel", "error", "-f", "concat", "-safe", "0",
+             "-i", lst.name, "-c", "copy", voice.name], cwd=work)
+    return voice
+
+
+TRANSITIONS = ["slideleft", "zoomin", "smoothleft", "circleopen", "slideup", "fadeblack"]
+
+
+def _scene_segments(scene: dict, i: int, title: str, cfg: dict, size: tuple[int, int],
+                    scene_len: float, work: Path, tag: str) -> list[dict]:
+    """One or two picture pieces for a scene: stock video clips if possible, else photos."""
+    import hashlib
+    vcfg = cfg["video"]
+    use_clips = vcfg.get("clips", True) and vcfg.get("visuals", "auto") == "auto"
+    pieces = 2 if use_clips and scene_len > float(vcfg.get("cut_after_seconds", 5.5)) else 1
+    seed = int(hashlib.md5(f"{title}-{i}".encode()).hexdigest()[:8], 16)
+    query = str(scene.get("visual", ""))
+    overlay = None
+    out, img = [], None
+    for k in range(pieces):
+        length = scene_len / pieces
+        clip = visuals.pixabay_video(query, seed + k, work / f"vid{i:02d}_{k}.mp4") if use_clips else None
+        if clip is not None:
+            if overlay is None:
+                overlay = visuals.headline_overlay(str(scene.get("on_screen") or ""), size,
+                                                   work / f"head{i:02d}_{tag}.png") or False
+            thumb = work / f"vid{i:02d}_{k}_{tag}.jpg"
+            if not thumb.exists():
+                run(["ffmpeg", "-y", "-loglevel", "error", "-ss", "1", "-i", str(clip), "-frames:v", "1",
+                     "-vf", f"scale={size[0]}:{size[1]}:force_original_aspect_ratio=increase,"
+                            f"crop={size[0]}:{size[1]}", str(thumb)])
+                if thumb.exists():
+                    import shutil
+                    shutil.copy(thumb, thumb.with_name(thumb.stem + "_bg.jpg"))
+            out.append({"kind": "vid", "src": clip, "overlay": overlay or None, "len": length,
+                        "scene": i, "thumb": thumb if thumb.exists() else None})
+        else:
+            if img is None:
+                img = visuals.scene_image(scene, i, title, cfg, size, work / f"img{i:02d}_{tag}.jpg")
+            out.append({"kind": "img", "src": img, "len": length, "scene": i, "zoom_in": (i + k) % 2 == 0,
+                        "thumb": img})
+    return out
+
+
+def _photo_joined(segments: list[dict], voice_parts: list[Path], total: float,
+                  size: tuple[int, int], fps: int, vcfg: dict, work: Path, tag: str) -> Path:
+    """Picture pieces joined with transitions, plus voice and whoosh sounds."""
+    from . import motion
+    w, h = size
+    d = float(vcfg.get("transition_seconds", 0.35)) if vcfg.get("transitions", True) else 0.0
+    files = []
+    for n, sg in enumerate(segments):
+        length = sg["len"] + (d if n < len(segments) - 1 else 0)
+        f = work / f"seg{n:02d}_{tag}.mp4"
+        if sg["kind"] == "img":
+            frames = max(int(length * fps), 1)
+            zoom = f"1+0.08*on/{frames}" if sg["zoom_in"] else f"1.08-0.08*on/{frames}"
+            run(["ffmpeg", "-y", "-loglevel", "error", "-i", str(sg["src"]), "-filter_complex",
+                 f"[0:v]zoompan=z='{zoom}':x='iw/2-(iw/zoom/2)':y='ih/2-(ih/zoom/2)'"
+                 f":d={frames}:s={w}x{h}:fps={fps},setsar=1,format=yuv420p[v]",
+                 "-map", "[v]", "-t", f"{length:.3f}", *ENC, str(f)])
+        else:
+            chain = (f"[0:v]scale={int(w * 1.06)}:{int(h * 1.06)}:force_original_aspect_ratio=increase,"
+                     f"crop={w}:{h},fps={fps},setsar=1")
+            inputs = ["-stream_loop", "-1", "-i", str(sg["src"])]
+            if sg.get("overlay"):
+                inputs += ["-i", str(sg["overlay"])]
+                chain += "[b];[b][1:v]overlay=0:0"
+            run(["ffmpeg", "-y", "-loglevel", "error", *inputs, "-filter_complex",
+                 chain + ",format=yuv420p[v]", "-map", "[v]", "-an", "-t", f"{length:.3f}",
+                 *ENC, str(f)])
+        files.append(f)
+
+    pic = work / f"pictures_{tag}.mp4"
+    events: list[tuple[str, float, float]] = []
+    if d > 0 and len(files) > 1:
+        args, fc, last, offset = [], [], "0:v", 0.0
+        for n, f in enumerate(files):
+            args += ["-i", str(f)]
+        for n in range(1, len(files)):
+            offset += segments[n - 1]["len"]
+            new_scene = segments[n]["scene"] != segments[n - 1]["scene"]
+            kind = TRANSITIONS[segments[n]["scene"] % len(TRANSITIONS)] if new_scene else "fade"
+            fc.append(f"[{last}][{n}:v]xfade=transition={kind}:duration={d}:offset={offset:.3f}[x{n}]")
+            last = f"x{n}"
+            if new_scene:
+                events.append(("whoosh", offset - 0.15, 0.6))
+        run(["ffmpeg", "-y", "-loglevel", "error", *args, "-filter_complex", ";".join(fc),
+             "-map", f"[{last}]", *ENC, str(pic)])
+    else:
+        lst = work / f"segs_{tag}.txt"
+        lst.write_text("".join(f"file '{f.name}'\n" for f in files), encoding="utf-8")
+        run(["ffmpeg", "-y", "-loglevel", "error", "-f", "concat", "-safe", "0",
+             "-i", lst.name, "-c", "copy", pic.name], cwd=work)
+
+    voice = _voice_track(voice_parts, work)
+    joined = work / f"joined_{tag}.mp4"
+    if events:
+        sfx = motion.write_sfx(events, total, work / f"sfx_{tag}.wav", float(vcfg.get("sfx_volume", 0.5)))
+        run(["ffmpeg", "-y", "-loglevel", "error", "-i", pic.name, "-i", voice.name, "-i", sfx.name,
+             "-filter_complex", "[1:a][2:a]amix=inputs=2:duration=first:normalize=0[a]",
+             "-map", "0:v", "-map", "[a]", "-t", f"{total:.3f}", "-c:v", "copy", *AUD,
+             joined.name], cwd=work)
+    else:
+        run(["ffmpeg", "-y", "-loglevel", "error", "-i", pic.name, "-i", voice.name,
+             "-map", "0:v", "-map", "1:a", "-t", f"{total:.3f}", "-c:v", "copy", *AUD,
+             joined.name], cwd=work)
+    return joined
+
+
 def _map_joined(data: dict, voice_parts: list[Path], timings: list[tuple[float, float]],
                 total: float, size: tuple[int, int], fps: int, vcfg: dict,
                 work: Path, tag: str) -> tuple[Path, Path]:
     """Map-style picture track + voice + sound effects in one file."""
     from . import motion
-    lst = work / "voice_list.txt"
-    lst.write_text("".join(f"file '{p.name}'\n" for p in voice_parts), encoding="utf-8")
-    voice = work / "voice_all.wav"
-    if not voice.exists():
-        run(["ffmpeg", "-y", "-loglevel", "error", "-f", "concat", "-safe", "0",
-             "-i", lst.name, "-c", "copy", voice.name], cwd=work)
+    voice = _voice_track(voice_parts, work)
     pic, sfx = work / f"motion_{tag}.mp4", work / f"sfx_{tag}.wav"
     motion.render_track(data["scenes"][:len(timings)], timings, total, size, fps, pic, sfx,
                         float(vcfg.get("sfx_volume", 0.5)))

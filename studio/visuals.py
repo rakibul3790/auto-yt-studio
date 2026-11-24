@@ -21,6 +21,7 @@ from .common import font_family_for, font_file, log
 
 PEXELS_URL = "https://api.pexels.com/v1/search"
 PIXABAY_URL = "https://pixabay.com/api/"
+PIXABAY_VIDEO_URL = "https://pixabay.com/api/videos/"
 
 
 # ------------------------------------------------------------------ helpers
@@ -161,6 +162,62 @@ def pixabay_photo(query: str, portrait: bool, seed: int) -> Image.Image | None:
     except Exception as e:
         log(f"Pixabay failed for '{query}': {type(e).__name__}")
         return None
+
+
+def pixabay_video(query: str, pick: int, out: Path) -> Path | None:
+    """A free stock video clip from Pixabay (same key as photos), saved to out."""
+    key = os.environ.get("PIXABAY_API_KEY", "").strip()
+    query = " ".join(query.split())[:100]
+    if not key or not query:
+        return None
+    if out.exists() and out.stat().st_size > 10000:
+        return out
+    try:
+        r = requests.get(PIXABAY_VIDEO_URL, timeout=30, params={
+            "key": key, "q": query, "video_type": "film", "safesearch": "true",
+            "order": "popular", "per_page": 20})
+        if r.status_code != 200:
+            log(f"Pixabay video error {r.status_code} for '{query}': {r.text.strip()[:120]}")
+            return None
+        options = []
+        for hit in r.json().get("hits", []):
+            if not 3 <= float(hit.get("duration", 0)) <= 60:
+                continue
+            for q in ("large", "medium"):
+                v = (hit.get("videos") or {}).get(q) or {}
+                if v.get("url") and v.get("height", 0) >= 720 and 0 < v.get("size", 0) < 45_000_000:
+                    options.append(v)
+                    break
+        if not options:
+            log(f"Pixabay: no video for '{query}'")
+            return None
+        v = options[:6][pick % len(options[:6])]
+        data = requests.get(v["url"], timeout=120)
+        data.raise_for_status()
+        out.write_bytes(data.content)
+        log(f"Video clip from Pixabay for '{query}' ({v.get('width')}x{v.get('height')})")
+        return out
+    except Exception as e:
+        log(f"Pixabay video failed for '{query}': {type(e).__name__}")
+        return None
+
+
+def headline_overlay(headline: str, size: tuple[int, int], out: Path) -> Path | None:
+    """Transparent picture with the scene headline on a dark top band (for video clips)."""
+    headline = headline.strip()
+    if not headline:
+        return None
+    w, h = size
+    portrait = h > w
+    img = Image.new("RGBA", (w, h), (0, 0, 0, 0))
+    d = ImageDraw.Draw(img)
+    band = int(h * (0.28 if not portrait else 0.22))
+    for y in range(band):
+        d.line([(0, y), (w, y)], fill=(0, 0, 0, int(170 * (1 - y / band))))
+    _draw_block(img, headline, (int(w * .08), int(h * .06), int(w * .84), int(band * .7)),
+                start_size=int(h * 0.07), stroke=3)
+    img.save(out)
+    return out
 
 
 def stock_photo(query: str, portrait: bool, seed: int) -> Image.Image | None:

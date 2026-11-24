@@ -533,29 +533,16 @@ def _sfx_cached(kind: str, seed: int) -> np.ndarray:
     return make_sfx(kind, seed)
 
 
-def build_sfx(scenes: list[Scene], total: float, out: Path, volume: float = 0.5) -> Path:
+def write_sfx(events: list[tuple[str, float, float]], total: float, out: Path,
+              volume: float = 0.5) -> Path:
+    """Mix sound effects (kind, time, gain) into one wav track."""
     track = np.zeros(int(SR * (total + 2)), np.float32)
-
-    def add(kind: str, at: float, gain: float, seed: int = 0) -> None:
-        s = _sfx_cached(kind, seed % 6).astype(np.float32) * gain
+    for n, (kind, at, gain) in enumerate(events):
+        s = _sfx_cached(kind, n % 6).astype(np.float32) * gain
         i = int(at * SR)
         if 0 <= i < len(track):
             j = min(len(track), i + len(s))
             track[i:j] += s[:j - i]
-
-    for sc in scenes:
-        if sc.move or sc.i == 0:
-            add("whoosh", sc.start, 0.55, sc.i)
-        for k, (ch, *_rest) in enumerate(sc.icons):
-            at = sc.start + sc.icons[k][3]
-            kind = next((v for key, v in ICON_SFX.items() if key in ch), "pop")
-            if kind == "pop" or k == 0:
-                add(kind, at, 0.5 if kind == "pop" else 0.55, sc.i * 31 + k)
-        if sc.number:
-            t0 = sc.start + sc.count_at
-            for m in range(int(sc.count_len / 0.07)):
-                add("tick", t0 + m * 0.07, 0.25)
-            add("ding", t0 + sc.count_len, 0.5)
     track *= volume
     peak = np.abs(track).max()
     if peak > 0.98:
@@ -567,6 +554,23 @@ def build_sfx(scenes: list[Scene], total: float, out: Path, volume: float = 0.5)
         w.setframerate(SR)
         w.writeframes(pcm.tobytes())
     return out
+
+
+def build_sfx(scenes: list[Scene], total: float, out: Path, volume: float = 0.5) -> Path:
+    events: list[tuple[str, float, float]] = []
+    for sc in scenes:
+        if sc.move or sc.i == 0:
+            events.append(("whoosh", sc.start, 0.55))
+        for k, (ch, _x, _y, at, _s) in enumerate(sc.icons):
+            kind = next((v for key, v in ICON_SFX.items() if key in ch), "pop")
+            if kind == "pop" or k == 0:
+                events.append((kind, sc.start + at, 0.5 if kind == "pop" else 0.55))
+        if sc.number:
+            t0 = sc.start + sc.count_at
+            for m in range(int(sc.count_len / 0.07)):
+                events.append(("tick", t0 + m * 0.07, 0.25))
+            events.append(("ding", t0 + sc.count_len, 0.5))
+    return write_sfx(events, total, out, volume)
 
 
 # ------------------------------------------------------------------ render
