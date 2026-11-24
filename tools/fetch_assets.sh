@@ -8,12 +8,19 @@ mkdir -p assets/map assets/music
 
 get() {  # get <url> <file>
   if [ -s "$2" ]; then echo "have $2"; return 0; fi
-  if curl -fsSL --retry 3 --max-time 180 -o "$2.part" "$1"; then mv "$2.part" "$2"; echo "got $2 ($(du -h "$2" | cut -f1))"
+  if curl -fsSL --retry 2 --connect-timeout 20 --max-time 120 -A "auto-yt-studio/1.0 (GitHub Actions; free asset download)" -o "$2.part" "$1"; then mv "$2.part" "$2"; echo "got $2 ($(du -h "$2" | cut -f1))"
   else rm -f "$2.part"; echo "FAILED $1"; fi
 }
 
-get "https://eoimages.gsfc.nasa.gov/images/imagerecords/73000/73909/world.topo.bathy.200412.3x5400x2700.jpg" assets/map/blue-marble.jpg
-get "https://eoimages.gsfc.nasa.gov/images/imagerecords/144000/144898/BlackMarble_2016_3km.jpg" assets/map/black-marble.jpg
+# World map: NASA Blue Marble (public domain). NASA's own server first, then the
+# copy on Wikimedia Commons.
+for u in \
+  "https://commons.wikimedia.org/wiki/Special:FilePath/Whole_world_-_land_and_oceans_12000.jpg?width=5400" \
+  "https://eoimages.gsfc.nasa.gov/images/imagerecords/73000/73909/world.topo.bathy.200412.3x5400x2700.jpg" \
+  "https://commons.wikimedia.org/wiki/Special:FilePath/Land_ocean_ice_2048.jpg"; do
+  [ -s assets/map/blue-marble.jpg ] && break
+  get "$u" assets/map/blue-marble.jpg
+done
 
 credits=assets/music/CREDITS.txt
 for t in "Investigations" "Wallpaper" "Fluffing a Duck" "Sneaky Snitch" "Pixel Peeker Polka - faster" "Carefree" "Monkeys Spinning Monkeys" "Life of Riley"; do
