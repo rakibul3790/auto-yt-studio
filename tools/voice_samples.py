@@ -17,6 +17,11 @@ VOICES = [
     ("3-andrew-deeper", "en-US-AndrewNeural", "-4%", "-10Hz"),
     ("4-roger-deep", "en-US-RogerNeural", "-4%", "-6Hz"),
     ("0-andrew-current", "en-US-AndrewNeural", "+0%", "+0Hz"),
+    # women's voices
+    ("f1-ava", "en-US-AvaNeural", "+0%", "+0Hz"),
+    ("f2-emma", "en-US-EmmaNeural", "+0%", "+0Hz"),
+    ("f3-jenny", "en-US-JennyNeural", "+0%", "+0Hz"),
+    ("f4-aria", "en-US-AriaNeural", "+0%", "+0Hz"),
 ]
 
 
