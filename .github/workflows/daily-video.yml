@@ -34,7 +34,7 @@ concurrency:
 jobs:
   make-video:
     runs-on: ubuntu-24.04
-    timeout-minutes: 120
+    timeout-minutes: 300
     steps:
       - uses: actions/checkout@v5
         with:
