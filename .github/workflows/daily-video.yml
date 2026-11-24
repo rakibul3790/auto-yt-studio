@@ -1,0 +1,81 @@
+# Makes the next video from scripts/queue/ and uploads it to YouTube as PRIVATE.
+# Runs every day by itself; you can also run it any time from the Actions tab.
+name: Daily video
+
+on:
+  schedule:
+    # 03:30 UTC = 09:30 Bangladesh time. Uploads are Private, so the time
+    # only decides when the video is ready for you to check. Change if you like.
+    - cron: "30 3 * * *"
+  workflow_dispatch:
+    inputs:
+      count:
+        description: "How many videos to make now"
+        default: "1"
+      upload:
+        description: "Upload to YouTube? (no = test only, download from Artifacts)"
+        type: choice
+        options: ["yes", "no"]
+        default: "yes"
+
+permissions:
+  contents: write                # to move finished scripts to scripts/done/
+
+concurrency:
+  group: daily-video
+  cancel-in-progress: false
+
+jobs:
+  make-video:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 120
+    steps:
+      - uses: actions/checkout@v5
+
+      - uses: actions/setup-python@v6
+        with:
+          python-version: "3.12"
+          cache: pip
+
+      - name: Install ffmpeg and fonts (English + Bengali)
+        run: |
+          sudo apt-get update -q
+          sudo apt-get install -y -q ffmpeg fonts-noto-core libraqm0 fontconfig
+          fc-list | grep -E "NotoSans(Bengali)?-Bold" | head -2
+
+      - name: Install Python packages
+        run: pip install -r requirements.txt
+
+      - name: Make and upload video
+        env:
+          YT_CLIENT_ID: ${{ secrets.YT_CLIENT_ID }}
+          YT_CLIENT_SECRET: ${{ secrets.YT_CLIENT_SECRET }}
+          YT_REFRESH_TOKEN: ${{ secrets.YT_REFRESH_TOKEN }}
+          PEXELS_API_KEY: ${{ secrets.PEXELS_API_KEY }}
+          COUNT: ${{ inputs.count }}
+          UPLOAD: ${{ inputs.upload }}
+        run: |
+          args=()
+          if [[ "$COUNT" =~ ^[0-9]+$ ]]; then args+=(--count "$COUNT"); fi
+          if [[ "$UPLOAD" == "no" ]]; then args+=(--no-upload); fi
+          python -m studio.main "${args[@]}"
+
+      - name: Save the video files (Actions → this run → Artifacts)
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: videos-${{ github.run_number }}
+          path: output/
+          retention-days: 7
+          if-no-files-found: ignore
+
+      - name: Move finished scripts to scripts/done
+        if: always()
+        run: |
+          git config user.name  "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add -A scripts logs
+          if git diff --cached --quiet; then echo "Nothing to save"; exit 0; fi
+          git commit -m "Uploaded video(s) from the queue"
+          git pull --rebase --autostash
+          git push

@@ -1,0 +1,67 @@
+# ===========================================================
+#  Auto YT Studio — সব সেটিং এই একটা ফাইলে
+#  GitHub-এ এই ফাইল খুলে পেনসিল (Edit) চাপলেই বদলাতে পারবে।
+# ===========================================================
+
+channel:
+  # চ্যানেলের বিষয় (শুধু তোমার নোট আর স্ক্রিপ্ট-প্রম্পটের জন্য)
+  topic: "এখনো ঠিক হয়নি"
+
+  # ভিডিওর ভাষা: en = English (ইংলিশ দর্শকের জন্য), bn = বাংলা, hi = হিন্দি ...
+  language: "en"
+
+  # ভয়েস (ফ্রি Microsoft Edge ভয়েস) — যেকোনো একটা নাম বসাও:
+  #   American (ছেলে):  en-US-AndrewNeural (উষ্ণ, গল্প বলার মতো), en-US-BrianNeural, en-US-ChristopherNeural
+  #   American (মেয়ে):  en-US-AvaNeural (পরিষ্কার, স্বাভাবিক), en-US-EmmaNeural, en-US-JennyNeural
+  #   British:          en-GB-RyanNeural (ছেলে), en-GB-SoniaNeural (মেয়ে)
+  #   বাংলা চাইলে:      bn-BD-NabanitaNeural, bn-BD-PradeepNeural (language: "bn" করো)
+  voice: "en-US-AndrewNeural"
+  voice_rate: "+0%"      # কথার গতি, যেমন "+10%" বা "-5%"
+  voice_pitch: "+0Hz"
+
+  # YouTube ক্যাটাগরি নম্বর: 27 = Education, 22 = People & Blogs,
+  # 24 = Entertainment, 28 = Science & Technology, 26 = Howto & Style
+  category_id: "27"
+
+  # প্রতিটা ভিডিওতে যোগ হবে এমন ট্যাগ
+  default_tags: []
+
+  # প্রতিটা ভিডিওর ডেসক্রিপশনের শেষে যোগ হবে
+  description_footer: ""
+
+  made_for_kids: false
+  # AI ভয়েস/ছবি থাকলে YouTube-কে জানানো নিয়ম; true রাখাই নিরাপদ
+  synthetic_media: true
+
+video:
+  width: 1920
+  height: 1080
+  fps: 30
+  scene_pause: 0.35          # প্রতিটা দৃশ্যের শেষে কত সেকেন্ড বিরতি
+  subtitles: true            # নিচে লেখা (সাবটাইটেল) দেখাবে কিনা
+  subtitle_max_chars: 42     # এক লাইনে সর্বোচ্চ কত অক্ষর
+  music_volume: 0.10         # assets/music-এর গানের আওয়াজ (0 = বন্ধ)
+  fade_seconds: 0.8          # শুরুতে ফেড-ইন, শেষে ফেড-আউট
+  # ছবির উৎস: "auto" = PEXELS_API_KEY থাকলে Pexels-এর ফ্রি ছবি, না থাকলে
+  # নিজে বানানো রঙিন স্লাইড। "slides" = সবসময় নিজে বানানো স্লাইড।
+  visuals: "auto"
+  # নিজে বানানো স্লাইডের রঙ (একেক দৃশ্যে একেকটা)
+  palette:
+    - ["#0f2027", "#2c5364"]
+    - ["#1d1347", "#5b2a86"]
+    - ["#0b3d2e", "#1f8a5b"]
+    - ["#3a1c10", "#c0562b"]
+    - ["#101935", "#3e5c9a"]
+
+shorts:
+  # true করলে প্রতিটা ভিডিওর একটা 9:16 Short ভার্সনও আপলোড হবে
+  # (স্ক্রিপ্টে "shorts": true দিলে শুধু সেই ভিডিওর জন্য হবে)
+  enabled: false
+  max_seconds: 180           # YouTube Shorts সর্বোচ্চ ৩ মিনিট
+
+run:
+  videos_per_run: 1          # প্রতিবার চালালে কয়টা ভিডিও বানাবে
+  # কিউ খালি হলে রানটা "failed" দেখাবে, যাতে GitHub তোমাকে ইমেইল করে
+  fail_when_queue_empty: true
+  # private বা unlisted। ইচ্ছা করেই public রাখার ব্যবস্থা নেই।
+  privacy: "private"
