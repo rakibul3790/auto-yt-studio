@@ -131,6 +131,7 @@ def render(data: dict, cfg: dict, work: Path, out_file: Path,
     timings: list[tuple[float, float]] = []
     voice_parts: list[Path] = []
     segments: list[dict] = []     # picture pieces for the photo/clip style
+    visuals.reset_clips()         # no clip twice in one video
 
     for i, scene in enumerate(data["scenes"]):
         text = str(scene["text"]).strip()
@@ -300,7 +301,8 @@ def _photo_joined(segments: list[dict], voice_parts: list[Path], total: float,
         else:
             chain = (f"[0:v]scale={int(w * 1.06)}:{int(h * 1.06)}:force_original_aspect_ratio=increase,"
                      f"crop={w}:{h},fps={fps},setsar=1")
-            inputs = ["-stream_loop", "-1", "-i", str(sg["src"])]
+            start = visuals.CLIP_START.get(str(sg["src"]), 0.0)
+            inputs = ["-stream_loop", "-1", *(["-ss", f"{start:.2f}"] if start else []), "-i", str(sg["src"])]
             if sg.get("overlay"):
                 inputs += ["-i", str(sg["overlay"])]
                 chain += "[b];[b][1:v]overlay=0:0"

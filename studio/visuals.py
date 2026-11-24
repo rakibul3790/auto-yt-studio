@@ -197,9 +197,30 @@ def pixabay_photo(query: str, portrait: bool, seed: int, subject: str | None = N
         return None
 
 
+# clips already used in the video being made, so the same footage never comes back
+_USED_CLIPS: set[int] = set()
+CLIP_START: dict[str, float] = {}
+
+
+def reset_clips() -> None:
+    _USED_CLIPS.clear()
+    CLIP_START.clear()
+
+
+def _pixabay_hits(key: str, query: str, page: int = 1) -> list[dict]:
+    r = requests.get(PIXABAY_VIDEO_URL, timeout=30, params={
+        "key": key, "q": query, "video_type": "film", "safesearch": "true",
+        "order": "popular", "per_page": 50, "page": page})
+    if r.status_code != 200:
+        log(f"Pixabay video error {r.status_code} for '{query}': {r.text.strip()[:120]}")
+        return []
+    return r.json().get("hits", [])
+
+
 def pixabay_video(query: str, pick: int, out: Path, subject: str | None = None) -> Path | None:
     """A free stock video clip from Pixabay (same key as photos), saved to out.
-    Only clips tagged with the scene's subject (shark, octopus ...) are used."""
+    Only clips tagged with the scene's subject (shark, octopus ...) are used, and a clip
+    already used earlier in the same video is skipped, so footage doesn't repeat."""
     key = os.environ.get("PIXABAY_API_KEY", "").strip()
     query = " ".join(query.split())[:100]
     if not key or not query:
@@ -207,34 +228,44 @@ def pixabay_video(query: str, pick: int, out: Path, subject: str | None = None) 
     if out.exists() and out.stat().st_size > 10000:
         return out
     try:
-        r = requests.get(PIXABAY_VIDEO_URL, timeout=30, params={
-            "key": key, "q": query, "video_type": "film", "safesearch": "true",
-            "order": "popular", "per_page": 20})
-        if r.status_code != 200:
-            log(f"Pixabay video error {r.status_code} for '{query}': {r.text.strip()[:120]}")
-            return None
-        options = []
         need = subject_words(query, subject)
-        for hit in r.json().get("hits", []):
-            if not 3 <= float(hit.get("duration", 0)) <= 60:
-                continue
-            if need and not tags_match(hit.get("tags", ""), need):
-                continue
-            for q in ("large", "medium"):
-                v = (hit.get("videos") or {}).get(q) or {}
-                if v.get("url") and v.get("height", 0) >= 720 and 0 < v.get("size", 0) < 45_000_000:
-                    options.append(v)
-                    break
-        if not options and need and query.lower().split() != need:
-            return pixabay_video(" ".join(need), pick, out, subject)     # just the subject
-        if not options:
+        searches = [(query, 1)]
+        if need and query.lower().split() != need:
+            searches.append((" ".join(need), 1))
+        searches.append((searches[-1][0], 2))
+        seen, fresh, old = set(), [], []
+        for q, page in searches:
+            for hit in _pixabay_hits(key, q, page):
+                hid = hit.get("id")
+                if hid in seen or not 3 <= float(hit.get("duration", 0)) <= 60:
+                    continue
+                seen.add(hid)
+                if need and not tags_match(hit.get("tags", ""), need):
+                    continue
+                for size in ("large", "medium"):
+                    v = (hit.get("videos") or {}).get(size) or {}
+                    if v.get("url") and v.get("height", 0) >= 720 and 0 < v.get("size", 0) < 45_000_000:
+                        item = (hid, float(hit.get("duration", 0)), v)
+                        (old if hid in _USED_CLIPS else fresh).append(item)
+                        break
+            if len(fresh) >= 6:
+                break
+        if not fresh and not old:
             log(f"Pixabay: no video tagged {need or query!r} for '{query}'")
             return None
-        v = options[:6][pick % len(options[:6])]
+        if fresh:
+            hid, dur, v = fresh[:6][pick % len(fresh[:6])]
+            start = 0.0
+        else:   # every matching clip is used already: take one again, from a later part of it
+            hid, dur, v = old[pick % len(old)]
+            start = round(dur * 0.5, 2) if dur > 8 else 0.0
+            log(f"Pixabay: only reused clips left for '{query}', starting at {start}s")
+        _USED_CLIPS.add(hid)
         data = requests.get(v["url"], timeout=120)
         data.raise_for_status()
         out.write_bytes(data.content)
-        log(f"Video clip from Pixabay for '{query}' ({v.get('width')}x{v.get('height')})")
+        CLIP_START[str(out)] = start
+        log(f"Video clip from Pixabay for '{query}' ({v.get('width')}x{v.get('height')}, clip {hid})")
         return out
     except Exception as e:
         log(f"Pixabay video failed for '{query}': {type(e).__name__}")
