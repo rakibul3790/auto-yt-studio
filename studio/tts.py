@@ -1,7 +1,9 @@
 """Free text-to-speech.
 
 1st choice: Microsoft Edge voices through `edge-tts` (natural, English and Bengali
-voices, no key needed). If that fails, it falls back to Google's free
+voices, no key needed). Voices written as "kokoro:af_heart" or
+"chatterbox:excited" use those free open-source voices instead (they run on the
+GitHub runner itself, no key, no account). If that fails, it falls back to Google's free
 `gTTS` voice so the daily run still produces a video.
 
 Returns the audio file plus timed text pieces used for subtitles.
@@ -36,6 +38,44 @@ async def _edge(text: str, voice: str, rate: str, pitch: str, out: Path) -> list
     return cues
 
 
+_MODELS: dict = {}
+
+
+def _save_wav_mp3(samples, rate: int, out: Path) -> None:
+    import subprocess
+    import soundfile as sf
+    wav = out.with_suffix(".tmp.wav")
+    sf.write(str(wav), samples, rate)
+    subprocess.run(["ffmpeg", "-y", "-loglevel", "error", "-i", str(wav), "-ar", "24000",
+                    "-b:a", "128k", str(out)], check=True)
+    wav.unlink(missing_ok=True)
+
+
+def _kokoro(text: str, voice: str, speed: float, out: Path) -> None:
+    import numpy as np
+    from kokoro import KPipeline
+    pipe = _MODELS.get("kokoro") or _MODELS.setdefault("kokoro", KPipeline(lang_code=voice[0]))
+    parts = [np.asarray(a) for _, _, a in pipe(text, voice=voice, speed=speed)]
+    _save_wav_mp3(np.concatenate(parts), 24000, out)
+
+
+CHATTERBOX_MOODS = {"natural": (0.5, 0.5), "excited": (0.8, 0.35), "calm": (0.35, 0.5)}
+
+
+def _chatterbox(text: str, mood: str, out: Path) -> None:
+    from chatterbox.tts import ChatterboxTTS
+    model = _MODELS.get("chatterbox") or _MODELS.setdefault(
+        "chatterbox", ChatterboxTTS.from_pretrained(device="cpu"))
+    ex, cfg_w = CHATTERBOX_MOODS.get(mood, CHATTERBOX_MOODS["natural"])
+    wav = model.generate(text, exaggeration=ex, cfg_weight=cfg_w)
+    _save_wav_mp3(wav.squeeze(0).numpy(), model.sr, out)
+
+
+def _rate_to_speed(rate: str) -> float:
+    m = re.match(r"([+-]?\d+)%", str(rate or "+0%"))
+    return 1 + int(m.group(1)) / 100 if m else 1.0
+
+
 def _gtts(text: str, lang: str, out: Path) -> None:
     from gtts import gTTS
 
@@ -48,6 +88,20 @@ def speak(text: str, out: Path, cfg: dict) -> tuple[float, list[Cue]]:
     voice = ch.get("voice", "en-US-AndrewNeural")
     lang = ch.get("language", "en")
     cues: list[Cue] = []
+
+    engine, _, name = voice.partition(":") if voice.split(":")[0] in ("kokoro", "chatterbox") \
+        else ("edge", "", voice)
+    if engine != "edge":
+        try:
+            if engine == "kokoro":
+                _kokoro(text, name or "af_heart", _rate_to_speed(ch.get("voice_rate")), out)
+            else:
+                _chatterbox(text, name or "natural", out)
+            duration = media_duration(out)
+            return duration, [(0.05, max(duration - 0.1, 0.1), text)]
+        except Exception as e:
+            log(f"{engine} voice failed ({e}); using the Edge voice instead")
+            voice = "en-US-AvaNeural"
 
     for attempt in range(1, 4):
         try:

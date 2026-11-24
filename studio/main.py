@@ -16,7 +16,20 @@ from . import queue
 from .common import OUTPUT_DIR, WORK_DIR, load_config, log, require_tools
 
 
-def description_for(data: dict, cfg: dict, shorts: bool = False) -> str:
+def music_credit(track: str | None) -> str:
+    """The credit line a CC BY music track needs (assets/music/CREDITS.txt)."""
+    from .common import MUSIC_DIR
+    f = MUSIC_DIR / "CREDITS.txt"
+    if not track or not f.exists():
+        return ""
+    for line in f.read_text(encoding="utf-8").splitlines():
+        name, _, credit = line.partition("|")
+        if name.strip() == track:
+            return "Music: " + credit.strip()
+    return ""
+
+
+def description_for(data: dict, cfg: dict, shorts: bool = False, credit: str = "") -> str:
     parts = [str(data.get("description", "")).strip()]
     footer = str(cfg["channel"].get("description_footer", "") or "").strip()
     if footer:
@@ -26,6 +39,8 @@ def description_for(data: dict, cfg: dict, shorts: bool = False) -> str:
         tags = list(tags) + ["#Shorts"]
     if tags:
         parts.append(" ".join(t if str(t).startswith("#") else f"#{t}" for t in tags))
+    if credit:
+        parts.append(credit)
     return "\n\n".join(p for p in parts if p)
 
 
@@ -52,18 +67,21 @@ def process(path: Path, cfg: dict, upload: bool, voice: str | None = None) -> No
 
     # ---- main 16:9 video (skipped for "format": "short" scripts)
     main_mp4 = thumb = None
+    credit = ""
     if not short_only:
         size = (int(vcfg.get("width", 1920)), int(vcfg.get("height", 1080)))
         main_mp4 = OUTPUT_DIR / f"{slug}.mp4"
         info = render.render(data, cfg, work, main_mp4, size)
+        credit = music_credit(info.get("music"))
         thumb = visuals.thumbnail(data, info["first_image"], OUTPUT_DIR / f"{slug}-thumb.jpg")
 
     # ---- 9:16 Short (always for "format": "short", else optional)
     short_mp4 = None
     if short_only or data.get("shorts", scfg.get("enabled", False)):
         short_mp4 = OUTPUT_DIR / f"{slug}-short.mp4"
-        render.render(data, cfg, work, short_mp4, (1080, 1920),
-                      max_seconds=float(scfg.get("max_seconds", 180)) - 1)
+        sinfo = render.render(data, cfg, work, short_mp4, (1080, 1920),
+                              max_seconds=float(scfg.get("max_seconds", 180)) - 1)
+        credit = credit or music_credit(sinfo.get("music"))
 
     if not upload:
         log(f"Test render done (not uploaded): {main_mp4 or short_mp4}")
@@ -75,12 +93,12 @@ def process(path: Path, cfg: dict, upload: bool, voice: str | None = None) -> No
         st = data.get("short_title") or data["title"]
         if "#shorts" not in st.lower() and len(st) <= 92:
             st += " #Shorts"
-        sid = youtube.upload(short_mp4, st, description_for(data, cfg, shorts=True), tags, cfg)
+        sid = youtube.upload(short_mp4, st, description_for(data, cfg, shorts=True, credit=credit), tags, cfg)
         result["short_id"] = sid
         result["short_url"] = f"https://youtube.com/shorts/{sid}"
         short_mp4 = None                      # already uploaded
     else:
-        vid = youtube.upload(main_mp4, data["title"], description_for(data, cfg), tags, cfg, thumb)
+        vid = youtube.upload(main_mp4, data["title"], description_for(data, cfg, credit=credit), tags, cfg, thumb)
         result["video_id"] = vid
         result["video_url"] = f"https://youtu.be/{vid}"
     if short_mp4:
@@ -88,7 +106,7 @@ def process(path: Path, cfg: dict, upload: bool, voice: str | None = None) -> No
         if "#shorts" not in st.lower() and len(st) <= 92:
             st += " #Shorts"
         try:
-            sid = youtube.upload(short_mp4, st, description_for(data, cfg, shorts=True), tags, cfg)
+            sid = youtube.upload(short_mp4, st, description_for(data, cfg, shorts=True, credit=credit), tags, cfg)
             result["short_id"] = sid
             result["short_url"] = f"https://youtube.com/shorts/{sid}"
         except Exception as e:  # main video is already up: don't upload it twice

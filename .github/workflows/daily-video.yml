@@ -43,17 +43,36 @@ jobs:
 
       - uses: actions/setup-python@v6
         with:
-          python-version: "3.12"
+          python-version: "3.11"
           cache: pip
 
       - name: Install ffmpeg and fonts (English + Bengali)
         run: |
           sudo apt-get update -q
-          sudo apt-get install -y -q ffmpeg fonts-noto-core libraqm0 fontconfig
+          sudo apt-get install -y -q ffmpeg fonts-noto-core fonts-noto-color-emoji libraqm0 fontconfig espeak-ng
           fc-list | grep -E "NotoSans(Bengali)?-Bold" | head -2
 
       - name: Install Python packages
         run: pip install -r requirements.txt
+
+      - name: Keep downloaded voice models between runs
+        uses: actions/cache@v4
+        with:
+          path: ~/.cache/huggingface
+          key: voice-models-v1
+
+      - name: Install open-source voices (only when one is used)
+        env:
+          VOICE: ${{ inputs.voice }}
+        run: |
+          if grep -q "kokoro:" config.yaml || [[ "$VOICE" == *kokoro* ]]; then
+            pip install torch --index-url https://download.pytorch.org/whl/cpu
+            pip install "kokoro>=0.9.4" soundfile
+          fi
+          if grep -q "chatterbox:" config.yaml || [[ "$VOICE" == *chatterbox* ]]; then
+            pip install torch==2.6.0 torchaudio==2.6.0 --index-url https://download.pytorch.org/whl/cpu
+            pip install chatterbox-tts soundfile
+          fi
 
       - name: Make and upload video
         env:
@@ -68,7 +87,7 @@ jobs:
           FILE: ${{ inputs.file }}
         run: |
           args=()
-          if [[ "$VOICE" =~ ^[A-Za-z0-9\ ()-]+$ ]]; then args+=(--voice "$VOICE"); fi
+          if [[ "$VOICE" =~ ^[A-Za-z0-9\ ():_-]+$ ]]; then args+=(--voice "$VOICE"); fi
           if [[ "$FILE" =~ ^scripts/queue/[A-Za-z0-9._-]+\.json$ ]]; then args+=(--file "$FILE"); fi
           if [[ "$COUNT" =~ ^[0-9]+$ ]]; then args+=(--count "$COUNT"); fi
           if [[ "$UPLOAD" == "no" ]]; then args+=(--no-upload); fi

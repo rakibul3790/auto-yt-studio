@@ -127,6 +127,10 @@ def render(data: dict, cfg: dict, work: Path, out_file: Path,
     t0 = 0.0
     first_img: Path | None = None
 
+    map_style = str(data.get("style", "")).lower() == "map"
+    timings: list[tuple[float, float]] = []
+    voice_parts: list[Path] = []
+
     for i, scene in enumerate(data["scenes"]):
         text = str(scene["text"]).strip()
         audio = work / f"scene{i:02d}.mp3"
@@ -140,6 +144,21 @@ def render(data: dict, cfg: dict, work: Path, out_file: Path,
         if max_seconds and t0 + scene_len > max_seconds:
             log(f"Stopping at scene {i} to stay under {max_seconds}s")
             break
+
+        if map_style:
+            part = work / f"voice{i:02d}.wav"
+            run(["ffmpeg", "-y", "-loglevel", "error", "-i", str(audio), "-af",
+                 f"apad=whole_dur={scene_len:.3f}", "-t", f"{scene_len:.3f}",
+                 "-ar", "48000", "-ac", "1", str(part)])
+            voice_parts.append(part)
+            timings.append((t0, t0 + scene_len))
+            if vcfg.get("highlight", True):
+                phrases = scene_highlights(scene, text)
+                cues = [(cs, ce, protect(ct, phrases)) for cs, ce, ct in cues]
+            for s_, e_, c_ in tts.split_cues(cues, int(vcfg.get("subtitle_max_chars", 42))):
+                all_cues.append((t0 + s_, t0 + min(e_, dur), c_))
+            t0 += scene_len
+            continue
 
         img = visuals.scene_image(scene, i, data["title"], cfg, size, work / f"img{i:02d}_{tag}.jpg")
         first_img = first_img or img
@@ -163,15 +182,19 @@ def render(data: dict, cfg: dict, work: Path, out_file: Path,
             all_cues.append((t0 + s, t0 + min(e, dur), c))
         t0 += scene_len
 
-    if not clips:
-        raise RuntimeError("No scenes fit into the video")
-
-    # Join scenes (no re-encode)
-    lst = work / f"list_{tag}.txt"
-    lst.write_text("".join(f"file '{c.name}'\n" for c in clips), encoding="utf-8")
     joined = work / f"joined_{tag}.mp4"
-    run(["ffmpeg", "-y", "-loglevel", "error", "-f", "concat", "-safe", "0",
-         "-i", lst.name, "-c", "copy", joined.name], cwd=work)
+    if map_style:
+        if not voice_parts:
+            raise RuntimeError("No scenes fit into the video")
+        joined, first_img = _map_joined(data, voice_parts, timings, t0, size, fps, vcfg, work, tag)
+    else:
+        if not clips:
+            raise RuntimeError("No scenes fit into the video")
+        # Join scenes (no re-encode)
+        lst = work / f"list_{tag}.txt"
+        lst.write_text("".join(f"file '{c.name}'\n" for c in clips), encoding="utf-8")
+        run(["ffmpeg", "-y", "-loglevel", "error", "-f", "concat", "-safe", "0",
+             "-i", lst.name, "-c", "copy", joined.name], cwd=work)
     total = media_duration(joined)
 
     # Final pass: subtitles + music + fades
@@ -185,7 +208,9 @@ def render(data: dict, cfg: dict, work: Path, out_file: Path,
 
     inputs = ["-i", joined.name]
     music = sorted(MUSIC_DIR.glob("*.mp3"))
-    vol = float(vcfg.get("music_volume", 0.1))
+    vol = float(vcfg.get("map_music_volume" if map_style else "music_volume",
+                         vcfg.get("music_volume", 0.1)))
+    track = None
     afade = f"afade=t=in:st=0:d={fade},afade=t=out:st={max(total - fade, 0):.3f}:d={fade}"
     if music and vol > 0:
         track = random.Random(data["title"]).choice(music)
@@ -199,4 +224,29 @@ def render(data: dict, cfg: dict, work: Path, out_file: Path,
          "-map", "[v]", "-map", "[a]", "-t", f"{total:.3f}", *ENC, *AUD,
          "-r", str(fps), "-movflags", "+faststart", str(out_file.resolve())], cwd=work)
     log(f"Rendered {out_file.name} ({total:.1f}s, {tag})")
-    return {"duration": total, "first_image": first_img}
+    return {"duration": total, "first_image": first_img, "music": track.name if track else None}
+
+
+def _map_joined(data: dict, voice_parts: list[Path], timings: list[tuple[float, float]],
+                total: float, size: tuple[int, int], fps: int, vcfg: dict,
+                work: Path, tag: str) -> tuple[Path, Path]:
+    """Map-style picture track + voice + sound effects in one file."""
+    from . import motion
+    lst = work / "voice_list.txt"
+    lst.write_text("".join(f"file '{p.name}'\n" for p in voice_parts), encoding="utf-8")
+    voice = work / "voice_all.wav"
+    if not voice.exists():
+        run(["ffmpeg", "-y", "-loglevel", "error", "-f", "concat", "-safe", "0",
+             "-i", lst.name, "-c", "copy", voice.name], cwd=work)
+    pic, sfx = work / f"motion_{tag}.mp4", work / f"sfx_{tag}.wav"
+    motion.render_track(data["scenes"][:len(timings)], timings, total, size, fps, pic, sfx,
+                        float(vcfg.get("sfx_volume", 0.5)))
+    joined = work / f"joined_{tag}.mp4"
+    run(["ffmpeg", "-y", "-loglevel", "error", "-i", pic.name, "-i", voice.name, "-i", sfx.name,
+         "-filter_complex", "[1:a][2:a]amix=inputs=2:duration=first:normalize=0[a]",
+         "-map", "0:v", "-map", "[a]", "-t", f"{total:.3f}", "-c:v", "copy", *AUD,
+         joined.name], cwd=work)
+    thumb = work / f"map_first_{tag}.jpg"
+    run(["ffmpeg", "-y", "-loglevel", "error", "-ss", f"{min(2.5, total / 2):.2f}", "-i", str(pic),
+         "-frames:v", "1", str(thumb)])
+    return joined, thumb

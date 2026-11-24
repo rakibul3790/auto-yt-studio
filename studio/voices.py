@@ -44,8 +44,11 @@ def test_running(cfg: dict) -> bool:
     vt = cfg.get("voice_test") or {}
     if not vt.get("enabled") or len(_voices(cfg)) < 2:
         return False
+    limit = int(vt.get("days", 10) or 0)
+    if limit <= 0:                     # 0 = keep alternating for good
+        return True
     days = {r["date_utc"] for r in _rows()} | {_today()}
-    return len(days) <= int(vt.get("days", 10))
+    return len(days) <= limit
 
 
 def next_voice(cfg: dict) -> dict | None:
