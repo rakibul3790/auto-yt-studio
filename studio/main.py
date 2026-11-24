@@ -73,7 +73,15 @@ def process(path: Path, cfg: dict, upload: bool, voice: str | None = None) -> No
         main_mp4 = OUTPUT_DIR / f"{slug}.mp4"
         info = render.render(data, cfg, work, main_mp4, size)
         credit = music_credit(info.get("music"))
-        thumb = visuals.thumbnail(data, info["first_image"], OUTPUT_DIR / f"{slug}-thumb.jpg")
+        if len(info.get("chapters") or []) >= 3:       # YouTube chapters (first one must be 0:00)
+            ch = info["chapters"]
+            lines = [f"{'0:00' if k == 0 else f'{int(t0 // 60)}:{int(t0 % 60):02d}'} {name}" for k, (t0, name) in enumerate(ch)]
+            data = {**data, "description": str(data.get("description", "")).rstrip() + "\n\nChapters\n" + "\n".join(lines)}
+        if data.get("thumbnail_spec") and info.get("first_image"):     # a ready drawn thumbnail
+            thumb = OUTPUT_DIR / f"{slug}-thumb.jpg"
+            shutil.copy(info["first_image"], thumb)
+        else:
+            thumb = visuals.thumbnail(data, info["first_image"], OUTPUT_DIR / f"{slug}-thumb.jpg")
 
     # ---- 9:16 Short (always for "format": "short", else optional)
     short_mp4 = None

@@ -12,7 +12,7 @@ import re
 from pathlib import Path
 
 from . import tts, visuals
-from .common import MUSIC_DIR, font_family_for, log, media_duration, run
+from .common import MUSIC_DIR, ROOT, font_family_for, log, media_duration, run
 
 ENC = ["-c:v", "libx264", "-preset", "veryfast", "-crf", "20", "-pix_fmt", "yuv420p"]
 AUD = ["-c:a", "aac", "-b:a", "160k", "-ar", "48000", "-ac", "2"]
@@ -69,11 +69,11 @@ def protect(text: str, phrases: list[str]) -> str:
 
 
 def write_ass(cues: list[tuple[float, float, str]], size: tuple[int, int],
-              sample_text: str, out: Path) -> Path:
+              sample_text: str, out: Path, font: str | None = None, scale: float = 1.0) -> Path:
     w, h = size
     portrait = h > w
-    font = font_family_for(sample_text)
-    fs = int(h * (0.055 if not portrait else 0.034))
+    font = font or font_family_for(sample_text)
+    fs = int(h * (0.055 if not portrait else 0.034) * scale)
     margin_v = int(h * (0.07 if not portrait else 0.22))
     head = f"""[Script Info]
 ScriptType: v4.00+
@@ -127,22 +127,31 @@ def render(data: dict, cfg: dict, work: Path, out_file: Path,
     t0 = 0.0
     first_img: Path | None = None
 
-    map_style = str(data.get("style", "")).lower() == "map"
+    style = str(data.get("style", "")).lower()
+    map_style = style == "map"
+    explainer = style == "explainer"
+    speech: list[tuple[float, float]] = []
     timings: list[tuple[float, float]] = []
     voice_parts: list[Path] = []
     segments: list[dict] = []     # picture pieces for the photo/clip style
     visuals.reset_clips()         # no clip twice in one video
 
     for i, scene in enumerate(data["scenes"]):
-        text = str(scene["text"]).strip()
+        text = str(scene.get("text", "")).strip()
         audio = work / f"scene{i:02d}.mp3"
-        if not audio.exists():                       # 16:9 and 9:16 share voice
+        if not text:                                 # a silent shot (explainer style)
+            dur, cues = float(scene.get("hold", 1.0)), []
+            if not audio.exists():
+                run(["ffmpeg", "-y", "-loglevel", "error", "-f", "lavfi", "-i", "anullsrc=r=24000:cl=mono",
+                     "-t", f"{dur:.3f}", str(audio)])
+                (work / f"scene{i:02d}.cues").write_text("[]", encoding="utf-8")
+        elif not audio.exists():                     # 16:9 and 9:16 share voice
             dur, cues = tts.speak(text, audio, cfg)
             (work / f"scene{i:02d}.cues").write_text(json.dumps(cues, ensure_ascii=False), encoding="utf-8")
         else:
             dur = media_duration(audio)
             cues = [tuple(c) for c in json.loads((work / f"scene{i:02d}.cues").read_text(encoding="utf-8"))]
-        scene_len = dur + pause
+        scene_len = dur + (float(scene.get("pause", pause)) if text else 0.0)
         if max_seconds and t0 + scene_len > max_seconds:
             log(f"Stopping at scene {i} to stay under {max_seconds}s")
             break
@@ -154,8 +163,9 @@ def render(data: dict, cfg: dict, work: Path, out_file: Path,
                  "-ar", "48000", "-ac", "1", str(part)])
         voice_parts.append(part)
         timings.append((t0, t0 + scene_len))
+        speech.append((cues[0][0], cues[-1][1]) if cues else (0.0, 0.0))
 
-        if not map_style:
+        if not map_style and not explainer:
             segments += _scene_segments(scene, i, data["title"], cfg, size, scene_len, work, tag)
             if first_img is None:
                 first_img = next((sg["thumb"] for sg in segments if sg.get("thumb")), None)
@@ -163,7 +173,7 @@ def render(data: dict, cfg: dict, work: Path, out_file: Path,
         if vcfg.get("highlight", True):
             phrases = scene_highlights(scene, text)
             cues = [(cs, ce, protect(ct, phrases)) for cs, ce, ct in cues]
-        for s_, e_, c_ in tts.split_cues(cues, int(vcfg.get("subtitle_max_chars", 42))):
+        for s_, e_, c_ in tts.split_cues(cues, int(data.get("caption_chars", vcfg.get("subtitle_max_chars", 42)))):
             all_cues.append((t0 + s_, t0 + min(e_, dur), c_))
         t0 += scene_len
 
@@ -171,6 +181,8 @@ def render(data: dict, cfg: dict, work: Path, out_file: Path,
         raise RuntimeError("No scenes fit into the video")
     if map_style:
         joined, first_img = _map_joined(data, voice_parts, timings, t0, size, fps, vcfg, work, tag)
+    elif explainer:
+        joined, first_img = _explainer_joined(data, voice_parts, timings, speech, t0, size, fps, vcfg, work, tag)
     else:
         joined = _photo_joined(segments, voice_parts, t0, size, fps, vcfg, work, tag)
     total = media_duration(joined)
@@ -179,8 +191,12 @@ def render(data: dict, cfg: dict, work: Path, out_file: Path,
     fade = float(vcfg.get("fade_seconds", 0.8))
     vf = []
     if vcfg.get("subtitles", True) and all_cues:
-        ass = write_ass(all_cues, size, data["title"], work / f"subs_{tag}.ass")
-        vf.append(f"ass={ass.name}")
+        if explainer:
+            ass = write_ass(all_cues, size, data["title"], work / f"subs_{tag}.ass", "Inter", 0.82)
+            vf.append(f"ass={ass.name}:fontsdir={(ROOT / 'assets' / 'fonts').resolve()}")
+        else:
+            ass = write_ass(all_cues, size, data["title"], work / f"subs_{tag}.ass")
+            vf.append(f"ass={ass.name}")
     vf.append(f"fade=t=in:st=0:d={fade}")
     vf.append(f"fade=t=out:st={max(total - fade, 0):.3f}:d={fade}")
 
@@ -188,10 +204,13 @@ def render(data: dict, cfg: dict, work: Path, out_file: Path,
     music = sorted(MUSIC_DIR.glob("*.mp3"))
     vol = float(vcfg.get("map_music_volume" if map_style else "music_volume",
                          vcfg.get("music_volume", 0.1)))
+    if "music_volume" in data:
+        vol = float(data["music_volume"])
     track = None
     afade = f"afade=t=in:st=0:d={fade},afade=t=out:st={max(total - fade, 0):.3f}:d={fade}"
     if music and vol > 0:
-        track = random.Random(data["title"]).choice(music)
+        named = [m for m in music if m.name == data.get("music")]
+        track = named[0] if named else random.Random(data["title"]).choice(music)
         vol = _music_gain(track, work, vol)
         inputs += ["-stream_loop", "-1", "-i", str(track)]
         # music dips further whenever someone speaks (sidechain ducking)
@@ -205,7 +224,10 @@ def render(data: dict, cfg: dict, work: Path, out_file: Path,
          "-map", "[v]", "-map", "[a]", "-t", f"{total:.3f}", *ENC, *AUD,
          "-r", str(fps), "-movflags", "+faststart", str(out_file.resolve())], cwd=work)
     log(f"Rendered {out_file.name} ({total:.1f}s, {tag})")
-    return {"duration": total, "first_image": first_img, "music": track.name if track else None}
+    chapters = [(timings[i][0], str(sc["chapter"])) for i, sc in enumerate(data["scenes"][:len(timings)])
+                if sc.get("chapter")]
+    return {"duration": total, "first_image": first_img, "music": track.name if track else None,
+            "chapters": chapters}
 
 
 def _music_gain(track: Path, work: Path, vol: float) -> float:
@@ -366,4 +388,27 @@ def _map_joined(data: dict, voice_parts: list[Path], timings: list[tuple[float, 
     thumb = work / f"map_first_{tag}.jpg"
     run(["ffmpeg", "-y", "-loglevel", "error", "-ss", f"{min(2.5, total / 2):.2f}", "-i", str(pic),
          "-frames:v", "1", str(thumb)])
+    return joined, thumb
+
+
+def _explainer_joined(data: dict, voice_parts: list[Path], timings: list[tuple[float, float]],
+                      speech: list[tuple[float, float]], total: float, size: tuple[int, int], fps: int,
+                      vcfg: dict, work: Path, tag: str) -> tuple[Path, Path]:
+    """Animated explainer picture track + voice + sound effects in one file."""
+    from . import explainer
+    voice = _voice_track(voice_parts, work)
+    pic, sfx = work / f"explainer_{tag}.mp4", work / f"sfx_{tag}.wav"
+    explainer.render_track(data["scenes"][:len(timings)], timings, speech, total, size, fps, pic, sfx,
+                           float(data.get("sfx_volume", vcfg.get("sfx_volume", 0.3))), voice)
+    joined = work / f"joined_{tag}.mp4"
+    run(["ffmpeg", "-y", "-loglevel", "error", "-i", pic.name, "-i", voice.name, "-i", sfx.name,
+         "-filter_complex", "[1:a][2:a]amix=inputs=2:duration=first:normalize=0[a]",
+         "-map", "0:v", "-map", "[a]", "-t", f"{total:.3f}", "-c:v", "copy", *AUD,
+         joined.name], cwd=work)
+    thumb = work / f"explainer_thumb_{tag}.jpg"
+    if data.get("thumbnail_spec"):
+        explainer.thumbnail(data["thumbnail_spec"], (1280, 720), thumb)
+    else:
+        run(["ffmpeg", "-y", "-loglevel", "error", "-ss", f"{min(3.0, total / 2):.2f}", "-i", str(pic),
+             "-frames:v", "1", str(thumb)])
     return joined, thumb

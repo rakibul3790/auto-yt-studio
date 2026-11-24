@@ -564,6 +564,149 @@ def make_sfx(kind: str, seed: int = 0) -> np.ndarray:
         out /= np.abs(out).max() + 1e-9
         crack = rnd.normal(0, 1, n) * _env(n, 0.001, 0.05) * 0.5
         return (out * _env(n, 0.01, 0.5 if kind == "thunder" else 0.25) + crack) * 0.9
+    return _more_sfx(kind, rnd)
+
+
+def _band(noise: np.ndarray, lo: float, hi: float) -> np.ndarray:
+    """Band-limited noise via FFT (fast for long sounds)."""
+    spec = np.fft.rfft(noise)
+    f = np.fft.rfftfreq(len(noise), 1 / SR)
+    spec[(f < lo) | (f > hi)] = 0
+    out = np.fft.irfft(spec, len(noise))
+    return out / (np.abs(out).max() + 1e-9)
+
+
+def _more_sfx(kind: str, rnd) -> np.ndarray:
+    """Sounds for the animated explainer style."""
+    def tt(sec):
+        n = int(SR * sec)
+        return n, np.arange(n) / SR
+    if kind == "zap":               # short electric zap
+        n, t = tt(0.32)
+        f = 2400 * np.exp(-t * 9) + 180
+        tone = np.sign(np.sin(2 * np.pi * np.cumsum(f) / SR)) * 0.35
+        crack = _band(rnd.normal(0, 1, n), 2000, 9000) * (rnd.random(n) > 0.6)
+        return (tone + crack * 0.5) * _env(n, 0.002, 0.07)
+    if kind == "err":               # low "wrong" buzz
+        n, t = tt(0.42)
+        s = np.sign(np.sin(2 * np.pi * 140 * t)) * 0.5 + np.sin(2 * np.pi * 70 * t) * 0.5
+        return _band(s, 60, 1200) * np.minimum(t / 0.01, 1) * np.clip((0.42 - t) / 0.08, 0, 1) * 0.6
+    if kind == "shimmer":           # sparkly fade-out (a name dissolving)
+        n, t = tt(1.1)
+        s = sum(np.sin(2 * np.pi * f0 * t + rnd.uniform(0, 6)) * (0.5 + 0.5 * np.sin(2 * np.pi * (7 + k) * t))
+                for k, f0 in enumerate(rnd.uniform(2500, 6500, 7)))
+        return s / 7 * _env(n, 0.05, 0.35) * 0.8
+    if kind == "riser":             # rising tone into a reveal
+        n, t = tt(1.4)
+        f = 180 * (6 ** (t / t[-1]))
+        s = np.sin(2 * np.pi * np.cumsum(f) / SR) * 0.5 + _band(rnd.normal(0, 1, n), 800, 6000) * 0.25
+        return s * (t / t[-1]) ** 2
+    if kind == "thud":              # deep cinematic hit
+        n, t = tt(1.2)
+        f = 90 * np.exp(-t * 4) + 38
+        s = np.sin(2 * np.pi * np.cumsum(f) / SR) * _env(n, 0.003, 0.35)
+        s += _band(rnd.normal(0, 1, n), 40, 400) * _env(n, 0.001, 0.08) * 0.6
+        return s
+    if kind == "crowd":             # quiet party chatter bed (6 s)
+        n, t = tt(6.0)
+        s = _band(rnd.normal(0, 1, n), 250, 2600)
+        wob = 0.6 + 0.4 * _band(rnd.normal(0, 1, n), 2, 9)
+        return s * wob * np.minimum(t / 0.8, 1) * np.clip((6 - t) / 1.2, 0, 1) * 0.5
+    if kind == "type":              # soft writing scratch
+        n, t = tt(0.9)
+        s = np.zeros(n)
+        for k in range(9):
+            i = int((0.04 + k * 0.095 + rnd.uniform(0, .02)) * SR)
+            m = int(SR * 0.035)
+            if i + m < n:
+                s[i:i + m] += _band(rnd.normal(0, 1, m), 1500, 7000) * _env(m, 0.001, 0.01)
+        return s * 0.7
+    if kind == "heart":             # slow heartbeat (4 beats)
+        n, t = tt(4.0)
+        s = np.zeros(n)
+        for b in range(4):
+            for off, a in ((0.0, 1.0), (0.22, 0.7)):
+                i, m = int((b * 1.0 + off) * SR), int(SR * 0.18)
+                tm = np.arange(m) / SR
+                s[i:i + m] += a * np.sin(2 * np.pi * 55 * tm) * _env(m, 0.004, 0.05)
+        return s
+    if kind == "boing":
+        n, t = tt(0.6)
+        f = 260 + 140 * np.sin(2 * np.pi * 11 * t) * np.exp(-t * 4)
+        return np.sin(2 * np.pi * np.cumsum(f) / SR) * _env(n, 0.003, 0.25) * 0.7
+    if kind == "clink":             # metallic chain link
+        n, t = tt(0.5)
+        s = sum(a * np.sin(2 * np.pi * f0 * t) * np.exp(-t * d)
+                for a, f0, d in [(1, 2100, 9), (.6, 3370, 12), (.4, 5230, 16)])
+        return s * _env(n, 0.0008, 10) * 0.5
+    if kind == "alarm":             # two quick beeps
+        n, t = tt(0.5)
+        s = np.sin(2 * np.pi * np.where(t < 0.25, 1400, 1050) * t) * (np.sin(np.pi * (t % 0.25) / 0.25) ** 0.3)
+        return s * 0.45
+    if kind == "whistle":           # falling whistle
+        n, t = tt(0.7)
+        f = 1800 * np.exp(-t * 1.6) + 300
+        return np.sin(2 * np.pi * np.cumsum(f) / SR) * np.sin(np.pi * t / t[-1]) * 0.45
+    if kind == "shing":             # copy / duplicate
+        n, t = tt(0.5)
+        f = 1200 * (1 + 2.5 * t / t[-1])
+        return (np.sin(2 * np.pi * np.cumsum(f) / SR) * 0.5 + _band(rnd.normal(0, 1, n), 5000, 11000) * .2) \
+            * _env(n, 0.003, 0.14)
+    if kind == "chime":             # uplifting arpeggio
+        n, t = tt(1.6)
+        s = np.zeros(n)
+        for k, f0 in enumerate((784, 988, 1175, 1568)):
+            i = int(k * 0.13 * SR)
+            tm = t[: n - i]
+            s[i:] += np.sin(2 * np.pi * f0 * tm) * np.exp(-tm * 3.5)
+        return s * 0.35
+    if kind == "plink":
+        n, t = tt(0.18)
+        return np.sin(2 * np.pi * (1700 + rnd.uniform(-200, 300)) * t) * _env(n, 0.001, 0.04) * 0.6
+    if kind == "rattle":            # old film projector (6 s)
+        n, t = tt(6.0)
+        clicks = (np.sin(2 * np.pi * 24 * t) > 0.93).astype(float)
+        s = _band(rnd.normal(0, 1, n), 1500, 6000) * clicks + _band(rnd.normal(0, 1, n), 100, 800) * 0.15
+        return s * np.minimum(t / 0.5, 1) * np.clip((6 - t) / 0.8, 0, 1) * 0.6
+    if kind == "hum":               # deep cable hum (3 s)
+        n, t = tt(3.0)
+        s = np.sin(2 * np.pi * 60 * t) + 0.4 * np.sin(2 * np.pi * 120 * t)
+        return s * np.minimum(t / 0.3, 1) * np.clip((3 - t) / 0.6, 0, 1) * 0.5
+    if kind == "buzz":              # weak, crackly buzz
+        n, t = tt(1.6)
+        s = np.sin(2 * np.pi * 180 * t) * (rnd.random(n) > 0.45) * 0.4
+        return _band(s, 120, 4000) * np.sin(np.pi * t / t[-1])
+    if kind == "tension":           # held synth note (4 s)
+        n, t = tt(4.0)
+        s = sum(np.sin(2 * np.pi * f0 * t) for f0 in (110, 110.7, 164.8))
+        return s / 3 * np.minimum(t / 0.8, 1) * np.clip((4 - t) / 0.8, 0, 1) * 0.6
+    if kind == "loading":           # looping soft blips
+        n, t = tt(1.5)
+        s = np.zeros(n)
+        for k in range(5):
+            i, m = int(k * 0.3 * SR), int(SR * 0.06)
+            tm = np.arange(m) / SR
+            s[i:i + m] += np.sin(2 * np.pi * 880 * tm) * _env(m, 0.002, 0.02)
+        return s * 0.5
+    if kind == "fizzle":            # electrical fizzle + small crack
+        n, t = tt(0.8)
+        s = _band(rnd.normal(0, 1, n), 1500, 8000) * (rnd.random(n) > 0.7) * _env(n, 0.005, 0.25)
+        s[int(0.45 * SR):int(0.5 * SR)] += _band(rnd.normal(0, 1, int(0.05 * SR)), 300, 5000) * 0.8
+        return s
+    if kind == "confetti":
+        a = _more_sfx("plink", rnd)
+        out = np.zeros(int(SR * 0.6))
+        for k in range(6):
+            i = int(k * 0.07 * SR)
+            out[i:i + len(a)] += a * (0.9 - k * 0.1)
+        return out
+    if kind == "thup":              # stacking thup
+        n, t = tt(0.15)
+        return np.sin(2 * np.pi * (160 + rnd.uniform(-20, 20)) * t) * _env(n, 0.002, 0.03)
+    if kind == "rumble":            # tray shaking
+        n, t = tt(1.0)
+        return _band(rnd.normal(0, 1, n), 60, 500) * (0.6 + 0.4 * np.sin(2 * np.pi * 18 * t)) * \
+            np.sin(np.pi * t / t[-1]) * 0.7
     raise ValueError(kind)
 
 
@@ -574,7 +717,11 @@ def _sfx_cached(kind: str, seed: int) -> np.ndarray:
 
 # how loud each kind sits, before matching to the voice
 KIND_GAIN = {"pop": .55, "bubble": .6, "click": .6, "tick": .18, "ding": .35, "whoosh": .55,
-             "swish": .5, "cash": .45, "thunder": .5, "boom": .5}
+             "swish": .5, "cash": .45, "thunder": .5, "boom": .5,
+             "zap": .4, "err": .4, "shimmer": .35, "riser": .35, "thud": .6, "crowd": .12,
+             "type": .35, "heart": .45, "boing": .4, "clink": .3, "alarm": .3, "whistle": .3,
+             "shing": .35, "chime": .35, "plink": .3, "rattle": .15, "hum": .2, "buzz": .2,
+             "tension": .15, "loading": .25, "fizzle": .35, "confetti": .35, "thup": .5, "rumble": .3}
 
 
 def _speech_rms(path: Path | None) -> float | None:

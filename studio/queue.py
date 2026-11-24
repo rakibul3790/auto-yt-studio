@@ -31,13 +31,13 @@ def validate(data: dict, name: str) -> None:
     if not isinstance(data["scenes"], list):
         raise ScriptError(f"{name}: 'scenes' must be a list")
     for i, sc in enumerate(data["scenes"], 1):
-        if not isinstance(sc, dict) or not str(sc.get("text", "")).strip():
+        if not isinstance(sc, dict) or not (str(sc.get("text", "")).strip() or sc.get("hold")):
             raise ScriptError(f"{name}: scene {i} has no 'text'")
         hl = sc.get("highlight", [])
         hl = [hl] if isinstance(hl, str) else hl
         if not isinstance(hl, list):
             raise ScriptError(f"{name}: scene {i} 'highlight' must be a list of words")
-        spoken = " ".join(str(sc["text"]).lower().split())
+        spoken = " ".join(str(sc.get("text", "")).lower().split())
         for ph in hl:
             ph = " ".join(str(ph).lower().split())
             if ph and ph not in spoken:
