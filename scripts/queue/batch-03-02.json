@@ -19,11 +19,12 @@
   "scenes": [
     {
       "on_screen": "One teaspoon",
-      "visual": "night sky stars",
+      "visual": "neutron star space",
       "text": "A single teaspoon of a neutron star would weigh billions of tons here on Earth.",
       "highlight": [
         "billions of tons"
-      ]
+      ],
+      "subject": "star"
     },
     {
       "on_screen": "Dead star",
@@ -31,7 +32,8 @@
       "text": "A neutron star is what can be left after a giant star explodes. Its core collapses into a tiny ball.",
       "highlight": [
         "giant star explodes"
-      ]
+      ],
+      "subject": "supernova"
     },
     {
       "on_screen": "City sized",
@@ -39,7 +41,8 @@
       "text": "It packs more mass than our Sun into a sphere about the size of a city.",
       "highlight": [
         "size of a city"
-      ]
+      ],
+      "subject": "city"
     },
     {
       "on_screen": "Crushed atoms",

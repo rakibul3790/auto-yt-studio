@@ -24,7 +24,8 @@
       "text": "The blue whale is the largest animal that has ever lived, and its heart is enormous.",
       "highlight": [
         "largest animal"
-      ]
+      ],
+      "subject": "whale"
     },
     {
       "on_screen": "About 180 kilograms",
@@ -32,15 +33,17 @@
       "text": "A blue whale's heart can weigh around one hundred and eighty kilograms. That is about the weight of two grown adults.",
       "highlight": [
         "two grown adults"
-      ]
+      ],
+      "subject": "whale"
     },
     {
       "on_screen": "Very slow beats",
-      "visual": "deep blue ocean",
+      "visual": "blue whale diving",
       "text": "When it dives, that heart can slow down to just two beats per minute, to save oxygen.",
       "highlight": [
         "two beats per minute"
-      ]
+      ],
+      "subject": "whale"
     },
     {
       "on_screen": "Measured for the first time",
@@ -48,7 +51,8 @@
       "text": "Scientists only recorded a wild blue whale's heartbeat for the first time in twenty nineteen, using a sensor stuck on with suction cups.",
       "highlight": [
         "suction cups"
-      ]
+      ],
+      "subject": "whale"
     },
     {
       "on_screen": "Follow for more",
@@ -56,7 +60,8 @@
       "text": "The biggest heart on the planet belongs to a gentle giant. Follow for more weird facts.",
       "highlight": [
         "biggest heart"
-      ]
+      ],
+      "subject": "whale"
     }
   ]
 }

@@ -23,7 +23,8 @@
       "text": "You may have heard that the Great Wall of China is the only human-made thing you can see from space. It is a myth.",
       "highlight": [
         "It is a myth"
-      ]
+      ],
+      "subject": "wall"
     },
     {
       "on_screen": "Too narrow",
@@ -31,7 +32,8 @@
       "text": "The wall is very long, but mostly only a few meters wide, and its color blends in with the land around it.",
       "highlight": [
         "a few meters wide"
-      ]
+      ],
+      "subject": "wall"
     },
     {
       "on_screen": "From the Moon",
@@ -39,7 +41,8 @@
       "text": "From the Moon, astronauts say you cannot see any single human-made structure at all.",
       "highlight": [
         "from the Moon"
-      ]
+      ],
+      "subject": "moon"
     },
     {
       "on_screen": "From orbit",
@@ -55,7 +58,8 @@
       "text": "Long does not mean visible. Follow for more weird facts.",
       "highlight": [
         "Long does not mean visible"
-      ]
+      ],
+      "subject": "wall"
     }
   ]
 }

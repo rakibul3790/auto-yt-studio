@@ -24,7 +24,8 @@
       "text": "The sunlight hitting your face right now left the Sun about eight minutes ago.",
       "highlight": [
         "eight minutes ago"
-      ]
+      ],
+      "subject": "sunrise"
     },
     {
       "on_screen": "150 million kilometers",
@@ -32,7 +33,8 @@
       "text": "The Sun is about one hundred and fifty million kilometers away. Even light needs time to cross that distance.",
       "highlight": [
         "fifty million kilometers"
-      ]
+      ],
+      "subject": "sun"
     },
     {
       "on_screen": "About 8 minutes 20 seconds",
@@ -40,7 +42,8 @@
       "text": "Traveling at the speed of light, it takes around eight minutes and twenty seconds to reach us.",
       "highlight": [
         "twenty seconds"
-      ]
+      ],
+      "subject": "sun"
     },
     {
       "on_screen": "Looking into the past",
@@ -56,7 +59,8 @@
       "text": "Every time you look up, you are looking back in time. Follow for more weird facts.",
       "highlight": [
         "back in time"
-      ]
+      ],
+      "subject": "sunset"
     }
   ]
 }

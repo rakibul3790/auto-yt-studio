@@ -24,7 +24,8 @@
       "text": "Archaeologists have found pots of honey in ancient Egyptian tombs, thousands of years old, and it had not rotted.",
       "highlight": [
         "had not rotted"
-      ]
+      ],
+      "subject": "honey"
     },
     {
       "on_screen": "Too sweet for germs",
@@ -32,7 +33,8 @@
       "text": "Honey is mostly sugar with very little water. Bacteria trying to live in it get the water pulled right out of them.",
       "highlight": [
         "very little water"
-      ]
+      ],
+      "subject": "honey"
     },
     {
       "on_screen": "Naturally acidic",
@@ -40,7 +42,8 @@
       "text": "It is also slightly acidic, and bees add an enzyme that helps produce a little hydrogen peroxide, which fights germs.",
       "highlight": [
         "hydrogen peroxide"
-      ]
+      ],
+      "subject": "honey"
     },
     {
       "on_screen": "Keep it sealed",
@@ -48,7 +51,8 @@
       "text": "The trick is keeping it sealed. If honey soaks up moisture from the air, it can start to spoil.",
       "highlight": [
         "keeping it sealed"
-      ]
+      ],
+      "subject": "honey"
     },
     {
       "on_screen": "Follow for more",
@@ -56,7 +60,8 @@
       "text": "Thank the bees for one of the longest lasting foods on Earth. Follow for more weird facts.",
       "highlight": [
         "longest lasting foods"
-      ]
+      ],
+      "subject": "bee"
     }
   ]
 }

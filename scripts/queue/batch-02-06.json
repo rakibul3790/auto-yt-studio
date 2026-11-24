@@ -24,7 +24,8 @@
       "text": "If you could find a bathtub big enough, Saturn would float in it.",
       "highlight": [
         "Saturn would float"
-      ]
+      ],
+      "subject": "saturn"
     },
     {
       "on_screen": "Huge but light",
@@ -32,7 +33,8 @@
       "text": "Saturn is enormous. More than seven hundred Earths could fit inside it. But it is mostly hydrogen and helium gas.",
       "highlight": [
         "seven hundred Earths"
-      ]
+      ],
+      "subject": "saturn"
     },
     {
       "on_screen": "Less dense than water",
@@ -52,11 +54,12 @@
     },
     {
       "on_screen": "Follow for more",
-      "visual": "night sky stars",
+      "visual": "planet saturn",
       "text": "A giant that weighs less than it looks. Follow for more weird facts.",
       "highlight": [
         "weighs less"
-      ]
+      ],
+      "subject": "saturn"
     }
   ]
 }

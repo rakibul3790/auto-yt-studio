@@ -24,7 +24,8 @@
       "text": "There are more possible games of chess than there are atoms in the observable universe.",
       "highlight": [
         "more possible games"
-      ]
+      ],
+      "subject": "chess"
     },
     {
       "on_screen": "Atoms: about 10 to the 80",
@@ -40,15 +41,17 @@
       "text": "A famous estimate puts the number of possible chess games at around ten to the power of one hundred and twenty.",
       "highlight": [
         "one hundred and twenty"
-      ]
+      ],
+      "subject": "chess"
     },
     {
       "on_screen": "40 zeros bigger",
-      "visual": "stars night sky",
+      "visual": "chess pieces board",
       "text": "That is not a little bigger. It is forty extra zeros. Every game you play is almost certainly one that has never been played before.",
       "highlight": [
         "forty extra zeros"
-      ]
+      ],
+      "subject": "chess"
     },
     {
       "on_screen": "Follow for more",
@@ -56,7 +59,8 @@
       "text": "So your next game of chess might be history in the making. Follow for more weird facts.",
       "highlight": [
         "history in the making"
-      ]
+      ],
+      "subject": "chess"
     }
   ]
 }

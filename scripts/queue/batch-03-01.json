@@ -23,7 +23,8 @@
       "text": "Hummingbirds are some of the best fliers on the planet. But they cannot walk.",
       "highlight": [
         "cannot walk"
-      ]
+      ],
+      "subject": "hummingbird"
     },
     {
       "on_screen": "Tiny feet",
@@ -31,7 +32,8 @@
       "text": "Their feet are tiny and weak. They can grip a branch and shuffle sideways, but they cannot walk or even hop.",
       "highlight": [
         "tiny and weak"
-      ]
+      ],
+      "subject": "hummingbird"
     },
     {
       "on_screen": "Always flying",
@@ -39,7 +41,8 @@
       "text": "So to move even a few inches, a hummingbird has to fly. Its wings can beat around fifty times every second.",
       "highlight": [
         "fifty times"
-      ]
+      ],
+      "subject": "hummingbird"
     },
     {
       "on_screen": "Backwards too",
@@ -47,7 +50,8 @@
       "text": "They are also among the only birds that can fly backwards, and they can hover in one spot like a tiny helicopter.",
       "highlight": [
         "fly backwards"
-      ]
+      ],
+      "subject": "hummingbird"
     },
     {
       "on_screen": "Built to fly",
@@ -55,7 +59,8 @@
       "text": "Built to fly, not to walk. Follow for more weird facts.",
       "highlight": [
         "Built to fly"
-      ]
+      ],
+      "subject": "hummingbird"
     }
   ]
 }

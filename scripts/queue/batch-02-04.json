@@ -24,23 +24,26 @@
       "text": "The Eiffel Tower gets taller every summer.",
       "highlight": [
         "taller every summer"
-      ]
+      ],
+      "subject": "eiffel"
     },
     {
       "on_screen": "Iron expands",
-      "visual": "iron metal structure",
+      "visual": "eiffel tower structure",
       "text": "It is built from iron, and metal expands when it heats up.",
       "highlight": [
         "metal expands"
-      ]
+      ],
+      "subject": "eiffel"
     },
     {
       "on_screen": "Up to 15 cm",
-      "visual": "paris summer sun",
+      "visual": "eiffel tower summer",
       "text": "On hot days, the tower can grow by up to about fifteen centimeters. That is about six inches.",
       "highlight": [
         "fifteen centimeters"
-      ]
+      ],
+      "subject": "eiffel"
     },
     {
       "on_screen": "It even leans",
@@ -48,15 +51,17 @@
       "text": "And because the Sun heats one side more than the other, the top can lean slightly away from the Sun during the day.",
       "highlight": [
         "lean slightly"
-      ]
+      ],
+      "subject": "eiffel"
     },
     {
       "on_screen": "Follow for more",
-      "visual": "paris city",
+      "visual": "eiffel tower winter",
       "text": "In winter, it shrinks back down again. Follow for more weird facts.",
       "highlight": [
         "shrinks back"
-      ]
+      ],
+      "subject": "eiffel"
     }
   ]
 }

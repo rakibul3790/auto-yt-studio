@@ -24,7 +24,8 @@
       "text": "Water can boil and freeze at the exact same time.",
       "highlight": [
         "boil and freeze"
-      ]
+      ],
+      "subject": "ice"
     },
     {
       "on_screen": "The triple point",
@@ -40,15 +41,17 @@
       "text": "It needs a temperature just above zero degrees Celsius, and a pressure far lower than the air around us.",
       "highlight": [
         "just above zero"
-      ]
+      ],
+      "subject": "water"
     },
     {
       "on_screen": "Seen in labs",
-      "visual": "frozen water",
+      "visual": "frozen water ice",
       "text": "In a lab with a vacuum pump, you can watch water bubble like it is boiling while ice forms on top.",
       "highlight": [
         "ice forms on top"
-      ]
+      ],
+      "subject": "ice"
     },
     {
       "on_screen": "Follow for more",

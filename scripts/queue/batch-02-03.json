@@ -24,7 +24,8 @@
       "text": "Koalas have fingerprints. And they look almost exactly like ours.",
       "highlight": [
         "fingerprints"
-      ]
+      ],
+      "subject": "koala"
     },
     {
       "on_screen": "Loops and swirls",
@@ -32,7 +33,8 @@
       "text": "They have the same loops, arches and swirls that we have on our fingertips.",
       "highlight": [
         "loops, arches and swirls"
-      ]
+      ],
+      "subject": "fingerprint"
     },
     {
       "on_screen": "Hard to tell apart",
@@ -40,15 +42,17 @@
       "text": "Scientists have said that even under a microscope, koala prints can be very hard to tell apart from human ones.",
       "highlight": [
         "hard to tell apart"
-      ]
+      ],
+      "subject": "koala"
     },
     {
       "on_screen": "Why?",
-      "visual": "eucalyptus leaves",
+      "visual": "koala eating eucalyptus",
       "text": "Koalas are not close relatives of ours. Their prints probably developed to help them grip branches and handle their leafy food.",
       "highlight": [
         "grip branches"
-      ]
+      ],
+      "subject": "koala"
     },
     {
       "on_screen": "Follow for more",
@@ -56,7 +60,8 @@
       "text": "Nature sometimes solves the same problem twice. Follow for more weird facts.",
       "highlight": [
         "the same problem twice"
-      ]
+      ],
+      "subject": "koala"
     }
   ]
 }

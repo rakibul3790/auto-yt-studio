@@ -23,7 +23,8 @@
       "text": "Crows can recognize your face, and they can remember it for years.",
       "highlight": [
         "for years"
-      ]
+      ],
+      "subject": "crow"
     },
     {
       "on_screen": "The mask test",
@@ -31,7 +32,8 @@
       "text": "In one famous study in Seattle, researchers wore a mask while they caught and tagged crows.",
       "highlight": [
         "wore a mask"
-      ]
+      ],
+      "subject": "crow"
     },
     {
       "on_screen": "Scolding",
@@ -39,7 +41,8 @@
       "text": "Years later, crows still scolded and dive bombed anyone who wore that same mask.",
       "highlight": [
         "dive bombed"
-      ]
+      ],
+      "subject": "crow"
     },
     {
       "on_screen": "Passing it on",
@@ -47,7 +50,8 @@
       "text": "Even crows that were never caught joined in. They seemed to learn who to dislike from the others.",
       "highlight": [
         "never caught"
-      ]
+      ],
+      "subject": "crow"
     },
     {
       "on_screen": "Be nice",
@@ -55,7 +59,8 @@
       "text": "So be kind to the crows. They are watching. Follow for more weird facts.",
       "highlight": [
         "They are watching"
-      ]
+      ],
+      "subject": "crow"
     }
   ]
 }

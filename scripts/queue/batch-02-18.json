@@ -24,7 +24,8 @@
       "text": "Spider silk can be stronger than steel.",
       "highlight": [
         "stronger than steel"
-      ]
+      ],
+      "subject": "spider"
     },
     {
       "on_screen": "Weight for weight",
@@ -32,15 +33,17 @@
       "text": "Compared weight for weight, some kinds of spider silk are stronger than steel.",
       "highlight": [
         "weight for weight"
-      ]
+      ],
+      "subject": "spider"
     },
     {
       "on_screen": "And it stretches",
-      "visual": "web close up",
+      "visual": "spider web close up",
       "text": "Unlike steel, it can also stretch a long way before it breaks. That is why a web can stop a flying insect without snapping.",
       "highlight": [
         "stretch a long way"
-      ]
+      ],
+      "subject": "web"
     },
     {
       "on_screen": "Scientists want it",
@@ -52,11 +55,12 @@
     },
     {
       "on_screen": "Follow for more",
-      "visual": "morning web sunlight",
+      "visual": "spider web sunlight",
       "text": "One of the strongest materials on Earth is spun by a spider. Follow for more weird facts.",
       "highlight": [
         "spun by a spider"
-      ]
+      ],
+      "subject": "web"
     }
   ]
 }

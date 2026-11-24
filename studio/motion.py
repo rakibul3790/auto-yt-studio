@@ -304,6 +304,18 @@ class Scene:
         self.label = str(raw.get("label", "")).strip()
         self.count_at = 0.15 + self.move * 0.5
         self.count_len = 0.9 if self.number else 0.0
+        self.synced = False
+        if self.number and self.icons:
+            pre, val, suf, dec, _c = parse_number(self.number)
+            if dec == 0 and val == int(val) and 1 <= val <= 12:
+                # "four babies" -> exactly four babies, the number counts up as each one lands
+                n = int(val)
+                step = min(0.45, max(0.22, (self.dur - self.count_at - 0.8) / n))
+                spots = _spots(n, rnd, self.space) if n > 1 else [(0.5, 0.5)]
+                self.icons = [(icons[k % len(icons)], spots[k][0], spots[k][1],
+                               self.count_at + 0.2 + k * step,
+                               320 if n == 1 else (200 if n <= 4 else 175)) for k in range(n)]
+                self.synced = True
 
     def camera(self, t: float):
         a = _ease(t / self.move) if self.move else 1.0
@@ -454,9 +466,15 @@ class Painter:
         if sc.number:
             pre, val, suf, dec, commas = parse_number(sc.number)
             k = (t - sc.count_at) / sc.count_len
+            if sc.synced:          # the number goes up by one as each icon lands
+                landed = sum(1 for ic in sc.icons if t >= ic[3])
+                k = 1.0 + (t - sc.icons[-1][3]) / sc.count_len if landed == len(sc.icons) else min(k, .99)
             if k >= 0:
-                shown = val * _out(k) if val else 0
-                txt = pre + format_number(shown if k < 1 else val, dec, commas) + suf
+                if sc.synced:
+                    shown = float(sum(1 for ic in sc.icons if t >= ic[3]))
+                else:
+                    shown = val * _out(k) if val else 0
+                txt = pre + format_number(shown if k < 1 or sc.synced else val, dec, commas) + suf
                 pop = 1 + 0.18 * math.sin(math.pi * min(max((k - 1) / 0.25, 0), 1))
                 appear = _back(min(k * 2.5, 1))
                 size = 175 if len(txt) <= 8 else int(175 * 8 / len(txt))
@@ -485,13 +503,34 @@ def make_sfx(kind: str, seed: int = 0) -> np.ndarray:
         s = np.sin(2 * np.pi * np.cumsum(f) / SR) * _env(n, 0.002, 0.045)
         s += rnd.normal(0, 1, n) * _env(n, 0.0005, 0.006) * 0.4
         return s * 0.9
+    if kind == "bubble":            # a soft rising "blip"
+        n = int(SR * 0.12)
+        t = np.arange(n) / SR
+        f = (380 + 140 * rnd.uniform(-1, 1)) * (1 + 2.2 * t / t[-1])
+        return np.sin(2 * np.pi * np.cumsum(f) / SR) * np.sin(np.pi * t / t[-1]) ** 1.5 * 0.7
+    if kind == "click":             # a wooden "tock"
+        n = int(SR * 0.09)
+        t = np.arange(n) / SR
+        f0 = 700 + 200 * rnd.uniform(-1, 1)
+        s = (np.sin(2 * np.pi * f0 * t) + .4 * np.sin(2 * np.pi * f0 * 2.7 * t)) * _env(n, 0.0008, 0.018)
+        return s * 0.7
+    if kind == "swish":             # a short, airy swish
+        n = int(SR * (0.32 + 0.1 * rnd.random()))
+        noise = rnd.normal(0, 1, n)
+        t = np.arange(n) / n
+        out, y = np.zeros(n), 0.0
+        cut = 0.08 + 0.5 * t
+        for i in range(n):
+            y += cut[i] * (noise[i] - y)
+            out[i] = noise[i] - y          # high-pass: airy
+        return out / (np.abs(out).max() + 1e-9) * np.sin(np.pi * t) ** 3 * 0.5
     if kind == "whoosh":
-        n = int(SR * 0.6)
+        n = int(SR * (0.45 + 0.3 * rnd.random()))
         noise = rnd.normal(0, 1, n)
         t = np.arange(n) / n
         env = np.sin(np.pi * t) ** 2.2
         out, y, k = np.zeros(n), 0.0, 0.0
-        cut = 0.02 + 0.25 * np.sin(np.pi * t)          # sweeping low-pass
+        cut = 0.02 + (0.15 + 0.2 * rnd.random()) * np.sin(np.pi * t)   # sweeping low-pass
         for i in range(n):
             y += cut[i] * (noise[i] - y)
             k += cut[i] * (y - k)
@@ -533,20 +572,54 @@ def _sfx_cached(kind: str, seed: int) -> np.ndarray:
     return make_sfx(kind, seed)
 
 
+# how loud each kind sits, before matching to the voice
+KIND_GAIN = {"pop": .55, "bubble": .6, "click": .6, "tick": .18, "ding": .35, "whoosh": .55,
+             "swish": .5, "cash": .45, "thunder": .5, "boom": .5}
+
+
+def _speech_rms(path: Path | None) -> float | None:
+    """Loudness of the voice while it speaks (ignores the pauses)."""
+    if not path or not Path(path).exists():
+        return None
+    with wave.open(str(path)) as w:
+        a = np.frombuffer(w.readframes(w.getnframes()), np.int16).astype(np.float32) / 32768
+        if w.getnchannels() > 1:
+            a = a.reshape(-1, w.getnchannels()).mean(1)
+    if not len(a):
+        return None
+    blk = a[: len(a) // 2400 * 2400].reshape(-1, 2400)
+    rms = np.sqrt((blk ** 2).mean(1))
+    loud = rms[rms > rms.max() * 0.1]
+    return float(np.sqrt((loud ** 2).mean())) if len(loud) else None
+
+
 def write_sfx(events: list[tuple[str, float, float]], total: float, out: Path,
-              volume: float = 0.5) -> Path:
-    """Mix sound effects (kind, time, gain) into one wav track."""
+              volume: float = 0.5, voice: Path | None = None) -> Path:
+    """Mix sound effects (kind, time, gain) into one wav track.
+
+    With the voice track given, the effects are set by measurement so their
+    loudest moments stay well under the voice (about 8 dB lower at volume 0.5).
+    """
     track = np.zeros(int(SR * (total + 2)), np.float32)
     for n, (kind, at, gain) in enumerate(events):
-        s = _sfx_cached(kind, n % 6).astype(np.float32) * gain
+        s = _sfx_cached(kind, n % 9).astype(np.float32)
+        s = s / (np.abs(s).max() + 1e-9) * KIND_GAIN.get(kind, .5) * gain
         i = int(at * SR)
         if 0 <= i < len(track):
             j = min(len(track), i + len(s))
             track[i:j] += s[:j - i]
-    track *= volume
+    ref = _speech_rms(voice)
+    if ref:
+        blk = track[: len(track) // 2400 * 2400].reshape(-1, 2400)
+        rms = np.sqrt((blk ** 2).mean(1))
+        loud = np.percentile(rms[rms > 1e-4], 95) if (rms > 1e-4).any() else 0
+        if loud > 0:
+            track *= (ref * 0.3 * volume / 0.5) / loud
+    else:
+        track *= volume
     peak = np.abs(track).max()
-    if peak > 0.98:
-        track *= 0.98 / peak
+    if peak > 0.9:
+        track *= 0.9 / peak
     pcm = (np.clip(track, -1, 1) * 32767).astype(np.int16)
     with wave.open(str(out), "wb") as w:
         w.setnchannels(1)
@@ -556,27 +629,36 @@ def write_sfx(events: list[tuple[str, float, float]], total: float, out: Path,
     return out
 
 
-def build_sfx(scenes: list[Scene], total: float, out: Path, volume: float = 0.5) -> Path:
+def build_sfx(scenes: list[Scene], total: float, out: Path, volume: float = 0.5,
+              voice: Path | None = None) -> Path:
+    """Effects for the map style. Each scene gets its own pop sound, moves alternate
+    between a whoosh and a swish, so it doesn't sound the same everywhere."""
     events: list[tuple[str, float, float]] = []
+    pops = ["pop", "bubble", "click"]
     for sc in scenes:
         if sc.move or sc.i == 0:
-            events.append(("whoosh", sc.start, 0.55))
+            events.append(("whoosh" if sc.i % 2 == 0 else "swish", sc.start + 0.05, 1.0))
+        pop = pops[sc.i % len(pops)]
         for k, (ch, _x, _y, at, _s) in enumerate(sc.icons):
-            kind = next((v for key, v in ICON_SFX.items() if key in ch), "pop")
-            if kind == "pop" or k == 0:
-                events.append((kind, sc.start + at, 0.5 if kind == "pop" else 0.55))
-        if sc.number:
+            special = next((v for key, v in ICON_SFX.items() if key in ch), None)
+            if special and k == 0:
+                events.append((special, sc.start + at, 0.8))
+            elif not special or len(sc.icons) <= 4:
+                events.append((pop, sc.start + at, 0.75 + 0.25 * ((k * 7) % 3) / 2))
+        if sc.number and not sc.synced:
             t0 = sc.start + sc.count_at
-            for m in range(int(sc.count_len / 0.07)):
-                events.append(("tick", t0 + m * 0.07, 0.25))
-            events.append(("ding", t0 + sc.count_len, 0.5))
-    return write_sfx(events, total, out, volume)
+            for m in range(int(sc.count_len / 0.09)):
+                events.append(("tick", t0 + m * 0.09, 0.8))
+            events.append(("ding", t0 + sc.count_len, 0.9))
+        elif sc.number:
+            events.append(("ding", sc.start + sc.icons[-1][3] + 0.15, 0.7))
+    return write_sfx(events, total, out, volume, voice)
 
 
 # ------------------------------------------------------------------ render
 def render_track(raw_scenes: list[dict], timings: list[tuple[float, float]], total: float,
                  size: tuple[int, int], fps: int, out_video: Path, out_sfx: Path,
-                 sfx_volume: float = 0.5) -> None:
+                 sfx_volume: float = 0.5, voice: Path | None = None) -> None:
     """Draw the whole picture track (no audio) and the matching sound effects."""
     world = World()
     painter = Painter(world, size)
@@ -604,5 +686,5 @@ def render_track(raw_scenes: list[dict], timings: list[tuple[float, float]], tot
     enc.stdin.close()
     if enc.wait():
         raise RuntimeError("ffmpeg failed while encoding the motion track")
-    build_sfx(scenes, total, out_sfx, sfx_volume)
+    build_sfx(scenes, total, out_sfx, sfx_volume, voice)
     log(f"Drew {n} frames of map animation")

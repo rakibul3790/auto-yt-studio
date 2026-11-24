@@ -24,7 +24,8 @@
       "text": "That soft little cloud floating above you could weigh more than a million pounds.",
       "highlight": [
         "a million pounds"
-      ]
+      ],
+      "subject": "cloud"
     },
     {
       "on_screen": "Tiny droplets",
@@ -32,7 +33,8 @@
       "text": "Clouds are made of countless tiny water droplets. A typical puffy cloud can hold around five hundred tons of water.",
       "highlight": [
         "five hundred tons"
-      ]
+      ],
+      "subject": "cloud"
     },
     {
       "on_screen": "Then why don't they fall?",
@@ -40,7 +42,8 @@
       "text": "So why doesn't it crash down? Because that weight is spread across a huge space, and each droplet is incredibly small.",
       "highlight": [
         "incredibly small"
-      ]
+      ],
+      "subject": "cloud"
     },
     {
       "on_screen": "Held up by air",
@@ -48,7 +51,8 @@
       "text": "The droplets are so light that rising warm air keeps them floating, until they join together and fall as rain.",
       "highlight": [
         "fall as rain"
-      ]
+      ],
+      "subject": "cloud"
     },
     {
       "on_screen": "Follow for more",
@@ -56,7 +60,8 @@
       "text": "So the next time you look up, remember there are elephants worth of water up there. Follow for more weird facts.",
       "highlight": [
         "elephants"
-      ]
+      ],
+      "subject": "cloud"
     }
   ]
 }

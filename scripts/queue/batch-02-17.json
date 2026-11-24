@@ -20,11 +20,12 @@
   "scenes": [
     {
       "on_screen": "Meet the water bear",
-      "visual": "microscope",
+      "visual": "tardigrade",
       "text": "There is a tiny animal that has survived a trip into outer space. It is the tardigrade, also called the water bear.",
       "highlight": [
         "outer space"
-      ]
+      ],
+      "subject": "tardigrade"
     },
     {
       "on_screen": "Smaller than a millimeter",
@@ -32,7 +33,8 @@
       "text": "Tardigrades are smaller than a millimeter long and live almost everywhere, even in the moss on a garden wall.",
       "highlight": [
         "a millimeter"
-      ]
+      ],
+      "subject": "moss"
     },
     {
       "on_screen": "Exposed to space",
@@ -44,19 +46,21 @@
     },
     {
       "on_screen": "Their secret",
-      "visual": "water droplets",
+      "visual": "tardigrade microscope",
       "text": "When conditions get harsh, they dry out and curl up into a tiny ball, almost shutting down their bodies until things get better.",
       "highlight": [
         "a tiny ball"
-      ]
+      ],
+      "subject": "tardigrade"
     },
     {
       "on_screen": "Follow for more",
-      "visual": "stars space",
+      "visual": "moss garden",
       "text": "The toughest animal on Earth might be living in your garden. Follow for more weird facts.",
       "highlight": [
         "in your garden"
-      ]
+      ],
+      "subject": "moss"
     }
   ]
 }

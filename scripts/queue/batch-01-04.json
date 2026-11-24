@@ -24,15 +24,17 @@
       "text": "Is a banana a berry? According to scientists, yes it is.",
       "highlight": [
         "yes it is"
-      ]
+      ],
+      "subject": "banana"
     },
     {
       "on_screen": "The real definition",
-      "visual": "flower blossom",
+      "visual": "blueberries berries",
       "text": "To a botanist, a berry is a fruit that grows from a single flower with one ovary, and usually holds several seeds inside.",
       "highlight": [
         "single flower"
-      ]
+      ],
+      "subject": "berry"
     },
     {
       "on_screen": "Strawberry: not a berry",
@@ -40,7 +42,8 @@
       "text": "By that rule, bananas, grapes and even tomatoes are berries. But the strawberry is not, because its seeds sit on the outside.",
       "highlight": [
         "tomatoes"
-      ]
+      ],
+      "subject": "strawberry"
     },
     {
       "on_screen": "Pumpkins too",
@@ -48,15 +51,17 @@
       "text": "Pumpkins and cucumbers count as a kind of berry too, while raspberries do not.",
       "highlight": [
         "raspberries do not"
-      ]
+      ],
+      "subject": "pumpkin"
     },
     {
       "on_screen": "Follow for more",
-      "visual": "fruit market",
+      "visual": "bananas strawberries fruit",
       "text": "So the berry aisle has been lying to you. Follow for more weird facts.",
       "highlight": [
         "lying to you"
-      ]
+      ],
+      "subject": "fruit"
     }
   ]
 }

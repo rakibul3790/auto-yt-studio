@@ -11,6 +11,7 @@ from __future__ import annotations
 import hashlib
 import os
 import random
+import re
 from io import BytesIO
 from pathlib import Path
 
@@ -22,6 +23,32 @@ from .common import font_family_for, font_file, log
 PEXELS_URL = "https://api.pexels.com/v1/search"
 PIXABAY_URL = "https://pixabay.com/api/"
 PIXABAY_VIDEO_URL = "https://pixabay.com/api/videos/"
+
+
+# ------------------------------------------------------- relevance check
+# words that describe the scene, not the thing it is about
+GENERIC = set("""a an the of in on at with and or to from by for close closeup up macro
+underwater water ocean sea deep blue night day sky light sunlight sunset sunrise dark
+background nature wild wildlife view aerial top side slow motion moving flying swimming
+walking running small big large huge tiny old ancient young baby group many one two
+forest trees tree field grass desert snow ice beach river lake cave space earth planet
+world landscape scenery color colorful beautiful amazing""".split())
+
+
+def subject_words(query: str, subject: str | None = None) -> list[str]:
+    """The words a stock result must be tagged with (e.g. 'great white shark' -> shark)."""
+    if subject:
+        return [w.lower() for w in re.findall(r"[A-Za-z]+", subject)]
+    words = [w.lower() for w in re.findall(r"[A-Za-z]+", query)]
+    key = [w for w in words if w not in GENERIC and len(w) > 2]
+    return key[-1:] if key else []          # the last real noun: "great white SHARK"
+
+
+def tags_match(tags: str, need: list[str]) -> bool:
+    have = {t.strip().lower() for t in re.split(r"[,\s]+", tags or "") if t.strip()}
+    def ok(w: str) -> bool:
+        return any(h == w or h.rstrip("s") == w.rstrip("s") or (len(w) > 4 and w in h) for h in have)
+    return all(ok(w) for w in need)
 
 
 # ------------------------------------------------------------------ helpers
@@ -113,7 +140,7 @@ def _cover(img: Image.Image, size: tuple[int, int]) -> Image.Image:
 
 
 # ------------------------------------------------------------------- pexels
-def pexels_photo(query: str, portrait: bool, seed: int) -> Image.Image | None:
+def pexels_photo(query: str, portrait: bool, seed: int, subject: str | None = None) -> Image.Image | None:
     key = os.environ.get("PEXELS_API_KEY", "").strip()
     if not key or not query:
         return None
@@ -123,6 +150,8 @@ def pexels_photo(query: str, portrait: bool, seed: int) -> Image.Image | None:
             "orientation": "portrait" if portrait else "landscape"})
         r.raise_for_status()
         photos = r.json().get("photos", [])
+        need = subject_words(query, subject)
+        photos = [p for p in photos if not need or tags_match(p.get("alt", ""), need)]
         if not photos:
             log(f"Pexels: nothing for '{query}', using a slide")
             return None
@@ -136,7 +165,7 @@ def pexels_photo(query: str, portrait: bool, seed: int) -> Image.Image | None:
 
 
 # ------------------------------------------------------------------ pixabay
-def pixabay_photo(query: str, portrait: bool, seed: int) -> Image.Image | None:
+def pixabay_photo(query: str, portrait: bool, seed: int, subject: str | None = None) -> Image.Image | None:
     key = os.environ.get("PIXABAY_API_KEY", "").strip()
     query = " ".join(query.split())[:100]          # Pixabay allows max 100 chars
     if not key or not query:
@@ -151,10 +180,14 @@ def pixabay_photo(query: str, portrait: bool, seed: int) -> Image.Image | None:
             log(f"Pixabay error {r.status_code} for '{query}': {r.text.strip()[:120]}")
             return None
         hits = r.json().get("hits", [])
-        if not hits:
-            log(f"Pixabay: nothing for '{query}', using a slide")
+        need = subject_words(query, subject)
+        good = [h for h in hits if not need or tags_match(h.get("tags", ""), need)]
+        if not good and need and query.lower().split() != need:
+            return pixabay_photo(" ".join(need), portrait, seed, subject)   # just the subject
+        if not good:
+            log(f"Pixabay: nothing tagged {need or query!r} for '{query}', using a slide")
             return None
-        hit = random.Random(seed).choice(hits[:8])
+        hit = random.Random(seed).choice(good[:8])
         url = hit.get("largeImageURL") or hit.get("webformatURL")
         img = requests.get(url, timeout=60)
         img.raise_for_status()
@@ -164,8 +197,9 @@ def pixabay_photo(query: str, portrait: bool, seed: int) -> Image.Image | None:
         return None
 
 
-def pixabay_video(query: str, pick: int, out: Path) -> Path | None:
-    """A free stock video clip from Pixabay (same key as photos), saved to out."""
+def pixabay_video(query: str, pick: int, out: Path, subject: str | None = None) -> Path | None:
+    """A free stock video clip from Pixabay (same key as photos), saved to out.
+    Only clips tagged with the scene's subject (shark, octopus ...) are used."""
     key = os.environ.get("PIXABAY_API_KEY", "").strip()
     query = " ".join(query.split())[:100]
     if not key or not query:
@@ -180,16 +214,21 @@ def pixabay_video(query: str, pick: int, out: Path) -> Path | None:
             log(f"Pixabay video error {r.status_code} for '{query}': {r.text.strip()[:120]}")
             return None
         options = []
+        need = subject_words(query, subject)
         for hit in r.json().get("hits", []):
             if not 3 <= float(hit.get("duration", 0)) <= 60:
+                continue
+            if need and not tags_match(hit.get("tags", ""), need):
                 continue
             for q in ("large", "medium"):
                 v = (hit.get("videos") or {}).get(q) or {}
                 if v.get("url") and v.get("height", 0) >= 720 and 0 < v.get("size", 0) < 45_000_000:
                     options.append(v)
                     break
+        if not options and need and query.lower().split() != need:
+            return pixabay_video(" ".join(need), pick, out, subject)     # just the subject
         if not options:
-            log(f"Pixabay: no video for '{query}'")
+            log(f"Pixabay: no video tagged {need or query!r} for '{query}'")
             return None
         v = options[:6][pick % len(options[:6])]
         data = requests.get(v["url"], timeout=120)
@@ -220,10 +259,10 @@ def headline_overlay(headline: str, size: tuple[int, int], out: Path) -> Path | 
     return out
 
 
-def stock_photo(query: str, portrait: bool, seed: int) -> Image.Image | None:
+def stock_photo(query: str, portrait: bool, seed: int, subject: str | None = None) -> Image.Image | None:
     """Pexels if its key is set, then Pixabay, else None (gradient slide)."""
     for name, fetch in (("Pexels", pexels_photo), ("Pixabay", pixabay_photo)):
-        photo = fetch(query, portrait, seed)
+        photo = fetch(query, portrait, seed, subject)
         if photo is not None:
             log(f"Photo from {name} for '{query}' ({photo.width}x{photo.height})")
             return photo
@@ -244,7 +283,7 @@ def scene_image(scene: dict, index: int, title: str, cfg: dict,
 
     photo = None
     if cfg["video"].get("visuals", "auto") == "auto":
-        photo = stock_photo(str(scene.get("visual", "")), portrait, seed)
+        photo = stock_photo(str(scene.get("visual", "")), portrait, seed, scene.get("subject"))
 
     bg_path = out.with_name(out.stem + "_bg.jpg")   # clean copy for the thumbnail
     if photo is not None:

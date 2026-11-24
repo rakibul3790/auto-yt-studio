@@ -24,15 +24,17 @@
       "text": "Mount Everest is not the tallest mountain on Earth. It is just the highest.",
       "highlight": [
         "not the tallest"
-      ]
+      ],
+      "subject": "everest"
     },
     {
       "on_screen": "Highest above sea level",
-      "visual": "snowy mountain peak",
+      "visual": "mount everest peak",
       "text": "Everest's peak is the highest point above sea level, at almost eight thousand eight hundred and fifty meters.",
       "highlight": [
         "sea level"
-      ]
+      ],
+      "subject": "everest"
     },
     {
       "on_screen": "Meet Mauna Kea",
@@ -40,23 +42,26 @@
       "text": "But in Hawaii there is a volcano called Mauna Kea. Most of it is hidden under the ocean.",
       "highlight": [
         "under the ocean"
-      ]
+      ],
+      "subject": "volcano"
     },
     {
       "on_screen": "Over 10,000 meters",
-      "visual": "ocean waves",
+      "visual": "hawaii volcano ocean",
       "text": "Measured from its base on the sea floor to its top, Mauna Kea is more than ten thousand meters tall.",
       "highlight": [
         "ten thousand meters"
-      ]
+      ],
+      "subject": "volcano"
     },
     {
       "on_screen": "Follow for more",
-      "visual": "mountain clouds",
+      "visual": "mount everest clouds",
       "text": "It depends on where you start measuring. Follow for more weird facts.",
       "highlight": [
         "where you start"
-      ]
+      ],
+      "subject": "everest"
     }
   ]
 }

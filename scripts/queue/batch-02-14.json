@@ -20,11 +20,12 @@
   "scenes": [
     {
       "on_screen": "The shortest war",
-      "visual": "old ship sea",
+      "visual": "old warship sea",
       "text": "The shortest war in recorded history lasted less than an hour.",
       "highlight": [
         "less than an hour"
-      ]
+      ],
+      "subject": "ship"
     },
     {
       "on_screen": "1896",
@@ -32,23 +33,26 @@
       "text": "It happened in eighteen ninety six, between Britain and Zanzibar, an island off the coast of East Africa.",
       "highlight": [
         "Britain and Zanzibar"
-      ]
+      ],
+      "subject": "zanzibar"
     },
     {
       "on_screen": "A disputed ruler",
-      "visual": "palace building",
+      "visual": "zanzibar palace",
       "text": "A new sultan took power without British approval. Britain gave him a deadline to step down, and he refused.",
       "highlight": [
         "he refused"
-      ]
+      ],
+      "subject": "zanzibar"
     },
     {
       "on_screen": "About 40 minutes",
-      "visual": "harbor",
+      "visual": "old warship cannon",
       "text": "When the deadline passed, British ships opened fire. The fighting ended in roughly forty minutes.",
       "highlight": [
         "forty minutes"
-      ]
+      ],
+      "subject": "ship"
     },
     {
       "on_screen": "Follow for more",
@@ -56,7 +60,8 @@
       "text": "Shorter than most movies. Follow for more weird facts.",
       "highlight": [
         "most movies"
-      ]
+      ],
+      "subject": "map"
     }
   ]
 }

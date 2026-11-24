@@ -19,11 +19,12 @@
   "scenes": [
     {
       "on_screen": "New every few days",
-      "visual": "healthy food plate",
+      "visual": "stomach anatomy",
       "text": "Your stomach gives itself a fresh new lining every few days.",
       "highlight": [
         "every few days"
-      ]
+      ],
+      "subject": "stomach"
     },
     {
       "on_screen": "Strong acid",
@@ -35,11 +36,12 @@
     },
     {
       "on_screen": "Mucus shield",
-      "visual": "water drops",
+      "visual": "stomach anatomy illustration",
       "text": "A thick layer of mucus protects the wall, and the cells underneath are replaced again and again.",
       "highlight": [
         "layer of mucus"
-      ]
+      ],
+      "subject": "stomach"
     },
     {
       "on_screen": "Always repairing",
@@ -47,7 +49,8 @@
       "text": "Those cells only last a few days before new ones take their place, so the damage never builds up.",
       "highlight": [
         "a few days"
-      ]
+      ],
+      "subject": "anatomy"
     },
     {
       "on_screen": "Self repair",

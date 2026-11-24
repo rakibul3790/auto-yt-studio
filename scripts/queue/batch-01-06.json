@@ -24,7 +24,8 @@
       "text": "There is an animal in Australia that makes poop shaped like little cubes. It is the wombat.",
       "highlight": [
         "little cubes"
-      ]
+      ],
+      "subject": "wombat"
     },
     {
       "on_screen": "How is that possible?",
@@ -32,31 +33,35 @@
       "text": "For years, nobody knew how it worked. A round tube making square shapes seemed impossible.",
       "highlight": [
         "seemed impossible"
-      ]
+      ],
+      "subject": "wombat"
     },
     {
       "on_screen": "Stretchy and stiff",
-      "visual": "australia bush",
+      "visual": "wombat walking",
       "text": "Scientists found the answer in the gut. The walls of the wombat's intestine have stiff parts and stretchy parts, which press the waste into flat sides and corners.",
       "highlight": [
         "stiff parts"
-      ]
+      ],
+      "subject": "wombat"
     },
     {
       "on_screen": "Why cubes help",
-      "visual": "rocks stones",
+      "visual": "wombat on rock",
       "text": "Wombats leave their droppings on rocks and logs to mark territory. Cubes are less likely to roll away.",
       "highlight": [
         "less likely to roll"
-      ]
+      ],
+      "subject": "wombat"
     },
     {
       "on_screen": "Follow for more",
-      "visual": "australian landscape",
+      "visual": "wombat close up",
       "text": "Nature really does think outside the box. Follow for more weird facts.",
       "highlight": [
         "outside the box"
-      ]
+      ],
+      "subject": "wombat"
     }
   ]
 }

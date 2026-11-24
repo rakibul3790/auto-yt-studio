@@ -191,9 +191,12 @@ def render(data: dict, cfg: dict, work: Path, out_file: Path,
     afade = f"afade=t=in:st=0:d={fade},afade=t=out:st={max(total - fade, 0):.3f}:d={fade}"
     if music and vol > 0:
         track = random.Random(data["title"]).choice(music)
+        vol = _music_gain(track, work, vol)
         inputs += ["-stream_loop", "-1", "-i", str(track)]
-        fc = (f"[0:v]{','.join(vf)}[v];[1:a]volume={vol}[m];"
-              f"[0:a][m]amix=inputs=2:duration=first:dropout_transition=0:normalize=0,{afade}[a]")
+        # music dips further whenever someone speaks (sidechain ducking)
+        fc = (f"[0:v]{','.join(vf)}[v];[0:a]asplit=2[sp][key];[1:a]volume={vol}[m0];"
+              f"[m0][key]sidechaincompress=threshold=0.02:ratio=6:attack=15:release=350[m];"
+              f"[sp][m]amix=inputs=2:duration=first:dropout_transition=0:normalize=0,{afade}[a]")
     else:
         fc = f"[0:v]{','.join(vf)}[v];[0:a]{afade}[a]"
 
@@ -202,6 +205,28 @@ def render(data: dict, cfg: dict, work: Path, out_file: Path,
          "-r", str(fps), "-movflags", "+faststart", str(out_file.resolve())], cwd=work)
     log(f"Rendered {out_file.name} ({total:.1f}s, {tag})")
     return {"duration": total, "first_image": first_img, "music": track.name if track else None}
+
+
+def _music_gain(track: Path, work: Path, vol: float) -> float:
+    """Set the music by measurement: about 20 dB under the voice (at volume 0.06),
+    whatever the song's own loudness is."""
+    import math
+    import subprocess
+    from .motion import _speech_rms
+    voices = sorted(work.glob("voice_all_*.wav"))
+    ref = _speech_rms(voices[-1]) if voices else None
+    if not ref:
+        return vol
+    out = subprocess.run(["ffmpeg", "-hide_banner", "-t", "90", "-i", str(track), "-af", "volumedetect",
+                          "-f", "null", "-"], capture_output=True, text=True).stderr
+    m = re.search(r"mean_volume:\s*(-?[\d.]+) dB", out)
+    if not m:
+        return vol
+    voice_db = 20 * math.log10(ref)
+    target = voice_db - 20 + 20 * math.log10(max(vol, 1e-4) / 0.06)
+    gain = 10 ** ((target - float(m.group(1))) / 20)
+    log(f"Music {track.name}: set {target - voice_db:+.0f} dB under the voice")
+    return min(gain, 1.0)
 
 
 def _voice_track(voice_parts: list[Path], work: Path) -> Path:
@@ -226,11 +251,13 @@ def _scene_segments(scene: dict, i: int, title: str, cfg: dict, size: tuple[int,
     pieces = 2 if use_clips and scene_len > float(vcfg.get("cut_after_seconds", 5.5)) else 1
     seed = int(hashlib.md5(f"{title}-{i}".encode()).hexdigest()[:8], 16)
     query = str(scene.get("visual", ""))
+    subj = " ".join(visuals.subject_words(query, scene.get("subject"))) or query
     overlay = None
     out, img = [], None
     for k in range(pieces):
         length = scene_len / pieces
-        clip = visuals.pixabay_video(query, seed + k, work / f"vid{i:02d}_{k}.mp4") if use_clips else None
+        clip = visuals.pixabay_video(query, seed + k, work / f"vid{i:02d}_{k}.mp4",
+                                     scene.get("subject")) if use_clips else None
         if clip is not None:
             if overlay is None:
                 overlay = visuals.headline_overlay(str(scene.get("on_screen") or ""), size,
@@ -244,12 +271,12 @@ def _scene_segments(scene: dict, i: int, title: str, cfg: dict, size: tuple[int,
                     import shutil
                     shutil.copy(thumb, thumb.with_name(thumb.stem + "_bg.jpg"))
             out.append({"kind": "vid", "src": clip, "overlay": overlay or None, "len": length,
-                        "scene": i, "thumb": thumb if thumb.exists() else None})
+                        "scene": i, "subject": subj, "thumb": thumb if thumb.exists() else None})
         else:
             if img is None:
                 img = visuals.scene_image(scene, i, title, cfg, size, work / f"img{i:02d}_{tag}.jpg")
             out.append({"kind": "img", "src": img, "len": length, "scene": i, "zoom_in": (i + k) % 2 == 0,
-                        "thumb": img})
+                        "subject": subj, "thumb": img})
     return out
 
 
@@ -294,8 +321,8 @@ def _photo_joined(segments: list[dict], voice_parts: list[Path], total: float,
             kind = TRANSITIONS[segments[n]["scene"] % len(TRANSITIONS)] if new_scene else "fade"
             fc.append(f"[{last}][{n}:v]xfade=transition={kind}:duration={d}:offset={offset:.3f}[x{n}]")
             last = f"x{n}"
-            if new_scene:
-                events.append(("whoosh", offset - 0.15, 0.6))
+            if new_scene:   # soft, varied transition sounds, kept well under the voice
+                events.append((["swish", "whoosh"][segments[n]["scene"] % 2], offset - 0.1, 0.6))
         run(["ffmpeg", "-y", "-loglevel", "error", *args, "-filter_complex", ";".join(fc),
              "-map", f"[{last}]", *ENC, str(pic)])
     else:
@@ -307,7 +334,8 @@ def _photo_joined(segments: list[dict], voice_parts: list[Path], total: float,
     voice = _voice_track(voice_parts, work)
     joined = work / f"joined_{tag}.mp4"
     if events:
-        sfx = motion.write_sfx(events, total, work / f"sfx_{tag}.wav", float(vcfg.get("sfx_volume", 0.5)))
+        sfx = motion.write_sfx(events, total, work / f"sfx_{tag}.wav",
+                               float(vcfg.get("sfx_volume", 0.5)), voice)
         run(["ffmpeg", "-y", "-loglevel", "error", "-i", pic.name, "-i", voice.name, "-i", sfx.name,
              "-filter_complex", "[1:a][2:a]amix=inputs=2:duration=first:normalize=0[a]",
              "-map", "0:v", "-map", "[a]", "-t", f"{total:.3f}", "-c:v", "copy", *AUD,
@@ -327,7 +355,7 @@ def _map_joined(data: dict, voice_parts: list[Path], timings: list[tuple[float, 
     voice = _voice_track(voice_parts, work)
     pic, sfx = work / f"motion_{tag}.mp4", work / f"sfx_{tag}.wav"
     motion.render_track(data["scenes"][:len(timings)], timings, total, size, fps, pic, sfx,
-                        float(vcfg.get("sfx_volume", 0.5)))
+                        float(vcfg.get("sfx_volume", 0.5)), voice)
     joined = work / f"joined_{tag}.mp4"
     run(["ffmpeg", "-y", "-loglevel", "error", "-i", pic.name, "-i", voice.name, "-i", sfx.name,
          "-filter_complex", "[1:a][2:a]amix=inputs=2:duration=first:normalize=0[a]",

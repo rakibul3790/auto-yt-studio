@@ -24,7 +24,8 @@
       "text": "There is a frog that can make itself almost see-through. It is called the glass frog.",
       "highlight": [
         "see-through"
-      ]
+      ],
+      "subject": "frog"
     },
     {
       "on_screen": "Clear skin",
@@ -32,23 +33,26 @@
       "text": "Glass frogs live in rainforests in Central and South America, and the skin on their bellies is clear.",
       "highlight": [
         "clear"
-      ]
+      ],
+      "subject": "frog"
     },
     {
       "on_screen": "Hiding its blood",
-      "visual": "green leaf rainforest",
+      "visual": "glass frog",
       "text": "Scientists found that when they sleep, these frogs pack most of their red blood cells into their liver.",
       "highlight": [
         "into their liver"
-      ]
+      ],
+      "subject": "frog"
     },
     {
       "on_screen": "Nearly invisible",
-      "visual": "rainforest",
+      "visual": "frog rainforest",
       "text": "With their red blood tucked away, they become two to three times more transparent, and much harder for predators to spot.",
       "highlight": [
         "more transparent"
-      ]
+      ],
+      "subject": "frog"
     },
     {
       "on_screen": "Follow for more",
@@ -56,7 +60,8 @@
       "text": "Its own built in invisibility trick. Follow for more weird facts.",
       "highlight": [
         "invisibility trick"
-      ]
+      ],
+      "subject": "frog"
     }
   ]
 }

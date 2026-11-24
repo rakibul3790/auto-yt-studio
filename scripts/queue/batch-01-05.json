@@ -20,11 +20,12 @@
   "scenes": [
     {
       "on_screen": "Cleopatra and the Moon",
-      "visual": "ancient egypt",
+      "visual": "egyptian queen statue",
       "text": "Cleopatra lived closer in time to the first Moon landing than to the building of the Great Pyramid.",
       "highlight": [
         "first Moon landing"
-      ]
+      ],
+      "subject": "egypt"
     },
     {
       "on_screen": "Pyramid: about 2560 BC",
@@ -32,7 +33,8 @@
       "text": "The Great Pyramid of Giza was built around two thousand five hundred and sixty BC.",
       "highlight": [
         "Great Pyramid"
-      ]
+      ],
+      "subject": "pyramid"
     },
     {
       "on_screen": "Cleopatra: about 30 BC",
@@ -52,11 +54,12 @@
     },
     {
       "on_screen": "Follow for more",
-      "visual": "desert sunset",
+      "visual": "pyramids sunset",
       "text": "History is a lot longer than it feels. Follow for more weird facts.",
       "highlight": [
         "a lot longer"
-      ]
+      ],
+      "subject": "pyramid"
     }
   ]
 }
