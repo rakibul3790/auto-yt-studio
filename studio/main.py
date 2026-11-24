@@ -38,28 +38,41 @@ def process(path: Path, cfg: dict, upload: bool) -> None:
     OUTPUT_DIR.mkdir(parents=True, exist_ok=True)
     vcfg, scfg = cfg["video"], cfg["shorts"]
 
-    # ---- main 16:9 video
-    size = (int(vcfg.get("width", 1920)), int(vcfg.get("height", 1080)))
-    main_mp4 = OUTPUT_DIR / f"{slug}.mp4"
-    info = render.render(data, cfg, work, main_mp4, size)
-    thumb = visuals.thumbnail(data, info["first_image"], OUTPUT_DIR / f"{slug}-thumb.jpg")
+    short_only = str(data.get("format", "")).lower() == "short"
 
-    # ---- optional 9:16 Short
+    # ---- main 16:9 video (skipped for "format": "short" scripts)
+    main_mp4 = thumb = None
+    if not short_only:
+        size = (int(vcfg.get("width", 1920)), int(vcfg.get("height", 1080)))
+        main_mp4 = OUTPUT_DIR / f"{slug}.mp4"
+        info = render.render(data, cfg, work, main_mp4, size)
+        thumb = visuals.thumbnail(data, info["first_image"], OUTPUT_DIR / f"{slug}-thumb.jpg")
+
+    # ---- 9:16 Short (always for "format": "short", else optional)
     short_mp4 = None
-    if data.get("shorts", scfg.get("enabled", False)):
+    if short_only or data.get("shorts", scfg.get("enabled", False)):
         short_mp4 = OUTPUT_DIR / f"{slug}-short.mp4"
         render.render(data, cfg, work, short_mp4, (1080, 1920),
                       max_seconds=float(scfg.get("max_seconds", 180)) - 1)
 
     if not upload:
-        log(f"Test render done (not uploaded): {main_mp4}")
+        log(f"Test render done (not uploaded): {main_mp4 or short_mp4}")
         return
 
     tags = list(cfg["channel"].get("default_tags") or []) + list(data.get("tags") or [])
     result = {"uploaded_at": queue.now_utc()}
-    vid = youtube.upload(main_mp4, data["title"], description_for(data, cfg), tags, cfg, thumb)
-    result["video_id"] = vid
-    result["video_url"] = f"https://youtu.be/{vid}"
+    if short_only:
+        st = data.get("short_title") or data["title"]
+        if "#shorts" not in st.lower() and len(st) <= 92:
+            st += " #Shorts"
+        sid = youtube.upload(short_mp4, st, description_for(data, cfg, shorts=True), tags, cfg)
+        result["short_id"] = sid
+        result["short_url"] = f"https://youtube.com/shorts/{sid}"
+        short_mp4 = None                      # already uploaded
+    else:
+        vid = youtube.upload(main_mp4, data["title"], description_for(data, cfg), tags, cfg, thumb)
+        result["video_id"] = vid
+        result["video_url"] = f"https://youtu.be/{vid}"
     if short_mp4:
         st = data.get("short_title") or data["title"]
         if "#shorts" not in st.lower() and len(st) <= 92:

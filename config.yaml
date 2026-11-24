@@ -5,7 +5,7 @@
 
 channel:
   # চ্যানেলের বিষয় (শুধু তোমার নোট আর স্ক্রিপ্ট-প্রম্পটের জন্য)
-  topic: "এখনো ঠিক হয়নি"
+  topic: "Weird & Mind-Blowing Facts (Shorts প্রধান)"
 
   # ভিডিওর ভাষা: en = English (ইংলিশ দর্শকের জন্য), bn = বাংলা, hi = হিন্দি ...
   language: "en"
@@ -55,9 +55,10 @@ video:
     - ["#101935", "#3e5c9a"]
 
 shorts:
-  # true করলে প্রতিটা ভিডিওর একটা 9:16 Short ভার্সনও আপলোড হবে
-  # (স্ক্রিপ্টে "shorts": true দিলে শুধু সেই ভিডিওর জন্য হবে)
-  enabled: false
+  # স্ক্রিপ্টে "format": "short" দিলে শুধু খাড়া (9:16) Short বানাবে আর আপলোড করবে।
+  # enabled: true হলে লম্বা (16:9) ভিডিওগুলোরও একটা Short ভার্সন আপলোড হবে
+  # (স্ক্রিপ্টে "shorts": false দিলে সেই ভিডিওর জন্য হবে না)।
+  enabled: true
   max_seconds: 180           # YouTube Shorts সর্বোচ্চ ৩ মিনিট
 
 run:

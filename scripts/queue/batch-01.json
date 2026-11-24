@@ -1,0 +1,152 @@
+[
+  {
+    "title": "A Day on Venus Is Longer Than Its Year",
+    "format": "short",
+    "description": "On Venus, one full spin takes longer than one trip around the Sun. Here is how that works.",
+    "tags": ["venus", "space facts", "planets", "solar system", "weird facts", "astronomy", "science facts", "mind blowing facts"],
+    "hashtags": ["space", "facts"],
+    "thumbnail_text": "Day longer than a year",
+    "scenes": [
+      {"on_screen": "Day longer than a year?", "visual": "planet venus", "text": "There is a planet where a single day lasts longer than a whole year. And it is our closest neighbor."},
+      {"on_screen": "Venus spins very slowly", "visual": "venus planet surface", "text": "Venus turns on its axis incredibly slowly. One full spin takes about two hundred and forty three Earth days."},
+      {"on_screen": "One year: 225 days", "visual": "solar system orbit", "text": "But it only needs about two hundred and twenty five Earth days to go all the way around the Sun."},
+      {"on_screen": "And it spins backwards", "visual": "sunrise sky", "text": "It gets stranger. Venus spins the opposite way to most planets, so there the Sun rises in the west and sets in the east."},
+      {"on_screen": "Follow for more", "visual": "night sky stars", "text": "So on Venus, your birthday would come around before the day was even over. Follow for more weird facts."}
+    ]
+  },
+  {
+    "title": "Octopuses Have Three Hearts and Blue Blood",
+    "format": "short",
+    "description": "Three hearts, blue blood and arms that can taste. The octopus is stranger than you think.",
+    "tags": ["octopus", "animal facts", "ocean", "sea creatures", "weird facts", "marine life", "nature facts", "mind blowing facts"],
+    "hashtags": ["animals", "facts"],
+    "thumbnail_text": "Three hearts?!",
+    "scenes": [
+      {"on_screen": "Three hearts", "visual": "octopus underwater", "text": "An octopus has three hearts. Not one, not two, but three."},
+      {"on_screen": "Two for the gills", "visual": "octopus close up", "text": "Two of them pump blood through the gills, where it picks up oxygen. The third pumps it around the rest of the body."},
+      {"on_screen": "Its blood is blue", "visual": "blue ocean water", "text": "And that blood is blue. It uses copper to carry oxygen instead of iron, which is what makes ours red."},
+      {"on_screen": "The swimming twist", "visual": "octopus swimming", "text": "Here is the strange part. When an octopus swims, the heart that serves the body stops beating. That is one reason they prefer crawling."},
+      {"on_screen": "Follow for more", "visual": "coral reef", "text": "Three hearts, blue blood, and it would rather walk than swim. Follow for more weird facts."}
+    ]
+  },
+  {
+    "title": "Sharks Are Older Than Trees",
+    "format": "short",
+    "description": "Sharks were swimming the oceans millions of years before the first trees grew on land.",
+    "tags": ["sharks", "trees", "prehistoric", "evolution", "weird facts", "history of earth", "nature facts", "mind blowing facts"],
+    "hashtags": ["sharks", "facts"],
+    "thumbnail_text": "Older than trees",
+    "scenes": [
+      {"on_screen": "Sharks vs trees", "visual": "shark underwater", "text": "Sharks are older than trees. That sounds wrong, but it is true."},
+      {"on_screen": "About 450 million years", "visual": "deep ocean", "text": "The earliest sharks appeared roughly four hundred and fifty million years ago, in ancient seas."},
+      {"on_screen": "Trees came later", "visual": "ancient forest", "text": "The first true trees did not show up on land until around three hundred and eighty five million years ago."},
+      {"on_screen": "Survivors", "visual": "great white shark", "text": "That means sharks have survived several mass extinctions, including the one that wiped out the dinosaurs."},
+      {"on_screen": "Follow for more", "visual": "forest trees sunlight", "text": "The next time you walk through a forest, remember that sharks were here first. Follow for more weird facts."}
+    ]
+  },
+  {
+    "title": "Bananas Are Berries but Strawberries Aren't",
+    "format": "short",
+    "description": "Botanists have a strict definition of a berry, and it gives some surprising answers.",
+    "tags": ["bananas", "strawberries", "berries", "fruit facts", "botany", "weird facts", "food facts", "mind blowing facts"],
+    "hashtags": ["food", "facts"],
+    "thumbnail_text": "Bananas are berries",
+    "scenes": [
+      {"on_screen": "Is a banana a berry?", "visual": "bunch of bananas", "text": "Is a banana a berry? According to scientists, yes it is."},
+      {"on_screen": "The real definition", "visual": "flower blossom", "text": "To a botanist, a berry is a fruit that grows from a single flower with one ovary, and usually holds several seeds inside."},
+      {"on_screen": "Strawberry: not a berry", "visual": "fresh strawberries", "text": "By that rule, bananas, grapes and even tomatoes are berries. But the strawberry is not, because its seeds sit on the outside."},
+      {"on_screen": "Pumpkins too", "visual": "pumpkins", "text": "Pumpkins and cucumbers count as a kind of berry too, while raspberries do not."},
+      {"on_screen": "Follow for more", "visual": "fruit market", "text": "So the berry aisle has been lying to you. Follow for more weird facts."}
+    ]
+  },
+  {
+    "title": "Cleopatra Lived Closer to the Moon Landing Than the Pyramids",
+    "format": "short",
+    "description": "The Great Pyramid was already ancient history by the time Cleopatra ruled Egypt.",
+    "tags": ["cleopatra", "pyramids", "ancient egypt", "history facts", "moon landing", "weird facts", "timeline", "mind blowing facts"],
+    "hashtags": ["history", "facts"],
+    "thumbnail_text": "Closer to the Moon landing",
+    "scenes": [
+      {"on_screen": "Cleopatra and the Moon", "visual": "ancient egypt", "text": "Cleopatra lived closer in time to the first Moon landing than to the building of the Great Pyramid."},
+      {"on_screen": "Pyramid: about 2560 BC", "visual": "great pyramid giza", "text": "The Great Pyramid of Giza was built around two thousand five hundred and sixty BC."},
+      {"on_screen": "Cleopatra: about 30 BC", "visual": "egyptian statue", "text": "Cleopatra died in thirty BC. That is about two and a half thousand years after the pyramid went up."},
+      {"on_screen": "Moon landing: 1969", "visual": "moon surface astronaut", "text": "The Moon landing came in nineteen sixty nine, about two thousand years after her. So the pyramid was ancient even to her."},
+      {"on_screen": "Follow for more", "visual": "desert sunset", "text": "History is a lot longer than it feels. Follow for more weird facts."}
+    ]
+  },
+  {
+    "title": "Wombats Make Cube-Shaped Poop",
+    "format": "short",
+    "description": "Wombats are the only animals known to produce cube-shaped droppings. Scientists worked out how.",
+    "tags": ["wombat", "australia animals", "animal facts", "weird animals", "weird facts", "nature facts", "funny facts", "mind blowing facts"],
+    "hashtags": ["animals", "facts"],
+    "thumbnail_text": "Cube poop?!",
+    "scenes": [
+      {"on_screen": "Square poop", "visual": "wombat", "text": "There is an animal in Australia that makes poop shaped like little cubes. It is the wombat."},
+      {"on_screen": "How is that possible?", "visual": "wombat grass", "text": "For years, nobody knew how it worked. A round tube making square shapes seemed impossible."},
+      {"on_screen": "Stretchy and stiff", "visual": "australia bush", "text": "Scientists found the answer in the gut. The walls of the wombat's intestine have stiff parts and stretchy parts, which press the waste into flat sides and corners."},
+      {"on_screen": "Why cubes help", "visual": "rocks stones", "text": "Wombats leave their droppings on rocks and logs to mark territory. Cubes are less likely to roll away."},
+      {"on_screen": "Follow for more", "visual": "australian landscape", "text": "Nature really does think outside the box. Follow for more weird facts."}
+    ]
+  },
+  {
+    "title": "There Are More Chess Games Than Atoms in the Universe",
+    "format": "short",
+    "description": "The number of possible chess games is so big it beats the number of atoms in the observable universe.",
+    "tags": ["chess", "math facts", "universe", "atoms", "big numbers", "weird facts", "science facts", "mind blowing facts"],
+    "hashtags": ["chess", "facts"],
+    "thumbnail_text": "More than atoms",
+    "scenes": [
+      {"on_screen": "Chess vs the universe", "visual": "chess board", "text": "There are more possible games of chess than there are atoms in the observable universe."},
+      {"on_screen": "Atoms: about 10 to the 80", "visual": "galaxy space", "text": "Scientists estimate the observable universe holds about ten to the power of eighty atoms. That is a one followed by eighty zeros."},
+      {"on_screen": "Chess: about 10 to the 120", "visual": "chess pieces", "text": "A famous estimate puts the number of possible chess games at around ten to the power of one hundred and twenty."},
+      {"on_screen": "40 zeros bigger", "visual": "stars night sky", "text": "That is not a little bigger. It is forty extra zeros. Every game you play is almost certainly one that has never been played before."},
+      {"on_screen": "Follow for more", "visual": "chess game", "text": "So your next game of chess might be history in the making. Follow for more weird facts."}
+    ]
+  },
+  {
+    "title": "Honey Can Last for Thousands of Years",
+    "format": "short",
+    "description": "Archaeologists have found honey in ancient Egyptian tombs that had not rotted. Here is why honey lasts.",
+    "tags": ["honey", "bees", "ancient egypt", "food facts", "science facts", "weird facts", "history facts", "mind blowing facts"],
+    "hashtags": ["food", "facts"],
+    "thumbnail_text": "3000 year old honey",
+    "scenes": [
+      {"on_screen": "Ancient honey", "visual": "honey jar", "text": "Archaeologists have found pots of honey in ancient Egyptian tombs, thousands of years old, and it had not rotted."},
+      {"on_screen": "Too sweet for germs", "visual": "honey dripping", "text": "Honey is mostly sugar with very little water. Bacteria trying to live in it get the water pulled right out of them."},
+      {"on_screen": "Naturally acidic", "visual": "honeycomb bees", "text": "It is also slightly acidic, and bees add an enzyme that helps produce a little hydrogen peroxide, which fights germs."},
+      {"on_screen": "Keep it sealed", "visual": "honey spoon", "text": "The trick is keeping it sealed. If honey soaks up moisture from the air, it can start to spoil."},
+      {"on_screen": "Follow for more", "visual": "bee flower", "text": "Thank the bees for one of the longest lasting foods on Earth. Follow for more weird facts."}
+    ]
+  },
+  {
+    "title": "Oxford University Is Older Than the Aztec Empire",
+    "format": "short",
+    "description": "Teaching at Oxford began long before the Aztecs founded their great capital city.",
+    "tags": ["oxford", "aztecs", "history facts", "timeline", "universities", "weird facts", "medieval", "mind blowing facts"],
+    "hashtags": ["history", "facts"],
+    "thumbnail_text": "Older than the Aztecs",
+    "scenes": [
+      {"on_screen": "Older than the Aztecs", "visual": "old university building", "text": "Oxford University is older than the Aztec Empire."},
+      {"on_screen": "Oxford: 1096", "visual": "medieval library", "text": "There is evidence of teaching at Oxford as early as ten ninety six, more than nine hundred years ago."},
+      {"on_screen": "Tenochtitlan: 1325", "visual": "aztec temple ruins", "text": "The Aztecs founded their capital city, Tenochtitlan, in thirteen twenty five. That is over two hundred years later."},
+      {"on_screen": "Same planet, different worlds", "visual": "ancient city", "text": "So students were already studying in Oxford long before one of the most famous empires in the Americas even began."},
+      {"on_screen": "Follow for more", "visual": "old books", "text": "Our timelines overlap in ways school never mentioned. Follow for more weird facts."}
+    ]
+  },
+  {
+    "title": "Butterflies Taste With Their Feet",
+    "format": "short",
+    "description": "A butterfly can tell if a leaf is right for its eggs just by standing on it.",
+    "tags": ["butterflies", "insects", "animal facts", "nature facts", "weird facts", "bugs", "science facts", "mind blowing facts"],
+    "hashtags": ["nature", "facts"],
+    "thumbnail_text": "Tasting with feet",
+    "scenes": [
+      {"on_screen": "Tasting with feet", "visual": "butterfly on flower", "text": "Butterflies can taste with their feet."},
+      {"on_screen": "Sensors on their legs", "visual": "butterfly macro", "text": "They have special taste sensors on their legs. The moment they land on something, they can tell what it is made of."},
+      {"on_screen": "Finding the right leaf", "visual": "green leaves", "text": "This matters most for mothers. A female butterfly drums her feet on a leaf to check if it is the right plant for her caterpillars to eat."},
+      {"on_screen": "Wrong leaf, fly away", "visual": "butterfly flying", "text": "If the taste is wrong, she flies off and keeps searching. Her babies depend on that tiny foot test."},
+      {"on_screen": "Follow for more", "visual": "flower garden", "text": "Imagine tasting your dinner by stepping on it. Follow for more weird facts."}
+    ]
+  }
+]

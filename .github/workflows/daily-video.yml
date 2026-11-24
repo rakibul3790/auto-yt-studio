@@ -4,9 +4,9 @@ name: Daily video
 
 on:
   schedule:
-    # 03:30 UTC = 09:30 Bangladesh time. Uploads are Private, so the time
-    # only decides when the video is ready for you to check. Change if you like.
-    - cron: "30 3 * * *"
+    # 10:30 UTC = বিকেল ৪:৩০ বাংলাদেশ সময়। ভিডিও Private আপলোড হয়, তাই এই সময়
+    # শুধু ঠিক করে কখন দেখার জন্য রেডি পাবে। GitHub মাঝে মাঝে ১০–৩০ মিনিট দেরিতে চালায়।
+    - cron: "30 10 * * *"
   workflow_dispatch:
     inputs:
       count:
@@ -31,6 +31,9 @@ jobs:
     timeout-minutes: 120
     steps:
       - uses: actions/checkout@v5
+        with:
+          # always the newest queue, so a queued second run never redoes a video
+          ref: ${{ github.event.repository.default_branch }}
 
       - uses: actions/setup-python@v6
         with:
