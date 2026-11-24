@@ -54,8 +54,10 @@ Reply with ONLY one JSON list inside one code block, nothing else, in exactly th
 
 ## টিপস
 
-- **Shorts চাইলে:** প্রম্পটে লেখো "Each video 45–50 seconds, 4–6 scenes, and `"shorts": true`"।
-  তখন প্রতিটার একটা খাড়া (9:16) Short ভার্সনও আপলোড হবে।
+- **শুধু Shorts চাইলে (এখনকার চ্যানেলের জন্য):** প্রম্পটে লেখো
+  "Each video is a YouTube Short: 30–50 seconds (about 90–130 words), 4–6 scenes, and add `"format": "short"`"।
+  তখন শুধু খাড়া (9:16) Short বানাবে আর আপলোড করবে, লম্বা ভিডিও না।
+- **লম্বা ভিডিওর সাথে Short-ও চাইলে:** `config.yaml`-এ `shorts: enabled: true` থাকলে প্রতিটা লম্বা ভিডিওর একটা Short ভার্সনও যাবে।
 - **British ভয়েস চাইলে:** `config.yaml`-এ `voice: "en-GB-RyanNeural"` দাও, আর প্রম্পটে
   "Use British spelling" লিখে দাও।
 - ফাইল রাখার পর GitHub-এর **Actions → Check scripts** সবুজ টিক দেখালে ফাইল ঠিক আছে।
