@@ -21,27 +21,42 @@
     {
       "on_screen": "The biggest heart",
       "visual": "blue whale underwater",
-      "text": "The blue whale is the largest animal that has ever lived, and its heart is enormous."
+      "text": "The blue whale is the largest animal that has ever lived, and its heart is enormous.",
+      "highlight": [
+        "largest animal"
+      ]
     },
     {
       "on_screen": "About 180 kilograms",
       "visual": "whale ocean",
-      "text": "A blue whale's heart can weigh around one hundred and eighty kilograms. That is about the weight of two grown adults."
+      "text": "A blue whale's heart can weigh around one hundred and eighty kilograms. That is about the weight of two grown adults.",
+      "highlight": [
+        "two grown adults"
+      ]
     },
     {
       "on_screen": "Very slow beats",
       "visual": "deep blue ocean",
-      "text": "When it dives, that heart can slow down to just two beats per minute, to save oxygen."
+      "text": "When it dives, that heart can slow down to just two beats per minute, to save oxygen.",
+      "highlight": [
+        "two beats per minute"
+      ]
     },
     {
       "on_screen": "Measured for the first time",
       "visual": "whale tail",
-      "text": "Scientists only recorded a wild blue whale's heartbeat for the first time in twenty nineteen, using a sensor stuck on with suction cups."
+      "text": "Scientists only recorded a wild blue whale's heartbeat for the first time in twenty nineteen, using a sensor stuck on with suction cups.",
+      "highlight": [
+        "suction cups"
+      ]
     },
     {
       "on_screen": "Follow for more",
       "visual": "whale swimming",
-      "text": "The biggest heart on the planet belongs to a gentle giant. Follow for more weird facts."
+      "text": "The biggest heart on the planet belongs to a gentle giant. Follow for more weird facts.",
+      "highlight": [
+        "biggest heart"
+      ]
     }
   ]
 }

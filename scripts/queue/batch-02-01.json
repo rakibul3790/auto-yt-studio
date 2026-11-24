@@ -21,27 +21,42 @@
     {
       "on_screen": "How heavy is a cloud?",
       "visual": "white fluffy clouds blue sky",
-      "text": "That soft little cloud floating above you could weigh more than a million pounds."
+      "text": "That soft little cloud floating above you could weigh more than a million pounds.",
+      "highlight": [
+        "a million pounds"
+      ]
     },
     {
       "on_screen": "Tiny droplets",
       "visual": "cloud close up",
-      "text": "Clouds are made of countless tiny water droplets. A typical puffy cloud can hold around five hundred tons of water."
+      "text": "Clouds are made of countless tiny water droplets. A typical puffy cloud can hold around five hundred tons of water.",
+      "highlight": [
+        "five hundred tons"
+      ]
     },
     {
       "on_screen": "Then why don't they fall?",
       "visual": "clouds over mountains",
-      "text": "So why doesn't it crash down? Because that weight is spread across a huge space, and each droplet is incredibly small."
+      "text": "So why doesn't it crash down? Because that weight is spread across a huge space, and each droplet is incredibly small.",
+      "highlight": [
+        "incredibly small"
+      ]
     },
     {
       "on_screen": "Held up by air",
       "visual": "sunlight through clouds",
-      "text": "The droplets are so light that rising warm air keeps them floating, until they join together and fall as rain."
+      "text": "The droplets are so light that rising warm air keeps them floating, until they join together and fall as rain.",
+      "highlight": [
+        "fall as rain"
+      ]
     },
     {
       "on_screen": "Follow for more",
       "visual": "rain clouds",
-      "text": "So the next time you look up, remember there are elephants worth of water up there. Follow for more weird facts."
+      "text": "So the next time you look up, remember there are elephants worth of water up there. Follow for more weird facts.",
+      "highlight": [
+        "elephants"
+      ]
     }
   ]
 }

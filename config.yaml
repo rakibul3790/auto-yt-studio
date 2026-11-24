@@ -40,6 +40,7 @@ video:
   scene_pause: 0.35          # প্রতিটা দৃশ্যের শেষে কত সেকেন্ড বিরতি
   subtitles: true            # নিচে লেখা (সাবটাইটেল) দেখাবে কিনা
   subtitle_max_chars: 42     # এক লাইনে সর্বোচ্চ কত অক্ষর
+  highlight: true            # দরকারি শব্দ হলুদ বক্সে (স্ক্রিপ্টের "highlight", না থাকলে সংখ্যা)
   music_volume: 0.10         # assets/music-এর গানের আওয়াজ (0 = বন্ধ)
   fade_seconds: 0.8          # শুরুতে ফেড-ইন, শেষে ফেড-আউট
   # ছবির উৎস: "auto" = PIXABAY_API_KEY (বা PEXELS_API_KEY) Secret থাকলে ফ্রি

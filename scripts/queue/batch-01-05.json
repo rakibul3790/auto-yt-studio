@@ -21,27 +21,42 @@
     {
       "on_screen": "Cleopatra and the Moon",
       "visual": "ancient egypt",
-      "text": "Cleopatra lived closer in time to the first Moon landing than to the building of the Great Pyramid."
+      "text": "Cleopatra lived closer in time to the first Moon landing than to the building of the Great Pyramid.",
+      "highlight": [
+        "first Moon landing"
+      ]
     },
     {
       "on_screen": "Pyramid: about 2560 BC",
       "visual": "great pyramid giza",
-      "text": "The Great Pyramid of Giza was built around two thousand five hundred and sixty BC."
+      "text": "The Great Pyramid of Giza was built around two thousand five hundred and sixty BC.",
+      "highlight": [
+        "Great Pyramid"
+      ]
     },
     {
       "on_screen": "Cleopatra: about 30 BC",
       "visual": "egyptian statue",
-      "text": "Cleopatra died in thirty BC. That is about two and a half thousand years after the pyramid went up."
+      "text": "Cleopatra died in thirty BC. That is about two and a half thousand years after the pyramid went up.",
+      "highlight": [
+        "thirty BC"
+      ]
     },
     {
       "on_screen": "Moon landing: 1969",
       "visual": "moon surface astronaut",
-      "text": "The Moon landing came in nineteen sixty nine, about two thousand years after her. So the pyramid was ancient even to her."
+      "text": "The Moon landing came in nineteen sixty nine, about two thousand years after her. So the pyramid was ancient even to her.",
+      "highlight": [
+        "ancient even to her"
+      ]
     },
     {
       "on_screen": "Follow for more",
       "visual": "desert sunset",
-      "text": "History is a lot longer than it feels. Follow for more weird facts."
+      "text": "History is a lot longer than it feels. Follow for more weird facts.",
+      "highlight": [
+        "a lot longer"
+      ]
     }
   ]
 }

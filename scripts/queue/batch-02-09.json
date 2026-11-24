@@ -21,27 +21,42 @@
     {
       "on_screen": "The biggest desert",
       "visual": "antarctica ice",
-      "text": "The largest desert in the world is not hot or sandy. It is Antarctica."
+      "text": "The largest desert in the world is not hot or sandy. It is Antarctica.",
+      "highlight": [
+        "Antarctica"
+      ]
     },
     {
       "on_screen": "What makes a desert",
       "visual": "sand desert dunes",
-      "text": "A desert is any place that gets very little rain or snow each year. Heat has nothing to do with it."
+      "text": "A desert is any place that gets very little rain or snow each year. Heat has nothing to do with it.",
+      "highlight": [
+        "very little rain"
+      ]
     },
     {
       "on_screen": "Almost no snowfall",
       "visual": "snowy landscape",
-      "text": "The middle of Antarctica gets less yearly snowfall than many famous hot deserts get in rain."
+      "text": "The middle of Antarctica gets less yearly snowfall than many famous hot deserts get in rain.",
+      "highlight": [
+        "less yearly snowfall"
+      ]
     },
     {
       "on_screen": "Then why all the ice?",
       "visual": "glacier",
-      "text": "The ice is there because it almost never melts. It has built up slowly over hundreds of thousands of years."
+      "text": "The ice is there because it almost never melts. It has built up slowly over hundreds of thousands of years.",
+      "highlight": [
+        "almost never melts"
+      ]
     },
     {
       "on_screen": "Follow for more",
       "visual": "penguins ice",
-      "text": "The driest continent is also the coldest. Follow for more weird facts."
+      "text": "The driest continent is also the coldest. Follow for more weird facts.",
+      "highlight": [
+        "the coldest"
+      ]
     }
   ]
 }

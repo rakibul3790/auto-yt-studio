@@ -21,27 +21,42 @@
     {
       "on_screen": "Hotter than the Sun",
       "visual": "lightning storm",
-      "text": "Every bolt of lightning is hotter than the surface of the Sun."
+      "text": "Every bolt of lightning is hotter than the surface of the Sun.",
+      "highlight": [
+        "hotter than"
+      ]
     },
     {
       "on_screen": "About 30,000 degrees",
       "visual": "lightning strike night",
-      "text": "Lightning can heat the air around it to roughly thirty thousand degrees Celsius, in a fraction of a second."
+      "text": "Lightning can heat the air around it to roughly thirty thousand degrees Celsius, in a fraction of a second.",
+      "highlight": [
+        "thirty thousand degrees"
+      ]
     },
     {
       "on_screen": "The Sun: about 5,500",
       "visual": "sun surface",
-      "text": "The surface of the Sun is about five and a half thousand degrees. So lightning is around five times hotter."
+      "text": "The surface of the Sun is about five and a half thousand degrees. So lightning is around five times hotter.",
+      "highlight": [
+        "five times hotter"
+      ]
     },
     {
       "on_screen": "That's the thunder",
       "visual": "storm clouds",
-      "text": "That sudden heat makes the air expand explosively. The boom you hear is thunder."
+      "text": "That sudden heat makes the air expand explosively. The boom you hear is thunder.",
+      "highlight": [
+        "thunder"
+      ]
     },
     {
       "on_screen": "Follow for more",
       "visual": "thunderstorm sky",
-      "text": "A tiny piece of something hotter than the Sun, right outside your window. Follow for more weird facts."
+      "text": "A tiny piece of something hotter than the Sun, right outside your window. Follow for more weird facts.",
+      "highlight": [
+        "hotter than the Sun"
+      ]
     }
   ]
 }

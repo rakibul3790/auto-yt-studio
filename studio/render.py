@@ -8,6 +8,7 @@ from __future__ import annotations
 
 import json
 import random
+import re
 from pathlib import Path
 
 from . import tts, visuals
@@ -22,6 +23,49 @@ def _ass_time(t: float) -> str:
     h, rem = divmod(t, 3600)
     m, s = divmod(rem, 60)
     return f"{int(h)}:{int(m):02d}:{s:05.2f}"
+
+
+# ------------------------------------------------------------- highlights
+JOIN = "\u2060"   # invisible "word joiner": keeps a highlighted phrase on one line
+_NUM_WORDS = ("zero one two three four five six seven eight nine ten eleven twelve "
+              "thirteen fourteen fifteen sixteen seventeen eighteen nineteen twenty "
+              "thirty forty fifty sixty seventy eighty ninety hundred thousand "
+              "million billion trillion half").split()
+_AUTO = re.compile(
+    r"\b(?:\d[\d,.]*|(?:" + "|".join(_NUM_WORDS) + r"))"
+    r"(?:[\s-]+(?:and\s+)?(?:\d[\d,.]*|(?:" + "|".join(_NUM_WORDS) + r")))*"
+    r"(?:\s+[A-Za-z]+)?\b", re.IGNORECASE)
+
+
+def scene_highlights(scene: dict, text: str) -> list[str]:
+    """Phrases to show on a yellow box: the scene's "highlight" list if given,
+    otherwise numbers (with the word after them, like "three hearts")."""
+    given = scene.get("highlight")
+    if isinstance(given, str):
+        given = [given]
+    if given:
+        return [g.strip() for g in given if str(g).strip()]
+    found = []
+    for m in _AUTO.finditer(text):
+        words = m.group(0).split()
+        stop = {"and", "a", "an", "the", "of", "to", "too", "but", "or", "is", "are",
+                "was", "were", "in", "on", "at", "it", "that", "so", "for", "by", "with"}
+        while words and words[-1].lower() in stop:
+            words = words[:-1]
+        if len(words) == 1 and words[0].lower() in _NUM_WORDS:
+            continue    # a lone "one" or "two" is rarely the point
+        if words and len(words) <= 5:
+            found.append(" ".join(words))
+    return found
+
+
+def protect(text: str, phrases: list[str]) -> str:
+    """Glue the words of each phrase together so a caption line never splits it."""
+    for ph in sorted(phrases, key=len, reverse=True):
+        pat = re.compile(r"(?<!\w)" + r"\s+".join(map(re.escape, ph.split())) + r"(?!\w)",
+                         re.IGNORECASE)
+        text = pat.sub(lambda m: JOIN.join(m.group(0).split()), text)
+    return text
 
 
 def write_ass(cues: list[tuple[float, float, str]], size: tuple[int, int],
@@ -41,14 +85,29 @@ ScaledBorderAndShadow: yes
 [V4+ Styles]
 Format: Name, Fontname, Fontsize, PrimaryColour, SecondaryColour, OutlineColour, BackColour, Bold, Italic, Underline, StrikeOut, ScaleX, ScaleY, Spacing, Angle, BorderStyle, Outline, Shadow, Alignment, MarginL, MarginR, MarginV, Encoding
 Style: Default,{font},{fs},&H00FFFFFF,&H00FFFFFF,&H00000000,&H96000000,1,0,0,0,100,100,0,0,1,{max(2, fs // 14)},1,2,{int(w * .06)},{int(w * .06)},{margin_v},1
+Style: Hi,{font},{fs},&H00141414,&H00141414,&H0000D6FF,&H0000D6FF,1,0,0,0,100,100,0,0,3,{max(4, fs // 10)},0,2,{int(w * .06)},{int(w * .06)},{margin_v},1
 
 [Events]
 Format: Layer, Start, End, Style, Name, MarginL, MarginR, MarginV, Effect, Text
 """
     lines = []
+    hide, show = r"{\1a&HFF&\3a&HFF&}", r"{\1a&H00&\3a&H00&}"
     for start, end, text in cues:
         safe = text.replace("{", "(").replace("}", ")").replace("\n", " ")
-        lines.append(f"Dialogue: 0,{_ass_time(start)},{_ass_time(end)},Default,,0,0,0,,{safe}")
+        t0, t1 = _ass_time(start), _ass_time(end)
+        lines.append(f"Dialogue: 0,{t0},{t1},Default,,0,0,0,,{safe.replace(JOIN, chr(92) + 'h')}")
+        # yellow boxes: same text on a top layer, only the glued phrases visible
+        parts = re.split(r"(\S*" + JOIN + r"\S*)", safe)
+        if len(parts) > 1:
+            hi = hide
+            for k, part in enumerate(parts):
+                if k % 2:
+                    word = part.strip(".,!?;:")
+                    lead, trail = part[:part.find(word)], part[part.find(word) + len(word):]
+                    hi += lead + show + word.replace(JOIN, chr(92) + "h") + hide + trail
+                else:
+                    hi += part
+            lines.append(f"Dialogue: 1,{t0},{t1},Hi,,0,0,0,,{hi}")
     out.write_text(head + "\n".join(lines) + "\n", encoding="utf-8")
     return out
 
@@ -97,6 +156,9 @@ def render(data: dict, cfg: dict, work: Path, out_file: Path,
              *ENC, *AUD, str(clip)])
         clips.append(clip)
 
+        if vcfg.get("highlight", True):
+            phrases = scene_highlights(scene, text)
+            cues = [(cs, ce, protect(ct, phrases)) for cs, ce, ct in cues]
         for s, e, c in tts.split_cues(cues, int(vcfg.get("subtitle_max_chars", 42))):
             all_cues.append((t0 + s, t0 + min(e, dur), c))
         t0 += scene_len

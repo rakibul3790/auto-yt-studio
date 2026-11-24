@@ -21,27 +21,42 @@
     {
       "on_screen": "The pistol shrimp",
       "visual": "shrimp underwater",
-      "text": "There is a shrimp with a claw that works like a weapon. It is called the pistol shrimp."
+      "text": "There is a shrimp with a claw that works like a weapon. It is called the pistol shrimp.",
+      "highlight": [
+        "pistol shrimp"
+      ]
     },
     {
       "on_screen": "A super fast snap",
       "visual": "coral reef",
-      "text": "It snaps its claw shut so quickly that it shoots out a jet of water and creates a tiny bubble."
+      "text": "It snaps its claw shut so quickly that it shoots out a jet of water and creates a tiny bubble.",
+      "highlight": [
+        "a jet of water"
+      ]
     },
     {
       "on_screen": "Thousands of degrees",
       "visual": "underwater bubbles",
-      "text": "When that bubble collapses, the inside briefly reaches thousands of degrees, close to the temperature of the Sun's surface."
+      "text": "When that bubble collapses, the inside briefly reaches thousands of degrees, close to the temperature of the Sun's surface.",
+      "highlight": [
+        "thousands of degrees"
+      ]
     },
     {
       "on_screen": "Loud and stunning",
       "visual": "ocean reef fish",
-      "text": "The snap is also one of the loudest sounds in the ocean, and it can stun small fish nearby."
+      "text": "The snap is also one of the loudest sounds in the ocean, and it can stun small fish nearby.",
+      "highlight": [
+        "loudest sounds"
+      ]
     },
     {
       "on_screen": "Follow for more",
       "visual": "sea floor",
-      "text": "Small shrimp, huge power. Follow for more weird facts."
+      "text": "Small shrimp, huge power. Follow for more weird facts.",
+      "highlight": [
+        "huge power"
+      ]
     }
   ]
 }

@@ -21,27 +21,42 @@
     {
       "on_screen": "Tasting with feet",
       "visual": "butterfly on flower",
-      "text": "Butterflies can taste with their feet."
+      "text": "Butterflies can taste with their feet.",
+      "highlight": [
+        "with their feet"
+      ]
     },
     {
       "on_screen": "Sensors on their legs",
       "visual": "butterfly macro",
-      "text": "They have special taste sensors on their legs. The moment they land on something, they can tell what it is made of."
+      "text": "They have special taste sensors on their legs. The moment they land on something, they can tell what it is made of.",
+      "highlight": [
+        "taste sensors"
+      ]
     },
     {
       "on_screen": "Finding the right leaf",
       "visual": "green leaves",
-      "text": "This matters most for mothers. A female butterfly drums her feet on a leaf to check if it is the right plant for her caterpillars to eat."
+      "text": "This matters most for mothers. A female butterfly drums her feet on a leaf to check if it is the right plant for her caterpillars to eat.",
+      "highlight": [
+        "drums her feet"
+      ]
     },
     {
       "on_screen": "Wrong leaf, fly away",
       "visual": "butterfly flying",
-      "text": "If the taste is wrong, she flies off and keeps searching. Her babies depend on that tiny foot test."
+      "text": "If the taste is wrong, she flies off and keeps searching. Her babies depend on that tiny foot test.",
+      "highlight": [
+        "tiny foot test"
+      ]
     },
     {
       "on_screen": "Follow for more",
       "visual": "flower garden",
-      "text": "Imagine tasting your dinner by stepping on it. Follow for more weird facts."
+      "text": "Imagine tasting your dinner by stepping on it. Follow for more weird facts.",
+      "highlight": [
+        "stepping on it"
+      ]
     }
   ]
 }

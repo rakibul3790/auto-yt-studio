@@ -21,27 +21,42 @@
     {
       "on_screen": "A unicorn nation",
       "visual": "scottish highlands",
-      "text": "The national animal of Scotland is the unicorn."
+      "text": "The national animal of Scotland is the unicorn.",
+      "highlight": [
+        "the unicorn"
+      ]
     },
     {
       "on_screen": "Centuries old",
       "visual": "castle scotland",
-      "text": "It has been a Scottish symbol for hundreds of years, and it appeared on the royal coat of arms."
+      "text": "It has been a Scottish symbol for hundreds of years, and it appeared on the royal coat of arms.",
+      "highlight": [
+        "hundreds of years"
+      ]
     },
     {
       "on_screen": "Pure and powerful",
       "visual": "white horse",
-      "text": "In old stories, the unicorn stood for purity, strength and pride, and it was said that only a king could tame one."
+      "text": "In old stories, the unicorn stood for purity, strength and pride, and it was said that only a king could tame one.",
+      "highlight": [
+        "only a king"
+      ]
     },
     {
       "on_screen": "Look for the chains",
       "visual": "stone carving",
-      "text": "Many old carvings show the unicorn in chains, a sign of how wild and powerful it was believed to be."
+      "text": "Many old carvings show the unicorn in chains, a sign of how wild and powerful it was believed to be.",
+      "highlight": [
+        "in chains"
+      ]
     },
     {
       "on_screen": "Follow for more",
       "visual": "scotland landscape",
-      "text": "A real country, with an imaginary animal. Follow for more weird facts."
+      "text": "A real country, with an imaginary animal. Follow for more weird facts.",
+      "highlight": [
+        "imaginary animal"
+      ]
     }
   ]
 }

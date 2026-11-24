@@ -21,27 +21,42 @@
     {
       "on_screen": "Ancient honey",
       "visual": "honey jar",
-      "text": "Archaeologists have found pots of honey in ancient Egyptian tombs, thousands of years old, and it had not rotted."
+      "text": "Archaeologists have found pots of honey in ancient Egyptian tombs, thousands of years old, and it had not rotted.",
+      "highlight": [
+        "had not rotted"
+      ]
     },
     {
       "on_screen": "Too sweet for germs",
       "visual": "honey dripping",
-      "text": "Honey is mostly sugar with very little water. Bacteria trying to live in it get the water pulled right out of them."
+      "text": "Honey is mostly sugar with very little water. Bacteria trying to live in it get the water pulled right out of them.",
+      "highlight": [
+        "very little water"
+      ]
     },
     {
       "on_screen": "Naturally acidic",
       "visual": "honeycomb bees",
-      "text": "It is also slightly acidic, and bees add an enzyme that helps produce a little hydrogen peroxide, which fights germs."
+      "text": "It is also slightly acidic, and bees add an enzyme that helps produce a little hydrogen peroxide, which fights germs.",
+      "highlight": [
+        "hydrogen peroxide"
+      ]
     },
     {
       "on_screen": "Keep it sealed",
       "visual": "honey spoon",
-      "text": "The trick is keeping it sealed. If honey soaks up moisture from the air, it can start to spoil."
+      "text": "The trick is keeping it sealed. If honey soaks up moisture from the air, it can start to spoil.",
+      "highlight": [
+        "keeping it sealed"
+      ]
     },
     {
       "on_screen": "Follow for more",
       "visual": "bee flower",
-      "text": "Thank the bees for one of the longest lasting foods on Earth. Follow for more weird facts."
+      "text": "Thank the bees for one of the longest lasting foods on Earth. Follow for more weird facts.",
+      "highlight": [
+        "longest lasting foods"
+      ]
     }
   ]
 }

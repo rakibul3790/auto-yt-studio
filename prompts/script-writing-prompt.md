@@ -43,7 +43,8 @@ Reply with ONLY one JSON list inside one code block, nothing else, in exactly th
       {
         "on_screen": "2–6 word headline shown big on screen",
         "visual": "stock photo search words, e.g. full moon night sky",
-        "text": "What the voice says in this scene"
+        "text": "What the voice says in this scene",
+        "highlight": ["the 1–3 most surprising words, copied exactly from text"]
       }
     ]
   }
@@ -57,6 +58,9 @@ Reply with ONLY one JSON list inside one code block, nothing else, in exactly th
 - **শুধু Shorts চাইলে (এখনকার চ্যানেলের জন্য):** প্রম্পটে লেখো
   "Each video is a YouTube Short: 30–50 seconds (about 90–130 words), 4–6 scenes, and add `"format": "short"`"।
   তখন শুধু খাড়া (9:16) Short বানাবে আর আপলোড করবে, লম্বা ভিডিও না।
+- **হলুদ হাইলাইট:** প্রতিটা সিনের `highlight`-এ যে শব্দগুলো থাকবে (যেমন `"three hearts"`), সাবটাইটেলে সেগুলো
+  হলুদ বক্সে কালো লেখায় দেখাবে। শব্দগুলো `text`-এ হুবহু থাকতে হবে, ছোট রাখো (৩ শব্দের মধ্যে)। `highlight` না দিলে
+  সংখ্যা আর তার পরের শব্দটা নিজে থেকে হাইলাইট হবে। বন্ধ করতে চাইলে `config.yaml`-এ `highlight: false`।
 - **লম্বা ভিডিওর সাথে Short-ও চাইলে:** `config.yaml`-এ `shorts: enabled: true` থাকলে প্রতিটা লম্বা ভিডিওর একটা Short ভার্সনও যাবে।
 - **British ভয়েস চাইলে:** `config.yaml`-এ `voice: "en-GB-RyanNeural"` দাও, আর প্রম্পটে
   "Use British spelling" লিখে দাও।

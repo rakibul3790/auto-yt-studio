@@ -21,27 +21,42 @@
     {
       "on_screen": "Koala fingerprints",
       "visual": "koala in tree",
-      "text": "Koalas have fingerprints. And they look almost exactly like ours."
+      "text": "Koalas have fingerprints. And they look almost exactly like ours.",
+      "highlight": [
+        "fingerprints"
+      ]
     },
     {
       "on_screen": "Loops and swirls",
       "visual": "fingerprint close up",
-      "text": "They have the same loops, arches and swirls that we have on our fingertips."
+      "text": "They have the same loops, arches and swirls that we have on our fingertips.",
+      "highlight": [
+        "loops, arches and swirls"
+      ]
     },
     {
       "on_screen": "Hard to tell apart",
       "visual": "koala close up",
-      "text": "Scientists have said that even under a microscope, koala prints can be very hard to tell apart from human ones."
+      "text": "Scientists have said that even under a microscope, koala prints can be very hard to tell apart from human ones.",
+      "highlight": [
+        "hard to tell apart"
+      ]
     },
     {
       "on_screen": "Why?",
       "visual": "eucalyptus leaves",
-      "text": "Koalas are not close relatives of ours. Their prints probably developed to help them grip branches and handle their leafy food."
+      "text": "Koalas are not close relatives of ours. Their prints probably developed to help them grip branches and handle their leafy food.",
+      "highlight": [
+        "grip branches"
+      ]
     },
     {
       "on_screen": "Follow for more",
       "visual": "koala sleeping",
-      "text": "Nature sometimes solves the same problem twice. Follow for more weird facts."
+      "text": "Nature sometimes solves the same problem twice. Follow for more weird facts.",
+      "highlight": [
+        "the same problem twice"
+      ]
     }
   ]
 }

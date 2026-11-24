@@ -21,27 +21,42 @@
     {
       "on_screen": "Stronger than steel",
       "visual": "spider web dew",
-      "text": "Spider silk can be stronger than steel."
+      "text": "Spider silk can be stronger than steel.",
+      "highlight": [
+        "stronger than steel"
+      ]
     },
     {
       "on_screen": "Weight for weight",
       "visual": "spider on web",
-      "text": "Compared weight for weight, some kinds of spider silk are stronger than steel."
+      "text": "Compared weight for weight, some kinds of spider silk are stronger than steel.",
+      "highlight": [
+        "weight for weight"
+      ]
     },
     {
       "on_screen": "And it stretches",
       "visual": "web close up",
-      "text": "Unlike steel, it can also stretch a long way before it breaks. That is why a web can stop a flying insect without snapping."
+      "text": "Unlike steel, it can also stretch a long way before it breaks. That is why a web can stop a flying insect without snapping.",
+      "highlight": [
+        "stretch a long way"
+      ]
     },
     {
       "on_screen": "Scientists want it",
       "visual": "laboratory",
-      "text": "Researchers have spent years trying to copy it, for things like medical stitches and lightweight protective gear."
+      "text": "Researchers have spent years trying to copy it, for things like medical stitches and lightweight protective gear.",
+      "highlight": [
+        "medical stitches"
+      ]
     },
     {
       "on_screen": "Follow for more",
       "visual": "morning web sunlight",
-      "text": "One of the strongest materials on Earth is spun by a spider. Follow for more weird facts."
+      "text": "One of the strongest materials on Earth is spun by a spider. Follow for more weird facts.",
+      "highlight": [
+        "spun by a spider"
+      ]
     }
   ]
 }

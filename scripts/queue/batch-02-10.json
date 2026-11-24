@@ -21,27 +21,42 @@
     {
       "on_screen": "Trees vs stars",
       "visual": "forest from above",
-      "text": "There are more trees on Earth than stars in our galaxy."
+      "text": "There are more trees on Earth than stars in our galaxy.",
+      "highlight": [
+        "more trees"
+      ]
     },
     {
       "on_screen": "About 3 trillion trees",
       "visual": "green forest",
-      "text": "A large study estimated there are about three trillion trees on our planet."
+      "text": "A large study estimated there are about three trillion trees on our planet.",
+      "highlight": [
+        "three trillion trees"
+      ]
     },
     {
       "on_screen": "100 to 400 billion stars",
       "visual": "milky way galaxy",
-      "text": "The Milky Way is thought to have somewhere between one hundred and four hundred billion stars."
+      "text": "The Milky Way is thought to have somewhere between one hundred and four hundred billion stars.",
+      "highlight": [
+        "four hundred billion"
+      ]
     },
     {
       "on_screen": "But we're losing them",
       "visual": "tree stumps",
-      "text": "The same study found that billions of trees are cut down every year, so that number keeps shrinking."
+      "text": "The same study found that billions of trees are cut down every year, so that number keeps shrinking.",
+      "highlight": [
+        "keeps shrinking"
+      ]
     },
     {
       "on_screen": "Follow for more",
       "visual": "tree sunlight",
-      "text": "Every one of those trees counts. Follow for more weird facts."
+      "text": "Every one of those trees counts. Follow for more weird facts.",
+      "highlight": [
+        "counts"
+      ]
     }
   ]
 }

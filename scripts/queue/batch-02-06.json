@@ -21,27 +21,42 @@
     {
       "on_screen": "A floating planet",
       "visual": "planet saturn",
-      "text": "If you could find a bathtub big enough, Saturn would float in it."
+      "text": "If you could find a bathtub big enough, Saturn would float in it.",
+      "highlight": [
+        "Saturn would float"
+      ]
     },
     {
       "on_screen": "Huge but light",
       "visual": "saturn rings",
-      "text": "Saturn is enormous. More than seven hundred Earths could fit inside it. But it is mostly hydrogen and helium gas."
+      "text": "Saturn is enormous. More than seven hundred Earths could fit inside it. But it is mostly hydrogen and helium gas.",
+      "highlight": [
+        "seven hundred Earths"
+      ]
     },
     {
       "on_screen": "Less dense than water",
       "visual": "water surface",
-      "text": "That makes it the only planet in our solar system that is less dense than water, on average."
+      "text": "That makes it the only planet in our solar system that is less dense than water, on average.",
+      "highlight": [
+        "less dense than water"
+      ]
     },
     {
       "on_screen": "Just a thought experiment",
       "visual": "solar system planets",
-      "text": "Of course, no such bathtub exists, and the planet would not stay in one piece. But on paper, it floats."
+      "text": "Of course, no such bathtub exists, and the planet would not stay in one piece. But on paper, it floats.",
+      "highlight": [
+        "it floats"
+      ]
     },
     {
       "on_screen": "Follow for more",
       "visual": "night sky stars",
-      "text": "A giant that weighs less than it looks. Follow for more weird facts."
+      "text": "A giant that weighs less than it looks. Follow for more weird facts.",
+      "highlight": [
+        "weighs less"
+      ]
     }
   ]
 }

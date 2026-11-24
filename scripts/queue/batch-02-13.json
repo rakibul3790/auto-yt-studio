@@ -21,27 +21,42 @@
     {
       "on_screen": "Was Napoleon short?",
       "visual": "old painting portrait",
-      "text": "Napoleon is famous for being short. But he probably wasn't."
+      "text": "Napoleon is famous for being short. But he probably wasn't.",
+      "highlight": [
+        "he probably wasn't"
+      ]
     },
     {
       "on_screen": "About 1.7 meters",
       "visual": "historic palace",
-      "text": "Most historians think he was around one point seven meters tall, roughly average for a Frenchman of his time."
+      "text": "Most historians think he was around one point seven meters tall, roughly average for a Frenchman of his time.",
+      "highlight": [
+        "roughly average"
+      ]
     },
     {
       "on_screen": "Inches got mixed up",
       "visual": "old ruler measurement",
-      "text": "Part of the confusion came from measurements. French inches were longer than British inches, so his height sounded smaller than it was."
+      "text": "Part of the confusion came from measurements. French inches were longer than British inches, so his height sounded smaller than it was.",
+      "highlight": [
+        "French inches"
+      ]
     },
     {
       "on_screen": "Cartoons did the rest",
       "visual": "old newspaper",
-      "text": "British cartoonists also loved drawing him as a tiny, angry man, and the image stuck."
+      "text": "British cartoonists also loved drawing him as a tiny, angry man, and the image stuck.",
+      "highlight": [
+        "tiny, angry man"
+      ]
     },
     {
       "on_screen": "Follow for more",
       "visual": "paris street",
-      "text": "Sometimes history remembers the joke, not the truth. Follow for more weird facts."
+      "text": "Sometimes history remembers the joke, not the truth. Follow for more weird facts.",
+      "highlight": [
+        "the joke"
+      ]
     }
   ]
 }

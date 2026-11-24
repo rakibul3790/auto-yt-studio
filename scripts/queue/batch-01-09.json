@@ -21,27 +21,42 @@
     {
       "on_screen": "Older than the Aztecs",
       "visual": "old university building",
-      "text": "Oxford University is older than the Aztec Empire."
+      "text": "Oxford University is older than the Aztec Empire.",
+      "highlight": [
+        "older"
+      ]
     },
     {
       "on_screen": "Oxford: 1096",
       "visual": "medieval library",
-      "text": "There is evidence of teaching at Oxford as early as ten ninety six, more than nine hundred years ago."
+      "text": "There is evidence of teaching at Oxford as early as ten ninety six, more than nine hundred years ago.",
+      "highlight": [
+        "nine hundred years"
+      ]
     },
     {
       "on_screen": "Tenochtitlan: 1325",
       "visual": "aztec temple ruins",
-      "text": "The Aztecs founded their capital city, Tenochtitlan, in thirteen twenty five. That is over two hundred years later."
+      "text": "The Aztecs founded their capital city, Tenochtitlan, in thirteen twenty five. That is over two hundred years later.",
+      "highlight": [
+        "two hundred years later"
+      ]
     },
     {
       "on_screen": "Same planet, different worlds",
       "visual": "ancient city",
-      "text": "So students were already studying in Oxford long before one of the most famous empires in the Americas even began."
+      "text": "So students were already studying in Oxford long before one of the most famous empires in the Americas even began.",
+      "highlight": [
+        "long before"
+      ]
     },
     {
       "on_screen": "Follow for more",
       "visual": "old books",
-      "text": "Our timelines overlap in ways school never mentioned. Follow for more weird facts."
+      "text": "Our timelines overlap in ways school never mentioned. Follow for more weird facts.",
+      "highlight": [
+        "overlap"
+      ]
     }
   ]
 }
