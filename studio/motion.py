@@ -133,10 +133,29 @@ def load_map() -> Image.Image:
         img = Image.open(jpg).convert("RGB")
         if img.width > 5400:
             img = img.resize((5400, 2700), Image.LANCZOS)
+        img = _brighter_ocean(img)
         img = ImageEnhance.Color(img).enhance(1.25)
         img = ImageEnhance.Contrast(img).enhance(1.08)
         return img
     return _drawn_map()
+
+
+def _brighter_ocean(img: Image.Image) -> Image.Image:
+    """Blue Marble's flat navy sea -> a livelier blue, deeper towards the poles."""
+    a = np.asarray(img).astype(np.float32)
+    r, g, b = a[..., 0], a[..., 1], a[..., 2]
+    sea = np.clip((b - np.maximum(r, g) * 1.15) / 25, 0, 1) * np.clip((90 - (r + g + b) / 3) / 30, 0, 1)
+    h, w = sea.shape
+    y = np.abs(np.linspace(-1, 1, h))[:, None]
+    rnd = np.random.default_rng(5)
+    small = Image.fromarray((rnd.random((h // 40 + 1, w // 40 + 1)) * 255).astype(np.uint8))
+    tex = np.asarray(small.resize((w, h), Image.BICUBIC), np.float32) / 255 - .5
+    blue = np.dstack([18 + 10 * (1 - y) + 8 * tex, 70 + 45 * (1 - y) + 14 * tex,
+                      135 + 55 * (1 - y) + 14 * tex])
+    soft = np.asarray(Image.fromarray((sea * 255).astype(np.uint8)).filter(ImageFilter.GaussianBlur(1.5)),
+                      np.float32)[..., None] / 255
+    out = a * (1 - soft) + blue * soft
+    return Image.fromarray(np.clip(out, 0, 255).astype(np.uint8), "RGB")
 
 
 def _drawn_map(w: int = 4096) -> Image.Image:
@@ -177,7 +196,7 @@ class World:
 
     def view(self, lon: float, lat: float, width_deg: float, size: tuple[int, int]) -> Image.Image:
         W, H = size
-        width_deg = min(width_deg, 180.0 * W / H)
+        width_deg = min(max(width_deg, 360.0 * W * 0.55 / self.w), 180.0 * W / H)
         hdeg = width_deg * H / W
         lat = min(max(lat, -90 + hdeg / 2), 90 - hdeg / 2)
         cx = (lon + 180) / 360 * self.w + self.w
