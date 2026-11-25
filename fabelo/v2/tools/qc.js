@@ -60,7 +60,7 @@ function measureVideo(file) {
 
 (async () => {
   fs.mkdirSync(outDir, { recursive: true });
-  const browser = await puppeteer.launch({ headless: 'new', executablePath: arg('chrome', process.env.CHROME_PATH || undefined), args: ['--no-sandbox', '--disable-dev-shm-usage', '--force-color-profile=srgb'] });
+  const browser = await puppeteer.launch({ headless: 'new', protocolTimeout: 600000, executablePath: arg('chrome', process.env.CHROME_PATH || undefined), args: ['--no-sandbox', '--disable-dev-shm-usage', '--force-color-profile=srgb'] });
   const page = await browser.newPage();
   await page.setViewport({ width: 1280, height: 720 });
   await page.goto('file://' + path.resolve(pageArg) + '?t=0', { waitUntil: 'load', timeout: 90000 });
