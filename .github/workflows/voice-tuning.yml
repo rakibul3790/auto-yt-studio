@@ -1,11 +1,11 @@
-# Runs only on the voice-tuning branch: one emotional ElevenLabs sample (eleven_v3, under 900 credits).
+# Runs only on the voice-tuning branch: only the closing line (eleven_v3, under 60 credits).
 name: Voice tuning samples
 
 on:
   push:
     branches: [voice-tuning]
     paths:
-      - "tools/voice_emotions.py"
+      - "tools/voice_closing.py"
       - ".github/workflows/voice-tuning.yml"
 
 permissions:
@@ -20,7 +20,7 @@ jobs:
       - uses: actions/setup-python@v6
         with:
           python-version: "3.12"
-      - run: python tools/voice_emotions.py
+      - run: python tools/voice_closing.py
         env:
           ELEVENLABS_API_KEY: ${{ secrets.ELEVENLABS_API_KEY }}
       - name: Save samples on this branch
