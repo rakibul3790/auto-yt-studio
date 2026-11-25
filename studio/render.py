@@ -128,6 +128,9 @@ def render(data: dict, cfg: dict, work: Path, out_file: Path,
     first_img: Path | None = None
 
     style = str(data.get("style", "")).lower()
+    if style == "pro" or (vcfg.get("pro_shorts") and h > w and style not in ("map", "explainer")):
+        from . import pro            # professional Shorts: beats, clips, word captions, sound design
+        return pro.render(data, cfg, work, out_file, size, max_seconds)
     map_style = style == "map"
     explainer = style == "explainer"
     speech: list[tuple[float, float]] = []

@@ -1,0 +1,286 @@
+{
+  "title": "On Venus, One Spin Takes Longer Than a Year",
+  "format": "short",
+  "description": "Venus takes about 243 Earth days to spin once, but only about 225 Earth days to orbit the Sun. And it spins backwards.",
+  "tags": [
+    "venus",
+    "venus facts",
+    "day on venus",
+    "space facts",
+    "planets",
+    "solar system",
+    "astronomy",
+    "weird facts",
+    "mind blowing facts"
+  ],
+  "hashtags": [
+    "space",
+    "facts"
+  ],
+  "thumbnail_text": "Birthday before bedtime",
+  "scenes": [
+    {
+      "on_screen": "Birthday before bedtime",
+      "visual": "planet venus",
+      "subject": "venus",
+      "text": "On Venus, you'd celebrate a birthday before a single day is over.",
+      "highlight": [
+        "before a single day"
+      ],
+      "beats": [
+        {
+          "at_word": 0,
+          "shot": "clip",
+          "query": "planet venus",
+          "subject": "venus",
+          "camera": "punch",
+          "sfx": [
+            "impact"
+          ]
+        },
+        {
+          "at_word": 3,
+          "shot": "clip",
+          "query": "birthday cake candles",
+          "subject": "cake",
+          "camera": "push_in",
+          "transition": "cut"
+        }
+      ]
+    },
+    {
+      "on_screen": "Slowest spin",
+      "visual": "venus planet space",
+      "subject": "venus",
+      "text": "Our closest neighbor spins so slowly",
+      "highlight": [
+        "so slowly"
+      ],
+      "beats": [
+        {
+          "at_word": 0,
+          "shot": "clip",
+          "query": "planet rotating space",
+          "subject": "planet",
+          "camera": "drift",
+          "transition": "whip_left",
+          "sfx": [
+            "swish"
+          ]
+        }
+      ]
+    },
+    {
+      "on_screen": "1 spin = 243 days",
+      "visual": "planet rotating space",
+      "subject": "planet",
+      "text": "that one full turn takes two hundred and forty three Earth days.",
+      "highlight": [
+        "forty three Earth days"
+      ],
+      "beats": [
+        {
+          "at_word": 0,
+          "shot": "number",
+          "query": "planet rotating",
+          "subject": "planet",
+          "camera": "drift",
+          "transition": "zoom",
+          "sfx": [
+            "whoosh",
+            "tick"
+          ],
+          "number": {
+            "from": 0,
+            "to": 243,
+            "suffix": " DAYS",
+            "label": "ONE SPIN"
+          }
+        }
+      ]
+    },
+    {
+      "on_screen": "1 year = 225 days",
+      "visual": "solar system orbit sun",
+      "subject": "sun",
+      "text": "But one trip around the Sun takes only about two hundred and twenty five.",
+      "highlight": [
+        "twenty five"
+      ],
+      "beats": [
+        {
+          "at_word": 0,
+          "shot": "compare",
+          "query": "sun surface",
+          "subject": "sun",
+          "camera": "drift",
+          "transition": "slide_up",
+          "sfx": [
+            "whoosh",
+            "tick"
+          ],
+          "compare": {
+            "left": {
+              "label": "1 SPIN",
+              "value": 243
+            },
+            "right": {
+              "label": "1 YEAR",
+              "value": 225
+            },
+            "unit": "days"
+          }
+        }
+      ]
+    },
+    {
+      "on_screen": "Spin longer than year",
+      "visual": "venus surface",
+      "subject": "venus",
+      "text": "So one spin outlasts a whole year.",
+      "highlight": [
+        "outlasts a whole year"
+      ],
+      "beats": [
+        {
+          "at_word": 0,
+          "shot": "clip",
+          "query": "calendar pages",
+          "subject": "calendar",
+          "camera": "push_in",
+          "transition": "whip_right",
+          "sfx": [
+            "swish"
+          ]
+        }
+      ]
+    },
+    {
+      "on_screen": "It gets weirder",
+      "visual": "yellow clouds planet",
+      "subject": "planet",
+      "text": "It gets weirder.",
+      "highlight": [
+        "weirder"
+      ],
+      "beats": [
+        {
+          "at_word": 0,
+          "shot": "text",
+          "query": "yellow clouds",
+          "subject": "clouds",
+          "camera": "drift",
+          "transition": "flash",
+          "sfx": [
+            "riser",
+            "impact"
+          ],
+          "text": "IT GETS WEIRDER"
+        }
+      ]
+    },
+    {
+      "on_screen": "Spins backwards",
+      "visual": "planet space dark",
+      "subject": "planet",
+      "text": "Venus spins backwards,",
+      "highlight": [
+        "spins backwards"
+      ],
+      "beats": [
+        {
+          "at_word": 0,
+          "shot": "clip",
+          "query": "spinning globe",
+          "subject": "globe",
+          "camera": "pan_left",
+          "transition": "glitch",
+          "sfx": [
+            "glitch"
+          ]
+        }
+      ]
+    },
+    {
+      "on_screen": "Sun rises in the west",
+      "visual": "sunrise sky",
+      "subject": "sunrise",
+      "text": "so the Sun rises in the west and sets in the east.",
+      "highlight": [
+        "rises in the west"
+      ],
+      "beats": [
+        {
+          "at_word": 0,
+          "shot": "clip",
+          "query": "sunrise time lapse",
+          "subject": "sunrise",
+          "camera": "tilt_up",
+          "transition": "slide_up",
+          "sfx": [
+            "whoosh"
+          ]
+        },
+        {
+          "at_word": 7,
+          "shot": "clip",
+          "query": "sunset time lapse",
+          "subject": "sunset",
+          "camera": "pull_out",
+          "transition": "cut"
+        }
+      ]
+    },
+    {
+      "on_screen": "All upside down",
+      "visual": "old clock",
+      "subject": "clock",
+      "text": "Clocks, calendars, even sunrise, all upside down.",
+      "highlight": [
+        "all upside down"
+      ],
+      "beats": [
+        {
+          "at_word": 0,
+          "shot": "clip",
+          "query": "old clock",
+          "subject": "clock",
+          "camera": "punch",
+          "transition": "whip_left",
+          "sfx": [
+            "swish"
+          ]
+        },
+        {
+          "at_word": 4,
+          "shot": "clip",
+          "query": "upside down",
+          "subject": "upside",
+          "camera": "tilt_down",
+          "transition": "cut"
+        }
+      ]
+    },
+    {
+      "on_screen": "Which is why",
+      "visual": "planet venus",
+      "subject": "venus",
+      "text": "Which is exactly why...",
+      "highlight": [
+        "exactly why"
+      ],
+      "beats": [
+        {
+          "at_word": 0,
+          "shot": "clip",
+          "query": "planet venus",
+          "subject": "venus",
+          "camera": "push_in",
+          "transition": "cut"
+        }
+      ]
+    }
+  ],
+  "style": "pro",
+  "music_mood": "mysterious"
+}

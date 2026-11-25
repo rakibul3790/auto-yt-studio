@@ -1,0 +1,63 @@
+# Test renders for the new "pro" Shorts style. Runs only on the pro-shorts
+# branch, with the free Edge voices, and never uploads anything to YouTube.
+# The finished test videos are saved in test-output/ on this branch.
+name: Pro Shorts test
+
+on:
+  push:
+    branches: [pro-shorts]
+    paths:
+      - "studio/**"
+      - "scripts/pro-tests/**"
+      - ".github/workflows/pro-test.yml"
+
+permissions:
+  contents: write                # to save the test videos on the pro-shorts branch
+
+concurrency:
+  group: pro-test
+  cancel-in-progress: true
+
+jobs:
+  render:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 60
+    steps:
+      - uses: actions/checkout@v5
+
+      - uses: actions/setup-python@v6
+        with:
+          python-version: "3.11"
+          cache: pip
+
+      - name: Install ffmpeg and fonts
+        run: |
+          sudo apt-get update -q
+          sudo apt-get install -y -q ffmpeg fonts-noto-core fonts-noto-color-emoji libraqm0 fontconfig
+
+      - name: Install Python packages
+        run: pip install -r requirements.txt
+
+      - name: Render test Shorts (no upload)
+        env:
+          PEXELS_API_KEY: ${{ secrets.PEXELS_API_KEY }}
+          PIXABAY_API_KEY: ${{ secrets.PIXABAY_API_KEY }}
+          STUDIO_QC_STRICT: "0"
+        run: |
+          python -m studio.main --file scripts/pro-tests/venus-pro.json --no-upload --voice en-US-GuyNeural
+          python -m studio.main --file scripts/pro-tests/octopus-pro.json --no-upload --voice en-US-AvaNeural
+
+      - name: Save the test videos on this branch
+        if: always()
+        run: |
+          mkdir -p test-output
+          cp output/*-short.mp4 output/*.qc.json test-output/ 2>/dev/null || true
+          for d in work/*/; do n=$(basename "$d"); [ -f "$d/plan.json" ] && cp "$d/plan.json" "test-output/$n.plan.json"; done
+          ls -la test-output
+          git config user.name  "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add -f test-output
+          if git diff --cached --quiet; then echo "Nothing to save"; exit 0; fi
+          git commit -m "Pro Shorts test render ${GITHUB_SHA::7}"
+          git pull --rebase --autostash
+          git push
