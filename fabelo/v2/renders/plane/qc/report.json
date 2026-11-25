@@ -14,8 +14,8 @@
    "sample_rate": 48000,
    "channels": 2,
    "integrated_lufs": -14,
-   "lra_lu": 3,
-   "true_peak_dbtp": -1
+   "lra_lu": 3.1,
+   "true_peak_dbtp": -0.9
   }
  },
  "pass": true
