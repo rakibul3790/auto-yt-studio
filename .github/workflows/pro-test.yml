@@ -62,9 +62,37 @@ jobs:
           PEXELS_API_KEY: ${{ secrets.PEXELS_API_KEY }}
           PIXABAY_API_KEY: ${{ secrets.PIXABAY_API_KEY }}
           STUDIO_QC_STRICT: "0"
+          STUDIO_EXPORT_SOURCES: "1"
         run: |
-          python -m studio.main --file scripts/pro-tests/venus-pro.json --no-upload --voice en-US-GuyNeural
-          python -m studio.main --file scripts/pro-tests/octopus-pro.json --no-upload --voice en-US-AvaNeural
+          # each test script names its free Edge voice in "test_voice"
+          for f in scripts/pro-tests/*.json; do
+            v=$(python -c "import json,sys;print(json.load(open(sys.argv[1])).get('test_voice','en-US-GuyNeural'))" "$f")
+            [[ "$v" =~ ^en-[A-Z]{2}-[A-Za-z]+Neural$ ]] || v=en-US-GuyNeural
+            python -m studio.main --file "$f" --no-upload --voice "$v"
+          done
+
+      - name: Save the editing source files (branch pro-sources, zip in 45 MB parts)
+        if: always()
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          shopt -s nullglob
+          dirs=(output/*-sources)
+          [ ${#dirs[@]} -eq 0 ] && { echo "No source folders"; exit 0; }
+          mkdir -p /tmp/src
+          for d in "${dirs[@]}"; do
+            n=$(basename "$d")
+            (cd "$d" && zip -qr -0 "/tmp/$n.zip" .)
+            split -b 45m -d -a 2 "/tmp/$n.zip" "/tmp/src/$n.zip.part"
+            (cd /tmp && sha256sum "$n.zip") >> /tmp/src/SHA256SUMS.txt
+          done
+          cd /tmp/src
+          git init -q -b pro-sources
+          git config user.name  "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add -A && git commit -qm "Editing source files from ${GITHUB_SHA::7}"
+          git push -qf "https://x-access-token:${GH_TOKEN}@github.com/${GITHUB_REPOSITORY}.git" pro-sources
+          ls -la /tmp/src
 
       - name: Save the test videos on this branch
         if: always()

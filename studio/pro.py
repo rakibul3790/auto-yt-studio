@@ -85,6 +85,7 @@ def render(data: dict, cfg: dict, work: Path, out_file: Path, size: tuple[int, i
 
     # ---- voice, scene by scene, with the time of every word
     voice_tag = re.sub(r"[^A-Za-z0-9]", "", str(cfg["channel"].get("voice", "")))[:24]
+    data["_voice"] = str(cfg["channel"].get("voice", ""))
     pause = float(data.get("scene_pause", vcfg.get("pro_scene_pause", 0.12)))
     words: list[dict] = []            # absolute times
     scene_t: list[tuple[float, float]] = []
@@ -161,6 +162,13 @@ def render(data: dict, cfg: dict, work: Path, out_file: Path, size: tuple[int, i
          "-c:a", "aac", "-b:a", "192k", "-ar", str(SR), "-ac", "2", "-r", str(fps),
          "-movflags", "+faststart", str(out_file.resolve())], cwd=work)
     log(f"Rendered {out_file.name} ({total:.1f}s, {tag})")
+
+    if str(os.environ.get("STUDIO_EXPORT_SOURCES", vcfg.get("export_sources", ""))).lower() in ("1", "true", "yes"):
+        try:
+            export_sources(out_file, data, shots, seg_files, pictures, voice, sfx, mix, ass, words, track,
+                           size, fps, total, work, tag)
+        except Exception as e:          # the video itself is fine: don't lose it over the extras
+            log(f"Source export failed: {type(e).__name__}: {e}")
 
     report = qc.check(out_file, size, fps, boxes, qc.safe_area(size))
     out_file.with_suffix(".qc.json").write_text(json.dumps(report, indent=1), encoding="utf-8")
@@ -392,6 +400,7 @@ def _render_shot(sh: dict, n: int, data: dict, size: tuple[int, int], fps: int, 
     kind = beat.get("shot", "clip")
     frames = max(int(round(length * fps)), 2)
     src = footage(beat, n, data["title"], size, work)
+    sh["src"] = src
     camera = beat.get("camera") or ("drift" if kind in ("number", "compare", "text") else "push_in")
     shake = "impact" in (beat.get("sfx") or []) and camera == "punch"
     z, x, y = _camera(camera, frames, fps, shake)
@@ -418,6 +427,7 @@ def _render_shot(sh: dict, n: int, data: dict, size: tuple[int, int], fps: int, 
         chain += "," + ",".join(fx)
     if kind in ("number", "compare", "text"):
         ov_dir, oy = _graphic_frames(beat, kind, size, fps, length, work / f"pro_gfx{n:02d}")
+        sh["gfx"] = (ov_dir, oy)
         inputs += ["-framerate", str(fps), "-i", str(ov_dir / "%04d.png")]
         chain += f"[bg];[bg][1:v]overlay=0:{oy}:eof_action=repeat"
     chain += ",format=yuv420p[v]"
@@ -922,13 +932,16 @@ def _mix_audio(voice: Path, sfx: Path, track: Path | None, total: float, vol: fl
               f"[2:a]aformat=sample_rates={SR}:channel_layouts=stereo,atrim=0:{total:.3f},volume={gain:.4f},"
               f"afade=t=in:st=0:d=0.4,afade=t=out:st={max(total - 0.5, 0):.3f}:d=0.5[m0];"
               f"[key]aformat=channel_layouts=stereo[k2];"
-              f"[m0][k2]sidechaincompress=threshold=0.02:ratio=7:attack=20:release=320:makeup=1[m];"
+              f"[m0][k2]sidechaincompress=threshold=0.02:ratio=7:attack=20:release=320:makeup=1,"
+              f"asplit=2[m][mstem];"
               f"[vo]aformat=channel_layouts=stereo[v2];[1:a]aformat=channel_layouts=stereo[s2];"
               f"[v2][s2][m]amix=inputs=3:duration=first:dropout_transition=0:normalize=0[a]")
     else:
         fc = "[0:a][1:a]amix=inputs=2:duration=first:normalize=0,aformat=channel_layouts=stereo[a]"
+    extra = (["-map", "[mstem]", "-t", f"{total:.3f}", "-ar", str(SR), "-c:a", "pcm_s16le",
+              f"pro_music_{tag}.wav"] if "[mstem]" in fc else [])
     run(["ffmpeg", "-y", "-loglevel", "error", *inputs, "-filter_complex", fc, "-map", "[a]",
-         "-t", f"{total:.3f}", "-ar", str(SR), "-c:a", "pcm_s16le", raw.name], cwd=work)
+         "-t", f"{total:.3f}", "-ar", str(SR), "-c:a", "pcm_s16le", raw.name, *extra], cwd=work)
     # pass 1: measure
     res = subprocess.run(["ffmpeg", "-hide_banner", "-i", str(raw), "-af",
                           "loudnorm=I=-14:TP=-1.5:LRA=11:print_format=json", "-f", "null", "-"],
@@ -946,3 +959,137 @@ def _mix_audio(voice: Path, sfx: Path, track: Path | None, total: float, vol: fl
     run(["ffmpeg", "-y", "-loglevel", "error", "-i", raw.name, "-af", f"{ln},{afade}", "-ar", str(SR),
          "-c:a", "pcm_s16le", out.name], cwd=work)
     return out
+
+
+# ============================================================ source files
+def _slug(t: str, n: int = 28) -> str:
+    return re.sub(r"[^a-z0-9]+", "-", str(t).lower()).strip("-")[:n] or "shot"
+
+
+def _tc(t: float) -> str:
+    return f"{int(t // 60):02d}:{t % 60:06.3f}"
+
+
+def _srt(words: list[dict], out: Path) -> None:
+    """Plain subtitles, 2-4 words per line, for editors that don't read .ass."""
+    lines, cur = [], []
+    for wd in words:
+        cur.append(wd)
+        if len(cur) >= 4 or wd["tok"][-1:] in ".,!?;:" or (len(cur) >= 2 and wd["t1"] - cur[0]["t0"] > 1.2):
+            lines.append(cur)
+            cur = []
+    if cur:
+        lines.append(cur)
+    def ts(t):
+        ms = int(round(t * 1000))
+        return f"{ms // 3600000:02d}:{ms // 60000 % 60:02d}:{ms // 1000 % 60:02d},{ms % 1000:03d}"
+    out.write_text("\n".join(f"{k + 1}\n{ts(l[0]['t0'])} --> {ts(l[-1]['t1'])}\n"
+                             f"{' '.join(x['tok'] for x in l)}\n" for k, l in enumerate(lines)), encoding="utf-8")
+
+
+def export_sources(out_file: Path, data: dict, shots: list[dict], segs: list[Path], pictures: Path,
+                   voice: Path, sfx: Path, mix: Path, ass: Path, words: list[dict], track: Path | None,
+                   size: tuple[int, int], fps: int, total: float, work: Path, tag: str) -> Path:
+    """Everything an editor needs to rebuild or change the Short, at full quality:
+    the video without captions, every shot, the original stock footage (only the part used),
+    the graphics and captions as transparent overlays, and voice / effects / music as
+    separate tracks, with a readme of the timeline."""
+    w, h = size
+    root = out_file.with_name(out_file.stem + "-sources")
+    if root.exists():
+        shutil.rmtree(root)
+    for d in ("audio", "shots", "stock-original", "overlays", "captions"):
+        (root / d).mkdir(parents=True, exist_ok=True)
+    hi = ["-c:v", "libx264", "-preset", "slow", "-crf", "16", "-pix_fmt", "yuv420p"]
+
+    shutil.copy(out_file, root / "01_final_with_captions.mp4")
+    run(["ffmpeg", "-y", "-loglevel", "error", "-i", str(pictures), "-i", str(mix), "-map", "0:v", "-map", "1:a",
+         "-t", f"{total:.3f}", *hi, "-r", str(fps), "-c:a", "aac", "-b:a", "256k",
+         str(root / "02_video_no_captions.mp4")])
+
+    # audio stems (voice, effects and ducked music add up to the mix before loudness levelling)
+    shutil.copy(voice, root / "audio" / "voice.wav")
+    shutil.copy(sfx, root / "audio" / "sound_effects.wav")
+    stem = work / f"pro_music_{tag}.wav"
+    if stem.exists():
+        shutil.copy(stem, root / "audio" / "music_ducked.wav")
+    shutil.copy(mix, root / "audio" / "final_mix_-14LUFS.wav")
+
+    # captions: animated transparent overlay + the .ass and .srt files and the font
+    shutil.copy(ass, root / "captions" / "captions_animated.ass")
+    _srt(words, root / "captions" / "captions_plain.srt")
+    if FONT.exists():
+        shutil.copy(FONT, root / "captions" / "Montserrat-ExtraBold.ttf")
+    run(["ffmpeg", "-y", "-loglevel", "error", "-f", "lavfi", "-i", f"color=black@0.0:s={w}x{h}:r={fps}:d={total:.3f},format=rgba",
+         "-vf", f"ass={ass.name}:fontsdir={FONT_DIR.resolve()}:alpha=1", "-c:v", "png", "-pix_fmt", "rgba",
+         str((root / "overlays" / "captions_transparent.mov").resolve())], cwd=work)
+
+    rows = []
+    for n, (sh, seg) in enumerate(zip(shots, segs)):
+        b = sh["beat"]
+        kind = b.get("shot", "clip")
+        name = f"{n + 1:02d}_{kind}_{_slug(b.get('text') or b.get('query') or kind)}"
+        shutil.copy(seg, root / "shots" / f"{name}.mp4")
+        src = sh.get("src") or {}
+        orig = ""
+        if src.get("kind") == "vid":
+            st = max(float(src.get("start", 0.0)) - 1.0, 0.0)
+            dst = root / "stock-original" / f"{name}{Path(src['src']).suffix}"
+            run(["ffmpeg", "-y", "-loglevel", "error", "-ss", f"{st:.2f}", "-i", str(src["src"]),
+                 "-t", f"{sh['len'] + 3.0:.2f}", "-map", "0:v:0", "-c", "copy", "-an", str(dst)])
+            orig = dst.name
+        elif src.get("kind") == "img":
+            dst = root / "stock-original" / f"{name}.jpg"
+            shutil.copy(src["src"], dst)
+            orig = dst.name
+        gfx = ""
+        if sh.get("gfx"):
+            gdir, oy = sh["gfx"]
+            gname = f"{name}_graphic.mov"
+            run(["ffmpeg", "-y", "-loglevel", "error", "-framerate", str(fps), "-i", str(gdir / "%04d.png"),
+                 "-vf", f"pad={w}:{h}:0:{oy}:color=black@0.0,format=rgba", "-c:v", "png",
+                 str(root / "overlays" / gname)])
+            gfx = gname
+        rows.append((n + 1, sh["b"], sh["len"], sh["tr"], kind, b.get("camera", ""), ", ".join(b.get("sfx") or []),
+                     b.get("query", ""), f"shots/{name}.mp4", f"stock-original/{orig}" if orig else "-",
+                     f"overlays/{gfx}" if gfx else "-"))
+
+    music_line = (f"{track.name} by Kevin MacLeod (incompetech.com), licensed under Creative Commons: "
+                  f"By Attribution 4.0. Keep this credit in the description." if track else "none")
+    lines = [
+        f"{data.get('title', '')}: source files for editing",
+        "",
+        f"Length {total:.2f} s, {w}x{h}, {fps} fps. Voice: {data.get('_voice', '')}".rstrip(),
+        "",
+        "Files",
+        "- 01_final_with_captions.mp4: the finished Short.",
+        "- 02_video_no_captions.mp4: the same picture and sound with no captions burned in.",
+        "- shots/: every shot as rendered (camera move, colour grade, graphic), in timeline order.",
+        "- stock-original/: the original stock footage at full resolution, only the part used plus about 1 s"
+        " either side. Photos are whole.",
+        "- overlays/captions_transparent.mov: the animated captions on a transparent background (PNG codec,"
+        " put it on the top track).",
+        "- overlays/*_graphic.mov: number, chart and title graphics on a transparent background, full frame.",
+        "- captions/: captions_animated.ass (exact animation, needs the Montserrat font beside it),"
+        " captions_plain.srt (plain subtitles) and the font.",
+        "- audio/voice.wav, sound_effects.wav, music_ducked.wav: separate tracks, already lined up from 0:00."
+        " Together they make the mix before loudness levelling.",
+        "- audio/final_mix_-14LUFS.wav: the finished mix (YouTube loudness, -14 LUFS, peak -1.5 dB).",
+        "",
+        "Timeline (start, length and the transition into each shot)",
+        "no | start | length | transition | kind | camera | sound | stock search | files",
+    ]
+    for r in rows:
+        lines.append(f"{r[0]:02d} | {_tc(r[1])} | {r[2]:.2f}s | {r[3]} | {r[4]} | {r[5]} | {r[6] or '-'} | "
+                     f"{r[7]} | {r[8]}; {r[9]}; {r[10]}")
+    lines += ["", "Transitions overlap the next shot by their length (whip 0.22 s, zoom 0.30 s,"
+              " slide 0.26 s, flash and glitch short). A plain cut has none.",
+              "", f"Music: {music_line}",
+              "Stock footage: Pixabay and Pexels content licences (free to use and edit, no credit needed)."]
+    (root / "README.txt").write_text("\n".join(lines) + "\n", encoding="utf-8")
+    (root / "timeline.json").write_text(json.dumps([
+        {"no": r[0], "start": round(r[1], 3), "length": round(r[2], 3), "transition": r[3], "kind": r[4],
+         "camera": r[5], "sfx": r[6], "query": r[7], "shot": r[8], "original": r[9], "overlay": r[10]}
+        for r in rows], indent=1), encoding="utf-8")
+    log(f"Source files for editing in {root.name}/")
+    return root
