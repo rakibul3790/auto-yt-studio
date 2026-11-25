@@ -400,6 +400,34 @@ def _shots(scenes: list[dict], scene_t: list[tuple[float, float]], words: list[d
 
 
 def _join(shots: list[dict], files: list[Path], out: Path, work: Path) -> None:
+    """Chain the shots. A long video is joined in groups of about 18 shots (split at hard
+    cuts, so nothing overlaps), then the groups are put end to end: one ffmpeg with 180
+    inputs would run out of memory."""
+    if len(files) > 24:
+        groups, cur = [], [0]
+        for n in range(1, len(files)):
+            if len(cur) >= 18 and (shots[n]["tr"] == "cut" or shots[n]["d"] <= 0):
+                groups.append(cur)
+                cur = [n]
+            else:
+                cur.append(n)
+        groups.append(cur)
+        if len(groups) > 1:
+            parts = []
+            for gi, g in enumerate(groups):
+                p = work / f"pro_joinpart{gi:02d}.mp4"
+                _join_some([shots[k] for k in g], [files[k] for k in g], p, work, f"pro_join{gi:02d}.txt")
+                parts.append(p)
+            lst = work / "pro_join_list.txt"
+            lst.write_text("".join(f"file '{p.name}'\n" for p in parts), encoding="utf-8")
+            run(["ffmpeg", "-y", "-loglevel", "error", "-f", "concat", "-safe", "0", "-i", lst.name,
+                 "-c", "copy", str(out.resolve())], cwd=work)
+            log(f"Joined {len(files)} shots in {len(groups)} groups")
+            return
+    _join_some(shots, files, out, work, "pro_join.txt")
+
+
+def _join_some(shots: list[dict], files: list[Path], out: Path, work: Path, name: str) -> None:
     """Chain the shots: hard cuts by concat, styled transitions by xfade."""
     if len(files) == 1:
         shutil.copy(files[0], out)
@@ -417,7 +445,7 @@ def _join(shots: list[dict], files: list[Path], out: Path, work: Path) -> None:
             fc.append(f"[{last}][i{n}]xfade=transition={XFADE[tr]}:duration={shots[n]['d']:.3f}"
                       f":offset={offset:.3f}[x{n}]")
         last = f"x{n}"
-    script = work / "pro_join.txt"
+    script = work / name
     script.write_text(";\n".join(fc), encoding="utf-8")
     run(["ffmpeg", "-y", "-loglevel", "error", *args, "-filter_complex_script", str(script),
          "-map", f"[{last}]", *ENC, str(out)])

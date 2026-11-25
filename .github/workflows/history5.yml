@@ -27,6 +27,10 @@ jobs:
         with:
           python-version: "3.11"
           cache: pip
+      - name: Free disk space (a long render needs room)
+        run: |
+          sudo rm -rf /usr/share/dotnet /usr/local/lib/android /opt/ghc /opt/hostedtoolcache/CodeQL || true
+          df -h / && free -h
       - name: Install ffmpeg and fonts
         run: |
           sudo apt-get update -q
@@ -77,7 +81,9 @@ jobs:
           PEXELS_API_KEY: ${{ secrets.PEXELS_API_KEY }}
           PIXABAY_API_KEY: ${{ secrets.PIXABAY_API_KEY }}
           STUDIO_QC_STRICT: "0"
-        run: python -m studio.main --file scripts/queue/_history5.json --no-upload
+        run: |
+          ( while true; do sleep 300; echo "[watch] $(df -h / | tail -1 | awk '{print $4}') disk free, $(free -m | awk '/Mem/{print $7}') MB memory free"; done ) &
+          python -m studio.main --file scripts/queue/_history5.json --no-upload
       - name: Save the video (Actions artifact)
         if: always()
         uses: actions/upload-artifact@v4
