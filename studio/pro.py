@@ -99,7 +99,10 @@ def render(data: dict, cfg: dict, work: Path, out_file: Path, size: tuple[int, i
         # delivery: each scene may speed up or slow down a little ("rate": "-8%") and hold
         # a longer or shorter beat after it ("pause": 0.4), so the narration has rhythm
         rate = max(-30, min(30, base_rate + _pct(sc.get("rate", "+0%"))))
-        scfg = {**cfg, "channel": {**cfg["channel"], "voice_rate": f"{rate:+d}%", "voice_pitch": base_pitch}}
+        scenes = data["scenes"]
+        scfg = {**cfg, "channel": {**cfg["channel"], "voice_rate": f"{rate:+d}%", "voice_pitch": base_pitch,
+                                   "_prev_text": " ".join(str(x.get("text", "")) for x in scenes[max(i - 2, 0):i]),
+                                   "_next_text": str(scenes[i + 1].get("text", "")) if i + 1 < len(scenes) else ""}}
         rtag = f"r{rate:+d}{re.sub(r'[^0-9+-]', '', base_pitch)}"
         audio = work / f"pro_{voice_tag}_{rtag}_{i:02d}.mp3"
         meta = audio.with_suffix(".json")

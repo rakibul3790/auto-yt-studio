@@ -63,11 +63,13 @@ jobs:
           PIXABAY_API_KEY: ${{ secrets.PIXABAY_API_KEY }}
           STUDIO_QC_STRICT: "0"
           STUDIO_EXPORT_SOURCES: "1"
+          # only used by a test script whose "test_voice" starts with elevenlabs: (spends credits)
+          ELEVENLABS_API_KEY: ${{ secrets.ELEVENLABS_API_KEY }}
         run: |
           # each test script names its free Edge voice in "test_voice"
           for f in scripts/pro-tests/*.json; do
             v=$(python -c "import json,sys;print(json.load(open(sys.argv[1])).get('test_voice','en-US-GuyNeural'))" "$f")
-            [[ "$v" =~ ^en-[A-Z]{2}-[A-Za-z]+Neural$ ]] || v=en-US-GuyNeural
+            [[ "$v" =~ ^en-[A-Z]{2}-[A-Za-z]+Neural$ || "$v" =~ ^elevenlabs:[A-Za-z0-9]{20}$ ]] || v=en-US-GuyNeural
             python -m studio.main --file "$f" --no-upload --voice "$v"
           done
 
