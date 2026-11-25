@@ -180,6 +180,16 @@ def main() -> int:
         except queue.ScriptError as e:
             log(f"Skipping broken script: {e}")
             queue.copy_to_failed(f)
+        except Exception as e:
+            if "uploadLimitExceeded" not in str(e):
+                raise
+            # YouTube's daily upload cap for this channel is used up. The script
+            # stays in the queue and goes up on the next run; nothing is lost.
+            print("::error title=YouTube daily upload limit reached::"
+                  f"{f.name} was rendered but YouTube refused the upload because "
+                  "the channel has used its daily upload allowance. It stays in "
+                  "the queue and will upload on the next run.", flush=True)
+            return 1
     log(f"Finished: {done} video(s)")
     return 0 if done else 1
 
