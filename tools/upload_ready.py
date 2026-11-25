@@ -1,4 +1,7 @@
-"""Upload finished videos from ready/ to YouTube (always PRIVATE).
+"""Upload finished videos from ready/ (MindBlip, private) or ready-fabelo/ (Fabelo Studio, PUBLIC) to YouTube.
+
+Privacy: Fabelo Studio uploads are public by default; MindBlip uploads are private by default.
+Either can be overridden per video with "privacy": "public" | "unlisted" | "private" in its JSON.
 
 Put three files in ready/:
     my-video.mp4          the finished video
@@ -57,7 +60,13 @@ def main() -> int:
         run_cfg["channel"] = dict(cfg["channel"])
         if meta.get("category_id"):
             run_cfg["channel"]["category_id"] = str(meta["category_id"])
-        run_cfg["run"] = dict(cfg.get("run", {}), privacy="private")   # never public automatically
+        # Fabelo Studio uploads go out PUBLIC (Rakib's choice, 2026-11-26); a JSON can still ask for
+        # "privacy": "private" or "unlisted". MindBlip (ready/) stays private unless its JSON says otherwise.
+        default_privacy = "public" if args.channel == "Fabelo Studio" else "private"
+        privacy = str(meta.get("privacy") or default_privacy).lower()
+        if privacy not in ("private", "unlisted", "public"):
+            privacy = default_privacy
+        run_cfg["run"] = dict(cfg.get("run", {}), privacy=privacy)
         thumb = READY / meta["thumbnail"] if meta.get("thumbnail") else None
         vid = upload(video, meta["title"], meta.get("description", ""), meta.get("tags", []), run_cfg, thumb)
         url = f"https://youtu.be/{vid}"
@@ -70,7 +79,9 @@ def main() -> int:
             if new_file:
                 w.writerow(["time", "file", "title", "url", "short_url"])
             w.writerow([dt.datetime.utcnow().strftime("%Y-%m-%dT%H:%M:%SZ"), f"{args.folder}/{meta_path.name}", meta["title"], url, ""])
-        log(f"Done ({args.channel}): {meta['title']} → {url} (Private)")
+        meta["privacy"] = privacy
+        meta_path.write_text(json.dumps(meta, indent=2, ensure_ascii=False) + "\n", encoding="utf-8")
+        log(f"Done ({args.channel}): {meta['title']} → {url} ({privacy.capitalize()})")
         done += 1
     log(f"Uploaded {done} video(s).")
     return 0

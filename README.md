@@ -175,7 +175,7 @@ Actions থেকে নিজে চালানোর সময় `voice` ঘ
 
 ## Fabelo Studio চ্যানেল (দ্বিতীয় চ্যানেল, Scribble-এর ভিডিও)
 
-Fabelo Studio-র ভিডিও যায় `ready-fabelo/` ফোল্ডার থেকে, নিজস্ব secret দিয়ে। MindBlip-এর secret এখানে কখনো ব্যবহার হয় না।
+Fabelo Studio-র ভিডিও যায় `ready-fabelo/` ফোল্ডার থেকে, নিজস্ব secret দিয়ে, **Public** হিসেবে। নিয়ম: Short তৈরি হলেই আপলোড, লং ভিডিও শুধু Rakib বললে (`fabelo/PRODUCTION_RULES.md`)। MindBlip-এর secret এখানে কখনো ব্যবহার হয় না।
 তাই ভুল চ্যানেলে আপলোড হওয়ার সুযোগ নেই।
 
 | ফোল্ডার | চ্যানেল | Secret | Workflow |
@@ -215,7 +215,7 @@ Fabelo চ্যানেলে কাস্টম থাম্বনেইল �
 
 ## জরুরি কথা
 
-- আপলোড সবসময় **Private** (বা config-এ বললে Unlisted)। Public নিজে থেকে কখনো হবে না।
+- MindBlip (`ready/`): আপলোড সবসময় **Private** (বা config-এ বললে Unlisted)। Fabelo Studio (`ready-fabelo/`): আপলোড **Public** (JSON-এ `"privacy": "private"` দিলে Private)।
 - YouTube একই ছাঁচের, কম পরিশ্রমের "mass-produced" ভিডিওতে মনিটাইজেশন দেয় না। তাই প্রতিটা
   ভিডিও Public করার আগে একবার দেখে নিও, আর স্ক্রিপ্টে আলাদা, কাজের তথ্য রাখো।
 - AI ভয়েসের কথা YouTube-কে জানাতে `synthetic_media: true` রাখা আছে।
@@ -231,7 +231,7 @@ scripts/example.json       নমুনা স্ক্রিপ্ট
 prompts/                   Claude-কে দেওয়ার প্রম্পট
 studio/                    ভিডিও বানানো আর আপলোডের কোড
 tools/get_token.py         PC-তে টোকেন নেওয়ার বিকল্প উপায়
-tools/upload_ready.py      ready/ বা ready-fabelo/ থেকে তৈরি ভিডিও Private আপলোড
+tools/upload_ready.py      ready/ (Private) বা ready-fabelo/ (Public) থেকে তৈরি ভিডিও আপলোড
 ready-fabelo/              Fabelo Studio চ্যানেলের আপলোড ফোল্ডার
 fabelo/                    Scribble লাইব্রেরি + ভিডিও বানানোর টুল (Fabelo Studio)
 logs/uploads.csv           কবে কী আপলোড হলো
