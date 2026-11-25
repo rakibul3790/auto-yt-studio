@@ -1,0 +1,51 @@
+# Renders Fabelo Studio scenes on a fabelo-render-* branch (preview frames + silent video),
+# then commits the results back to the same branch. Never uploads anything.
+name: Render Fabelo scene
+
+on:
+  push:
+    branches: ["fabelo-render-*"]
+    paths: ["fabelo/renders/**"]
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: render-fabelo-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  render:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 60
+    steps:
+      - uses: actions/checkout@v5
+      - name: Tools
+        run: |
+          command -v ffmpeg || (sudo apt-get update -qq && sudo apt-get install -y -qq ffmpeg)
+          mkdir -p /tmp/rt && cd /tmp/rt && npm init -y >/dev/null && npm i --silent puppeteer-core
+          ls -l /usr/bin/google-chrome
+      - name: Render
+        env:
+          NODE_PATH: /tmp/rt/node_modules
+          CHROME_PATH: /usr/bin/google-chrome
+        run: |
+          cd fabelo
+          for d in renders/*/; do
+            [ -f "$d/film.html" ] || continue
+            rm -rf "$d/shots"
+            [ -f "$d/shots.txt" ] && node tools/shots.js "$d/film.html" "$d/shots" "$(cat $d/shots.txt)"
+            if [ -f "$d/RECORD" ]; then
+              node tools/record.js "$d/film.html" "$d/silent.mp4" $(cat "$d/RECORD") --chrome "$CHROME_PATH"
+              rm "$d/RECORD"
+            fi
+          done
+      - name: Save results
+        run: |
+          git config user.name  "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add -A fabelo/renders
+          git diff --cached --quiet && exit 0
+          git commit -m "Render results"
+          git push

@@ -25,6 +25,7 @@ Spec format (all times in seconds):
 fx:      none | room | warm | demon | radio | child
 SFX:     pop scribble whoosh ding bell chime boing poof step tick clank coin click wood swoop
          crumple rustle paper_land dark_whoosh riser burst hiss whistle thud pluck(note=midi)
+         buzz(d) ringback tap
 Beds:    drone heartbeat(bpm) rain birds crickets crackle breath
 Styles:  sparse dark warm build tension triumph tender
 Chords:  Am F C G Dm E Em
@@ -78,6 +79,16 @@ def midi(m): return 440 * 2 ** ((m - 69) / 12)
 def pluck(note=72):
     f = midi(note); t = T(1.2)
     return M.norm((np.sin(2 * np.pi * f * t) + 0.3 * np.sin(4 * np.pi * f * t)) * np.exp(-t / 0.5) * np.minimum(1, t / 0.003))
+def buzz(d=1.0):
+    # phone on vibrate: two rattling pulses per second
+    t = T(d); gate = ((t % 1.0) < 0.38) | (((t % 1.0) > 0.5) & ((t % 1.0) < 0.88))
+    y = np.sin(2 * np.pi * 150 * t) * (0.6 + 0.4 * np.sign(np.sin(2 * np.pi * 26 * t))) + 0.3 * M.bandpass(M.noise(d), 200, 1800)
+    return M.norm(M.lowpass_var(y * gate, 2400, 2400) * np.minimum(1, (d - t) / 0.05))
+def ringback():
+    # one outgoing-call ring (US style 440+480 Hz, 2 s)
+    t = T(2.0); return M.norm((np.sin(2 * np.pi * 440 * t) + np.sin(2 * np.pi * 480 * t)) * np.minimum(1, np.minimum(t / 0.02, (2.0 - t) / 0.05)))
+def tap():
+    t = T(0.08); return M.norm(M.bandpass(M.noise(0.08), 1500, 6000) * np.exp(-t / 0.012) + 0.4 * np.sin(2 * np.pi * 900 * t) * np.exp(-t / 0.02))
 
 # beds (length d)
 def drone(d):
@@ -111,6 +122,7 @@ SFX = {
     'clank': M.sfx_clank, 'coin': M.sfx_coin, 'click': M.sfx_click, 'wood': M.sfx_wood, 'swoop': M.sfx_swoop,
     'crumple': crumple, 'rustle': rustle, 'paper_land': paper_land, 'dark_whoosh': dark_whoosh, 'riser': riser,
     'burst': burst, 'hiss': hiss, 'whistle': whistle, 'thud': thud, 'pluck': pluck,
+    'buzz': buzz, 'ringback': ringback, 'tap': tap,
 }
 SFX_DEFAULT_D = {'scribble': 1.0, 'swoop': 1.0}
 BEDS = {'drone': drone, 'heartbeat': heartbeat, 'rain': rain, 'birds': birds,

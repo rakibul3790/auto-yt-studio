@@ -16,6 +16,8 @@ tools/record.js         frame-exact recorder -> MP4 (any size: 1920x1080, 1080x1
 tools/soundtrack.py     voices + SFX + beds + piano/strings score from one JSON spec -> final MP4
 examples/stand/         "Stand On Your Mistakes" — 137 s emotional short (silent hero, inner critic)
 examples/night/         "How People Slept 500 Years Ago" — 120 s explainer
+examples/call/          "She Called Every Evening" — 46 s Short (split call bubble, flashback)
+tools/shots.js          preview frames at both ratios (node tools/shots.js page.html outdir "1,5,9")
 ```
 
 ## Pipeline
@@ -29,3 +31,11 @@ python3 tools/soundtrack.py --spec work/film.audio.json --video work/film_silent
 ```
 
 Recording speed is about 13–14 frames per second at 1080p (a 60 s video takes about 2–3 minutes).
+
+## No Chrome in the workspace?
+
+Push the scene to a branch named `fabelo-render-<slug>` as `fabelo/renders/<slug>/film.html`
+(built with `tools/build.py`), plus `shots.txt` (times for preview frames) and an optional
+`RECORD` file (e.g. `--w 1080 --h 1920 --fps 30`). The **Render Fabelo scene** workflow renders
+the preview frames and `silent.mp4` on GitHub and commits them back to that branch.
+It never uploads anything.
