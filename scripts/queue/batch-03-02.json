@@ -24,7 +24,9 @@
       "highlight": [
         "billions of tons"
       ],
-      "subject": "star"
+      "subject": "star",
+      "say": "[whispers] A single teaspoon of a neutron star... [gasps] would weigh BILLIONS of tons here on Earth.",
+      "look": "excited"
     },
     {
       "on_screen": "Dead star",
@@ -33,7 +35,8 @@
       "highlight": [
         "giant star explodes"
       ],
-      "subject": "supernova"
+      "subject": "supernova",
+      "say": "A neutron star is what can be left after a giant star explodes. Its core collapses into a tiny ball."
     },
     {
       "on_screen": "City sized",
@@ -42,7 +45,8 @@
       "highlight": [
         "size of a city"
       ],
-      "subject": "city"
+      "subject": "city",
+      "say": "It packs more mass than our Sun into a sphere about the size of a city."
     },
     {
       "on_screen": "Crushed atoms",
@@ -50,7 +54,9 @@
       "text": "Gravity there is so strong that atoms are crushed together, until they are mostly packed neutrons.",
       "highlight": [
         "atoms are crushed"
-      ]
+      ],
+      "say": "[serious] Gravity there is so strong that atoms are crushed together, until they are mostly packed neutrons.",
+      "look": "angry"
     },
     {
       "on_screen": "Heavy stuff",
@@ -58,7 +64,9 @@
       "text": "The heaviest spoonful in the universe. Follow for more weird facts.",
       "highlight": [
         "heaviest spoonful"
-      ]
+      ],
+      "say": "[chuckles] The heaviest spoonful in the universe. Follow for more weird facts."
     }
-  ]
+  ],
+  "music_mood": "mysterious"
 }

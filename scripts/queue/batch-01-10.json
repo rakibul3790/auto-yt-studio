@@ -25,7 +25,9 @@
       "highlight": [
         "with their feet"
       ],
-      "subject": "butterfly"
+      "subject": "butterfly",
+      "say": "[excited] Butterflies can taste... with their FEET.",
+      "look": "excited"
     },
     {
       "on_screen": "Sensors on their legs",
@@ -34,7 +36,8 @@
       "highlight": [
         "taste sensors"
       ],
-      "subject": "butterfly"
+      "subject": "butterfly",
+      "say": "They have special taste sensors on their legs. The moment they land on something, they can tell what it is made of."
     },
     {
       "on_screen": "Finding the right leaf",
@@ -43,7 +46,9 @@
       "highlight": [
         "drums her feet"
       ],
-      "subject": "butterfly"
+      "subject": "butterfly",
+      "say": "[softly] This matters most for mothers. A female butterfly drums her feet on a leaf to check if it is the right plant for her caterpillars to eat.",
+      "look": "whisper"
     },
     {
       "on_screen": "Wrong leaf, fly away",
@@ -52,7 +57,9 @@
       "highlight": [
         "tiny foot test"
       ],
-      "subject": "butterfly"
+      "subject": "butterfly",
+      "say": "[sighs] If the taste is wrong, she flies off and keeps searching. Her babies depend on that tiny foot test.",
+      "look": "sad"
     },
     {
       "on_screen": "Follow for more",
@@ -61,7 +68,9 @@
       "highlight": [
         "stepping on it"
       ],
-      "subject": "butterfly"
+      "subject": "butterfly",
+      "say": "[laughs] Imagine tasting your dinner by stepping on it. [chuckles] Follow for more weird facts."
     }
-  ]
+  ],
+  "music_mood": "quirky"
 }

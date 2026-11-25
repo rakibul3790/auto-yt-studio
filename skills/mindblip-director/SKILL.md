@@ -16,7 +16,7 @@ slideshow. The output is JSON that `rakibul3790/auto-yt-studio` renders with
 Follow `prompts/script-writing-prompt.md` exactly: 70-95 spoken words, hook in the first
 sentence, a new idea every 2-3 seconds (8-12 scenes, one short sentence or phrase each),
 escalate, human comparisons for big numbers, numbers written as spoken words, no call to
-action, and a seamless loop (the last scene is an unfinished sentence that the first scene
+action in the script itself (the renderer adds the follow ending, see section 2b), and a seamless loop (the last scene is an unfinished sentence that the first scene
 completes). No brands, trademarks or copyrighted names. Accurate facts only.
 
 ## 2. The director pass
@@ -48,6 +48,53 @@ Keep the scene's `visual`, `subject`, `on_screen` and `highlight` fields too: th
 fallback when the renderer runs a script without beats. `highlight` (1-3 words copied exactly
 from `text`) is what the captions put on the yellow pill, so pick the words that carry the
 surprise: numbers with their unit, the twist word, the contrast.
+
+## 2b. Voice and emotion (eleven_v3)
+
+The voice is ElevenLabs `XA3P1cj7XJexe6Zq0ATX` on `eleven_v3`, read in ONE take for the whole
+Short (stability 0.0, similarity 0.8). v3 has no timestamps, so the renderer gets word times
+from a free Whisper pass and maps them onto `text`.
+
+Add to every scene:
+
+- `"say"`: the line v3 reads. It is `text` word for word, plus inline audio tags in square
+  brackets. With the tags removed it must equal `text` exactly (captions and `at_word` come
+  from `text`).
+- `"look"` (optional): `excited`, `sad`, `angry` or `whisper`. It drives the picture and music:
+  - excited: richer colour, music up (x1.15);
+  - sad: low saturation, cool blue tint, music down (x0.45);
+  - angry: red tint, more contrast, music up (x1.25), camera shake on the first shot;
+  - whisper: softer colour, slightly lifted, music down (x0.6).
+  Leave it out for a neutral line.
+
+Tags v3 understands: `[excited]`, `[curious]`, `[laughs]`, `[chuckles]`, `[gasps]`, `[sighs]`,
+`[sad]`, `[softly]`, `[warmly]`, `[serious]`, `[worried]`, `[nervous laugh]`, `[whispers]`,
+`[angry]`, `[shouts]`.
+
+Rules:
+
+1. One or two tags per scene, at the start of the line or before the twist word. Never stack
+   three.
+2. Let the emotion follow the fact: wonder or a gasp for the reveal, a sigh or `[sad]` for
+   something unfair, `[angry]` or `[shouts]` only for a genuinely outrageous line, `[whispers]`
+   for a secret, `[laughs]`/`[chuckles]` for something funny.
+3. Change the feeling at least three times across a Short, so it never sounds flat.
+4. Pick `look` from the same feeling as the tag, and choose `music_mood` for the whole Short.
+5. Keep `say` under about 650 characters (credits are billed per character).
+
+### The follow ending (added by the renderer)
+
+Do not write it yourself. The renderer appends `[chuckles] Follow for more weird facts!` to the
+last scene's `say`, drops shots that would fall on those words, and puts a `FOLLOW FOR MORE`
+title card (flash, shimmer) under it, with a short pause after.
+
+### What the renderer does by itself
+
+- Each shot gets its scene's `look` colour; dark clips are brightened, and if still too dark
+  the QC step catches them. Music volume follows each scene's `look` with smooth 0.6 s ramps.
+- If no mood words match, `music_mood` rotates between quirky, upbeat, mysterious and calm.
+- If v3 fails, it falls back to `eleven_multilingual_v2` with the clean `text`, then to the
+  free voice, so a video always comes out.
 
 ## 3. Directing rules (what makes it look professional)
 
@@ -91,6 +138,9 @@ save as `scripts/queue/batch-NN.json`. Before replying, check:
 - every `highlight` phrase is copied exactly from `text`;
 - 1-3 graphic beats, first beat is footage of the main subject with `impact`;
 - word count 70-95, last line completes into the first.
+- every scene has `say`, and `say` with the [tags] removed equals `text` exactly;
+- 1-2 tags per scene, at least three different feelings, `look` matches the tag;
+- no follow line written in the script (the renderer adds it).
 
 ### Example (two scenes)
 
@@ -103,6 +153,8 @@ save as `scripts/queue/batch-NN.json`. Before replying, check:
   "scenes": [
     {
       "text": "On Venus, you'd celebrate a birthday before a single day is over.",
+      "say": "[excited] On Venus, you'd celebrate a birthday [laughs] before a single day is over.",
+      "look": "excited",
       "visual": "planet venus", "subject": "venus", "on_screen": "Birthday before bedtime",
       "highlight": ["before a single day"],
       "beats": [
@@ -114,6 +166,8 @@ save as `scripts/queue/batch-NN.json`. Before replying, check:
     },
     {
       "text": "that one full turn takes two hundred and forty three Earth days.",
+      "say": "[whispers] that one full turn takes [gasps] two hundred and forty three Earth days.",
+      "look": "whisper",
       "visual": "planet rotating space", "subject": "planet", "on_screen": "1 spin = 243 days",
       "highlight": ["forty three Earth days"],
       "beats": [

@@ -348,3 +348,75 @@ def speak_words(text: str, out: Path, cfg: dict) -> tuple[float, list[Word]]:
         heard = []
     dur = media_duration(out)
     return dur, align_words(text, heard, dur)
+
+
+# ------------------------------------------------------------------ eleven_v3
+TAG = re.compile(r"\[[A-Za-z][A-Za-z ]{0,24}\]")
+
+
+def strip_tags(text: str) -> str:
+    """'[laughs] Three!' -> 'Three!' (the v3 audio tags are read, not spoken)."""
+    return " ".join(TAG.sub(" ", str(text)).split())
+
+
+def eleven_v3(text: str, voice_id: str, ch: dict, out: Path) -> None:
+    """One ElevenLabs eleven_v3 read with its audio tags ([laughs], [sighs], [whispers]...).
+    An error answer is not billed; a 4xx is not retried."""
+    import json as _json
+    import os
+    import urllib.error
+    import urllib.request
+
+    key = os.environ.get("ELEVENLABS_API_KEY", "").strip()
+    if not key:
+        raise RuntimeError("ELEVENLABS_API_KEY is not set")
+    body = {"text": text, "model_id": "eleven_v3",
+            "voice_settings": {"stability": float(ch.get("eleven_v3_stability", 0.0)),
+                               "similarity_boost": float(ch.get("eleven_v3_similarity", 0.8))}}
+    req = urllib.request.Request(
+        f"{ELEVEN_API}/text-to-speech/{voice_id}?output_format=mp3_44100_128",
+        data=_json.dumps(body).encode(),
+        headers={"xi-api-key": key, "content-type": "application/json", "accept": "audio/mpeg"})
+    last = None
+    for attempt in range(1, 4):
+        try:
+            with urllib.request.urlopen(req, timeout=180) as r:
+                audio = r.read()
+            if len(audio) > 2000:
+                out.write_bytes(audio)
+                return
+            last = "empty audio"
+        except urllib.error.HTTPError as e:
+            last = f"HTTP {e.code} {e.read().decode(errors='replace')[:200]}"
+            if 400 <= e.code < 500:
+                break
+        except Exception as e:              # network hiccup
+            last = str(e)
+        log(f"ElevenLabs v3 attempt {attempt} failed: {last}")
+        time.sleep(4 * attempt)
+    raise RuntimeError(f"ElevenLabs v3 failed: {last}")
+
+
+_WHISPER = None
+
+
+def heard_words(path: Path) -> list[Word]:
+    """Word times of a finished read, from the free faster-whisper model ([] if not installed)."""
+    global _WHISPER
+    try:
+        from faster_whisper import WhisperModel
+    except ImportError:
+        log("faster-whisper is not installed: word times are estimated")
+        return []
+    if _WHISPER is None:
+        try:
+            _WHISPER = WhisperModel("small.en", device="cpu", compute_type="int8")
+        except Exception as e:
+            log(f"Word timing model failed to load ({type(e).__name__}: {e}): word times are estimated")
+            return []
+    try:
+        segs, _ = _WHISPER.transcribe(str(path), word_timestamps=True, beam_size=5, language="en")
+        return [(float(w.start), float(w.end), w.word.strip()) for sg in segs for w in sg.words]
+    except Exception as e:          # never pay for the voice twice over a timing problem
+        log(f"Word timing failed ({type(e).__name__}: {e}): word times are estimated")
+        return []

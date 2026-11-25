@@ -24,7 +24,9 @@
       "highlight": [
         "for years"
       ],
-      "subject": "crow"
+      "subject": "crow",
+      "say": "[whispers] Crows can recognize your face... and they can remember it for YEARS.",
+      "look": "whisper"
     },
     {
       "on_screen": "The mask test",
@@ -33,7 +35,8 @@
       "highlight": [
         "wore a mask"
       ],
-      "subject": "crow"
+      "subject": "crow",
+      "say": "In one famous study in Seattle, researchers wore a mask while they caught and tagged crows."
     },
     {
       "on_screen": "Scolding",
@@ -42,7 +45,9 @@
       "highlight": [
         "dive bombed"
       ],
-      "subject": "crow"
+      "subject": "crow",
+      "say": "[angry] Years later, crows still scolded and dive bombed anyone who wore that same mask.",
+      "look": "angry"
     },
     {
       "on_screen": "Passing it on",
@@ -51,7 +56,9 @@
       "highlight": [
         "never caught"
       ],
-      "subject": "crow"
+      "subject": "crow",
+      "say": "[gasps] Even crows that were never caught joined in. They seemed to learn who to dislike from the others.",
+      "look": "excited"
     },
     {
       "on_screen": "Be nice",
@@ -60,7 +67,9 @@
       "highlight": [
         "They are watching"
       ],
-      "subject": "crow"
+      "subject": "crow",
+      "say": "[nervous laugh] So be kind to the crows. [whispers] They are watching. Follow for more weird facts."
     }
-  ]
+  ],
+  "music_mood": "mysterious"
 }

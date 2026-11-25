@@ -25,7 +25,9 @@
       "highlight": [
         "pistol shrimp"
       ],
-      "subject": "shrimp"
+      "subject": "shrimp",
+      "say": "[curious] There is a shrimp with a claw that works like a WEAPON. It is called the pistol shrimp.",
+      "look": "excited"
     },
     {
       "on_screen": "A super fast snap",
@@ -34,7 +36,8 @@
       "highlight": [
         "a jet of water"
       ],
-      "subject": "shrimp"
+      "subject": "shrimp",
+      "say": "It snaps its claw shut so quickly that it shoots out a jet of water and creates a tiny bubble."
     },
     {
       "on_screen": "Thousands of degrees",
@@ -43,7 +46,9 @@
       "highlight": [
         "thousands of degrees"
       ],
-      "subject": "bubbles"
+      "subject": "bubbles",
+      "say": "[gasps] When that bubble collapses, the inside briefly reaches THOUSANDS of degrees, close to the temperature of the Sun's surface.",
+      "look": "excited"
     },
     {
       "on_screen": "Loud and stunning",
@@ -52,7 +57,9 @@
       "highlight": [
         "loudest sounds"
       ],
-      "subject": "shrimp"
+      "subject": "shrimp",
+      "say": "[shouts] The snap is also one of the LOUDEST sounds in the ocean, and it can stun small fish nearby.",
+      "look": "angry"
     },
     {
       "on_screen": "Follow for more",
@@ -61,7 +68,9 @@
       "highlight": [
         "huge power"
       ],
-      "subject": "shrimp"
+      "subject": "shrimp",
+      "say": "[laughs] Small shrimp, huge power. Follow for more weird facts."
     }
-  ]
+  ],
+  "music_mood": "epic"
 }

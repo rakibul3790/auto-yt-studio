@@ -25,7 +25,9 @@
       "highlight": [
         "eight minutes ago"
       ],
-      "subject": "sunrise"
+      "subject": "sunrise",
+      "say": "[whispers] The sunlight hitting your face right now... left the Sun about eight minutes ago.",
+      "look": "whisper"
     },
     {
       "on_screen": "150 million kilometers",
@@ -34,7 +36,8 @@
       "highlight": [
         "fifty million kilometers"
       ],
-      "subject": "sun"
+      "subject": "sun",
+      "say": "The Sun is about one hundred and fifty million kilometers away. Even light needs time to cross that distance."
     },
     {
       "on_screen": "About 8 minutes 20 seconds",
@@ -43,7 +46,8 @@
       "highlight": [
         "twenty seconds"
       ],
-      "subject": "sun"
+      "subject": "sun",
+      "say": "Traveling at the speed of light, it takes around eight minutes and twenty seconds to reach us."
     },
     {
       "on_screen": "Looking into the past",
@@ -51,7 +55,9 @@
       "text": "So you always see the Sun as it was, not as it is. And for distant stars, that light can be thousands of years old.",
       "highlight": [
         "thousands of years old"
-      ]
+      ],
+      "say": "[curious] So you always see the Sun as it was, not as it is. [gasps] And for distant stars, that light can be THOUSANDS of years old.",
+      "look": "excited"
     },
     {
       "on_screen": "Follow for more",
@@ -60,7 +66,9 @@
       "highlight": [
         "back in time"
       ],
-      "subject": "sunset"
+      "subject": "sunset",
+      "say": "[softly] Every time you look up, you are looking back in time. [chuckles] Follow for more weird facts."
     }
-  ]
+  ],
+  "music_mood": "calm"
 }

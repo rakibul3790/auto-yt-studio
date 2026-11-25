@@ -25,7 +25,9 @@
       "highlight": [
         "more possible games"
       ],
-      "subject": "chess"
+      "subject": "chess",
+      "say": "[whispers] There are more possible games of chess... than there are atoms in the observable universe.",
+      "look": "whisper"
     },
     {
       "on_screen": "Atoms: about 10 to the 80",
@@ -33,7 +35,8 @@
       "text": "Scientists estimate the observable universe holds about ten to the power of eighty atoms. That is a one followed by eighty zeros.",
       "highlight": [
         "eighty zeros"
-      ]
+      ],
+      "say": "Scientists estimate the observable universe holds about ten to the power of eighty atoms. That is a one followed by EIGHTY zeros."
     },
     {
       "on_screen": "Chess: about 10 to the 120",
@@ -42,7 +45,9 @@
       "highlight": [
         "one hundred and twenty"
       ],
-      "subject": "chess"
+      "subject": "chess",
+      "say": "[excited] A famous estimate puts the number of possible chess games at around ten to the power of one hundred and twenty.",
+      "look": "excited"
     },
     {
       "on_screen": "40 zeros bigger",
@@ -51,7 +56,9 @@
       "highlight": [
         "forty extra zeros"
       ],
-      "subject": "chess"
+      "subject": "chess",
+      "say": "[gasps] That is not a little bigger. It is FORTY extra zeros. Every game you play is almost certainly one that has never been played before.",
+      "look": "excited"
     },
     {
       "on_screen": "Follow for more",
@@ -60,7 +67,9 @@
       "highlight": [
         "history in the making"
       ],
-      "subject": "chess"
+      "subject": "chess",
+      "say": "[chuckles] So your next game of chess might be history in the making. Follow for more weird facts."
     }
-  ]
+  ],
+  "music_mood": "mysterious"
 }

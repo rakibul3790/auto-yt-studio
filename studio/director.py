@@ -41,7 +41,9 @@ def music_mood(data: dict) -> str:
         return str(data["music_mood"]).lower()
     words = re.findall(r"[a-z]+", (data.get("title", "") + " " +
                                    " ".join(str(s.get("text", "")) for s in data.get("scenes", []))).lower())
-    best, score = "mysterious", 0
+    # with no clear mood words, spread the videos over the lighter moods instead of
+    # sending most of them to "mysterious"
+    best, score = ["quirky", "upbeat", "mysterious", "calm"][_seed(data.get("title", "")) % 4], 0
     for mood, vocab in MOOD_WORDS.items():
         v = set(vocab.split())
         n = sum(1 for w in words if w in v or w.rstrip("s") in v)

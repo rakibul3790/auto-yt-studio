@@ -25,7 +25,9 @@
       "highlight": [
         "hold hands"
       ],
-      "subject": "otter"
+      "subject": "otter",
+      "say": "[warmly] Sea otters often hold hands... [chuckles] while they sleep.",
+      "look": "excited"
     },
     {
       "on_screen": "Sleeping on water",
@@ -34,7 +36,9 @@
       "highlight": [
         "carry them away"
       ],
-      "subject": "otter"
+      "subject": "otter",
+      "say": "They sleep floating on their backs in the ocean, [worried] which means the waves could easily carry them away.",
+      "look": "sad"
     },
     {
       "on_screen": "Don't drift apart",
@@ -43,7 +47,9 @@
       "highlight": [
         "each other's paws"
       ],
-      "subject": "otter"
+      "subject": "otter",
+      "say": "[softly] So they grab on to each other's paws, forming little groups that stay together through the night.",
+      "look": "whisper"
     },
     {
       "on_screen": "Seaweed anchors",
@@ -52,7 +58,8 @@
       "highlight": [
         "like a blanket"
       ],
-      "subject": "otter"
+      "subject": "otter",
+      "say": "Some also wrap themselves in long strands of seaweed, like a blanket that keeps them in place."
     },
     {
       "on_screen": "Follow for more",
@@ -61,7 +68,9 @@
       "highlight": [
         "cutest sleepover"
       ],
-      "subject": "otter"
+      "subject": "otter",
+      "say": "[laughs] The ocean's cutest sleepover. [chuckles] Follow for more weird facts."
     }
-  ]
+  ],
+  "music_mood": "calm"
 }

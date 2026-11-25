@@ -25,7 +25,9 @@
       "highlight": [
         "more trees"
       ],
-      "subject": "forest"
+      "subject": "forest",
+      "say": "[excited] There are more trees on Earth... than stars in our galaxy.",
+      "look": "excited"
     },
     {
       "on_screen": "About 3 trillion trees",
@@ -34,7 +36,9 @@
       "highlight": [
         "three trillion trees"
       ],
-      "subject": "forest"
+      "subject": "forest",
+      "say": "A large study estimated there are about THREE TRILLION trees on our planet.",
+      "look": "excited"
     },
     {
       "on_screen": "100 to 400 billion stars",
@@ -43,7 +47,8 @@
       "highlight": [
         "four hundred billion"
       ],
-      "subject": "galaxy"
+      "subject": "galaxy",
+      "say": "The Milky Way is thought to have somewhere between one hundred and four hundred billion stars."
     },
     {
       "on_screen": "But we're losing them",
@@ -51,7 +56,9 @@
       "text": "The same study found that billions of trees are cut down every year, so that number keeps shrinking.",
       "highlight": [
         "keeps shrinking"
-      ]
+      ],
+      "say": "[sighs] [sad] The same study found that billions of trees are cut down every year, so that number keeps shrinking.",
+      "look": "sad"
     },
     {
       "on_screen": "Follow for more",
@@ -59,7 +66,9 @@
       "text": "Every one of those trees counts. Follow for more weird facts.",
       "highlight": [
         "counts"
-      ]
+      ],
+      "say": "[warmly] Every one of those trees counts. Follow for more weird facts."
     }
-  ]
+  ],
+  "music_mood": "calm"
 }

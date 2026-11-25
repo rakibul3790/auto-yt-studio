@@ -24,7 +24,9 @@
       "highlight": [
         "almost a meter"
       ],
-      "subject": "bamboo"
+      "subject": "bamboo",
+      "say": "[excited] Some kinds of bamboo can grow almost a METER in a single day.",
+      "look": "excited"
     },
     {
       "on_screen": "Watch it grow",
@@ -33,7 +35,9 @@
       "highlight": [
         "for an hour"
       ],
-      "subject": "bamboo"
+      "subject": "bamboo",
+      "say": "[whispers] At that speed, you could almost see it moving if you watched closely for an hour.",
+      "look": "whisper"
     },
     {
       "on_screen": "A grass",
@@ -42,7 +46,9 @@
       "highlight": [
         "giant kind of grass"
       ],
-      "subject": "bamboo"
+      "subject": "bamboo",
+      "say": "[gasps] Bamboo is not a tree. It is actually a giant kind of grass.",
+      "look": "excited"
     },
     {
       "on_screen": "Stretching",
@@ -51,7 +57,8 @@
       "highlight": [
         "stretch out"
       ],
-      "subject": "bamboo"
+      "subject": "bamboo",
+      "say": "A new shoot does not add new sections as it grows. The sections it already has just stretch out, very fast."
     },
     {
       "on_screen": "Grass power",
@@ -60,7 +67,9 @@
       "highlight": [
         "fastest growing plant"
       ],
-      "subject": "bamboo"
+      "subject": "bamboo",
+      "say": "[laughs] The world's fastest growing plant is a grass. Follow for more weird facts."
     }
-  ]
+  ],
+  "music_mood": "upbeat"
 }

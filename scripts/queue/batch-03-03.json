@@ -24,7 +24,9 @@
       "highlight": [
         "every few days"
       ],
-      "subject": "stomach"
+      "subject": "stomach",
+      "say": "[curious] Your stomach gives itself a fresh new lining every few days.",
+      "look": "excited"
     },
     {
       "on_screen": "Strong acid",
@@ -32,7 +34,9 @@
       "text": "That is because stomach acid is strong enough to break down tough food, and it would slowly damage the stomach too.",
       "highlight": [
         "stomach acid"
-      ]
+      ],
+      "say": "[serious] That is because stomach acid is strong enough to break down tough food, and it would slowly damage the stomach too.",
+      "look": "angry"
     },
     {
       "on_screen": "Mucus shield",
@@ -41,7 +45,8 @@
       "highlight": [
         "layer of mucus"
       ],
-      "subject": "stomach"
+      "subject": "stomach",
+      "say": "A thick layer of mucus protects the wall, and the cells underneath are replaced again and again."
     },
     {
       "on_screen": "Always repairing",
@@ -50,7 +55,8 @@
       "highlight": [
         "a few days"
       ],
-      "subject": "anatomy"
+      "subject": "anatomy",
+      "say": "Those cells only last a few days before new ones take their place, so the damage never builds up."
     },
     {
       "on_screen": "Self repair",
@@ -58,7 +64,9 @@
       "text": "Your body is always quietly rebuilding itself. Follow for more weird facts.",
       "highlight": [
         "rebuilding itself"
-      ]
+      ],
+      "say": "[softly] Your body is always quietly rebuilding itself. [chuckles] Follow for more weird facts."
     }
-  ]
+  ],
+  "music_mood": "calm"
 }

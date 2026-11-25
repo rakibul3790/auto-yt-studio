@@ -25,7 +25,9 @@
       "highlight": [
         "a flamboyance"
       ],
-      "subject": "flamingo"
+      "subject": "flamingo",
+      "say": "A group of flamingos is called a flamboyance. [laughs] Honestly, it fits.",
+      "look": "excited"
     },
     {
       "on_screen": "Born gray",
@@ -34,7 +36,9 @@
       "highlight": [
         "gray and white"
       ],
-      "subject": "flamingo"
+      "subject": "flamingo",
+      "say": "[gasps] But here is the surprise. Flamingos are NOT born pink. The chicks are gray and white.",
+      "look": "excited"
     },
     {
       "on_screen": "You are what you eat",
@@ -43,7 +47,8 @@
       "highlight": [
         "from their food"
       ],
-      "subject": "flamingo"
+      "subject": "flamingo",
+      "say": "They turn pink from their food. Tiny shrimp and algae they eat contain natural pigments that color their feathers."
     },
     {
       "on_screen": "No food, no pink",
@@ -52,7 +57,9 @@
       "highlight": [
         "slowly fade"
       ],
-      "subject": "flamingo"
+      "subject": "flamingo",
+      "say": "[sad] If a flamingo stops eating those foods, its feathers slowly fade to a paler color.",
+      "look": "sad"
     },
     {
       "on_screen": "Follow for more",
@@ -61,7 +68,9 @@
       "highlight": [
         "the best fed"
       ],
-      "subject": "flamingo"
+      "subject": "flamingo",
+      "say": "[chuckles] So the pinkest flamingo is simply the best fed. Follow for more weird facts."
     }
-  ]
+  ],
+  "music_mood": "quirky"
 }

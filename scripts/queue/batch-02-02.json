@@ -25,7 +25,9 @@
       "highlight": [
         "hotter than"
       ],
-      "subject": "lightning"
+      "subject": "lightning",
+      "say": "[gasps] Every bolt of lightning is HOTTER than the surface of the Sun.",
+      "look": "excited"
     },
     {
       "on_screen": "About 30,000 degrees",
@@ -34,7 +36,8 @@
       "highlight": [
         "thirty thousand degrees"
       ],
-      "subject": "lightning"
+      "subject": "lightning",
+      "say": "Lightning can heat the air around it to roughly thirty thousand degrees Celsius, in a fraction of a second."
     },
     {
       "on_screen": "The Sun: about 5,500",
@@ -43,7 +46,9 @@
       "highlight": [
         "five times hotter"
       ],
-      "subject": "sun"
+      "subject": "sun",
+      "say": "The surface of the Sun is about five and a half thousand degrees. [excited] So lightning is around FIVE times hotter.",
+      "look": "excited"
     },
     {
       "on_screen": "That's the thunder",
@@ -52,7 +57,9 @@
       "highlight": [
         "thunder"
       ],
-      "subject": "lightning"
+      "subject": "lightning",
+      "say": "That sudden heat makes the air expand explosively. [shouts] The BOOM you hear is thunder.",
+      "look": "angry"
     },
     {
       "on_screen": "Follow for more",
@@ -61,7 +68,9 @@
       "highlight": [
         "hotter than the Sun"
       ],
-      "subject": "lightning"
+      "subject": "lightning",
+      "say": "[whispers] A tiny piece of something hotter than the Sun, right outside your window. [chuckles] Follow for more weird facts."
     }
-  ]
+  ],
+  "music_mood": "epic"
 }

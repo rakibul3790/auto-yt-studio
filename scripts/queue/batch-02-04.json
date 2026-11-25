@@ -25,7 +25,9 @@
       "highlight": [
         "taller every summer"
       ],
-      "subject": "eiffel"
+      "subject": "eiffel",
+      "say": "[excited] The Eiffel Tower gets TALLER every summer.",
+      "look": "excited"
     },
     {
       "on_screen": "Iron expands",
@@ -34,7 +36,8 @@
       "highlight": [
         "metal expands"
       ],
-      "subject": "eiffel"
+      "subject": "eiffel",
+      "say": "It is built from iron, and metal expands when it heats up."
     },
     {
       "on_screen": "Up to 15 cm",
@@ -43,7 +46,9 @@
       "highlight": [
         "fifteen centimeters"
       ],
-      "subject": "eiffel"
+      "subject": "eiffel",
+      "say": "On hot days, the tower can grow by up to about fifteen centimeters. [gasps] That is about six inches.",
+      "look": "excited"
     },
     {
       "on_screen": "It even leans",
@@ -52,7 +57,8 @@
       "highlight": [
         "lean slightly"
       ],
-      "subject": "eiffel"
+      "subject": "eiffel",
+      "say": "And because the Sun heats one side more than the other, the top can lean slightly away from the Sun during the day."
     },
     {
       "on_screen": "Follow for more",
@@ -61,7 +67,9 @@
       "highlight": [
         "shrinks back"
       ],
-      "subject": "eiffel"
+      "subject": "eiffel",
+      "say": "[sighs] In winter, it shrinks back down again. [chuckles] Follow for more weird facts."
     }
-  ]
+  ],
+  "music_mood": "upbeat"
 }

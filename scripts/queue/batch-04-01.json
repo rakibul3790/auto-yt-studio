@@ -30,7 +30,9 @@
       "text": "Forty lightning flashes.",
       "highlight": [
         "Forty lightning flashes"
-      ]
+      ],
+      "say": "[excited] Forty lightning flashes.",
+      "look": "excited"
     },
     {
       "region": "south_asia",
@@ -43,7 +45,8 @@
       "text": "Four newborn babies.",
       "highlight": [
         "Four newborn babies"
-      ]
+      ],
+      "say": "[warmly] Four newborn babies."
     },
     {
       "region": "europe",
@@ -56,7 +59,9 @@
       "text": "Two final breaths.",
       "highlight": [
         "Two final breaths"
-      ]
+      ],
+      "say": "[sad] Two final breaths.",
+      "look": "sad"
     },
     {
       "region": "world",
@@ -68,7 +73,8 @@
       "text": "That is one single second on Earth.",
       "highlight": [
         "one single second"
-      ]
+      ],
+      "say": "That is one single second on Earth."
     },
     {
       "region": "space",
@@ -78,7 +84,9 @@
       "text": "In that same second, you flew thirty kilometers around the Sun.",
       "highlight": [
         "thirty kilometers"
-      ]
+      ],
+      "say": "[excited] In that same second, you flew THIRTY kilometers around the Sun.",
+      "look": "excited"
     },
     {
       "lon": 20,
@@ -93,7 +101,8 @@
       "text": "If you live near the equator, the ground under you spun almost half a kilometer.",
       "highlight": [
         "almost half a kilometer"
-      ]
+      ],
+      "say": "If you live near the equator, the ground under you spun almost half a kilometer."
     },
     {
       "region": "world",
@@ -105,7 +114,9 @@
       "text": "And you felt none of it.",
       "highlight": [
         "none of it"
-      ]
+      ],
+      "say": "[whispers] And you felt none of it.",
+      "look": "whisper"
     },
     {
       "region": "europe",
@@ -118,7 +129,9 @@
       "text": "Your heart beat about once.",
       "highlight": [
         "about once"
-      ]
+      ],
+      "say": "[softly] Your heart beat about once.",
+      "look": "whisper"
     },
     {
       "region": "pacific",
@@ -131,7 +144,8 @@
       "text": "The planet never pauses, never slows, never waits for anyone.",
       "highlight": [
         "never waits"
-      ]
+      ],
+      "say": "The planet never pauses, never slows, never waits for anyone."
     },
     {
       "region": "world",
@@ -143,7 +157,8 @@
       "text": "By the time this sentence ends, it has happened again.",
       "highlight": [
         "happened again"
-      ]
+      ],
+      "say": "[curious] By the time this sentence ends, it has happened again."
     },
     {
       "region": "africa",
@@ -155,7 +170,9 @@
       "text": "So don't blink, because in one blink you just missed...",
       "highlight": [
         "don't blink"
-      ]
+      ],
+      "say": "[chuckles] So don't blink, because in one blink you just missed..."
     }
-  ]
+  ],
+  "music_mood": "epic"
 }
