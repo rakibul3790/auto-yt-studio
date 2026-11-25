@@ -200,6 +200,7 @@ def pixabay_photo(query: str, portrait: bool, seed: int, subject: str | None = N
 # clips already used in the video being made, so the same footage never comes back
 _USED_CLIPS: set[int] = set()
 CLIP_START: dict[str, float] = {}
+CLIP_ORIGIN: dict[str, dict] = {}     # downloaded clip path -> where it came from (site, id, page)
 
 
 def reset_clips() -> None:
@@ -233,13 +234,14 @@ def pixabay_video(query: str, pick: int, out: Path, subject: str | None = None) 
         if need and query.lower().split() != need:
             searches.append((" ".join(need), 1))
         searches.append((searches[-1][0], 2))
-        seen, fresh, old = set(), [], []
+        seen, fresh, old, hit_pages = set(), [], [], {}
         for q, page in searches:
             for hit in _pixabay_hits(key, q, page):
                 hid = hit.get("id")
                 if hid in seen or not 3 <= float(hit.get("duration", 0)) <= 60:
                     continue
                 seen.add(hid)
+                hit_pages[hid] = hit.get("pageURL", "")
                 if need and not tags_match(hit.get("tags", ""), need):
                     continue
                 for size in ("large", "medium"):
@@ -265,6 +267,7 @@ def pixabay_video(query: str, pick: int, out: Path, subject: str | None = None) 
         data.raise_for_status()
         out.write_bytes(data.content)
         CLIP_START[str(out)] = start
+        CLIP_ORIGIN[str(out)] = {"site": "Pixabay", "id": f"pb{hid}", "page": hit_pages.get(hid, "")}
         log(f"Video clip from Pixabay for '{query}' ({v.get('width')}x{v.get('height')}, clip {hid})")
         return out
     except Exception as e:

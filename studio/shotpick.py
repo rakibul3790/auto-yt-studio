@@ -112,7 +112,8 @@ def _pixabay_videos(key: str, q: str) -> list[dict]:
                       if (vids.get(s) or {}).get("thumbnail")), None)
         if f and thumb:
             out.append({"id": f"pb{h['id']}", "kind": "vid", "url": f["url"], "thumb": thumb,
-                        "dur": float(h["duration"]), "w": f.get("width"), "h": f.get("height"), "site": "Pixabay"})
+                        "dur": float(h["duration"]), "w": f.get("width"), "h": f.get("height"), "site": "Pixabay",
+                        "page": h.get("pageURL", "")})
     return out
 
 
@@ -123,7 +124,7 @@ def _pixabay_photos(key: str, q: str) -> list[dict]:
     if r.status_code != 200:
         return []
     return [{"id": f"pbi{h['id']}", "kind": "img", "url": h.get("largeImageURL"), "thumb": h.get("webformatURL"),
-             "w": h.get("imageWidth"), "h": h.get("imageHeight"), "site": "Pixabay"}
+             "w": h.get("imageWidth"), "h": h.get("imageHeight"), "site": "Pixabay", "page": h.get("pageURL", "")}
             for h in r.json().get("hits", []) if h.get("largeImageURL") and h.get("webformatURL")]
 
 
@@ -144,7 +145,8 @@ def _pexels_videos(key: str, q: str) -> list[dict]:
             port = [f for f in files if f["height"] > f["width"]]
             f = min(port or files, key=lambda f: abs(f["height"] - (1920 if f["height"] > f["width"] else 1080)))
             out.append({"id": f"px{v['id']}", "kind": "vid", "url": f["link"], "thumb": v["image"],
-                        "dur": float(v["duration"]), "w": f["width"], "h": f["height"], "site": "Pexels"})
+                        "dur": float(v["duration"]), "w": f["width"], "h": f["height"], "site": "Pexels",
+                        "page": v.get("url", "")})
     return out
 
 
@@ -257,7 +259,8 @@ def pick(query: str, subject: str | None, out_stem: Path) -> dict | None:
         src = Path(m["src"])
         if src.exists():
             _USED.add(m["id"])
-            return {"kind": m["kind"], "src": src, "start": m.get("start", 0.0), "dur": m.get("dur")}
+            return {"kind": m["kind"], "src": src, "start": m.get("start", 0.0), "dur": m.get("dur"),
+                    "origin": {"site": m.get("site", ""), "id": m["id"], "page": m.get("page", "")}}
     if not available():
         return None
     pb, px = os.environ.get("PIXABAY_API_KEY", "").strip(), os.environ.get("PEXELS_API_KEY", "").strip()
@@ -315,13 +318,15 @@ def pick(query: str, subject: str | None, out_stem: Path) -> dict | None:
             reused = c["id"] in _USED
             _USED.add(c["id"])
             meta.write_text(json.dumps({"id": c["id"], "kind": c["kind"], "src": str(src), "start": start,
-                                        "dur": dur, "score": round(rel, 4)}))
+                                        "dur": dur, "score": round(rel, 4),
+                                        "site": c.get("site", ""), "page": c.get("page", "")}))
             if rel < GOOD_SCORE:
                 log(f"Shot picker: weak match for '{query}' (best {rel:.3f}), using it")
             log(f"Shot picker: {c['site']} {'clip' if c['kind'] == 'vid' else 'photo'} {c['id']} for '{query}' "
                 f"(match {rel:.3f}, frame {frame_rel:.3f} at {start:.1f}s, {len(pool)} looked at"
                 f"{', reused' if reused else ''})")
-            return {"kind": c["kind"], "src": src, "start": start, "dur": dur}
+            return {"kind": c["kind"], "src": src, "start": start, "dur": dur,
+                    "origin": {"site": c.get("site", ""), "id": c["id"], "page": c.get("page", "")}}
         log(f"Shot picker: no usable clip for '{query}' after {tries} downloads")
         return None
     except Exception as e:

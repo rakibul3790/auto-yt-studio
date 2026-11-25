@@ -81,6 +81,7 @@ jobs:
           PEXELS_API_KEY: ${{ secrets.PEXELS_API_KEY }}
           PIXABAY_API_KEY: ${{ secrets.PIXABAY_API_KEY }}
           STUDIO_QC_STRICT: "0"
+          STUDIO_EXPORT_SOURCES: "1"
         run: |
           ( while true; do sleep 300; echo "[watch] $(df -h / | tail -1 | awk '{print $4}') disk free, $(free -m | awk '/Mem/{print $7}') MB memory free"; done ) &
           python -m studio.main --file scripts/queue/_history5.json --no-upload
@@ -89,6 +90,7 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: history5-${{ github.run_number }}
+          compression-level: 0
           path: |
             output/
             work/_history5/plan.json

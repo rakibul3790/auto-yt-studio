@@ -466,6 +466,7 @@ def pexels_video(query: str, subject: str | None, pick: int, out: Path) -> tuple
         _USED.add(m["id"])
         return out, m["start"], m["dur"]
     need = visuals.subject_words(query, subject)
+    pages: dict[str, str] = {}
     try:
         found = []
         for q in dict.fromkeys([query, " ".join(need)] if need else [query]):
@@ -479,6 +480,7 @@ def pexels_video(query: str, subject: str | None, pick: int, out: Path) -> tuple
                     break
                 for v in r.json().get("videos", []):
                     vid = f"px{v.get('id')}"
+                    pages[vid] = str(v.get("url", ""))
                     slug = re.sub(r"[-/]", " ", str(v.get("url", "")).rsplit("/video/", 1)[-1])
                     tags = slug + " " + " ".join(str(t) for t in (v.get("tags") or []))
                     if need and not visuals.tags_match(tags, need):
@@ -505,7 +507,7 @@ def pexels_video(query: str, subject: str | None, pick: int, out: Path) -> tuple
         data.raise_for_status()
         out.write_bytes(data.content)
         start = round(min(1.0, dur * 0.1), 2)
-        meta.write_text(json.dumps({"id": vid, "start": start, "dur": dur}))
+        meta.write_text(json.dumps({"id": vid, "start": start, "dur": dur, "page": pages.get(vid, "")}))
         _USED.add(vid)
         log(f"Pexels clip for '{query}' ({f['width']}x{f['height']}, {dur:.0f}s, {vid})")
         return out, start, dur
@@ -522,19 +524,22 @@ def footage(beat: dict, n: int, title: str, size: tuple[int, int], work: Path) -
     chosen = shotpick.pick(query, subject, work / f"pro_ai{n:02d}")
     if chosen and chosen["kind"] == "vid":
         return {"kind": "vid", "src": chosen["src"], "start": chosen["start"],
-                "dur": chosen.get("dur") or media_duration(chosen["src"])}
+                "dur": chosen.get("dur") or media_duration(chosen["src"]), "origin": chosen.get("origin")}
     if chosen:
         img = work / f"pro_img{n:02d}.jpg"
         w, h = size
         visuals._cover(Image.open(chosen["src"]).convert("RGB"), (w * 2, h * 2)).save(img, quality=92)
-        return {"kind": "img", "src": img}
+        return {"kind": "img", "src": img, "orig": chosen["src"], "origin": chosen.get("origin")}
     got = pexels_video(query, subject, pick, work / f"pro_px{n:02d}.mp4")
     if got:
-        return {"kind": "vid", "src": got[0], "start": got[1], "dur": got[2]}
+        m = got[0].with_suffix(".meta.json")
+        m = json.loads(m.read_text()) if m.exists() else {}
+        return {"kind": "vid", "src": got[0], "start": got[1], "dur": got[2],
+                "origin": {"site": "Pexels", "id": m.get("id", ""), "page": m.get("page", "")}}
     clip = visuals.pixabay_video(query, pick, work / f"pro_pb{n:02d}.mp4", subject)
     if clip is not None:
         return {"kind": "vid", "src": clip, "start": visuals.CLIP_START.get(str(clip), 0.0),
-                "dur": media_duration(clip)}
+                "dur": media_duration(clip), "origin": visuals.CLIP_ORIGIN.get(str(clip))}
     img = work / f"pro_img{n:02d}.jpg"
     if not img.exists():
         photo = visuals.stock_photo(query, True, _seed(title, n), subject)
@@ -1143,7 +1148,7 @@ def _section_music(sections: list, scene_t: list[tuple[float, float]], total: fl
             if str(name) in music or f"{name}.mp3" in music]
     if not secs:
         return None
-    inputs, parts = [], []
+    inputs, parts, plan = [], [], []
     for k, (si, name) in enumerate(secs):
         src = music.get(name) or music[f"{name}.mp3"]
         start = 0.0 if k == 0 else max(scene_t[si][0] - 1.0, 0.0)
@@ -1156,6 +1161,9 @@ def _section_music(sections: list, scene_t: list[tuple[float, float]], total: fl
                      f"afade=t=in:d={fin},afade=t=out:st={max(length - 2.0, 0):.3f}:d=2.0,"
                      f"adelay={int(start * 1000)}:all=1[m{k}]")
         log(f"Music part {k + 1}: {name} from {start:.1f}s")
+        plan.append({"part": k + 1, "track": src.name, "file": str(src), "from_scene": si,
+                     "start": round(start, 3), "end": round(min(end, total), 3)})
+    (work / "pro_music_sections.json").write_text(json.dumps(plan, indent=1), encoding="utf-8")
     fc = ";".join(parts) + ";" + "".join(f"[m{k}]" for k in range(len(secs))) + \
         f"amix=inputs={len(secs)}:duration=longest:normalize=0,atrim=0:{total:.3f}[o]"
     out = work / "pro_music_sections.wav"
@@ -1290,6 +1298,27 @@ def export_sources(out_file: Path, data: dict, shots: list[dict], segs: list[Pat
     if stem.exists():
         shutil.copy(stem, root / "audio" / "music_ducked.wav")
     shutil.copy(mix, root / "audio" / "final_mix_-14LUFS.wav")
+    # the music exactly as downloaded, and which part of the video each track plays under
+    plan_file = work / "pro_music_sections.json"
+    if plan_file.exists():
+        (root / "audio" / "music-original").mkdir(exist_ok=True)
+        plan = json.loads(plan_file.read_text(encoding="utf-8"))
+        for m in plan:
+            if Path(m["file"]).exists():
+                shutil.copy(m["file"], root / "audio" / "music-original" / Path(m["file"]).name)
+            m["file"] = f"audio/music-original/{Path(m['file']).name}"
+        (root / "audio" / "music_sections.json").write_text(json.dumps(plan, indent=1), encoding="utf-8")
+        sec = work / "pro_music_sections.wav"
+        if sec.exists():
+            shutil.copy(sec, root / "audio" / "music_bed_before_ducking.wav")
+    elif track is not None and Path(track).exists():
+        (root / "audio" / "music-original").mkdir(exist_ok=True)
+        shutil.copy(track, root / "audio" / "music-original" / Path(track).name)
+    # picture only: no voice, no music, no effects (one without captions, one with)
+    run(["ffmpeg", "-y", "-loglevel", "error", "-i", str(pictures), "-map", "0:v", "-an",
+         "-t", f"{total:.3f}", *hi, "-r", str(fps), str(root / "03_video_only_no_audio_no_captions.mp4")])
+    run(["ffmpeg", "-y", "-loglevel", "error", "-i", str(out_file), "-map", "0:v", "-an", "-c:v", "copy",
+         str(root / "04_video_only_no_audio_with_captions.mp4")])
 
     # captions: animated transparent overlay + the .ass and .srt files and the font
     shutil.copy(ass, root / "captions" / "captions_animated.ass")
@@ -1301,6 +1330,8 @@ def export_sources(out_file: Path, data: dict, shots: list[dict], segs: list[Pat
          str((root / "overlays" / "captions_transparent.mov").resolve())], cwd=work)
 
     rows = []
+    originals: dict[str, str] = {}
+    source_rows: list[dict] = []
     for n, (sh, seg) in enumerate(zip(shots, segs)):
         b = sh["beat"]
         kind = b.get("shot", "clip")
@@ -1308,16 +1339,23 @@ def export_sources(out_file: Path, data: dict, shots: list[dict], segs: list[Pat
         shutil.copy(seg, root / "shots" / f"{name}.mp4")
         src = sh.get("src") or {}
         orig = ""
-        if src.get("kind") == "vid":
-            st = max(float(src.get("start", 0.0)) - 1.0, 0.0)
-            dst = root / "stock-original" / f"{name}{Path(src['src']).suffix}"
-            run(["ffmpeg", "-y", "-loglevel", "error", "-ss", f"{st:.2f}", "-i", str(src["src"]),
-                 "-t", f"{sh['len'] + 3.0:.2f}", "-map", "0:v:0", "-c", "copy", "-an", str(dst)])
-            orig = dst.name
-        elif src.get("kind") == "img":
-            dst = root / "stock-original" / f"{name}.jpg"
-            shutil.copy(src["src"], dst)
-            orig = dst.name
+        og = src.get("origin") or {}
+        if src.get("kind") in ("vid", "img"):
+            # the whole file exactly as downloaded (one copy per clip, even when several shots use it)
+            raw = Path(src.get("orig") or src["src"])
+            key = str(raw.resolve())
+            if key not in originals:
+                tagname = re.sub(r"[^a-z0-9]+", "", str(og.get("id", "")).lower()) or f"shot{n + 1:03d}"
+                dst = root / "stock-original" / f"{len(originals) + 1:03d}_{(og.get('site') or 'stock').lower()}_{tagname}{raw.suffix or '.jpg'}"
+                shutil.copy(raw, dst)
+                originals[key] = dst.name
+                source_rows.append({"file": f"stock-original/{dst.name}", "kind": "video" if src["kind"] == "vid" else "photo",
+                                    "site": og.get("site", ""), "id": og.get("id", ""), "page": og.get("page", ""),
+                                    "search": b.get("query", ""), "used_in_shots": []})
+            orig = originals[key]
+            next(r for r in source_rows if r["file"] == f"stock-original/{orig}")["used_in_shots"].append(
+                {"shot": n + 1, "timeline_start": round(sh["b"], 3), "length": round(sh["len"], 3),
+                 "from_second_in_original": round(float(src.get("start", 0.0)), 3) if src["kind"] == "vid" else None})
         gfx = ""
         if sh.get("gfx"):
             gdir, oy = sh["gfx"]
@@ -1340,9 +1378,13 @@ def export_sources(out_file: Path, data: dict, shots: list[dict], segs: list[Pat
         "Files",
         "- 01_final_with_captions.mp4: the finished Short.",
         "- 02_video_no_captions.mp4: the same picture and sound with no captions burned in.",
+        "- 03_video_only_no_audio_no_captions.mp4: picture only, no voice, music or effects, no captions.",
+        "- 04_video_only_no_audio_with_captions.mp4: picture with captions, no sound at all.",
+        "- audio/music-original/: each music track exactly as downloaded; audio/music_sections.json says"
+        " where each one plays. audio/music_bed_before_ducking.wav is the joined music before it dips under the voice.",
         "- shots/: every shot as rendered (camera move, colour grade, graphic), in timeline order.",
-        "- stock-original/: the original stock footage at full resolution, only the part used plus about 1 s"
-        " either side. Photos are whole.",
+        "- stock-original/: every stock clip and photo exactly as downloaded (whole file, full resolution)."
+        " stock_sources.csv / .json say where each came from (site, id, page) and which shots use which part.",
         "- overlays/captions_transparent.mov: the animated captions on a transparent background (PNG codec,"
         " put it on the top track).",
         "- overlays/*_graphic.mov: number, chart and title graphics on a transparent background, full frame.",
@@ -1367,5 +1409,12 @@ def export_sources(out_file: Path, data: dict, shots: list[dict], segs: list[Pat
         {"no": r[0], "start": round(r[1], 3), "length": round(r[2], 3), "transition": r[3], "kind": r[4],
          "camera": r[5], "sfx": r[6], "query": r[7], "shot": r[8], "original": r[9], "overlay": r[10]}
         for r in rows], indent=1), encoding="utf-8")
-    log(f"Source files for editing in {root.name}/")
+    (root / "stock_sources.json").write_text(json.dumps(source_rows, indent=1), encoding="utf-8")
+    with open(root / "stock_sources.csv", "w", encoding="utf-8") as fh:
+        fh.write("file,kind,site,id,page,search,shots\n")
+        for r in source_rows:
+            q = str(r["search"]).replace('"', "'")
+            fh.write(f'{r["file"]},{r["kind"]},{r["site"]},{r["id"]},{r["page"]},"{q}",'
+                     f'"{" ".join(str(u["shot"]) for u in r["used_in_shots"])}"\n')
+    log(f"Source files for editing in {root.name}/ ({len(source_rows)} original stock files)")
     return root
