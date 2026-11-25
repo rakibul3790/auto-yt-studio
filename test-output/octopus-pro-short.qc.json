@@ -1,0 +1,15 @@
+{
+ "file": "octopus-pro-short.mp4",
+ "ok": true,
+ "errors": [],
+ "warnings": [],
+ "info": {
+  "duration": 35.17,
+  "size": "1080x1920",
+  "fps": 30.0,
+  "black": [],
+  "lufs": -14.0,
+  "true_peak": -1.5,
+  "caption_boxes": 51
+ }
+}

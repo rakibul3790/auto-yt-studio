@@ -1,0 +1,312 @@
+{
+ "title": "This Animal's Heart Stops Every Time It Swims",
+ "format": "short",
+ "description": "Octopuses have three hearts and blue, copper-based blood, and their main heart stops beating while they swim.",
+ "tags": [
+  "octopus",
+  "octopus facts",
+  "three hearts",
+  "blue blood",
+  "ocean facts",
+  "animal facts",
+  "weird facts",
+  "mind blowing facts"
+ ],
+ "hashtags": [
+  "animals",
+  "facts"
+ ],
+ "thumbnail_text": "Heart stops when it swims",
+ "scenes": [
+  {
+   "on_screen": "Heart stops",
+   "visual": "octopus swimming",
+   "subject": "octopus",
+   "text": "Its blood is blue, and when it swims, its heart stops.",
+   "highlight": [
+    "its heart stops"
+   ],
+   "beats": [
+    {
+     "at_word": 0,
+     "shot": "clip",
+     "query": "octopus swimming",
+     "subject": "octopus",
+     "camera": "punch",
+     "sfx": [
+      "impact"
+     ]
+    },
+    {
+     "at_word": 8,
+     "shot": "clip",
+     "query": "octopus close up",
+     "subject": "octopus",
+     "camera": "push_in",
+     "transition": "cut",
+     "sfx": [
+      "thud"
+     ]
+    }
+   ]
+  },
+  {
+   "on_screen": "Built like an alien",
+   "visual": "octopus reef",
+   "subject": "octopus",
+   "text": "Meet the octopus, an animal built like an alien.",
+   "highlight": [
+    "built like an alien"
+   ],
+   "beats": [
+    {
+     "at_word": 0,
+     "shot": "clip",
+     "query": "octopus reef",
+     "subject": "octopus",
+     "camera": "pan_right",
+     "transition": "whip_left",
+     "sfx": [
+      "swish"
+     ]
+    }
+   ]
+  },
+  {
+   "on_screen": "3 hearts",
+   "visual": "octopus close up",
+   "subject": "octopus",
+   "text": "It has three hearts.",
+   "highlight": [
+    "three hearts"
+   ],
+   "beats": [
+    {
+     "at_word": 0,
+     "shot": "number",
+     "query": "octopus underwater",
+     "subject": "octopus",
+     "camera": "drift",
+     "transition": "zoom",
+     "sfx": [
+      "whoosh",
+      "tick"
+     ],
+     "number": {
+      "from": 0,
+      "to": 3,
+      "suffix": " HEARTS",
+      "label": "IT HAS"
+     }
+    }
+   ]
+  },
+  {
+   "on_screen": "2 for the gills",
+   "visual": "octopus underwater",
+   "subject": "octopus",
+   "text": "Two push blood through its gills to grab oxygen.",
+   "highlight": [
+    "through its gills"
+   ],
+   "beats": [
+    {
+     "at_word": 0,
+     "shot": "clip",
+     "query": "octopus tentacles",
+     "subject": "octopus",
+     "camera": "tilt_up",
+     "transition": "slide_up",
+     "sfx": [
+      "whoosh"
+     ]
+    }
+   ]
+  },
+  {
+   "on_screen": "1 for the body",
+   "visual": "octopus tentacles",
+   "subject": "octopus",
+   "text": "The third, the biggest, sends it to the rest of the body.",
+   "highlight": [
+    "the biggest"
+   ],
+   "beats": [
+    {
+     "at_word": 0,
+     "shot": "clip",
+     "query": "octopus eye",
+     "subject": "octopus",
+     "camera": "push_in",
+     "transition": "cut",
+     "sfx": []
+    },
+    {
+     "at_word": 4,
+     "shot": "clip",
+     "query": "octopus crawling",
+     "subject": "octopus",
+     "camera": "pan_left",
+     "transition": "cut",
+     "sfx": []
+    }
+   ]
+  },
+  {
+   "on_screen": "Iron = red",
+   "visual": "red blood cells",
+   "subject": "blood",
+   "text": "Your blood uses iron, which turns it red.",
+   "highlight": [
+    "iron"
+   ],
+   "beats": [
+    {
+     "at_word": 0,
+     "shot": "clip",
+     "query": "red blood cells",
+     "subject": "blood",
+     "camera": "push_in",
+     "transition": "whip_right",
+     "sfx": [
+      "swish"
+     ]
+    }
+   ]
+  },
+  {
+   "on_screen": "Copper = blue",
+   "visual": "blue water octopus",
+   "subject": "octopus",
+   "text": "Octopus blood uses copper, which turns it blue.",
+   "highlight": [
+    "copper"
+   ],
+   "beats": [
+    {
+     "at_word": 0,
+     "shot": "clip",
+     "query": "blue octopus",
+     "subject": "octopus",
+     "camera": "drift",
+     "transition": "flash",
+     "sfx": [
+      "shimmer"
+     ]
+    },
+    {
+     "at_word": 4,
+     "shot": "text",
+     "query": "blue water",
+     "subject": "water",
+     "camera": "drift",
+     "transition": "cut",
+     "sfx": [
+      "pop"
+     ],
+     "text": "COPPER = BLUE"
+    }
+   ]
+  },
+  {
+   "on_screen": "Main heart: off",
+   "visual": "octopus swimming ocean",
+   "subject": "octopus",
+   "text": "And when an octopus swims, that main heart stops beating.",
+   "highlight": [
+    "stops beating"
+   ],
+   "beats": [
+    {
+     "at_word": 0,
+     "shot": "clip",
+     "query": "octopus swimming ocean",
+     "subject": "octopus",
+     "camera": "pull_out",
+     "transition": "slide_up",
+     "sfx": [
+      "riser"
+     ]
+    },
+    {
+     "at_word": 5,
+     "shot": "clip",
+     "query": "heart monitor",
+     "subject": "monitor",
+     "camera": "punch",
+     "transition": "glitch",
+     "sfx": [
+      "glitch",
+      "thud"
+     ]
+    }
+   ]
+  },
+  {
+   "on_screen": "It would rather crawl",
+   "visual": "octopus crawling rocks",
+   "subject": "octopus",
+   "text": "That may be why it usually crawls.",
+   "highlight": [
+    "usually crawls"
+   ],
+   "beats": [
+    {
+     "at_word": 0,
+     "shot": "clip",
+     "query": "octopus crawling rocks",
+     "subject": "octopus",
+     "camera": "pan_left",
+     "transition": "whip_left",
+     "sfx": [
+      "swish"
+     ]
+    }
+   ]
+  },
+  {
+   "on_screen": "3 hearts, copper blood",
+   "visual": "octopus sea floor",
+   "subject": "octopus",
+   "text": "Three hearts, copper blood,",
+   "highlight": [
+    "copper blood"
+   ],
+   "beats": [
+    {
+     "at_word": 0,
+     "shot": "clip",
+     "query": "octopus eye",
+     "subject": "octopus",
+     "camera": "punch",
+     "transition": "zoom",
+     "sfx": [
+      "whoosh"
+     ]
+    }
+   ]
+  },
+  {
+   "on_screen": "The strangest part",
+   "visual": "octopus eye",
+   "subject": "octopus",
+   "text": "and the strangest part of all:",
+   "highlight": [
+    "strangest part"
+   ],
+   "beats": [
+    {
+     "at_word": 0,
+     "shot": "clip",
+     "query": "octopus swimming",
+     "subject": "octopus",
+     "camera": "push_in",
+     "transition": "cut",
+     "sfx": []
+    }
+   ]
+  }
+ ],
+ "style": "pro",
+ "music_mood": "mysterious"
+}
