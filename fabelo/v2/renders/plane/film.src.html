@@ -198,7 +198,7 @@ arcs.forEach(([xe, t0], i) => film.cue('sfx', t0, { name: 'pluck', gain: 0.12, n
 film.cut(B(34.5), 'dip');
 
 /* =========================== SHOT 7 · the morning throw (B34.5 → B39) =========================== */
-const hill = (v) => sv.path(`M${v.x - 80} ${G + 400} L${v.x - 80} ${G - 10} Q-120 ${G - 60} 160 ${G - 10} T${v.x + v.w + 80} ${G + 30} L${v.x + v.w + 80} ${G + 400} Z`, { fill: '#F3ECDD', w: 5 });
+const hill = (v) => sv.path(`M${v.x - 80} ${G + 2400} L${v.x - 80} ${G - 10} Q-120 ${G - 60} 160 ${G - 10} T${v.x + v.w + 80} ${G + 30} L${v.x + v.w + 80} ${G + 2400} Z`, { fill: '#F3ECDD', w: 5 });
 const s7 = film.shot(B(34.5), B(39), { name: 'throw', frame: [-120, 90, 760, 760], groundLine: false });
 s7.layer(0.2, (t, v) => sv.g(S.propSVG('sun', t), `translate(260 ${f1(80 - 60 * E.sineInOut(clamp((t - 28.7) / 4)))}) scale(1.3)`));
 s7.layer(0.4, (t, v) => F2.bg.hills(v, { y: 220, h: 120, seed: 5, op: 0.3 }));
@@ -235,7 +235,7 @@ s8.custom((t) => {
 }, 'front');
 const k8 = s8.character({ x: -150, y: G + 40, scale: 1.5, pose: 'cheer', expr: 'excited' });
 k8.pose(34.8, 'victory', { dur: 0.4 }).pose(35.6, 'cheer', { dur: 0.4 });
-s8.custom((t, sc) => sv.path(`M${sc.view.x - 60} ${G + 60} Q-150 ${G - 10} ${sc.view.x + sc.view.w + 60} ${G + 140} L${sc.view.x + sc.view.w + 60} ${G + 600} L${sc.view.x - 60} ${G + 600} Z`, { fill: '#F3ECDD', w: 5 }), 'back');
+s8.custom((t, sc) => sv.path(`M${sc.view.x - 60} ${G + 60} Q-150 ${G - 10} ${sc.view.x + sc.view.w + 60} ${G + 140} L${sc.view.x + sc.view.w + 60} ${G + 2600} L${sc.view.x - 60} ${G + 2600} Z`, { fill: '#F3ECDD', w: 5 }), 'back');
 s8.cam.frame(32.6, 1.6, [60, -20, 860, 860], 'sineInOut').frame(34.3, 1.6, [0, 0, 1060, 1060], 'quintInOut');
 film.cut(B(44), 'dissolve', { dur: 0.8 });
 
