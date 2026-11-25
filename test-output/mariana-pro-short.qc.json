@@ -1,0 +1,15 @@
+{
+ "file": "mariana-pro-short.mp4",
+ "ok": true,
+ "errors": [],
+ "warnings": [],
+ "info": {
+  "duration": 32.83,
+  "size": "1080x1920",
+  "fps": 30.0,
+  "black": [],
+  "lufs": -14.0,
+  "true_peak": -1.4,
+  "caption_boxes": 62
+ }
+}

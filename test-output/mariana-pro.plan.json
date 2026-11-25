@@ -1,0 +1,398 @@
+{
+ "title": "Everest Would Vanish in the Mariana Trench",
+ "format": "short",
+ "description": "The Mariana Trench goes down almost 11 km. Drop Mount Everest in and about 2 km of water would still cover its peak. No sunlight, near-freezing water and over 1,000 times the pressure at the surface.",
+ "tags": [
+  "mariana trench",
+  "challenger deep",
+  "deep sea",
+  "ocean facts",
+  "mount everest",
+  "deepest place on earth",
+  "weird facts",
+  "mind blowing facts"
+ ],
+ "hashtags": [
+  "ocean",
+  "facts"
+ ],
+ "thumbnail_text": "Everest disappears",
+ "style": "pro",
+ "music_mood": "mysterious",
+ "test_voice": "en-US-AndrewNeural",
+ "voice_rate": "+4%",
+ "scenes": [
+  {
+   "on_screen": "Everest disappears",
+   "visual": "mount everest summit",
+   "subject": "mountain",
+   "text": "You could drop Mount Everest in here, and it would vanish.",
+   "highlight": [
+    "vanish"
+   ],
+   "rate": "-6%",
+   "pause": 0.42,
+   "beats": [
+    {
+     "at_word": 0,
+     "shot": "clip",
+     "query": "mount everest summit aerial",
+     "subject": "mountain",
+     "camera": "punch",
+     "sfx": [
+      "impact"
+     ]
+    },
+    {
+     "at_word": 9,
+     "shot": "clip",
+     "query": "deep dark ocean underwater",
+     "subject": "ocean",
+     "camera": "tilt_down",
+     "transition": "fade",
+     "sfx": [
+      "riser"
+     ]
+    }
+   ]
+  },
+  {
+   "on_screen": "The Mariana Trench",
+   "visual": "deep ocean abyss",
+   "subject": "ocean",
+   "text": "This is the Mariana Trench. The deepest place on Earth.",
+   "highlight": [
+    "Mariana Trench",
+    "deepest place"
+   ],
+   "rate": "+0%",
+   "pause": 0.2,
+   "beats": [
+    {
+     "at_word": 0,
+     "shot": "text",
+     "text": "MARIANA TRENCH",
+     "query": "deep blue ocean underwater light rays",
+     "subject": "ocean",
+     "camera": "drift",
+     "transition": "zoom",
+     "sfx": [
+      "whoosh"
+     ]
+    },
+    {
+     "at_word": 5,
+     "shot": "clip",
+     "query": "pacific ocean aerial waves",
+     "subject": "ocean",
+     "camera": "pull_out",
+     "transition": "cut",
+     "sfx": []
+    }
+   ]
+  },
+  {
+   "on_screen": "10.9 km deep",
+   "visual": "diving into deep ocean",
+   "subject": "ocean",
+   "text": "It plunges almost eleven kilometers down.",
+   "highlight": [
+    "eleven kilometers"
+   ],
+   "rate": "+2%",
+   "pause": 0.16,
+   "beats": [
+    {
+     "at_word": 0,
+     "shot": "number",
+     "query": "sinking deep underwater dark blue",
+     "subject": "ocean",
+     "camera": "tilt_down",
+     "transition": "slide_up",
+     "sfx": [
+      "whoosh",
+      "tick"
+     ],
+     "number": {
+      "from": 0,
+      "to": 10.9,
+      "decimals": 1,
+      "suffix": " KM",
+      "label": "STRAIGHT DOWN"
+     }
+    }
+   ]
+  },
+  {
+   "on_screen": "2 km of water on top",
+   "visual": "mountain peak clouds",
+   "subject": "mountain",
+   "text": "Put Everest at the bottom, and its peak would still sit two kilometers underwater.",
+   "highlight": [
+    "two kilometers underwater"
+   ],
+   "rate": "+5%",
+   "pause": 0.3,
+   "beats": [
+    {
+     "at_word": 0,
+     "shot": "compare",
+     "query": "snowy mountain peak clouds",
+     "subject": "mountain",
+     "camera": "drift",
+     "transition": "whip_left",
+     "sfx": [
+      "swish",
+      "tick"
+     ],
+     "compare": {
+      "left": {
+       "label": "EVEREST",
+       "value": 8.8
+      },
+      "right": {
+       "label": "TRENCH",
+       "value": 10.9
+      },
+      "unit": "KM"
+     }
+    },
+    {
+     "at_word": 11,
+     "shot": "clip",
+     "query": "underwater looking up at surface",
+     "subject": "ocean",
+     "camera": "push_in",
+     "transition": "cut",
+     "sfx": []
+    }
+   ]
+  },
+  {
+   "on_screen": "Sunlight gives up",
+   "visual": "sun rays underwater",
+   "subject": "ocean",
+   "text": "Sunlight gives up after about one kilometer.",
+   "highlight": [
+    "gives up"
+   ],
+   "rate": "+0%",
+   "pause": 0.12,
+   "beats": [
+    {
+     "at_word": 0,
+     "shot": "clip",
+     "query": "sun rays underwater",
+     "subject": "ocean",
+     "camera": "tilt_down",
+     "transition": "slide_up",
+     "sfx": [
+      "whoosh"
+     ]
+    }
+   ]
+  },
+  {
+   "on_screen": "Pitch black. Near freezing.",
+   "visual": "dark deep sea",
+   "subject": "ocean",
+   "text": "Below that, it's pitch black, and close to freezing.",
+   "highlight": [
+    "pitch black",
+    "freezing"
+   ],
+   "rate": "-4%",
+   "pause": 0.26,
+   "beats": [
+    {
+     "at_word": 0,
+     "shot": "clip",
+     "query": "dark deep sea particles",
+     "subject": "ocean",
+     "camera": "drift",
+     "transition": "fade",
+     "sfx": [
+      "riser"
+     ]
+    },
+    {
+     "at_word": 6,
+     "shot": "number",
+     "query": "dark deep sea particles",
+     "subject": "ocean",
+     "camera": "static",
+     "transition": "cut",
+     "sfx": [
+      "tick"
+     ],
+     "number": {
+      "from": 25,
+      "to": 2,
+      "suffix": "°C",
+      "label": "AT THE BOTTOM"
+     }
+    }
+   ]
+  },
+  {
+   "on_screen": "1,000x the pressure",
+   "visual": "submarine deep sea",
+   "subject": "submarine",
+   "text": "And the water pushes down with over a thousand times the pressure you feel right now.",
+   "highlight": [
+    "thousand times"
+   ],
+   "rate": "+6%",
+   "pause": 0.34,
+   "beats": [
+    {
+     "at_word": 0,
+     "shot": "clip",
+     "query": "submarine deep sea lights",
+     "subject": "submarine",
+     "camera": "push_in",
+     "transition": "zoom",
+     "sfx": [
+      "whoosh"
+     ]
+    },
+    {
+     "at_word": 6,
+     "shot": "number",
+     "query": "submarine deep sea lights",
+     "subject": "submarine",
+     "camera": "punch",
+     "transition": "flash",
+     "sfx": [
+      "impact",
+      "tick"
+     ],
+     "number": {
+      "from": 0,
+      "to": 1000,
+      "suffix": "X",
+      "label": "THE PRESSURE"
+     }
+    }
+   ]
+  },
+  {
+   "on_screen": "An elephant on a stamp",
+   "visual": "elephant standing",
+   "subject": "elephant",
+   "text": "That's like an elephant standing on a postage stamp.",
+   "highlight": [
+    "elephant",
+    "postage stamp"
+   ],
+   "rate": "-3%",
+   "pause": 0.3,
+   "beats": [
+    {
+     "at_word": 0,
+     "shot": "clip",
+     "query": "elephant walking",
+     "subject": "elephant",
+     "camera": "push_in",
+     "transition": "whip_right",
+     "sfx": [
+      "swish"
+     ]
+    },
+    {
+     "at_word": 7,
+     "shot": "clip",
+     "query": "postage stamp close up",
+     "subject": "stamp",
+     "camera": "punch",
+     "transition": "cut",
+     "sfx": [
+      "impact"
+     ]
+    }
+   ]
+  },
+  {
+   "on_screen": "Life still survives",
+   "visual": "deep sea creature",
+   "subject": "fish",
+   "text": "And yet, tiny creatures still live down there.",
+   "highlight": [
+    "still live"
+   ],
+   "rate": "+0%",
+   "pause": 0.18,
+   "beats": [
+    {
+     "at_word": 0,
+     "shot": "clip",
+     "query": "deep sea creature glowing",
+     "subject": "fish",
+     "camera": "drift",
+     "transition": "glitch",
+     "sfx": [
+      "glitch"
+     ]
+    }
+   ]
+  },
+  {
+   "on_screen": "Space is easier",
+   "visual": "astronaut in space",
+   "subject": "astronaut",
+   "text": "More people have been to space than to the bottom of this trench.",
+   "highlight": [
+    "space",
+    "the bottom"
+   ],
+   "rate": "+3%",
+   "pause": 0.1,
+   "beats": [
+    {
+     "at_word": 0,
+     "shot": "clip",
+     "query": "astronaut floating in space earth",
+     "subject": "astronaut",
+     "camera": "drift",
+     "transition": "zoom",
+     "sfx": [
+      "whoosh"
+     ]
+    },
+    {
+     "at_word": 8,
+     "shot": "clip",
+     "query": "deep dark ocean underwater",
+     "subject": "ocean",
+     "camera": "tilt_down",
+     "transition": "fade",
+     "sfx": []
+    }
+   ]
+  },
+  {
+   "on_screen": "That deep",
+   "visual": "mount everest aerial",
+   "subject": "mountain",
+   "text": "It's so deep that",
+   "highlight": [
+    "so deep"
+   ],
+   "rate": "+0%",
+   "pause": 0.0,
+   "beats": [
+    {
+     "at_word": 0,
+     "shot": "clip",
+     "query": "mount everest aerial snow",
+     "subject": "mountain",
+     "camera": "pull_out",
+     "transition": "flash",
+     "sfx": [
+      "riser"
+     ]
+    }
+   ]
+  }
+ ]
+}
