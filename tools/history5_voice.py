@@ -52,6 +52,9 @@ def balance() -> tuple[int, int] | None:
         with urllib.request.urlopen(req, timeout=30) as r:
             j = json.loads(r.read())
         return int(j["character_count"]), int(j["character_limit"])
+    except urllib.error.HTTPError as e:
+        print(f"Balance check failed: HTTP {e.code} {e.read().decode(errors='replace')[:200]}")
+        return None
     except Exception as e:
         print(f"Balance check failed: {type(e).__name__}")
         return None
