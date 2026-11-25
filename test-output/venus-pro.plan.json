@@ -256,8 +256,8 @@
     {
      "at_word": 4,
      "shot": "clip",
-     "query": "upside down",
-     "subject": "upside",
+     "query": "clock hands spinning",
+     "subject": "clock",
      "camera": "tilt_down",
      "transition": "cut",
      "sfx": []
