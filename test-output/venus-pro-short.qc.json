@@ -1,36 +1,13 @@
 {
  "file": "venus-pro-short.mp4",
- "ok": false,
- "errors": [
-  "black picture 1.83-2.13s",
-  "black picture 4.13-10.67s",
-  "black picture 20.30-21.43s"
- ],
- "warnings": [
-  "black picture 1.57-1.77s"
- ],
+ "ok": true,
+ "errors": [],
+ "warnings": [],
  "info": {
   "duration": 35.7,
   "size": "1080x1920",
   "fps": 30.0,
-  "black": [
-   [
-    1.56667,
-    1.76667
-   ],
-   [
-    1.83333,
-    2.13333
-   ],
-   [
-    4.13333,
-    10.6667
-   ],
-   [
-    20.3,
-    21.4333
-   ]
-  ],
+  "black": [],
   "lufs": -14.0,
   "true_peak": -1.2,
   "caption_boxes": 46
