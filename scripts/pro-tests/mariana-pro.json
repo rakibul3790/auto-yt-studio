@@ -104,7 +104,7 @@
         {
           "at_word": 0,
           "shot": "number",
-          "query": "sinking deep underwater dark blue",
+          "query": "underwater light rays deep blue",
           "subject": "ocean",
           "camera": "tilt_down",
           "transition": "slide_up",
@@ -216,7 +216,7 @@
         {
           "at_word": 6,
           "shot": "number",
-          "query": "dark deep sea particles",
+          "query": "deep ocean dark blue water",
           "subject": "ocean",
           "camera": "static",
           "transition": "cut",
@@ -246,7 +246,7 @@
         {
           "at_word": 0,
           "shot": "clip",
-          "query": "submarine deep sea lights",
+          "query": "submarine underwater",
           "subject": "submarine",
           "camera": "push_in",
           "transition": "zoom",
@@ -257,8 +257,8 @@
         {
           "at_word": 6,
           "shot": "number",
-          "query": "submarine deep sea lights",
-          "subject": "submarine",
+          "query": "deep ocean dark blue water",
+          "subject": "ocean",
           "camera": "punch",
           "transition": "flash",
           "sfx": [
@@ -312,8 +312,8 @@
     },
     {
       "on_screen": "Life still survives",
-      "visual": "deep sea creature",
-      "subject": "fish",
+      "visual": "glowing jellyfish dark water",
+      "subject": "jellyfish",
       "text": "And yet, tiny creatures still live down there.",
       "highlight": [
         "still live"
@@ -324,8 +324,8 @@
         {
           "at_word": 0,
           "shot": "clip",
-          "query": "deep sea creature glowing",
-          "subject": "fish",
+          "query": "glowing jellyfish dark water",
+          "subject": "jellyfish",
           "camera": "drift",
           "transition": "glitch",
           "sfx": [
