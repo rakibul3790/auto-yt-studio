@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Thumbnail — She Called Every Evening</title>
+<style>
+  @font-face { font-family: 'Caveat'; font-weight: 700; font-style: normal; src: url(data:font/woff2;base64,__CAVEAT__) format('woff2'); }
+  html, body { margin: 0; height: 100%; overflow: hidden; background: #FBF7EE; }
+</style>
+<script src="../../lib/scribble.js"></script>
+</head>
+<body>
+<script>
+{
+/* 1280x720 thumbnail (still frame at t = 0.9). */
+const S = Scribble, C = S.palette, sv = S.svg;
+const TXT = (x, y, size, fill, str, anchor = 'middle') =>
+  `<text x="${x}" y="${y}" text-anchor="${anchor}" font-family="Caveat, cursive" font-weight="700" font-size="${size}" fill="${fill}">${str}</text>`;
+S.registerPose('lookPhone', { lean: 6, head: 14, aL: [-18, -8], aR: [40, 125], lL: [-12, -14], lR: [12, 14] });
+const sc = S.createScene(document.body, { duration: 1, ground: 420, fadeIn: 0, fadeOut: 0, groundLine: false });
+// big phone with missed calls
+sc.custom(() => {
+  let s = `<g transform="translate(-130 330) rotate(-8) scale(4.6)">` +
+    sv.path('M-16 0 L16 0 L16 -60 L-16 -60 Z', { fill: C.ink, w: 3 }) + sv.path('M-12 -7 L12 -7 L12 -53 L-12 -53 Z', { fill: '#E9F6FF', w: 1 }) +
+    TXT(0, -38, 11, C.ink, 'Mom') +
+    `<path d="M0 -16 C-7 -20 -8 -27 -3 -28 C-1 -28 0 -26 0 -25 C0 -26 1 -28 3 -28 C8 -27 7 -20 0 -16 Z" fill="${C.red}"/>` +
+    `<circle cx="16" cy="-60" r="9" fill="${C.red}" stroke="${C.ink}" stroke-width="2"/>` + TXT(16, -55, 14, '#fff', '3') + `</g>`;
+  for (let k = 0; k < 3; k++) { const r = 175 + k * 45; s += sv.path(`M${-130 + r * 0.55} ${80 - r * 0.75} Q${-130 + r} 80 ${-130 + r * 0.6} ${80 + r * 0.55}`, { stroke: C.ink, w: 9, op: (0.75 - k * 0.2).toFixed(2) }); }
+  s += TXT(470, -110, 175, C.ink, 'CALL HER') + TXT(470, 110, 230, C.red, 'BACK');
+  return s;
+}, 'back');
+const s = sc.character({ x: -600, scale: 3.3, pose: 'lookPhone', expr: 'sad', costume: 'office' });
+s.look(0, [5, 3]);
+window.__LINES = [];
+sc.exposeForRecording();
+const q = new URLSearchParams(location.search);
+if (q.has('t')) sc.seek(parseFloat(q.get('t'))); else sc.play();
+}
+</script>
+</body>
+</html>
