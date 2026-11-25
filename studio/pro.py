@@ -499,9 +499,9 @@ GRADE = "eq=contrast=1.06:saturation=1.12:gamma=0.98,unsharp=5:5:0.35:5:5:0,vign
 # a beat may set the feeling of the picture ("look"), so the screen follows the voice
 LOOKS = {
     "excited": ",eq=saturation=1.25:contrast=1.06:brightness=0.02",
-    "sad": ",eq=saturation=0.45:brightness=-0.05:contrast=0.96,colorbalance=bs=0.10:bm=0.06,vignette=angle=PI/3.5",
+    "sad": ",eq=saturation=0.5:brightness=-0.01:contrast=0.97,colorbalance=bs=0.10:bm=0.06,vignette=angle=PI/4",
     "angry": ",eq=saturation=1.3:contrast=1.14,colorbalance=rs=0.16:rm=0.10:bs=-0.08,vignette=angle=PI/4",
-    "whisper": ",eq=brightness=-0.10:saturation=0.85,vignette=angle=PI/3",
+    "whisper": ",eq=saturation=0.8:gamma=1.08,vignette=angle=PI/4",
 }
 
 

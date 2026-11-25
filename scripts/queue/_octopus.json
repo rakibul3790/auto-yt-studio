@@ -62,7 +62,7 @@
       "text": "And every single arm can taste whatever it touches... imagine tasting your keyboard every time you type.",
       "highlight": ["taste"], "subject": "octopus", "pause": 0,
       "beats": [
-        {"at_word": 0, "shot": "clip", "query": "octopus tentacles suckers", "camera": "push_in", "transition": "slide_up", "sfx": ["whoosh"], "look": "whisper"},
+        {"at_word": 0, "shot": "clip", "query": "octopus tentacle close up", "alt": 1, "camera": "push_in", "transition": "slide_up", "sfx": ["whoosh"], "look": "whisper"},
         {"at_word": 9, "shot": "clip", "query": "typing on keyboard", "subject": "keyboard", "camera": "pan_left", "transition": "whip_left", "sfx": ["swish"]}
       ]
     },
