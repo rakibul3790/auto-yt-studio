@@ -94,11 +94,22 @@ def render(data: dict, cfg: dict, work: Path, out_file: Path, size: tuple[int, i
     edge = str(cfg["channel"].get("voice", "")).split(":")[0] not in ("kokoro", "chatterbox")
     base_rate = _pct(data.get("voice_rate", cfg["channel"].get("voice_rate", "+0%")))
     base_pitch = str(data.get("voice_pitch", cfg["channel"].get("voice_pitch", "+0Hz")))
+    eleven = str(cfg["channel"].get("voice", "")).startswith("elevenlabs:") and bool(data.get("eleven_whole"))
+    # lines already made (a paid voice) can ride along with the script, so only new lines cost
+    cache_dir = Path(str(data.get("voice_cache", "")))
+    if data.get("voice_cache") and cache_dir.is_dir():
+        for f in cache_dir.iterdir():
+            if f.name.startswith(f"pro_{voice_tag}_") and not (work / f.name).exists():
+                shutil.copy(f, work / f.name)
+        log(f"Voice lines reused from {cache_dir}")
+    if eleven:
+        _eleven_whole(data, cfg, work, voice_tag, base_rate, base_pitch)
+    n_sc = len(data["scenes"])
     for i, sc in enumerate(data["scenes"]):
         text = str(sc.get("text", "")).strip()
         # delivery: each scene may speed up or slow down a little ("rate": "-8%") and hold
         # a longer or shorter beat after it ("pause": 0.4), so the narration has rhythm
-        rate = max(-30, min(30, base_rate + _pct(sc.get("rate", "+0%"))))
+        rate = max(-30, min(30, base_rate + (0 if eleven else _pct(sc.get("rate", "+0%")))))
         scenes = data["scenes"]
         scfg = {**cfg, "channel": {**cfg["channel"], "voice_rate": f"{rate:+d}%", "voice_pitch": base_pitch,
                                    "_prev_text": " ".join(str(x.get("text", "")) for x in scenes[max(i - 2, 0):i]),
@@ -121,7 +132,8 @@ def render(data: dict, cfg: dict, work: Path, out_file: Path, size: tuple[int, i
             gap = float(sc.get("pause", pause))
         except (TypeError, ValueError):
             gap = pause
-        length = dur + max(0.0, min(gap, 1.2))
+        # the last line holds longer, so the ending breathes instead of cutting off
+        length = dur + max(0.0, min(gap, 2.2 if i == n_sc - 1 else 1.2))
         if max_seconds and t0 + length > max_seconds:
             log(f"Stopping at scene {i} to stay under {max_seconds}s")
             break
@@ -177,7 +189,8 @@ def render(data: dict, cfg: dict, work: Path, out_file: Path, size: tuple[int, i
                      work, tag)
 
     # ---- final: burn captions, add the mix
-    vf = f"ass={ass.name}:fontsdir={FONT_DIR.resolve()},format=yuv420p"
+    vf = (f"ass={ass.name}:fontsdir={FONT_DIR.resolve()},"
+          f"fade=t=out:st={max(total - 0.6, 0):.3f}:d=0.6,format=yuv420p")
     run(["ffmpeg", "-y", "-loglevel", "error", "-i", pictures.name, "-i", mix.name,
          "-filter_complex", f"[0:v]{vf}[v]", "-map", "[v]", "-map", "1:a", "-t", f"{total:.3f}",
          "-c:v", "libx264", "-preset", "medium", "-crf", "18", "-profile:v", "high", "-pix_fmt", "yuv420p",
@@ -200,6 +213,49 @@ def render(data: dict, cfg: dict, work: Path, out_file: Path, size: tuple[int, i
         raise RuntimeError("Quality check failed: " + "; ".join(report["errors"]))
     return {"duration": total, "first_image": first_img, "music": track.name if track else None,
             "chapters": [], "qc": report, "plan": data}
+
+
+def _eleven_whole(data: dict, cfg: dict, work: Path, voice_tag: str, base_rate: int, base_pitch: str) -> None:
+    """One ElevenLabs read of the whole script (natural flow, nothing from the next line
+    leaks in), cut into one file per scene in the silence between sentences. The files
+    are the cache the scene loop reads, so the account is charged once per script."""
+    scenes = data["scenes"]
+    rtag = f"r{base_rate:+d}{re.sub(r'[^0-9+-]', '', base_pitch)}"
+    names = [work / f"pro_{voice_tag}_{rtag}_{i:02d}.mp3" for i in range(len(scenes))]
+    if all(n.exists() and n.with_suffix(".json").exists() for n in names):
+        return
+    texts = [str(sc.get("text", "")).strip() for sc in scenes]
+    full = " ".join(texts)
+    whole = work / f"pro_{voice_tag}_{rtag}_whole.mp3"
+    meta = whole.with_suffix(".json")
+    if whole.exists() and meta.exists():
+        dur, wl = json.loads(meta.read_text(encoding="utf-8"))
+    else:
+        ch = {**cfg["channel"], "voice_rate": f"{base_rate:+d}%"}
+        ch.pop("_prev_text", None)
+        ch.pop("_next_text", None)
+        dur, wl = tts.speak_words(full, whole, {**cfg, "channel": ch})
+        meta.write_text(json.dumps([dur, wl], ensure_ascii=False), encoding="utf-8")
+    counts = [len(t.split()) for t in texts]
+    if len(wl) != sum(counts):
+        raise RuntimeError(f"ElevenLabs word count {len(wl)} does not match the script ({sum(counts)})")
+    k, spans = 0, []
+    for c in counts:
+        spans.append((k, k + c))
+        k += c
+    cuts = [0.0]
+    for i in range(len(scenes) - 1):
+        a_end = float(wl[spans[i][1] - 1][1])
+        b_start = float(wl[spans[i + 1][0]][0])
+        cuts.append(a_end + max(b_start - a_end, 0.0) * 0.5)
+    cuts.append(float(dur))
+    for i, (a, b) in enumerate(zip(cuts, cuts[1:])):
+        lo, hi = spans[i]
+        seg = [(float(x) - a, float(y) - a, t) for x, y, t in wl[lo:hi]]
+        run(["ffmpeg", "-y", "-loglevel", "error", "-i", str(whole), "-ss", f"{a:.3f}", "-to", f"{b:.3f}",
+             "-af", "afade=t=in:d=0.015", "-c:a", "libmp3lame", "-q:a", "2", str(names[i])])
+        names[i].with_suffix(".json").write_text(json.dumps([b - a, seg], ensure_ascii=False), encoding="utf-8")
+    log(f"ElevenLabs: whole script in one read ({dur:.1f}s), cut into {len(scenes)} lines")
 
 
 def _pct(v) -> int:
@@ -957,7 +1013,7 @@ def _mix_audio(voice: Path, sfx: Path, track: Path | None, total: float, vol: fl
         inputs += ["-stream_loop", "-1", "-ss", f"{off:.2f}", "-i", str(track)]
         fc = (f"[0:a]aformat=sample_rates={SR}:channel_layouts=mono,asplit=2[vo][key];"
               f"[2:a]aformat=sample_rates={SR}:channel_layouts=stereo,atrim=0:{total:.3f},volume={gain:.4f},"
-              f"afade=t=in:st=0:d=0.4,afade=t=out:st={max(total - 0.5, 0):.3f}:d=0.5[m0];"
+              f"afade=t=in:st=0:d=0.4,afade=t=out:st={max(total - 1.8, 0):.3f}:d=1.8[m0];"
               f"[key]aformat=channel_layouts=stereo[k2];"
               f"[m0][k2]sidechaincompress=threshold=0.02:ratio=7:attack=20:release=320:makeup=1,"
               f"asplit=2[m][mstem];"
