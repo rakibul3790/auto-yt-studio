@@ -1,0 +1,118 @@
+{
+ "title": "Sea Otters Hold Hands While They Sleep",
+ "format": "short",
+ "style": "pro",
+ "music_mood": "quirky",
+ "description": "Sea otters sometimes hold hands while they sleep so they don't drift apart.",
+ "tags": [
+  "sea otter",
+  "animal facts"
+ ],
+ "hashtags": [
+  "shorts",
+  "facts"
+ ],
+ "scene_pause": 0,
+ "scenes": [
+  {
+   "text": "Sea otters sometimes hold hands while they sleep.",
+   "say": "[gasps] Sea otters sometimes hold hands while they sleep.",
+   "look": "excited",
+   "highlight": [
+    "hold hands"
+   ],
+   "subject": "otter",
+   "on_screen": "Holding hands",
+   "visual": "sea otter floating",
+   "beats": [
+    {
+     "at_word": 0,
+     "shot": "clip",
+     "query": "sea otter floating",
+     "subject": "otter",
+     "camera": "punch",
+     "sfx": [
+      "impact"
+     ]
+    },
+    {
+     "at_word": 4,
+     "shot": "clip",
+     "query": "sea otters together",
+     "subject": "otter",
+     "camera": "push_in",
+     "transition": "cut"
+    }
+   ]
+  },
+  {
+   "text": "So they don't drift apart at night.",
+   "say": "[softly] So they don't drift apart at night.",
+   "look": "whisper",
+   "highlight": [
+    "drift apart"
+   ],
+   "subject": "otter",
+   "on_screen": "Never drift apart",
+   "visual": "calm ocean water",
+   "beats": [
+    {
+     "at_word": 0,
+     "shot": "clip",
+     "query": "sea otter sleeping water",
+     "subject": "otter",
+     "camera": "drift",
+     "transition": "fade",
+     "sfx": [
+      "shimmer"
+     ]
+    }
+   ]
+  },
+  {
+   "text": "That's cuter than most of us.",
+   "say": "[laughs] That's cuter than most of us.",
+   "look": "excited",
+   "highlight": [
+    "cuter"
+   ],
+   "subject": "otter",
+   "on_screen": "Too cute",
+   "visual": "sea otter",
+   "beats": [
+    {
+     "at_word": 0,
+     "shot": "clip",
+     "query": "sea otter face",
+     "subject": "otter",
+     "camera": "push_in",
+     "transition": "zoom",
+     "sfx": [
+      "pop"
+     ]
+    }
+   ]
+  },
+  {
+   "text": "Follow for more weird facts!",
+   "say": "[chuckles] Follow for more weird facts!",
+   "highlight": [
+    "weird facts"
+   ],
+   "subject": "otter",
+   "on_screen": "Follow for more",
+   "visual": "sea otter",
+   "beats": [
+    {
+     "at_word": 0,
+     "shot": "clip",
+     "query": "sea otter floating",
+     "subject": "otter",
+     "camera": "drift",
+     "transition": "cut"
+    }
+   ]
+  }
+ ],
+ "voice_cache": "assets/tensec/cache-v3"
+}

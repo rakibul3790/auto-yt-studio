@@ -1,0 +1,80 @@
+# One 10-second test Short with two voices. Runs only on the ten-sec-test branch. Nothing is uploaded.
+name: Ten second test
+
+on:
+  push:
+    branches: [ten-sec-test]
+    paths:
+      - "tools/ten_sec.py"
+      - "scripts/queue/_tensec_*.json"
+      - ".github/workflows/ten-sec-test.yml"
+
+permissions:
+  contents: write
+
+concurrency:
+  group: ten-sec-test
+  cancel-in-progress: false
+
+jobs:
+  render:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 90
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-python@v6
+        with:
+          python-version: "3.11"
+          cache: pip
+      - name: Install ffmpeg and fonts
+        run: |
+          sudo apt-get update -q
+          sudo apt-get install -y -q ffmpeg fonts-noto-core fonts-noto-color-emoji libraqm0 fontconfig
+      - name: Install Python packages
+        run: |
+          pip install -r requirements.txt
+          pip install torch torchvision --index-url https://download.pytorch.org/whl/cpu
+          pip install open_clip_torch faster-whisper
+      - uses: actions/cache@v4
+        with:
+          path: ~/.cache/huggingface/hub/models--laion--CLIP-ViT-B-32-laion2B-s34B-b79K
+          key: clip-models-v1
+      - uses: actions/cache@v4
+        with:
+          path: ~/.cache/huggingface/hub/models--Systran--faster-whisper-small.en
+          key: whisper-small-en-v1
+      - name: Reuse an earlier ElevenLabs read if there is one (never pay twice)
+        run: |
+          if git fetch -q origin +refs/heads/ten-sec-preview:refs/remotes/origin/ten-sec-preview 2>/dev/null \
+             && git cat-file -e origin/ten-sec-preview:v3.mp3 2>/dev/null; then
+            mkdir -p assets/tensec && git show origin/ten-sec-preview:v3.mp3 > assets/tensec/v3.mp3
+            echo "Found an earlier v3 read"
+          fi
+      - name: Make both voices
+        env:
+          ELEVENLABS_API_KEY: ${{ secrets.ELEVENLABS_API_KEY }}
+        run: python tools/ten_sec.py
+      - name: Render both (no upload, no ElevenLabs key)
+        env:
+          PEXELS_API_KEY: ${{ secrets.PEXELS_API_KEY }}
+          PIXABAY_API_KEY: ${{ secrets.PIXABAY_API_KEY }}
+        run: |
+          python -m studio.main --file scripts/queue/_tensec_v3.json --no-upload
+          python -m studio.main --file scripts/queue/_tensec_free.json --no-upload
+      - name: Save on branch ten-sec-preview
+        if: always()
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          shopt -s nullglob
+          mkdir -p /tmp/prev
+          files=(output/*.mp4 output/*.qc.json assets/tensec/v3.mp3 assets/tensec/free.mp3)
+          [ ${#files[@]} -eq 0 ] && { echo "Nothing made"; exit 0; }
+          cp "${files[@]}" /tmp/prev/
+          for d in work/*/; do [ -f "$d/plan.json" ] && cp "$d/plan.json" "/tmp/prev/$(basename "$d").plan.json"; done
+          cd /tmp/prev
+          git init -q -b ten-sec-preview
+          git config user.name  "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add -A && git commit -qm "Ten second test from run ${GITHUB_RUN_ID}"
+          git push -qf "https://x-access-token:${GH_TOKEN}@github.com/${GITHUB_REPOSITORY}.git" ten-sec-preview
