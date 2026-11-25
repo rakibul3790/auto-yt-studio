@@ -19,7 +19,7 @@
  "thumbnail_text": "Everest disappears",
  "style": "pro",
  "music_mood": "mysterious",
- "test_voice": "en-US-AndrewNeural",
+ "test_voice": "elevenlabs:eVbXsk380msCd98VvvmQ",
  "voice_rate": "+4%",
  "scenes": [
   {
