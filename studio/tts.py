@@ -309,15 +309,16 @@ def _eleven_words(text: str, voice_id: str, ch: dict, out: Path) -> list[Word]:
         if c.isspace():
             if cur:
                 words.append((a, b, cur))
-            cur, a = "", None
+            cur, a, b = "", None, None
             continue
         if a is None:
             a = float(x)
         cur += c
-        b = float(y)
+        if c.isalnum():                     # a closing "." or "," can hold through the pause after it
+            b = float(y)
     if cur:
         words.append((a, b, cur))
-    return words
+    return [(x, y if y is not None else x + 0.1, t) for x, y, t in words]
 
 
 def speak_words(text: str, out: Path, cfg: dict) -> tuple[float, list[Word]]:
