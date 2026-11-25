@@ -29,19 +29,84 @@ def music_credit(track: str | None) -> str:
     return ""
 
 
+def _hashtag(t) -> str:
+    t = "".join(ch for ch in str(t).lstrip("#") if ch.isalnum() or ch == "_")
+    return f"#{t}" if t else ""
+
+
+def hashtags_for(data: dict, cfg: dict, shorts: bool) -> list[str]:
+    """Script hashtags first, then the channel's, at most 5, no duplicates."""
+    raw = list(data.get("hashtags") or []) + list(cfg["channel"].get("default_hashtags") or [])
+    if shorts:
+        raw.insert(0, "Shorts")
+    out, seen = [], set()
+    for t in raw:
+        h = _hashtag(t)
+        if not h or (h.lower() == "#shorts" and not shorts) or h.lower() in seen:
+            continue
+        seen.add(h.lower())
+        out.append(h)
+    return out[:5]
+
+
+def tags_for(data: dict, cfg: dict, shorts: bool) -> list[str]:
+    """The script's own topic tags first, then broad channel tags; 15 at most."""
+    raw = list(data.get("tags") or []) + list(cfg["channel"].get("default_tags") or [])
+    out, seen = [], set()
+    for t in raw:
+        t = str(t).strip().lstrip("#")
+        k = t.lower()
+        if not t or k in seen or (k == "shorts" and not shorts):
+            continue
+        seen.add(k)
+        out.append(t)
+    return out[:15]
+
+
 def description_for(data: dict, cfg: dict, shorts: bool = False, credit: str = "") -> str:
-    parts = [str(data.get("description", "")).strip()]
+    desc = str(data.get("description", "")).strip()
+    parts = []
+    # The first spoken line is the hook; it leads the description when it adds something
+    scenes = data.get("scenes") or []
+    hook = str(scenes[0].get("text", "")).strip() if scenes else ""
+    if len(hook.split()) >= 6 and hook.lower() not in desc.lower():
+        parts.append(hook)
+    parts.append(desc)
     footer = str(cfg["channel"].get("description_footer", "") or "").strip()
     if footer:
         parts.append(footer)
-    tags = data.get("hashtags") or []
-    if shorts:
-        tags = list(tags) + ["#Shorts"]
+    tags = hashtags_for(data, cfg, shorts)
     if tags:
-        parts.append(" ".join(t if str(t).startswith("#") else f"#{t}" for t in tags))
+        parts.append(" ".join(tags))
     if credit:
         parts.append(credit)
     return "\n\n".join(p for p in parts if p)
+
+
+def uploads_today(cfg: dict) -> int:
+    """Queue videos already uploaded today, by the Bangladesh calendar day (UTC+6).
+
+    Counts rows of logs/uploads.csv written by the daily runner (bare script names,
+    not test files that start with _ and not ready-*/ uploads)."""
+    import csv
+    from datetime import datetime, timedelta, timezone
+    from .common import LOG_FILE
+    if not LOG_FILE.exists():
+        return 0
+    tz = timezone(timedelta(hours=6))
+    today = datetime.now(tz).date()
+    n = 0
+    with open(LOG_FILE, encoding="utf-8") as f:
+        for row in csv.reader(f):
+            if len(row) < 2 or "/" in row[1] or row[1].startswith("_") or not row[1].endswith(".json"):
+                continue
+            try:
+                t = datetime.strptime(row[0], "%Y-%m-%dT%H:%M:%SZ").replace(tzinfo=timezone.utc)
+            except ValueError:
+                continue
+            if t.astimezone(tz).date() == today:
+                n += 1
+    return n
 
 
 def process(path: Path, cfg: dict, upload: bool, voice: str | None = None) -> None:
@@ -95,18 +160,17 @@ def process(path: Path, cfg: dict, upload: bool, voice: str | None = None) -> No
         log(f"Test render done (not uploaded): {main_mp4 or short_mp4}")
         return
 
-    tags = list(cfg["channel"].get("default_tags") or []) + list(data.get("tags") or [])
     result = {"uploaded_at": queue.now_utc()}
     if short_only:
         st = data.get("short_title") or data["title"]
         if "#shorts" not in st.lower() and len(st) <= 92:
             st += " #Shorts"
-        sid = youtube.upload(short_mp4, st, description_for(data, cfg, shorts=True, credit=credit), tags, cfg)
+        sid = youtube.upload(short_mp4, st, description_for(data, cfg, shorts=True, credit=credit), tags_for(data, cfg, True), cfg)
         result["short_id"] = sid
         result["short_url"] = f"https://youtube.com/shorts/{sid}"
         short_mp4 = None                      # already uploaded
     else:
-        vid = youtube.upload(main_mp4, data["title"], description_for(data, cfg, credit=credit), tags, cfg, thumb)
+        vid = youtube.upload(main_mp4, data["title"], description_for(data, cfg, credit=credit), tags_for(data, cfg, False), cfg, thumb)
         result["video_id"] = vid
         result["video_url"] = f"https://youtu.be/{vid}"
     if short_mp4:
@@ -114,7 +178,7 @@ def process(path: Path, cfg: dict, upload: bool, voice: str | None = None) -> No
         if "#shorts" not in st.lower() and len(st) <= 92:
             st += " #Shorts"
         try:
-            sid = youtube.upload(short_mp4, st, description_for(data, cfg, shorts=True, credit=credit), tags, cfg)
+            sid = youtube.upload(short_mp4, st, description_for(data, cfg, shorts=True, credit=credit), tags_for(data, cfg, True), cfg)
             result["short_id"] = sid
             result["short_url"] = f"https://youtube.com/shorts/{sid}"
         except Exception as e:  # main video is already up: don't upload it twice
@@ -169,6 +233,17 @@ def main() -> int:
         upload = False
 
     count = args.count or int(cfg["run"].get("videos_per_run", 1))
+    cap = int(cfg["run"].get("max_uploads_per_day", 0) or 0)
+    if upload and cap:
+        already = uploads_today(cfg)
+        left = max(0, cap - already)
+        if left == 0:
+            log(f"Already {already} video(s) uploaded today (Bangladesh time), the daily "
+                f"limit is {cap}. Nothing to do this run.")
+            return 0
+        if count > left:
+            log(f"{already} uploaded today, limit {cap}: making {left} now instead of {count}.")
+            count = left
     done = 0
     for f in files:
         if done >= count:

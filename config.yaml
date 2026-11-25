@@ -24,10 +24,14 @@ channel:
   category_id: "27"
 
   # প্রতিটা ভিডিওতে যোগ হবে এমন ট্যাগ
-  default_tags: []
+  # (স্ক্রিপ্টের নিজের ট্যাগ আগে বসে, তারপর এগুলো; মোট সর্বোচ্চ ১৫টা)
+  default_tags: ["facts", "did you know", "fun facts", "mind blowing facts",
+                 "interesting facts", "amazing facts", "shorts", "MindBlip"]
+  # প্রতিটা Short-এর ডেসক্রিপশনে থাকবে এমন হ্যাশট্যাগ (স্ক্রিপ্টের হ্যাশট্যাগের পরে)
+  default_hashtags: ["Shorts", "facts", "didyouknow"]
 
   # প্রতিটা ভিডিওর ডেসক্রিপশনের শেষে যোগ হবে
-  description_footer: ""
+  description_footer: "A new mind-blowing fact every day. Subscribe so you never miss one!"
 
   made_for_kids: false
   # AI ভয়েস/ছবি থাকলে YouTube-কে জানানো নিয়ম; true রাখাই নিরাপদ
@@ -90,5 +94,8 @@ run:
   videos_per_run: 3          # প্রতিদিন (প্রতিবার চালালে) কয়টা ভিডিও বানাবে আর আপলোড করবে
   # কিউ খালি হলে রানটা "failed" দেখাবে, যাতে GitHub তোমাকে ইমেইল করে
   fail_when_queue_empty: true
-  # private বা unlisted। ইচ্ছা করেই public রাখার ব্যবস্থা নেই।
-  privacy: "private"
+  # private, unlisted বা public। public = আপলোডের সাথে সাথে সবাই দেখতে পাবে।
+  privacy: "public"
+  # এক দিনে (বাংলাদেশ সময়) সর্বোচ্চ কয়টা কিউর ভিডিও আপলোড হবে। এর বেশি হলে রান কিছু না করে থামবে।
+  # 0 = কোনো সীমা নেই।
+  max_uploads_per_day: 3

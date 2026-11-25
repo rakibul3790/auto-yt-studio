@@ -1,12 +1,11 @@
-# Makes the next video from scripts/queue/ and uploads it to YouTube as PRIVATE.
-# Runs every day by itself; you can also run it any time from the Actions tab.
+# Makes the next video from scripts/queue/ and uploads it to YouTube (privacy from config.yaml).
+# Started by cron-job.org 3 times a day; you can also run it any time from the Actions tab.
 name: Daily video
 
 on:
-  schedule:
-    # 10:30 UTC = বিকেল ৪:৩০ বাংলাদেশ সময়। ভিডিও Private আপলোড হয়, তাই এই সময়
-    # শুধু ঠিক করে কখন দেখার জন্য রেডি পাবে। GitHub মাঝে মাঝে ১০–৩০ মিনিট দেরিতে চালায়।
-    - cron: "30 10 * * *"
+  # GitHub-এর নিজের টাইমার বন্ধ: ওটা অনেক দেরিতে চলত বা চলতই না। এখন cron-job.org
+  # প্রতিদিন ৩ বার এই workflow চালায় (প্রতিবার ১টা ভিডিও)। config.yaml-এর
+  # max_uploads_per_day দিনে ৩টার বেশি হতে দেয় না।
   workflow_dispatch:
     inputs:
       count:

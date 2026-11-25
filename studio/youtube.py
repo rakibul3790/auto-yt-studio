@@ -1,8 +1,8 @@
 """Upload to YouTube with the free YouTube Data API v3.
 
 Needs three GitHub Secrets (see README): YT_CLIENT_ID, YT_CLIENT_SECRET,
-YT_REFRESH_TOKEN. Videos are always uploaded as PRIVATE (or unlisted if you
-set that in config.yaml); you make them public yourself in YouTube Studio.
+YT_REFRESH_TOKEN. The privacy comes from run.privacy in config.yaml:
+private, unlisted or public. Anything else falls back to private.
 """
 from __future__ import annotations
 
@@ -60,8 +60,8 @@ def upload(video: Path, title: str, description: str, tags: list[str],
 
     ch, run_cfg = cfg["channel"], cfg["run"]
     privacy = run_cfg.get("privacy", "private")
-    if privacy not in ("private", "unlisted"):
-        privacy = "private"                       # never public automatically
+    if privacy not in ("private", "unlisted", "public"):
+        privacy = "private"
     lang = ch.get("language", "en")
     body = {
         "snippet": {
