@@ -63,4 +63,12 @@ film.captions(LINES, { speakers: ['narrator'] });
 film.ready(LINES);
 ```
 
+Smooth camera: zoom and pan are written to the SVG with 5-decimal precision (never the 0.01 rounding used
+for drawing, which made slow push-ins jump in visible steps), zoom moves in log space, `inOut` / `quintInOut`
+camera moves are swapped for easings with continuous acceleration, a move added while another is running
+continues from the current framing instead of snapping, and `handheld` is a slow two-octave drift that calms
+down while the camera zooms. For a clean zoom prefer `sineInOut` and at least 0.8 s; keep `quintOut`/`expoOut`
+snap zooms for impacts only.
+
+
 Keep what matters inside each shot's camera box: the box is fitted to every aspect ratio.
