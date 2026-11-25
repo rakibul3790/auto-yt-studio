@@ -247,7 +247,7 @@ k1.look(0, [4, -5]).pose(4.6, 'pointUp', { dur: 0.35, expr: 'excited' }).pose(6.
 g1.look(0, [4, -5]).expr(5.2, 'happy').look(5.4, [-4, 2]).look(6.6, [4, -5]);
 const kite1 = (t) => { const b = bob(t, 1); return [250 + b[0], -320 + b[1], -10 + b[2]]; };
 s1.custom((t) => { const [x, y, r] = kite1(t); return kiteString(handR(g1, t), bridle(x, y, r, 0.85), 0.14) + kite(t, x, y, r, 0.85); }, 'front');
-s1.cam.frame(2.4, 3.6, [-30, 30, 1000, 1000], 'quintInOut');
+s1.cam.frame(1.5, 2.1, [-30, 30, 1000, 1000], 'quintInOut');
 film.cue('sfx', 0.6, { name: 'flap', gain: 0.16, pan: 0.4 }).cue('sfx', 3.1, { name: 'flap', gain: 0.13, pan: 0.35 }).cue('sfx', 5.8, { name: 'flap', gain: 0.1, pan: 0.3 });
 film.cut(B(9), 'cut');
 
@@ -275,8 +275,8 @@ film.cut(B(15), 'cut');
 const s3 = film.shot(B(15), B(22), { name: 'kneel', frame: [-40, 150, 760, 760], groundLine: false });
 hillSet(s3, { wind: 380, windN: 8 });
 const k3 = s3.character(kidOpts({ x: 110, pose: 'sitGround', expr: 'sad', facing: -1 }));
-const g3 = s3.character(gpOpts({ x: -430 }));
-g3.walk(12.6, 13.9, -130).pose(13.95, 'crouch', { dur: 0.5, expr: 'soft' }).talk(13.6, 15.99).look(14.0, [3, 2]).pose(16.2, 'crouchPoint', { dur: 0.45, expr: 'happy' }).look(16.3, [3, -5]);
+const g3 = s3.character(gpOpts({ x: -600 }));
+g3.walk(12.6, 13.95, -130).pose(13.95, 'crouch', { dur: 0.5, expr: 'soft' }).talk(13.6, 15.99).look(14.0, [3, 2]).pose(16.2, 'crouchPoint', { dur: 0.45, expr: 'happy' }).look(16.3, [3, -5]);
 k3.look(12.6, [3, 3]).look(13.6, [-4, -1]).expr(14.6, 'confused').look(16.5, [-2, -5]).expr(16.8, 'soft');
 s3.custom((t) => crashedKite(t, 250, { sc: 0.55, bows: 3 }), 'back');
 s3.cam.push(12.8, 5.3, 1.12, [-20, 170]);
@@ -305,7 +305,7 @@ const kite5 = (t) => {
   return [h[0] + lerp(-150, 90, k) + b[0] * k, lerp(Math.min(G - 30, h[1] + 60), h[1] - 440, k) + b[1] * k, lerp(-60, -12, k) + b[2] * k];
 };
 s5.custom((t) => { const [x, y, r] = kite5(t); return kiteString(handR(k5, t), bridle(x, y, r, 0.6), t < 24.3 ? 0.03 : 0.1, 2.2) + kite(t, x, y, r, 0.6, { bows: 3 }); }, 'front');
-s5.cam.follow(23.6, 27.6, k5, { dx: 60, lag: 0.45 }).frame(27.4, 2.2, [160, -60, 960, 960], 'quintInOut');
+s5.cam.follow(23.6, 27.6, k5, { dx: 60, lag: 0.45 }).frame(27.4, 2.2, [60, -60, 1000, 1000], 'quintInOut');
 film.cue('sfx', 24.3, { name: 'whoosh', gain: 0.2, pan: 0.2 }).cue('sfx', 25.6, { name: 'flap', gain: 0.18, pan: 0.3 }).cue('sfx', 27.2, { name: 'flap', gain: 0.16, pan: 0.4 });
 film.cut(B(36), 'cut');
 
@@ -318,7 +318,7 @@ k6.pose(32.2, 'lookUpHold', { dur: 0.6, expr: 'excited' }).pose(34.0, 'kiteHold'
 g6.look(33.5, [4, 2]).expr(33.5, 'proud').look(35.2, [4, -5]).expr(35.2, 'happy');
 const kite6 = (t) => { const b = bob(t, 6), k = clamp((t - 30) / 6.7); return [230 + 60 * k + b[0], -300 - 70 * E.sineInOut(k) + b[1], -12 + b[2]]; };
 s6.custom((t) => { const [x, y, r] = kite6(t); return kiteString(handR(k6, t), bridle(x, y, r, 0.62), 0.12, 2.2) + kite(t, x, y, r, 0.62); }, 'front');
-s6.cam.push(30.2, 6.4, 1.32, [180, -260]);
+s6.cam.push(30.2, 6.4, 1.12, [120, -120]);
 film.cue('sfx', 31.0, { name: 'flap', gain: 0.12, pan: 0.5 }).cue('sfx', 34.0, { name: 'chime', gain: 0.1, pan: 0.4 });
 film.cut(B(44), 'dip', { dur: 1.1 });
 
@@ -335,7 +335,7 @@ s7.custom((t) => kite(t, -350, G - 92, 10, 0.62, { wave: 0.2, drift: -0.5, bows:
 s7.layer(1.1, (t, v) => (t > 38.9 && t < 41.1 ? leaves(t, v, { n: 8, speed: 260, fill: '#D9A35F' }) : '') + (t > 41.0 ? snow(t, v, { n: 36 }) : ''), { front: true });
 const g7 = s7.character(gpOpts({ x: -60, expr: 'soft', look: [5, 0] }));
 const k7 = s7.character({ x: 120, scale: KID, expr: 'happy', look: [-4, -3] });
-k7.scaleTo(37.2, 4.8, ADULT, 'sineInOut').look(38.2, [-4, -2]).expr(39.6, 'soft').look(40.6, [4, 0]).expr(41.3, 'neutral').walk(41.8, 43.4, 640);
+k7.scaleTo(37.2, 4.8, ADULT, 'sineInOut').look(38.2, [-4, -2]).expr(39.6, 'soft').look(40.6, [4, 0]).expr(41.3, 'neutral').walk(41.4, 42.9, 1080, { run: true });
 g7.scaleTo(37.2, 5, 2.12, 'sineInOut').pose(39.4, 'older', { dur: 1.2 }).look(41.4, [5, 0]).wave(42.0, 43.3).expr(42.0, 'soft').expr(43.0, 'sad');
 s7.tint(36.7, 0, NIGHT, 0);
 [37.8, 40.0, 42.2].forEach((tt) => s7.tint(tt, 0.4, NIGHT, 0.22).tint(tt + 0.6, 0.4, NIGHT, 0));
@@ -347,11 +347,11 @@ s8.layer(0.3, (t, v) => skyline(v, { y: G - 10, seed: 2, h: 640, fill: '#E3DCCB'
 s8.layer(0.6, (t, v) => skyline(v, { y: G, seed: 7, h: 470, fill: C.paperDark, w: 4 }));
 s8.custom((t, sc) => F2.bg.floorboards(sc.view, { y: G }), 'back');
 const extras8 = [
-  s8.character({ x: 520, scale: 2.05, scarf: false, hair: 'long', costume: 'dress', facing: -1, expr: 'neutral' }),
+  s8.character({ x: 560, scale: 2.05, scarf: false, hair: 'long', costume: 'dress', facing: -1, expr: 'neutral' }),
   s8.character({ x: -620, scale: 2.1, scarf: false, hair: 'spiky', costume: 'coat', expr: 'neutral' }),
-  s8.character({ x: 640, scale: 2.0, scarf: false, hair: 'bun', costume: 'office', facing: -1, expr: 'neutral' })
+  s8.character({ x: 1000, scale: 2.0, scarf: false, hair: 'bun', costume: 'office', facing: -1, expr: 'neutral' })
 ];
-extras8[0].walk(43.4, 49.8, -600); extras8[1].walk(44.6, 49.9, 520); extras8[2].walk(46.4, 50.0, -260);
+extras8[0].walk(43.4, 49.2, -1300); extras8[1].walk(44.6, 49.3, 1300); extras8[2].walk(43.9, 49.3, -1300);
 const k8 = s8.character({ x: -430, scale: ADULT, costume: 'office', pose: 'hold', hold: 'phone', expr: 'neutral', look: [3, 4] });
 k8.walk(43.6, 48.8, 280, { keepArms: true }).expr(47.0, 'sleepy').look(48.9, [3, 4]);
 s8.layer(1.35, (t, v) => { const k = clamp((t - 46.9) / 0.8); if (k <= 0 || k >= 1) return ''; const x = lerp(v.x + v.w + 300, v.x - 600, k);
@@ -602,13 +602,13 @@ film.cue('sfx', 119.6, { name: 'whoosh', gain: 0.32, pan: 0.5 }).cue('sfx', 120.
 film.cut(B(147), 'cut');
 
 /* SHOT 24 · close-up: he stops fighting. A memory stands behind him (B147 → B151) */
-const s24 = film.shot(B(147), B(151), { name: 'remember', frame: [-80, 10, 440, 440], groundLine: false });
+const s24 = film.shot(B(147), B(151), { name: 'remember', frame: [-90, 10, 500, 500], groundLine: false });
 hillSet(s24, { wind: 900, windN: 14, windOp: 0.3, leaves: 4, grass: false, cloudSpeed: 40 });
-const ghost = s24.character(gpOpts({ x: -175, pose: 'gpHand', expr: 'soft', opacity: 0, look: [4, 3], motion: { breathe: 0.5 } }));
+const ghost = s24.character(gpOpts({ x: -200, pose: 'gpHand', expr: 'soft', opacity: 0, look: [4, 3], motion: { breathe: 0.5 } }));
 ghost.fade(123.0, 0.9, 0.32).fade(124.7, 0.7, 0);
-const k24 = s24.character({ x: 15, scale: ADULT, pose: 'crouch', expr: 'sad', look: [3, 3] });
+const k24 = s24.character({ x: -20, scale: ADULT, pose: 'crouch', expr: 'sad', look: [3, 3] });
 k24.expr(122.75, 'eyesShut').look(122.8, [0, 2]).expr(124.55, 'soft').look(124.6, [4, -4]).pose(125.05, 'idle', { dur: 0.5, expr: 'soft' });
-s24.cam.push(122.6, 2.3, 1.06, [-60, 20]).frame(124.95, 0.8, [-50, -40, 560, 560], 'quintInOut');
+s24.cam.push(122.6, 2.3, 1.04, [-90, 20]).frame(124.95, 0.8, [-50, -40, 600, 600], 'quintInOut');
 film.cue('sfx', 123.0, { name: 'chime', gain: 0.08, pan: -0.3 });
 film.cut(B(151), 'whip', { dir: 1 });
 
@@ -647,8 +647,8 @@ film.cut(B(163), 'cut');
 const s27 = film.shot(B(163), B(171), { name: 'handoff', frame: [60, 70, 900, 900], groundLine: false });
 hillSet(s27, { wind: 520, windN: 10, windOp: 0.24, cloudSpeed: 18, birds: true });
 const k27 = s27.character({ x: -80, scale: ADULT, pose: 'kiteHold', expr: 'soft', look: [3, -5] });
-const kid27 = s27.character({ x: 520, scale: 1.35, scarf: false, hair: 'bun', costume: 'kidtee', facing: -1, expr: 'neutral', look: [-3, 0] });
-kid27.walk(136.0, 137.8, 210).look(137.9, [2, -6]).expr(138.0, 'excited').look(138.9, [-4, -1]).walk(139.1, 139.8, 120).face(140.3, 1).pose(140.3, 'kiteHold', { dur: 0.3, expr: 'excited' }).look(140.6, [3, -6]).expr(141.6, 'happy');
+const kid27 = s27.character({ x: 660, scale: 1.35, scarf: false, hair: 'bun', costume: 'kidtee', facing: -1, expr: 'neutral', look: [-3, 0] });
+kid27.walk(135.9, 138.0, 210).look(137.9, [2, -6]).expr(138.0, 'excited').look(138.9, [-4, -1]).walk(139.1, 139.8, 120).face(140.3, 1).pose(140.3, 'kiteHold', { dur: 0.3, expr: 'excited' }).look(140.6, [3, -6]).expr(141.6, 'happy');
 k27.look(137.4, [4, 0]).expr(138.2, 'happy').pose(138.9, 'handOver', { dur: 0.5, expr: 'soft' }).look(139.1, [4, 1]).pose(141.0, 'idle', { dur: 0.6, expr: 'happy' }).look(141.2, [3, -5]);
 const kite27 = (t) => { const b = bob(t, 27); return [300 + b[0], -330 + b[1], -12 + b[2]]; };
 s27.custom((t) => { const [x, y, r] = kite27(t), h = t < 140.3 ? handR(k27, t) : handR(kid27, t); return kiteString(h, bridle(x, y, r, 0.5), 0.12, 2.2) + kite(t, x, y, r, 0.5, { patches: 3, torn: true, bows: 4 }); }, 'front');
