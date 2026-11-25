@@ -61,20 +61,36 @@ def _texts(texts: list[str]):
     return t / t.norm(dim=-1, keepdim=True)
 
 
-def score(images: list[Image.Image], prompts: list[str], weights: list[float]) -> list[tuple[float, bool]]:
-    """(relevance, unsafe) for each picture: weighted cosine similarity to the prompts."""
+DISTRACTORS = ["a person", "a jellyfish", "a fish", "a shark", "a whale", "a dog", "a cat", "a bird", "an insect",
+               "a flower", "a tree", "food", "a building", "a car", "a computer screen", "text", "a toy",
+               "a statue", "a cartoon", "a planet", "the sky", "the sea", "a mountain", "a city", "a hand",
+               "a drink", "a horse", "a snake", "a crab", "a squid", "a candle", "a clock"]
+SUBJECT_PENALTY = 0.045      # the main thing isn't what the picture mostly shows
+
+
+def score(images, prompts, weights, subject=None):
+    """(relevance, unsafe) for each picture: weighted cosine similarity to the prompts,
+    lowered when CLIP thinks the picture mainly shows something other than the subject
+    (a jellyfish for "octopus")."""
     import torch
     model, pre, _ = _clip
+    subj = (subject or "").strip().lower()
+    others = [d for d in DISTRACTORS if subj.rstrip("s") not in d] if subj else []
+    labels = ([f"a photo of {subj}"] + [f"a photo of {d}" for d in others]) if subj else []
     with torch.no_grad():
         x = torch.stack([pre(im.convert("RGB")) for im in images])
         f = model.encode_image(x)
         f = f / f.norm(dim=-1, keepdim=True)
-        sim = f @ _texts(prompts + UNSAFE).T
+        sim = f @ _texts(prompts + UNSAFE + labels).T
     out = []
-    n = len(prompts)
+    n, u = len(prompts), len(UNSAFE)
     for row in sim.tolist():
         rel = sum(w * s for w, s in zip(weights, row[:n])) / sum(weights)
-        bad = max(row[n:]) > max(0.26, max(row[:n]) + 0.02)
+        bad = max(row[n:n + u]) > max(0.26, max(row[:n]) + 0.02)
+        if labels:
+            p = torch.softmax(torch.tensor(row[n + u:]) * 100, 0)
+            if int(p.argmax()) != 0 and float(p[0]) < 0.3:
+                rel -= SUBJECT_PENALTY
         out.append((rel, bad))
     return out
 
@@ -175,7 +191,7 @@ def _luma(im: Image.Image) -> float:
     return sum(im.convert("L").resize((32, 32)).getdata()) / 1024
 
 
-def _fetch(c: dict, out_stem: Path, prompts: list[str], weights: list[float]):
+def _fetch(c: dict, out_stem: Path, prompts: list[str], weights: list[float], subject: str | None = None):
     """Download a candidate and check its real frames. Returns (file, start, dur, frame score) or None.
 
     The preview picture can come from the bright middle of a clip that opens on
@@ -188,8 +204,17 @@ def _fetch(c: dict, out_stem: Path, prompts: list[str], weights: list[float]):
         img = Image.open(io.BytesIO(data.content)).convert("RGB")
         if _luma(img) < 22:
             return None
+        if img.width / img.height > 0.75:           # wide photo: keep the part that shows the subject
+            cw = min(int(img.height * 9 / 16 * 1.25), img.width)   # room for the camera move
+            crops = [img.crop((x, 0, x + cw, img.height))
+                     for x in sorted({0, (img.width - cw) // 2, img.width - cw})]
+            sc = score(crops, prompts, weights, subject)
+            k = max(range(len(crops)), key=lambda i: sc[i][0])
+            img, rel = crops[k], sc[k][0]
+        else:
+            rel = score([img], prompts, weights, subject)[0][0]
         img.save(src, quality=93)
-        return src, 0.0, None, score([img], prompts, weights)[0][0]
+        return src, 0.0, None, rel
     src = out_stem.with_suffix(".mp4")
     src.write_bytes(data.content)
     from .common import media_duration
@@ -201,7 +226,7 @@ def _fetch(c: dict, out_stem: Path, prompts: list[str], weights: list[float]):
         log(f"Shot picker: {c['id']} is too dark, trying the next one")
         src.unlink(missing_ok=True)
         return None
-    sc = score([im for _, im in bright], prompts, weights)
+    sc = score([im for _, im in bright], prompts, weights, subject)
     good = [(rel, t) for (t, _), (rel, bad) in zip(bright, sc) if not bad]
     if not good:
         src.unlink(missing_ok=True)
@@ -263,7 +288,7 @@ def pick(query: str, subject: str | None, out_stem: Path) -> dict | None:
             log(f"Shot picker: nothing found for '{query}'")
             return None
         prompts, weights = _prompts(query, subject)
-        scores = score([t for _, t in pool], prompts, weights)
+        scores = score([t for _, t in pool], prompts, weights, subject)
         ranked = []
         for (c, _), (rel, bad) in zip(pool, scores):
             if bad:
@@ -283,7 +308,7 @@ def pick(query: str, subject: str | None, out_stem: Path) -> dict | None:
             if rel < MIN_SCORE or tries >= 4:
                 break
             tries += 1
-            got = _fetch(c, out_stem, prompts, weights)
+            got = _fetch(c, out_stem, prompts, weights, subject)
             if got is None:
                 continue
             src, start, dur, frame_rel = got

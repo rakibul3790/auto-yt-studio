@@ -412,7 +412,7 @@ def _render_shot(sh: dict, n: int, data: dict, size: tuple[int, int], fps: int, 
     chain += (f"scale={sw}:{shh}:force_original_aspect_ratio=increase,crop={sw}:{shh},setsar=1,"
               f"zoompan=z='{z}':x='{x}':y='{y}':d=1:s={w}x{h}:fps={fps},{GRADE}")
     if kind in ("number", "compare", "text"):
-        chain += ",gblur=sigma=16,eq=brightness=-0.22:saturation=0.75"
+        chain += ",gblur=sigma=16,eq=brightness=-0.08:saturation=0.8,colorlevels=romin=0.09:gomin=0.09:bomin=0.1:romax=0.8:gomax=0.8:bomax=0.82"
     fx = _fx(sh["tr"], tr_out, length)
     if fx:
         chain += "," + ",".join(fx)
