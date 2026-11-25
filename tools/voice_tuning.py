@@ -1,6 +1,6 @@
-"""Three short audio samples of the same ElevenLabs voice with different delivery.
+"""Short audio samples of one ElevenLabs voice with different delivery.
 
-Budget: about 500 credits in total (1 credit per character). The script counts the
+Budget: at most 300 credits in total (1 credit per character). The script counts the
 characters first and stops before any call if the total would pass the budget.
 Each sample is tried once only, so a failure never spends twice. The key is read
 from ELEVENLABS_API_KEY and never printed.
@@ -12,9 +12,9 @@ import sys
 import urllib.error
 import urllib.request
 
-VOICE = "eVbXsk380msCd98VvvmQ"
+VOICE = "XA3P1cj7XJexe6Zq0ATX"
 MODEL = "eleven_multilingual_v2"
-BUDGET = 500
+BUDGET = 300
 OUT = pathlib.Path(__file__).resolve().parent.parent / "samples" / "tuning"
 
 PLAIN = ("There is an animal in Australia that makes poop shaped like little cubes. "
@@ -23,11 +23,9 @@ PLAYFUL = ("There's an animal in Australia... that makes poop shaped like little
            "It's the wombat! Nature really does think outside the box.")
 
 SAMPLES = [
-    ("1-now", "the settings the daily videos use now", PLAIN,
-     {"stability": 0.42, "similarity_boost": 0.85, "style": 0.25, "speed": 1.04}),
-    ("2-lively", "lower stability, more style: more ups and downs in the tone", PLAIN,
+    ("4-newvoice-lively", "new voice, lively settings", PLAIN,
      {"stability": 0.30, "similarity_boost": 0.85, "style": 0.55, "speed": 1.04}),
-    ("3-playful", "lively settings plus a pause before the surprise and a lighter, happier read", PLAYFUL,
+    ("5-newvoice-playful", "new voice, playful settings and text", PLAYFUL,
      {"stability": 0.32, "similarity_boost": 0.85, "style": 0.50, "speed": 1.06}),
 ]
 
@@ -56,11 +54,11 @@ def main() -> int:
                 audio = r.read()
         except urllib.error.HTTPError as e:
             print(f"::warning::{name} failed: HTTP {e.code} {e.read().decode(errors='replace')[:200]}")
-            continue
+            break  # stop at the first failure so a bad voice never spends twice
         (OUT / f"{name}.mp3").write_bytes(audio)
         print(f"Made {name}: {len(text)} characters, {len(audio)} bytes")
         notes.append(f"- {name}.mp3: {note} ({len(text)} characters) {json.dumps(vs)}")
-    (OUT / "README.md").write_text("# Voice tuning samples\n\n" + "\n".join(notes) + "\n")
+    (OUT / "README-newvoice.md").write_text("# Voice tuning samples\n\n" + "\n".join(notes) + "\n")
     return 0 if notes else 1
 
 

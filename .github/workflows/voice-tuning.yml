@@ -1,4 +1,4 @@
-# Runs only on the voice-tuning branch: three short ElevenLabs audio samples (about 400 credits).
+# Runs only on the voice-tuning branch: short ElevenLabs audio samples (2 for the new voice, about 267 credits).
 name: Voice tuning samples
 
 on:
