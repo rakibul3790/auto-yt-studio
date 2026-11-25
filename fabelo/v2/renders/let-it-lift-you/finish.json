@@ -1,0 +1,18 @@
+{
+ "file": "final.mp4",
+ "duration_s": 150.0,
+ "size": "1920x1080",
+ "fps": "30/1",
+ "video_mbps": 2.5,
+ "file_mb": 47.2,
+ "grade": "warm",
+ "paper": 0.07,
+ "grain": 0.3,
+ "vignette": 0.3,
+ "audio": {
+  "integrated_lufs": -14.0,
+  "lra_lu": 5.0,
+  "true_peak_dbtp": -1.0
+ },
+ "audio_ok": true
+}

@@ -1,0 +1,633 @@
+{
+ "page": "film.html",
+ "duration_s": 150,
+ "shots": 28,
+ "transitions": 11,
+ "frames_checked": 291,
+ "problems": [
+  {
+   "ratio": "16x9",
+   "t": 18.68,
+   "where": "cu-grandpa start",
+   "cut": [
+    {
+     "kind": "char",
+     "box": [
+      468,
+      173,
+      845,
+      948
+     ]
+    }
+   ]
+  },
+  {
+   "ratio": "16x9",
+   "t": 20.83,
+   "where": "cu-grandpa middle",
+   "cut": [
+    {
+     "kind": "char",
+     "box": [
+      421,
+      178,
+      771,
+      979
+     ]
+    }
+   ]
+  },
+  {
+   "ratio": "16x9",
+   "t": 22.98,
+   "where": "cu-grandpa end",
+   "cut": [
+    {
+     "kind": "char",
+     "box": [
+      433,
+      175,
+      843,
+      1014
+     ]
+    }
+   ]
+  },
+  {
+   "ratio": "16x9",
+   "t": 57.85,
+   "where": "hesitate start",
+   "cut": [
+    {
+     "kind": "char",
+     "box": [
+      531,
+      229,
+      910,
+      955
+     ]
+    }
+   ]
+  },
+  {
+   "ratio": "16x9",
+   "t": 59.17,
+   "where": "hesitate middle",
+   "cut": [
+    {
+     "kind": "char",
+     "box": [
+      501,
+      210,
+      861,
+      973
+     ]
+    }
+   ]
+  },
+  {
+   "ratio": "16x9",
+   "t": 60.48,
+   "where": "hesitate end",
+   "cut": [
+    {
+     "kind": "char",
+     "box": [
+      500,
+      196,
+      915,
+      992
+     ]
+    }
+   ]
+  },
+  {
+   "ratio": "16x9",
+   "t": 88.68,
+   "where": "note-falls start",
+   "cut": [
+    {
+     "kind": "char",
+     "box": [
+      520,
+      196,
+      778,
+      807
+     ]
+    }
+   ]
+  },
+  {
+   "ratio": "16x9",
+   "t": 90.83,
+   "where": "note-falls middle",
+   "cut": [
+    {
+     "kind": "char",
+     "box": [
+      530,
+      -12,
+      771,
+      559
+     ]
+    }
+   ]
+  },
+  {
+   "ratio": "16x9",
+   "t": 92.98,
+   "where": "note-falls end",
+   "cut": [
+    {
+     "kind": "char",
+     "box": [
+      503,
+      188,
+      772,
+      759
+     ]
+    }
+   ]
+  },
+  {
+   "ratio": "16x9",
+   "t": 105,
+   "where": "decide middle",
+   "cut": [
+    {
+     "kind": "char",
+     "box": [
+      412,
+      176,
+      761,
+      1044
+     ]
+    }
+   ]
+  },
+  {
+   "ratio": "16x9",
+   "t": 106.32,
+   "where": "decide end",
+   "cut": [
+    {
+     "kind": "char",
+     "box": [
+      411,
+      179,
+      770,
+      1082
+     ]
+    }
+   ]
+  },
+  {
+   "ratio": "16x9",
+   "t": 122.85,
+   "where": "remember start",
+   "cut": [
+    {
+     "kind": "char",
+     "box": [
+      708,
+      227,
+      931,
+      782
+     ]
+    }
+   ]
+  },
+  {
+   "ratio": "16x9",
+   "t": 124.17,
+   "where": "remember middle",
+   "cut": [
+    {
+     "kind": "char",
+     "box": [
+      381,
+      109,
+      719,
+      784
+     ]
+    },
+    {
+     "kind": "char",
+     "box": [
+      715,
+      212,
+      949,
+      784
+     ]
+    }
+   ]
+  },
+  {
+   "ratio": "16x9",
+   "t": 125.48,
+   "where": "remember end",
+   "cut": [
+    {
+     "kind": "char",
+     "box": [
+      593,
+      251,
+      760,
+      773
+     ]
+    }
+   ]
+  },
+  {
+   "ratio": "9x16",
+   "t": 12.85,
+   "where": "kneel start",
+   "cut": [
+    {
+     "kind": "char",
+     "box": [
+      -153,
+      363,
+      28,
+      786
+     ]
+    }
+   ]
+  },
+  {
+   "ratio": "9x16",
+   "t": 22.98,
+   "where": "cu-grandpa end",
+   "cut": [
+    {
+     "kind": "char",
+     "box": [
+      153,
+      455,
+      563,
+      1294
+     ]
+    }
+   ]
+  },
+  {
+   "ratio": "9x16",
+   "t": 46.67,
+   "where": "city middle",
+   "cut": [
+    {
+     "kind": "char",
+     "box": [
+      -67,
+      490,
+      49,
+      809
+     ]
+    }
+   ]
+  },
+  {
+   "ratio": "9x16",
+   "t": 49.65,
+   "where": "city end",
+   "cut": [
+    {
+     "kind": "char",
+     "box": [
+      596,
+      468,
+      726,
+      811
+     ]
+    }
+   ]
+  },
+  {
+   "ratio": "9x16",
+   "t": 105,
+   "where": "decide middle",
+   "cut": [
+    {
+     "kind": "char",
+     "box": [
+      132,
+      456,
+      481,
+      1324
+     ]
+    }
+   ]
+  },
+  {
+   "ratio": "9x16",
+   "t": 106.32,
+   "where": "decide end",
+   "cut": [
+    {
+     "kind": "char",
+     "box": [
+      131,
+      459,
+      490,
+      1362
+     ]
+    }
+   ]
+  },
+  {
+   "ratio": "1x1",
+   "t": 12.85,
+   "where": "kneel start",
+   "cut": [
+    {
+     "kind": "char",
+     "box": [
+      -191,
+      104,
+      36,
+      632
+     ]
+    }
+   ]
+  },
+  {
+   "ratio": "1x1",
+   "t": 18.68,
+   "where": "cu-grandpa start",
+   "cut": [
+    {
+     "kind": "char",
+     "box": [
+      235,
+      216,
+      706,
+      1186
+     ]
+    }
+   ]
+  },
+  {
+   "ratio": "1x1",
+   "t": 20.83,
+   "where": "cu-grandpa middle",
+   "cut": [
+    {
+     "kind": "char",
+     "box": [
+      177,
+      223,
+      614,
+      1224
+     ]
+    }
+   ]
+  },
+  {
+   "ratio": "1x1",
+   "t": 22.98,
+   "where": "cu-grandpa end",
+   "cut": [
+    {
+     "kind": "char",
+     "box": [
+      192,
+      218,
+      704,
+      1267
+     ]
+    }
+   ]
+  },
+  {
+   "ratio": "1x1",
+   "t": 46.67,
+   "where": "city middle",
+   "cut": [
+    {
+     "kind": "char",
+     "box": [
+      -83,
+      262,
+      61,
+      662
+     ]
+    }
+   ]
+  },
+  {
+   "ratio": "1x1",
+   "t": 49.65,
+   "where": "city end",
+   "cut": [
+    {
+     "kind": "char",
+     "box": [
+      745,
+      235,
+      907,
+      664
+     ]
+    }
+   ]
+  },
+  {
+   "ratio": "1x1",
+   "t": 57.85,
+   "where": "hesitate start",
+   "cut": [
+    {
+     "kind": "char",
+     "box": [
+      313,
+      286,
+      787,
+      1194
+     ]
+    }
+   ]
+  },
+  {
+   "ratio": "1x1",
+   "t": 59.17,
+   "where": "hesitate middle",
+   "cut": [
+    {
+     "kind": "char",
+     "box": [
+      276,
+      263,
+      726,
+      1216
+     ]
+    }
+   ]
+  },
+  {
+   "ratio": "1x1",
+   "t": 60.48,
+   "where": "hesitate end",
+   "cut": [
+    {
+     "kind": "char",
+     "box": [
+      276,
+      245,
+      794,
+      1240
+     ]
+    }
+   ]
+  },
+  {
+   "ratio": "1x1",
+   "t": 88.68,
+   "where": "note-falls start",
+   "cut": [
+    {
+     "kind": "char",
+     "box": [
+      299,
+      244,
+      622,
+      1009
+     ]
+    }
+   ]
+  },
+  {
+   "ratio": "1x1",
+   "t": 90.83,
+   "where": "note-falls middle",
+   "cut": [
+    {
+     "kind": "char",
+     "box": [
+      312,
+      -15,
+      613,
+      698
+     ]
+    }
+   ]
+  },
+  {
+   "ratio": "1x1",
+   "t": 92.98,
+   "where": "note-falls end",
+   "cut": [
+    {
+     "kind": "char",
+     "box": [
+      279,
+      235,
+      614,
+      948
+     ]
+    }
+   ]
+  },
+  {
+   "ratio": "1x1",
+   "t": 105,
+   "where": "decide middle",
+   "cut": [
+    {
+     "kind": "char",
+     "box": [
+      165,
+      220,
+      601,
+      1305
+     ]
+    }
+   ]
+  },
+  {
+   "ratio": "1x1",
+   "t": 106.32,
+   "where": "decide end",
+   "cut": [
+    {
+     "kind": "char",
+     "box": [
+      164,
+      223,
+      613,
+      1352
+     ]
+    }
+   ]
+  },
+  {
+   "ratio": "1x1",
+   "t": 122.85,
+   "where": "remember start",
+   "cut": [
+    {
+     "kind": "char",
+     "box": [
+      535,
+      284,
+      814,
+      978
+     ]
+    }
+   ]
+  },
+  {
+   "ratio": "1x1",
+   "t": 124.17,
+   "where": "remember middle",
+   "cut": [
+    {
+     "kind": "char",
+     "box": [
+      126,
+      136,
+      549,
+      980
+     ]
+    },
+    {
+     "kind": "char",
+     "box": [
+      544,
+      265,
+      836,
+      980
+     ]
+    }
+   ]
+  },
+  {
+   "ratio": "1x1",
+   "t": 125.48,
+   "where": "remember end",
+   "cut": [
+    {
+     "kind": "char",
+     "box": [
+      392,
+      313,
+      601,
+      966
+     ]
+    }
+   ]
+  }
+ ],
+ "video": {
+  "duration_s": 150,
+  "size": "1920x1080",
+  "fps": "30/1",
+  "mbps": 2.5,
+  "audio": {
+   "sample_rate": 48000,
+   "channels": 2,
+   "integrated_lufs": -14,
+   "lra_lu": 5,
+   "true_peak_dbtp": -1
+  }
+ },
+ "pass": false
+}
