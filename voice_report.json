@@ -1,0 +1,172 @@
+[
+ {
+  "part": 1,
+  "first_scene": 0,
+  "start": 0.0,
+  "seconds": 31.09,
+  "characters": 472,
+  "not_heard": [
+   "Two"
+  ]
+ },
+ {
+  "part": 2,
+  "first_scene": 11,
+  "start": 32.34,
+  "seconds": 57.0,
+  "characters": 916,
+  "not_heard": [
+   "twenty",
+   "thousand",
+   "ten",
+   "thousand",
+   "later",
+   "bullet-carrying"
+  ]
+ },
+ {
+  "part": 3,
+  "first_scene": 25,
+  "start": 89.9,
+  "seconds": 29.96,
+  "characters": 480,
+  "not_heard": [
+   "nine",
+   "hundred",
+   "eighty-six",
+   "nine",
+   "thousand",
+   "eight",
+   "hundred",
+   "sixty",
+   "ten"
+  ]
+ },
+ {
+  "part": 4,
+  "first_scene": 34,
+  "start": 121.12,
+  "seconds": 30.51,
+  "characters": 398,
+  "not_heard": [
+   "14,",
+   "Strasbourg.",
+   "Troffea",
+   "thirty",
+   "four",
+   "hundred."
+  ]
+ },
+ {
+  "part": 5,
+  "first_scene": 42,
+  "start": 152.2,
+  "seconds": 58.04,
+  "characters": 908,
+  "not_heard": [
+   "Four",
+   "hundred",
+   "thirteen",
+   "thousand"
+  ]
+ },
+ {
+  "part": 6,
+  "first_scene": 55,
+  "start": 211.5,
+  "seconds": 29.0,
+  "characters": 409,
+  "not_heard": [
+   "15,",
+   "Fifty",
+   "Ninety",
+   "two",
+   "point",
+   "three",
+   "its",
+   "seams.",
+   "company's"
+  ]
+ },
+ {
+  "part": 7,
+  "first_scene": 63,
+  "start": 241.06,
+  "seconds": 70.53,
+  "characters": 1021,
+  "not_heard": [
+   "twenty-five",
+   "thirty-five",
+   "elevated",
+   "railway,",
+   "swept",
+   "Twenty-one",
+   "hundred",
+   "fifty"
+  ]
+ },
+ {
+  "part": 8,
+  "first_scene": 77,
+  "start": 312.84,
+  "seconds": 37.49,
+  "characters": 582,
+  "not_heard": [
+   "smooth-talking",
+   "con",
+   "man"
+  ]
+ },
+ {
+  "part": 9,
+  "first_scene": 85,
+  "start": 350.88,
+  "seconds": 55.48,
+  "characters": 883,
+  "not_heard": [
+   "Andr\u00e9",
+   "twenty-nine"
+  ]
+ },
+ {
+  "part": 10,
+  "first_scene": 98,
+  "start": 407.62,
+  "seconds": 40.75,
+  "characters": 623,
+  "not_heard": [
+   "Hiroo",
+   "Two"
+  ]
+ },
+ {
+  "part": 11,
+  "first_scene": 106,
+  "start": 448.94,
+  "seconds": 40.05,
+  "characters": 582,
+  "not_heard": [
+   "thirty,"
+  ]
+ },
+ {
+  "part": 12,
+  "first_scene": 114,
+  "start": 489.54,
+  "seconds": 30.04,
+  "characters": 448,
+  "not_heard": [
+   "9,",
+   "twenty-nine",
+   "Twenty-nine"
+  ]
+ },
+ {
+  "part": 13,
+  "first_scene": 121,
+  "start": 520.84,
+  "seconds": 19.72,
+  "characters": 298,
+  "not_heard": []
+ }
+]
