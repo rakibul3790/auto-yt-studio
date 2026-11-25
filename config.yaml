@@ -15,8 +15,11 @@ channel:
   #   American (মেয়ে):  en-US-AvaNeural (পরিষ্কার, স্বাভাবিক), en-US-EmmaNeural, en-US-JennyNeural
   #   British:          en-GB-RyanNeural (ছেলে), en-GB-SoniaNeural (মেয়ে)
   #   বাংলা চাইলে:      bn-BD-NabanitaNeural, bn-BD-PradeepNeural (language: "bn" করো)
-  voice: "kokoro:am_michael"   # ভয়েস পালা বন্ধ থাকলে এই ভয়েস চলবে ("kokoro:af_heart" = মেয়ে)
-  voice_rate: "+0%"      # কথার গতি, যেমন "+10%" বা "-5%"
+  #   ElevenLabs (পেইড, ক্রেডিট খরচ হয়):  "elevenlabs:<Voice ID>"
+  voice: "elevenlabs:eVbXsk380msCd98VvvmQ"   # রাকিবের বাছাই করা ElevenLabs ভয়েস
+  # ElevenLabs কাজ না করলে (key নেই, ক্রেডিট শেষ, সার্ভার সমস্যা) এই ফ্রি ভয়েসে ভিডিও হবে
+  voice_fallback: "en-US-AndrewNeural"
+  voice_rate: "+4%"      # কথার গতি, যেমন "+10%" বা "-5%"
   voice_pitch: "+0Hz"    # শুধু Edge ভয়েসে কাজ করে
 
   # YouTube ক্যাটাগরি নম্বর: 27 = Education, 22 = People & Blogs,
@@ -43,7 +46,7 @@ channel:
 # days: 0 মানে সবসময় চলবে; কোনো সংখ্যা দিলে তত দিন পর থেমে উপরের channel: voice চলবে।
 # ভয়েস দুটো Kokoro (ফ্রি, ওপেন-সোর্স, GitHub-এই চলে, কোনো চাবি লাগে না)।
 voice_test:
-  enabled: true
+  enabled: false             # ভয়েস পালা বন্ধ: এখন সব ভিডিও উপরের channel.voice দিয়ে
   days: 0
   voices:
     - label: "Michael (man)"
@@ -56,6 +59,13 @@ voice_test:
       pitch: "+0Hz"
 
 video:
+  # খাড়া Short বানানো হবে নতুন "pro" স্টাইলে: শট বাই শট ক্লিপ, ক্যামেরা মুভ, ট্রানজিশন,
+  # শব্দে শব্দে ক্যাপশন, সাউন্ড ডিজাইন, আর শেষে কোয়ালিটি চেক
+  pro_shorts: true
+  # ElevenLabs-এ পুরো স্ক্রিপ্ট একবারে পড়ানো হয় (একটা কল), যাতে কথা টানা আর স্বাভাবিক শোনায়
+  eleven_whole: true
+  # প্রতিটা Short এই লাইন দিয়ে শেষ হবে (স্ক্রিপ্টে আগে থেকে "follow" থাকলে আর যোগ হবে না)
+  follow_line: "Follow for more weird facts."
   width: 1920
   height: 1080
   fps: 30

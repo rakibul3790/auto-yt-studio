@@ -256,6 +256,12 @@ def main() -> int:
             log(f"Skipping broken script: {e}")
             queue.copy_to_failed(f)
         except Exception as e:
+            if str(e).startswith("Quality check failed"):
+                # a broken render is never uploaded; park the script and make the next one
+                print(f"::warning title=Quality check failed::{f.name}: {e}. Moved to "
+                      "scripts/queue/_failed, the next script is made instead.", flush=True)
+                queue.copy_to_failed(f)
+                continue
             if "uploadLimitExceeded" not in str(e):
                 raise
             # YouTube's daily upload cap for this channel is used up. The script
