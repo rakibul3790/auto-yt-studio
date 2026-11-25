@@ -49,6 +49,14 @@ jobs:
           path: ~/.cache/huggingface
           key: clip-models-v1
 
+      - name: Load the shot picker model once
+        run: |
+          python - <<'PY'
+          import open_clip
+          open_clip.create_model_and_transforms("ViT-B-32", pretrained="laion2b_s34b_b79k")
+          print("CLIP ready")
+          PY
+
       - name: Render test Shorts (no upload)
         env:
           PEXELS_API_KEY: ${{ secrets.PEXELS_API_KEY }}

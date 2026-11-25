@@ -44,7 +44,7 @@ def _load():
             _clip = (model, pre, open_clip.get_tokenizer(MODEL))
             log("Shot picker: CLIP loaded")
         except Exception as e:
-            log(f"Shot picker off ({type(e).__name__}): using tag search")
+            log(f"Shot picker off ({type(e).__name__}: {str(e)[:200]}): using tag search")
             _clip = False
     return _clip or None
 
