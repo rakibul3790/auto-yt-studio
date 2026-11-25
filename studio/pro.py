@@ -37,7 +37,7 @@ import numpy as np
 import requests
 from PIL import Image, ImageDraw, ImageFilter, ImageFont
 
-from . import director, qc, tts, visuals
+from . import director, qc, shotpick, tts, visuals
 from .common import MUSIC_DIR, ROOT, log, media_duration, run
 
 FONT_DIR = ROOT / "assets" / "fonts"
@@ -81,6 +81,7 @@ def render(data: dict, cfg: dict, work: Path, out_file: Path, size: tuple[int, i
     (work / "plan.json").write_text(json.dumps(data, indent=1, ensure_ascii=False), encoding="utf-8")
     visuals.reset_clips()
     _USED.clear()
+    shotpick._USED.clear()
 
     # ---- voice, scene by scene, with the time of every word
     voice_tag = re.sub(r"[^A-Za-z0-9]", "", str(cfg["channel"].get("voice", "")))[:24]
@@ -299,6 +300,15 @@ def footage(beat: dict, n: int, title: str, size: tuple[int, int], work: Path) -
     query = str(beat.get("query") or "").strip()
     subject = beat.get("subject")
     pick = _seed(title, n, query) % 3 + int(beat.get("alt", 0))
+    chosen = shotpick.pick(query, subject, work / f"pro_ai{n:02d}")
+    if chosen and chosen["kind"] == "vid":
+        return {"kind": "vid", "src": chosen["src"], "start": chosen["start"],
+                "dur": chosen.get("dur") or media_duration(chosen["src"])}
+    if chosen:
+        img = work / f"pro_img{n:02d}.jpg"
+        w, h = size
+        visuals._cover(Image.open(chosen["src"]).convert("RGB"), (w * 2, h * 2)).save(img, quality=92)
+        return {"kind": "img", "src": img}
     got = pexels_video(query, subject, pick, work / f"pro_px{n:02d}.mp4")
     if got:
         return {"kind": "vid", "src": got[0], "start": got[1], "dur": got[2]}

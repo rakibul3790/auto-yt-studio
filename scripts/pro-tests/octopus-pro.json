@@ -229,7 +229,7 @@
         {
           "at_word": 5,
           "shot": "clip",
-          "query": "heart monitor",
+          "query": "heart rate monitor hospital",
           "subject": "monitor",
           "camera": "punch",
           "transition": "glitch",
