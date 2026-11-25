@@ -24,7 +24,7 @@ from .common import log
 MODEL, PRETRAINED = "ViT-B-32", "laion2b_s34b_b79k"
 GOOD_SCORE = 0.215           # above this the picture clearly shows the thing
 MIN_SCORE = 0.17             # below this it almost surely doesn't
-PHOTO_PENALTY = 0.025        # a moving clip beats a still of the same quality
+PHOTO_PENALTY = 0.04         # a moving clip beats a still of the same quality
 REUSE_PENALTY = 0.06
 UNSAFE = ["a photo of a nude person", "a naked statue", "a photo of underwear", "a bloody wound"]
 
@@ -155,6 +155,69 @@ def _prompts(query: str, subject: str | None) -> tuple[list[str], list[float]]:
     return prompts, weights
 
 
+def _frames(path: Path, dur: float, step: float) -> list[tuple[float, Image.Image]]:
+    """Small frames every `step` seconds (time, picture)."""
+    import subprocess
+    import tempfile
+    out = []
+    with tempfile.TemporaryDirectory() as td:
+        subprocess.run(["ffmpeg", "-v", "error", "-i", str(path), "-vf", f"fps=1/{step},scale=256:-2",
+                        "-frames:v", "30", f"{td}/f%03d.jpg"], check=False)
+        for f in sorted(Path(td).glob("f*.jpg")):
+            k = int(f.stem[1:]) - 1
+            im = Image.open(f)
+            im.load()
+            out.append((k * step, im))
+    return out
+
+
+def _luma(im: Image.Image) -> float:
+    return sum(im.convert("L").resize((32, 32)).getdata()) / 1024
+
+
+def _fetch(c: dict, out_stem: Path, prompts: list[str], weights: list[float]):
+    """Download a candidate and check its real frames. Returns (file, start, dur, frame score) or None.
+
+    The preview picture can come from the bright middle of a clip that opens on
+    seconds of black, so every clip is sampled once a second: dark frames are
+    ruled out, CLIP scores the rest, and the shot starts just before the best one."""
+    data = requests.get(c["url"], timeout=180)
+    data.raise_for_status()
+    if c["kind"] == "img":
+        src = out_stem.with_suffix(".jpg")
+        img = Image.open(io.BytesIO(data.content)).convert("RGB")
+        if _luma(img) < 22:
+            return None
+        img.save(src, quality=93)
+        return src, 0.0, None, score([img], prompts, weights)[0][0]
+    src = out_stem.with_suffix(".mp4")
+    src.write_bytes(data.content)
+    from .common import media_duration
+    dur = media_duration(src) or c.get("dur") or 0.0
+    step = 1.0 if dur <= 30 else dur / 30
+    frames = [(t, im) for t, im in _frames(src, dur, step) if t <= max(dur - 2.5, 0)]
+    bright = [(t, im) for t, im in frames if _luma(im) >= 28]
+    if not bright:
+        log(f"Shot picker: {c['id']} is too dark, trying the next one")
+        src.unlink(missing_ok=True)
+        return None
+    sc = score([im for _, im in bright], prompts, weights)
+    good = [(rel, t) for (t, _), (rel, bad) in zip(bright, sc) if not bad]
+    if not good:
+        src.unlink(missing_ok=True)
+        return None
+    best_rel, t = max(good)
+    if best_rel < MIN_SCORE:
+        log(f"Shot picker: {c['id']} doesn't really show it (frame {best_rel:.3f}), trying the next one")
+        src.unlink(missing_ok=True)
+        return None
+    if c["id"] in _USED:                            # used earlier in this video: take another part
+        later = [(r, tt) for r, tt in good if abs(tt - t) >= 4 and r >= MIN_SCORE]
+        if later:
+            best_rel, t = max(later)
+    return src, round(max(0.0, t - 0.4), 2), dur, best_rel
+
+
 # ------------------------------------------------------------------ public
 def pick(query: str, subject: str | None, out_stem: Path) -> dict | None:
     """Choose and download the best picture for a beat.
@@ -212,31 +275,30 @@ def pick(query: str, subject: str | None, out_stem: Path) -> dict | None:
         if not ranked:
             return None
         ranked.sort(key=lambda r: -r[0])
-        s, rel, c = ranked[0]
-        if rel < MIN_SCORE:
-            log(f"Shot picker: no real match for '{query}' (best {rel:.3f})")
+        if ranked[0][1] < MIN_SCORE:
+            log(f"Shot picker: no real match for '{query}' (best {ranked[0][1]:.3f})")
             return None
-        if rel < GOOD_SCORE:
-            log(f"Shot picker: weak match for '{query}' (best {rel:.3f}), using it")
-        data = requests.get(c["url"], timeout=180)
-        data.raise_for_status()
-        ext = ".mp4" if c["kind"] == "vid" else ".jpg"
-        src = out_stem.with_suffix(ext)
-        reused = c["id"] in _USED
-        if c["kind"] == "vid":
-            src.write_bytes(data.content)
-            dur = c.get("dur") or 0.0
-            start = round(dur * 0.5, 2) if reused and dur > 8 else round(min(0.6, dur * 0.05), 2)
-        else:
-            img = Image.open(io.BytesIO(data.content)).convert("RGB")
-            img.save(src, quality=93)
-            dur, start = None, 0.0
-        _USED.add(c["id"])
-        meta.write_text(json.dumps({"id": c["id"], "kind": c["kind"], "src": str(src), "start": start,
-                                    "dur": dur, "score": round(rel, 4)}))
-        log(f"Shot picker: {c['site']} {'clip' if c['kind'] == 'vid' else 'photo'} {c['id']} for '{query}' "
-            f"(match {rel:.3f}, {len(pool)} looked at{', reused' if reused else ''})")
-        return {"kind": c["kind"], "src": src, "start": start, "dur": dur}
+        tries = 0
+        for s, rel, c in ranked:
+            if rel < MIN_SCORE or tries >= 4:
+                break
+            tries += 1
+            got = _fetch(c, out_stem, prompts, weights)
+            if got is None:
+                continue
+            src, start, dur, frame_rel = got
+            reused = c["id"] in _USED
+            _USED.add(c["id"])
+            meta.write_text(json.dumps({"id": c["id"], "kind": c["kind"], "src": str(src), "start": start,
+                                        "dur": dur, "score": round(rel, 4)}))
+            if rel < GOOD_SCORE:
+                log(f"Shot picker: weak match for '{query}' (best {rel:.3f}), using it")
+            log(f"Shot picker: {c['site']} {'clip' if c['kind'] == 'vid' else 'photo'} {c['id']} for '{query}' "
+                f"(match {rel:.3f}, frame {frame_rel:.3f} at {start:.1f}s, {len(pool)} looked at"
+                f"{', reused' if reused else ''})")
+            return {"kind": c["kind"], "src": src, "start": start, "dur": dur}
+        log(f"Shot picker: no usable clip for '{query}' after {tries} downloads")
+        return None
     except Exception as e:
         log(f"Shot picker failed for '{query}': {type(e).__name__}: {str(e)[:80]}")
         return None

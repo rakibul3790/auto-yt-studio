@@ -400,10 +400,11 @@ def _render_shot(sh: dict, n: int, data: dict, size: tuple[int, int], fps: int, 
     inputs: list[str] = []
     chain = ""
     if src["kind"] == "vid":
-        avail = max(src["dur"] - src["start"], 0.5)
+        st = min(src["start"], max(src["dur"] - length - 0.1, 0.0))     # room for the whole shot
+        avail = max(src["dur"] - st, 0.5)
         slow = min(max(length / avail, 1.0), 1.6) if avail < length else 1.0
         loop = avail * slow < length
-        inputs += [*(["-stream_loop", "-1"] if loop else []), "-ss", f"{src['start']:.2f}", "-i", str(src["src"])]
+        inputs += [*(["-stream_loop", "-1"] if loop else []), "-ss", f"{st:.2f}", "-i", str(src["src"])]
         chain = f"[0:v]setpts={slow:.3f}*(PTS-STARTPTS),fps={fps},"
     else:
         inputs += ["-loop", "1", "-framerate", str(fps), "-i", str(src["src"])]
