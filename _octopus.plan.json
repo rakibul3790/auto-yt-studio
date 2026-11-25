@@ -1,0 +1,325 @@
+{
+ "title": "Octopuses Have Three Hearts",
+ "format": "short",
+ "description": "An octopus has three hearts, blue blood and arms that can taste. Here is why one of those hearts stops when it swims.",
+ "tags": [
+  "octopus",
+  "octopus facts",
+  "animal facts",
+  "ocean facts",
+  "weird animals",
+  "weird facts",
+  "mind blowing facts"
+ ],
+ "hashtags": [
+  "octopus",
+  "facts"
+ ],
+ "music_mood": "quirky",
+ "scene_pause": 0,
+ "voice_cache": "assets/octopus/cache",
+ "music_gains": [
+  1.0,
+  1.15,
+  0.45,
+  1.25,
+  1.1,
+  0.6,
+  1.1,
+  1.0
+ ],
+ "scenes": [
+  {
+   "on_screen": "Wait for it",
+   "text": "Okay, so... I just found out something about octopuses, and honestly? I cannot stop thinking about it.",
+   "highlight": [
+    "octopuses"
+   ],
+   "subject": "octopus",
+   "pause": 0,
+   "beats": [
+    {
+     "at_word": 0,
+     "shot": "clip",
+     "query": "octopus",
+     "camera": "punch",
+     "sfx": [
+      "impact"
+     ],
+     "subject": "octopus"
+    },
+    {
+     "at_word": 11,
+     "shot": "clip",
+     "query": "octopus close up",
+     "camera": "push_in",
+     "transition": "cut",
+     "alt": 1,
+     "subject": "octopus",
+     "sfx": []
+    }
+   ]
+  },
+  {
+   "on_screen": "3 hearts",
+   "text": "They have THREE hearts. Three! Two pump blood to the gills, and one pumps it to the whole body.",
+   "highlight": [
+    "THREE hearts."
+   ],
+   "subject": "octopus",
+   "pause": 0,
+   "beats": [
+    {
+     "at_word": 0,
+     "shot": "number",
+     "query": "octopus underwater",
+     "number": {
+      "from": 0,
+      "to": 3,
+      "suffix": " HEARTS",
+      "label": "ONE OCTOPUS"
+     },
+     "camera": "drift",
+     "transition": "flash",
+     "sfx": [
+      "impact",
+      "tick"
+     ],
+     "look": "excited",
+     "subject": "octopus"
+    },
+    {
+     "at_word": 5,
+     "shot": "clip",
+     "query": "octopus swimming",
+     "camera": "pan_right",
+     "transition": "zoom",
+     "sfx": [
+      "whoosh"
+     ],
+     "look": "excited",
+     "subject": "octopus"
+    },
+    {
+     "at_word": 11,
+     "shot": "clip",
+     "query": "octopus underwater",
+     "camera": "push_in",
+     "transition": "cut",
+     "alt": 1,
+     "subject": "octopus",
+     "sfx": []
+    }
+   ]
+  },
+  {
+   "on_screen": "The sad part",
+   "text": "But here's the sad part... when an octopus swims, that main heart just... stops. It actually stops beating. So they get tired really fast, and they'd rather crawl. Poor little guys.",
+   "highlight": [
+    "stops."
+   ],
+   "subject": "octopus",
+   "pause": 0,
+   "beats": [
+    {
+     "at_word": 0,
+     "shot": "clip",
+     "query": "octopus swimming ocean",
+     "camera": "pull_out",
+     "transition": "fade",
+     "look": "sad",
+     "subject": "octopus",
+     "sfx": []
+    },
+    {
+     "at_word": 13,
+     "shot": "clip",
+     "query": "octopus resting",
+     "camera": "static",
+     "transition": "cut",
+     "sfx": [
+      "thud"
+     ],
+     "look": "sad",
+     "subject": "octopus"
+    },
+    {
+     "at_word": 18,
+     "shot": "clip",
+     "query": "octopus crawling seabed",
+     "camera": "drift",
+     "transition": "fade",
+     "look": "sad",
+     "subject": "octopus",
+     "sfx": []
+    },
+    {
+     "at_word": 28,
+     "shot": "clip",
+     "query": "small octopus",
+     "camera": "push_in",
+     "transition": "cut",
+     "look": "sad",
+     "subject": "octopus",
+     "sfx": []
+    }
+   ]
+  },
+  {
+   "on_screen": "Just seafood?!",
+   "text": "And people still call them 'just seafood'?! Come ON!",
+   "highlight": [
+    "Come",
+    "ON!"
+   ],
+   "subject": "octopus",
+   "pause": 0,
+   "beats": [
+    {
+     "at_word": 0,
+     "shot": "clip",
+     "query": "octopus tentacles",
+     "camera": "punch",
+     "transition": "glitch",
+     "sfx": [
+      "glitch",
+      "impact"
+     ],
+     "look": "angry",
+     "shake": true,
+     "subject": "octopus"
+    },
+    {
+     "at_word": 7,
+     "shot": "clip",
+     "query": "octopus eye",
+     "camera": "punch",
+     "transition": "cut",
+     "sfx": [
+      "impact"
+     ],
+     "look": "angry",
+     "shake": true,
+     "subject": "octopus"
+    }
+   ]
+  },
+  {
+   "on_screen": "Blue blood",
+   "text": "Oh, and wait, wait, wait... their blood? It's BLUE.",
+   "highlight": [
+    "BLUE."
+   ],
+   "subject": "octopus",
+   "pause": 0,
+   "beats": [
+    {
+     "at_word": 0,
+     "shot": "clip",
+     "query": "octopus",
+     "camera": "punch",
+     "transition": "flash",
+     "sfx": [
+      "impact"
+     ],
+     "look": "excited",
+     "alt": 2,
+     "subject": "octopus"
+    },
+    {
+     "at_word": 7,
+     "shot": "text",
+     "text": "BLUE BLOOD",
+     "query": "blue ocean water",
+     "camera": "drift",
+     "transition": "zoom",
+     "sfx": [
+      "impact"
+     ],
+     "subject": "octopus"
+    }
+   ]
+  },
+  {
+   "on_screen": "Arms that taste",
+   "text": "And every single arm can taste whatever it touches... imagine tasting your keyboard every time you type.",
+   "highlight": [
+    "taste"
+   ],
+   "subject": "octopus",
+   "pause": 0,
+   "beats": [
+    {
+     "at_word": 0,
+     "shot": "clip",
+     "query": "octopus tentacle close up",
+     "alt": 1,
+     "camera": "push_in",
+     "transition": "slide_up",
+     "sfx": [
+      "whoosh"
+     ],
+     "look": "whisper",
+     "subject": "octopus"
+    },
+    {
+     "at_word": 9,
+     "shot": "clip",
+     "query": "typing on keyboard",
+     "subject": "keyboard",
+     "camera": "pan_left",
+     "transition": "whip_left",
+     "sfx": [
+      "swish"
+     ]
+    }
+   ]
+  },
+  {
+   "on_screen": "Ridiculous",
+   "text": "Nature is completely ridiculous. And I love it.",
+   "highlight": [
+    "ridiculous."
+   ],
+   "subject": "octopus",
+   "pause": 0,
+   "beats": [
+    {
+     "at_word": 0,
+     "shot": "clip",
+     "query": "colorful octopus",
+     "camera": "punch",
+     "transition": "zoom",
+     "sfx": [
+      "whoosh"
+     ],
+     "look": "excited",
+     "subject": "octopus"
+    }
+   ]
+  },
+  {
+   "on_screen": "Follow for more",
+   "text": "Follow for more weird facts!",
+   "highlight": [
+    "weird facts!"
+   ],
+   "subject": "octopus",
+   "pause": 1.4,
+   "beats": [
+    {
+     "at_word": 0,
+     "shot": "text",
+     "text": "FOLLOW FOR MORE",
+     "query": "octopus ocean",
+     "camera": "drift",
+     "transition": "flash",
+     "sfx": [
+      "shimmer"
+     ],
+     "subject": "octopus"
+    }
+   ]
+  }
+ ]
+}

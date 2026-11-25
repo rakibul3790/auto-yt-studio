@@ -1,0 +1,17 @@
+{
+ "file": "_octopus-short.mp4",
+ "ok": true,
+ "errors": [],
+ "warnings": [
+  "picture frozen 20.33-21.83s"
+ ],
+ "info": {
+  "duration": 52.63,
+  "size": "1080x1920",
+  "fps": 30.0,
+  "black": [],
+  "lufs": -14.7,
+  "true_peak": -1.2,
+  "caption_boxes": 63
+ }
+}
