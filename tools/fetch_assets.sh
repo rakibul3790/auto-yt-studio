@@ -23,7 +23,9 @@ for u in \
 done
 
 credits=assets/music/CREDITS.txt
-for t in "Investigations" "Wallpaper" "Fluffing a Duck" "Sneaky Snitch" "Pixel Peeker Polka - faster" "Carefree" "Monkeys Spinning Monkeys" "Life of Riley"; do
+for t in "Investigations" "Wallpaper" "Fluffing a Duck" "Sneaky Snitch" "Pixel Peeker Polka - faster" "Carefree" "Monkeys Spinning Monkeys" "Life of Riley" \
+         "Scheming Weasel faster" "Sneaky Adventure" "Hitman" "Cipher" "Spy Glass" "Quirky Dog" "Merry Go" \
+         "Hep Cats" "Funkorama" "Local Forecast - Elevator" "Wholesome" "Inspired" "Daily Beetle" "Bossa Antigua"; do
   f="assets/music/$(echo "$t" | tr 'A-Z ' 'a-z-' | tr -cd 'a-z0-9-').mp3"
   url="https://incompetech.com/music/royalty-free/mp3-royaltyfree/$(echo "$t" | sed 's/ /%20/g').mp3"
   get "$url" "$f"
