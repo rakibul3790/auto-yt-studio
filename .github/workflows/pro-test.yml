@@ -40,7 +40,7 @@ jobs:
 
       - name: Install the AI shot picker (CLIP, free and open source)
         run: |
-          pip install torch --index-url https://download.pytorch.org/whl/cpu
+          pip install torch torchvision --index-url https://download.pytorch.org/whl/cpu
           pip install open_clip_torch
 
       - name: Keep downloaded models between runs
