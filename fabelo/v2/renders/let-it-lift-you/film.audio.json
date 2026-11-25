@@ -1,0 +1,636 @@
+{
+ "duration": 150,
+ "voices": {
+  "narrator": {
+   "voice": "af_heart",
+   "speed": 0.9,
+   "semitones": 0,
+   "fx": "clean",
+   "space": "studio",
+   "gain": 0.9
+  },
+  "grandpa": {
+   "voice": "am_onyx",
+   "speed": 0.86,
+   "semitones": -2,
+   "fx": "warm",
+   "space": "room",
+   "gain": 0.95
+  },
+  "phone": {
+   "voice": "am_onyx",
+   "speed": 0.86,
+   "semitones": -2,
+   "fx": "radio",
+   "space": "none",
+   "gain": 0.85
+  },
+  "memory": {
+   "voice": "am_onyx",
+   "speed": 0.84,
+   "semitones": -2,
+   "fx": "warm",
+   "space": "hall",
+   "gain": 0.9
+  }
+ },
+ "lines": [
+  [
+   "narrator",
+   1.4,
+   null,
+   "Every spring, Grandpa built a kite."
+  ],
+  [
+   "narrator",
+   7.9,
+   null,
+   "And every spring, Scribble couldn't make it fly."
+  ],
+  [
+   "grandpa",
+   13.6,
+   null,
+   "You're pulling against the wind, little one."
+  ],
+  [
+   "grandpa",
+   18.9,
+   null,
+   "Don't fight it. Run with it... and let it lift you."
+  ],
+  [
+   "narrator",
+   30.6,
+   null,
+   "That spring, the kite touched the clouds."
+  ],
+  [
+   "narrator",
+   39.2,
+   null,
+   "Then the springs got shorter."
+  ],
+  [
+   "narrator",
+   44.4,
+   null,
+   "Scribble grew up. The city got loud."
+  ],
+  [
+   "phone",
+   54.0,
+   null,
+   "Wind's good this Sunday. Kite's ready... if you are."
+  ],
+  [
+   "narrator",
+   61.6,
+   null,
+   "He always meant to go. Next Sunday, he thought."
+  ],
+  [
+   "narrator",
+   69.2,
+   null,
+   "And then, one spring, there were no more Sundays."
+  ],
+  [
+   "narrator",
+   81.0,
+   null,
+   "He found the old kite in the attic. Torn. Tired. A lot like him."
+  ],
+  [
+   "memory",
+   94.2,
+   null,
+   "For the day the wind gets strong: don't fight it. Let it lift you."
+  ],
+  [
+   "narrator",
+   107.2,
+   null,
+   "So he fixed it. One patch at a time."
+  ],
+  [
+   "narrator",
+   114.2,
+   null,
+   "The wind was strong that morning."
+  ],
+  [
+   "narrator",
+   136.6,
+   null,
+   "The people who love us never really leave."
+  ],
+  [
+   "narrator",
+   140.4,
+   null,
+   "They stay... in the wind."
+  ]
+ ],
+ "sfx": [
+  [
+   "rustle",
+   0.4,
+   0.06,
+   {
+    "d": 1.2,
+    "pan": 0.3
+   }
+  ],
+  [
+   "step",
+   8.0,
+   0.1,
+   {
+    "every": 0.24,
+    "until": 10.9,
+    "pan": -0.1
+   }
+  ],
+  [
+   "step",
+   12.6,
+   0.08,
+   {
+    "every": 0.42,
+    "until": 13.9,
+    "pan": -0.4
+   }
+  ],
+  [
+   "step",
+   23.6,
+   0.1,
+   {
+    "every": 0.22,
+    "until": 27.4,
+    "pan": 0.1
+   }
+  ],
+  [
+   "chime",
+   30.6,
+   0.07,
+   {
+    "pan": 0.4
+   }
+  ],
+  [
+   "tick",
+   37.0,
+   0.07,
+   {
+    "every": 0.42,
+    "until": 42.6,
+    "pan": 0.0
+   }
+  ],
+  [
+   "step",
+   43.6,
+   0.09,
+   {
+    "every": 0.36,
+    "until": 48.8,
+    "pan": 0.0
+   }
+  ],
+  [
+   "tap",
+   50.2,
+   0.07,
+   {
+    "every": 0.32,
+    "until": 53.2,
+    "pan": 0.15
+   }
+  ],
+  [
+   "step",
+   63.8,
+   0.06,
+   {
+    "every": 0.6,
+    "until": 66.1,
+    "pan": 0.3
+   }
+  ],
+  [
+   "thud",
+   80.4,
+   0.08,
+   {
+    "pan": 0.4
+   }
+  ],
+  [
+   "wood",
+   80.5,
+   0.06,
+   {
+    "every": 0.5,
+    "until": 82.6,
+    "pan": 0.3
+   }
+  ],
+  [
+   "paper_land",
+   84.7,
+   0.06,
+   {
+    "pan": -0.2
+   }
+  ],
+  [
+   "step",
+   113.6,
+   0.09,
+   {
+    "every": 0.42,
+    "until": 116.2,
+    "pan": -0.3
+   }
+  ],
+  [
+   "riser",
+   117.2,
+   0.12,
+   {
+    "d": 0.8
+   }
+  ],
+  [
+   "flap",
+   118.4,
+   0.18,
+   {
+    "every": 0.5,
+    "until": 121.3,
+    "pan": 0.4
+   }
+  ],
+  [
+   "step",
+   126.0,
+   0.11,
+   {
+    "every": 0.22,
+    "until": 129.6,
+    "pan": 0.0
+   }
+  ],
+  [
+   "step",
+   136.0,
+   0.06,
+   {
+    "every": 0.3,
+    "until": 137.8,
+    "pan": 0.5
+   }
+  ],
+  [
+   "chime",
+   140.25,
+   0.08,
+   {
+    "pan": 0.3
+   }
+  ],
+  [
+   "chime",
+   144.3,
+   0.07,
+   {
+    "pan": -0.2
+   }
+  ]
+ ],
+ "beds": [
+  [
+   "wind",
+   0,
+   43.4,
+   0.08
+  ],
+  [
+   "birds",
+   0.3,
+   36.7,
+   0.06
+  ],
+  [
+   "crickets",
+   36.8,
+   43.3,
+   0.03
+  ],
+  [
+   "roomtone",
+   43.3,
+   67.4,
+   0.09
+  ],
+  [
+   "wind",
+   60.8,
+   67.5,
+   0.05
+  ],
+  [
+   "rain",
+   67.5,
+   80.2,
+   0.14
+  ],
+  [
+   "drone",
+   67.5,
+   79.8,
+   0.07
+  ],
+  [
+   "heartbeat",
+   69.3,
+   75.2,
+   0.06
+  ],
+  [
+   "roomtone",
+   80.0,
+   106.6,
+   0.08
+  ],
+  [
+   "wind",
+   99.8,
+   103.4,
+   0.05
+  ],
+  [
+   "birds",
+   99.9,
+   103.3,
+   0.04
+  ],
+  [
+   "roomtone",
+   106.6,
+   113.3,
+   0.07
+  ],
+  [
+   "birds",
+   106.8,
+   113.3,
+   0.03
+  ],
+  [
+   "wind",
+   113.3,
+   150,
+   0.12
+  ],
+  [
+   "birds",
+   125.9,
+   150,
+   0.06
+  ]
+ ],
+ "music": {
+  "level": 0.085,
+  "bpm": 72,
+  "reverb": 0.35,
+  "final_chord": true,
+  "sections": [
+   [
+    0,
+    12.5,
+    [
+     "Am",
+     "F",
+     "C",
+     "G"
+    ],
+    4,
+    72,
+    "sparse",
+    0.75
+   ],
+   [
+    12.5,
+    23.33,
+    [
+     "F",
+     "C",
+     "G",
+     "Am"
+    ],
+    4,
+    72,
+    "warm",
+    0.85
+   ],
+   [
+    23.33,
+    30.0,
+    [
+     "F",
+     "G",
+     "Am",
+     "G"
+    ],
+    2,
+    72,
+    "build",
+    0.9
+   ],
+   [
+    30.0,
+    36.67,
+    [
+     "C",
+     "G",
+     "Am",
+     "F"
+    ],
+    4,
+    72,
+    "warm",
+    0.95
+   ],
+   [
+    36.67,
+    53.33,
+    [
+     "Am",
+     "F",
+     "C",
+     "G"
+    ],
+    4,
+    72,
+    "sparse",
+    0.75
+   ],
+   [
+    53.33,
+    67.5,
+    [
+     "F",
+     "C",
+     "Am",
+     "G"
+    ],
+    4,
+    72,
+    "tender",
+    0.8
+   ],
+   [
+    67.5,
+    93.33,
+    [
+     "Am",
+     "Dm",
+     "Am",
+     "E"
+    ],
+    4,
+    72,
+    "dark",
+    0.8
+   ],
+   [
+    93.33,
+    106.67,
+    [
+     "F",
+     "C",
+     "G",
+     "Am"
+    ],
+    4,
+    72,
+    "warm",
+    0.9
+   ],
+   [
+    106.67,
+    118.33,
+    [
+     "F",
+     "G",
+     "Am",
+     "G"
+    ],
+    2,
+    72,
+    "build",
+    0.85
+   ],
+   [
+    118.33,
+    122.5,
+    [
+     "Am",
+     "E",
+     "Am",
+     "E"
+    ],
+    2,
+    72,
+    "tension",
+    0.85
+   ],
+   [
+    122.5,
+    125.83,
+    [
+     "Am",
+     "F"
+    ],
+    4,
+    72,
+    "sparse",
+    0.6
+   ],
+   [
+    125.83,
+    135.83,
+    [
+     "C",
+     "G",
+     "Am",
+     "F"
+    ],
+    4,
+    72,
+    "triumph",
+    1.0
+   ],
+   [
+    135.83,
+    150,
+    [
+     "F",
+     "C",
+     "G",
+     "C"
+    ],
+    4,
+    72,
+    "tender",
+    0.8
+   ]
+  ],
+  "hits": [
+   [
+    30.0,
+    "swell",
+    0.15
+   ],
+   [
+    67.5,
+    "boom",
+    0.14
+   ],
+   [
+    93.33,
+    "swell",
+    0.18
+   ],
+   [
+    122.5,
+    "impact",
+    0.16
+   ],
+   [
+    125.83,
+    "riser",
+    0.3
+   ],
+   [
+    125.83,
+    "boom",
+    0.22
+   ],
+   [
+    142.5,
+    "swell",
+    0.12
+   ]
+  ]
+ },
+ "mix": {
+  "duck_db": 9,
+  "bed_duck_db": 4,
+  "transition_gain": 0.45
+ }
+}

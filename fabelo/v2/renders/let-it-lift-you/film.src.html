@@ -1,0 +1,676 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Let It Lift You — Fabelo Studio</title>
+<style>
+  @font-face { font-family: 'Caveat'; font-weight: 700; font-style: normal; src: url(data:font/woff2;base64,__CAVEAT__) format('woff2'); }
+  html, body { margin: 0; height: 100%; overflow: hidden; background: #FBF7EE; }
+</style>
+<script src="../../../lib/scribble.js"></script>
+<script src="../../lib/fabelo2.js"></script>
+<script>window.__TIMING = __TIMING_JSON__;</script>
+</head>
+<body>
+<script>
+{
+/* =====================================================================
+   "Let It Lift You" — Fabelo Studio v2 film (150 s, 16:9 first, works at every ratio)
+   Every spring Grandpa builds a kite; little Scribble can't make it fly until Grandpa says
+   "don't fight the wind, let it lift you". Scribble grows up, gets busy, misses the Sundays.
+   Grandpa is gone. In the attic Scribble finds the torn kite and a note. He fixes it,
+   fights the strong wind, remembers, runs with it — and hands the string to a child.
+   Scribble never speaks. 28 shots, cuts on the 72 bpm grid.
+   ===================================================================== */
+const S = Scribble, C = S.palette, sv = S.svg, F2 = Fabelo2, E = F2.EASE, RIG = S.RIG;
+const DUR = 150, G = 300;
+const clamp = (v, a = 0, b = 1) => Math.max(a, Math.min(b, v)), lerp = (a, b, k) => a + (b - a) * k, f1 = (v) => (+v).toFixed(1);
+const rad = (d) => (d * Math.PI) / 180, H = F2.hash, fbm = F2.fbm;
+const NIGHT = '#3E4C72', DUSK = '#6A6F8E';
+
+const LINES = [
+  ['narrator', 1.40, 3.57, "Every spring, Grandpa built a kite."],
+  ['narrator', 7.90, 10.53, "And every spring, Scribble couldn't make it fly."],
+  ['grandpa', 13.60, 15.99, "You're pulling against the wind, little one."],
+  ['grandpa', 18.90, 21.76, "Don't fight it. Run with it... and let it lift you."],
+  ['narrator', 30.60, 32.86, "That spring, the kite touched the clouds."],
+  ['narrator', 39.20, 40.71, "Then the springs got shorter."],
+  ['narrator', 44.40, 46.79, "Scribble grew up. The city got loud."],
+  ['phone', 54.00, 57.22, "Wind's good this Sunday. Kite's ready... if you are."],
+  ['narrator', 61.60, 64.40, "He always meant to go. Next Sunday, he thought."],
+  ['narrator', 69.20, 71.87, "And then, one spring, there were no more Sundays."],
+  ['narrator', 81.00, 85.54, "He found the old kite in the attic. Torn. Tired. A lot like him."],
+  ['memory', 94.20, 97.86, "For the day the wind gets strong: don't fight it. Let it lift you."],
+  ['narrator', 107.20, 109.61, "So he fixed it. One patch at a time."],
+  ['narrator', 114.20, 115.77, "The wind was strong that morning."],
+  ['narrator', 136.60, 138.95, "The people who love us never really leave."],
+  ['narrator', 140.40, 141.95, "They stay... in the wind."],
+];
+
+/* ---------------------------------------------------------------- poses, faces, costumes (scene-local) */
+S.registerPose('oldIdle',    { lean: 7, head: 6, aL: [-18, -8], aR: [22, 12], lL: [-10, -12], lR: [10, 12] });
+S.registerPose('older',      { lean: 13, head: 12, aL: [-12, -4], aR: [16, 8], lL: [-9, -11], lR: [9, 11] });
+S.registerPose('kiteHold',   { lean: -4, head: -10, aL: [-22, -12], aR: [132, 150], lL: [-11, -13], lR: [11, 13] });
+S.registerPose('tugBack',    { lean: 10, head: -2, aL: [30, 50], aR: [-110, -128], lL: [-12, -14], lR: [12, 14] });
+S.registerPose('pullBack',   { lean: -20, head: -10, aL: [78, 100], aR: [92, 104], lL: [-30, -14], lR: [24, 32] });
+S.registerPose('dragged',    { lean: 20, head: 4, aL: [-40, -20], aR: [112, 102], lL: [-22, -34], lR: [32, 14] });
+S.registerPose('gpPointWind',{ lean: 3, head: -8, aL: [-18, -8], aR: [124, 136], lL: [-10, -12], lR: [10, 12] });
+S.registerPose('crouchPoint',{ lean: 12, head: -10, aL: [30, 60], aR: [122, 160], lL: [70, -20], lR: [80, -10] });
+S.registerPose('crouchReach',{ lean: 22, head: 8, aL: [30, 60], aR: [92, 104], lL: [70, -20], lR: [80, -10] });
+S.registerPose('handOver',   { lean: 14, head: 0, aL: [30, 60], aR: [84, 92], lL: [70, -20], lR: [80, -10] });
+S.registerPose('carryKite',  { lean: 2, head: 8, aL: [42, 112], aR: [52, 118], lL: [-11, -13], lR: [11, 13] });
+S.registerPose('carryLook',  { lean: 4, head: 22, aL: [42, 112], aR: [52, 118], lL: [-11, -13], lR: [11, 13] });
+S.registerPose('kiteRaise',  { lean: -6, head: -14, aL: [150, 168], aR: [140, 160], lL: [-12, -14], lR: [12, 14] });
+S.registerPose('sitCarry',   { lean: -2, head: 10, aL: [40, 108], aR: [50, 114], lL: [85, 0], lR: [95, 8] });
+S.registerPose('deskWork',   { lean: 12, head: 16, aL: [58, 98], aR: [66, 106], lL: [85, 0], lR: [95, 8] });
+S.registerPose('deskWork2',  { lean: 14, head: 18, aL: [64, 108], aR: [60, 94], lL: [85, 0], lR: [95, 8] });
+S.registerPose('deskReach',  { lean: 8, head: 12, aL: [40, 80], aR: [82, 88], lL: [85, 0], lR: [95, 8] });
+S.registerPose('phoneEar',   { lean: 2, head: 8, aL: [-18, -8], aR: [34, 172], lL: [-11, -13], lR: [11, 13] });
+S.registerPose('phoneDown',  { lean: 8, head: 20, aL: [-14, -6], aR: [26, 70], lL: [-9, -11], lR: [9, 11] });
+S.registerPose('readNote',   { lean: 4, head: 16, aL: [40, 116], aR: [48, 142], lL: [-11, -13], lR: [11, 13] });
+S.registerPose('nod',        { lean: 6, head: 30, aL: [40, 116], aR: [48, 142], lL: [-11, -13], lR: [11, 13] });
+S.registerPose('gpHand',     { lean: 6, head: 10, aL: [-16, -8], aR: [96, 84], lL: [-10, -12], lR: [10, 12] });
+S.registerPose('gpCrouchHold',{ lean: 14, head: -8, aL: [70, 80], aR: [118, 150], lL: [70, -20], lR: [80, -10] });
+S.registerPose('sitGround',  { lean: -6, head: 10, aL: [-30, -50], aR: [30, 50], lL: [90, 92], lR: [86, 90] });
+S.registerPose('lookUpHold', { lean: -6, head: -16, aL: [-22, -12], aR: [140, 160], lL: [-12, -14], lR: [12, 14] });
+S.registerExpression('eyesShut', { eyes: 'closed', brows: { lift: 1, tilt: 8 }, mouth: 'flat' });
+S.registerExpression('tearful',  { eyes: 'closed', brows: { lift: -1, tilt: 14 }, mouth: 'frown' });
+S.registerExpression('soft',     { eyes: 'dot', brows: { lift: -1, tilt: 6 }, mouth: 'smile' });
+
+const CAP = sv.path('M-31 -12 Q-30 -42 0 -42 Q30 -42 32 -12 Q0 -20 -31 -12 Z', { fill: '#7D6B58', w: 4 }) + sv.path('M8 -16 L48 -12 L46 -5 L6 -8 Z', { fill: '#7D6B58', w: 3.5 });
+S.registerCostume('grandpa', {
+  hideHair: true,
+  body: sv.path('M-15 -3 L15 -3 L18 52 L-18 52 Z', { fill: '#9C6B4E', w: 4 }) + sv.line(0, 0, 0, 50, 3) + sv.dot(-4, 16, 2.5) + sv.dot(-4, 30, 2.5),
+  head: sv.path('M-31 -2 Q-35 -16 -27 -22', { stroke: '#8E8E8E', w: 6 }) + sv.path('M31 -2 Q35 -16 27 -22', { stroke: '#8E8E8E', w: 6 }) +
+    sv.path('M-22 8 Q-26 36 0 46 Q26 36 22 8 Q12 18 0 17 Q-12 18 -22 8 Z', { fill: '#F4F4F4', w: 3.5 }) +
+    sv.path('M-12 10 Q0 4 12 10', { stroke: '#BDBDBD', w: 5 }) + CAP,
+  face: sv.circle(-10, -2, 8.5, { w: 3 }) + sv.circle(10, -2, 8.5, { w: 3 }) + sv.line(-1.5, -3, 1.5, -3, 3)
+});
+S.registerCostume('kidtee', { body: sv.path('M-13 -3 L13 -3 L15 44 L-15 44 Z', { fill: '#8FB3A8', w: 4 }) + sv.line(-11, 14, 11, 14, 3) });
+S.registerCostume('coat',   { body: sv.path('M-15 -3 L15 -3 L19 56 L-19 56 Z', { fill: '#A7A9AC', w: 4 }) + sv.line(0, -2, 0, 54, 3) });
+S.registerCostume('dress',  { body: sv.path('M-12 -3 L12 -3 L30 62 L-30 62 Z', { fill: '#C9B79C', w: 4 }) + sv.line(-14, 18, 14, 18, 3) });
+S.registerProp('note', () => sv.path('M-40 -60 L40 -64 L44 0 L-36 4 Z', { fill: '#FFFFFF', w: 4 }) + sv.path('M-26 -44 L28 -46 M-26 -30 L22 -32 M-26 -16 L30 -18', { w: 3, op: 0.5 }));
+S.HOLD.note = { s: 0.55, dx: 0, dy: 30, rot: 0 };
+
+/* ---------------------------------------------------------------- drawing helpers */
+// right-hand position of a character in world units (forward kinematics on the same rig scribble.js uses)
+function handR(ch, t) {
+  const st = ch.stateAt(t), p = st.pose;
+  const drop = (l) => RIG.thigh * Math.cos(rad(l[0])) + RIG.shin * Math.cos(rad(l[1]));
+  const hipY = -Math.max(drop(p.lL), drop(p.lR)) - (p.jump || 0);
+  const up = [Math.sin(rad(p.lean)), -Math.cos(rad(p.lean))];
+  const sh = [up[0] * RIG.torso, hipY + up[1] * RIG.torso];
+  const a1 = p.aR[0] - p.lean, a2 = p.aR[1] - p.lean;
+  const j = [sh[0] + Math.sin(rad(a1)) * RIG.upperArm, sh[1] + Math.cos(rad(a1)) * RIG.upperArm];
+  const e = [j[0] + Math.sin(rad(a2)) * RIG.foreArm, j[1] + Math.cos(rad(a2)) * RIG.foreArm];
+  return [st.x + e[0] * st.scale * st.facing, st.y + e[1] * st.scale];
+}
+const handsMid = (ch, t) => handR(ch, t); // kites carried in front sit at the right hand
+
+// the kite: paper diamond, two spars, a tail with bows. o: { torn, patches (0-3), bows (0-4), flip (-1..1), dim }
+function kite(t, x, y, rot, sc, o = {}) {
+  const bows = o.bows == null ? 4 : o.bows, drift = o.drift == null ? 2.5 : o.drift, ph = o.ph || 0, wav = o.wave == null ? 1 : o.wave;
+  let d = 'M0 78', pts = [];
+  for (let i = 1; i <= 12; i++) { const yy = 78 + i * 16, xx = (Math.sin(t * 5.2 + i * 0.75 + ph) * (3 + i * 1.5)) * wav - i * drift; d += `L${f1(xx)} ${f1(yy)}`; pts.push([xx, yy]); }
+  let s = sv.path(d, { w: 3.5 });
+  for (let b = 0; b < bows; b++) { const p = pts[2 + b * 3]; s += sv.g(sv.path('M-10 -6 L10 6 L10 -6 L-10 6 Z', { fill: C.paperDark, w: 3 }), `translate(${f1(p[0])} ${f1(p[1])}) rotate(${f1(Math.sin(t * 4 + b) * 14)})`); }
+  let body = sv.path('M0 -72 L48 -12 L0 80 L-48 -12 Z', { fill: '#FFFFFF', w: 5 }) + sv.path('M-48 -12 L48 -12 L0 80 Z', { fill: C.paperDark, w: 0.01 }) +
+    sv.path('M0 -72 L48 -12 L0 80 L-48 -12 Z', { w: 5 }) + sv.line(0, -72, 0, 80, 3.5) + sv.line(-48, -12, 48, -12, 3.5);
+  if (o.torn) body += sv.path('M-30 -30 L-18 -18 L-24 -6 L-8 4 L-14 16 L2 28', { w: 3.5 }) + sv.path('M-8 4 L4 -4 L-2 12 Z', { fill: C.paperDark, w: 3 });
+  const P = [[-20, -26, -8], [16, 2, 10], [-10, 36, -4]];
+  for (let i = 0; i < (o.patches || 0); i++) {
+    const k = o.patchK ? o.patchK[i] : 1; if (k <= 0) continue;
+    const [px, py, pr] = P[i];
+    body += sv.g(sv.path('M-13 -10 L13 -11 L14 10 L-12 11 Z', { fill: '#F3ECDD', w: 3 }) + sv.path('M-9 -6 l4 4 m0 -4 l-4 4 M5 -7 l4 4 m0 -4 l-4 4 M-8 4 l4 4 m0 -4 l-4 4 M6 3 l4 4 m0 -4 l-4 4', { w: 2 }),
+      `translate(${px} ${py}) rotate(${pr}) scale(${f1(E.backOut(clamp(k)))})`);
+  }
+  const fx = o.flip == null ? 1 : o.flip;
+  s = sv.g(s + body, `scale(${(Math.abs(fx) < 0.06 ? 0.06 * Math.sign(fx || 1) : fx).toFixed(3)} 1)`);
+  return sv.g(s, `translate(${f1(x)} ${f1(y)}) rotate(${f1(rot)}) scale(${(+sc).toFixed(3)})`, o.op != null ? ` opacity="${o.op.toFixed(2)}"` : '');
+}
+// the bridle point (where the string ties on) in world units
+const bridle = (x, y, rot, sc) => { const a = rad(rot); return [x + (-Math.sin(a) * 8) * sc, y + (Math.cos(a) * 8) * sc]; };
+function kiteString(h, k, sag = 0.1, w = 2.6) {
+  const mx = (h[0] + k[0]) / 2, my = (h[1] + k[1]) / 2 + Math.hypot(k[0] - h[0], k[1] - h[1]) * sag;
+  return `<path d="M${f1(h[0])} ${f1(h[1])} Q${f1(mx)} ${f1(my)} ${f1(k[0])} ${f1(k[1])}" fill="none" stroke="${C.ink}" stroke-width="${w}" stroke-linecap="round" opacity="0.85"/>`;
+}
+const bob = (t, s = 0) => [fbm(t * 0.7 + s, 2) * 22, fbm(t * 0.55 + s + 4, 3) * 16, fbm(t * 0.9 + s + 9, 5) * 9];
+const crashedKite = (t, x, o = {}) => kite(t, x, G - 26, 72, o.sc || 0.62, Object.assign({ wave: 0.15, drift: -1 }, o));
+
+// wind streaks blowing right
+function wind(t, v, o = {}) {
+  const n = o.n || 14, sp = o.speed || 700, y0 = o.y0 == null ? v.y + 40 : o.y0, y1 = o.y1 == null ? v.y + v.h * 0.7 : o.y1;
+  let d = '';
+  for (let i = 0; i < n; i++) {
+    const span = v.w + 900, x = v.x - 450 + ((((H(i) * 0.5 + 0.5) * span + t * sp * (0.75 + 0.5 * Math.abs(H(i * 2.1)))) % span) + span) % span;
+    const y = y0 + (H(i * 3.7) * 0.5 + 0.5) * (y1 - y0) + Math.sin(t * 2 + i) * 10, L = 80 + 70 * Math.abs(H(i * 5.3));
+    d += `M${f1(x)} ${f1(y)}q${f1(L * 0.5)} ${f1(-12 - 6 * H(i))} ${f1(L)} 0` + (i % 3 === 0 ? `q${f1(L * 0.18)} ${f1(-2)} ${f1(L * 0.16)} -16` : '');
+  }
+  return sv.path(d, { w: o.w || 3, op: o.op == null ? 0.32 : o.op });
+}
+function leaves(t, v, o = {}) {
+  const n = o.n || 6, sp = o.speed || 420; let s = '';
+  for (let i = 0; i < n; i++) {
+    const span = v.w + 700, x = v.x - 350 + ((((H(i * 1.3) * 0.5 + 0.5) * span + t * sp * (0.8 + 0.4 * Math.abs(H(i)))) % span) + span) % span;
+    const y = v.y + v.h * (0.15 + 0.6 * (H(i * 7.7) * 0.5 + 0.5)) + Math.sin(t * 3 + i * 2) * 40;
+    s += sv.g(sv.path('M-12 0 Q0 -10 12 0 Q0 10 -12 0 Z M-12 0 L12 0', { fill: o.fill || '#B9C98F', w: 3 }), `translate(${f1(x)} ${f1(y)}) rotate(${f1(t * 240 + i * 50)})`);
+  }
+  return s;
+}
+function snow(t, v, o = {}) {
+  let s = ''; const n = o.n || 40;
+  for (let i = 0; i < n; i++) { const x = v.x + (H(i * 2.7) * 0.5 + 0.5) * v.w + Math.sin(t * 1.5 + i) * 20, y = v.y + ((((H(i * 4.1) * 0.5 + 0.5) * (v.h + 60) + t * 120) % (v.h + 60)) + (v.h + 60)) % (v.h + 60) - 30; s += `<circle cx="${f1(x)}" cy="${f1(y)}" r="${f1(3 + 2 * Math.abs(H(i)))}" fill="#FFFFFF" stroke="${C.ink}" stroke-width="1.5" opacity="0.9"/>`; }
+  return s;
+}
+function birds(t, v, o = {}) {
+  let d = ''; const n = o.n || 4;
+  for (let i = 0; i < n; i++) { const span = v.w + 400, x = v.x - 200 + ((((H(i * 3.1) * 0.5 + 0.5) * span + t * (o.speed || 90)) % span) + span) % span, y = (o.y || v.y + v.h * 0.25) + H(i * 5) * 60, w = Math.sin(t * 7 + i * 2) * 8; d += `M${f1(x - 14)} ${f1(y - w)}Q${f1(x - 6)} ${f1(y - 6)} ${f1(x)} ${f1(y)}Q${f1(x + 6)} ${f1(y - 6)} ${f1(x + 14)} ${f1(y - w)}`; }
+  return sv.path(d, { w: 3.5 });
+}
+// foreground grass along the bottom of the frame (parallax, blurred)
+const grassFG = (t, v, str = 1, op = 1) => {
+  if (op <= 0.01) return '';
+  let d = ''; const base = v.y + v.h + 30;
+  for (let i = 0; i < 40; i++) {
+    const x = v.x - 60 + i * (v.w + 120) / 40 + H(i) * 18, h = 50 + 46 * Math.abs(H(i * 3)), sw = (Math.sin(t * 2.2 * str + i) * 6 + 10) * str;
+    d += `M${f1(x)} ${f1(base)}q${f1(sw - 6)} ${f1(-h * 0.6)} ${f1(sw * 1.6)} ${f1(-h)}M${f1(x + 7)} ${f1(base)}q${f1(sw + 4)} ${f1(-h * 0.7)} ${f1(sw * 2)} ${f1(-h * 1.2)}`;
+  }
+  return sv.path(d, { w: 6, op: 0.5 * op });
+};
+const hill = (v, fill = '#F3ECDD') => sv.path(`M${f1(v.x - 120)} ${G + 2600} L${f1(v.x - 120)} ${G + 100} C-640 ${G + 12} -320 ${G} 0 ${G} C320 ${G} 640 ${G + 18} ${f1(v.x + v.w + 120)} ${G + 110} L${f1(v.x + v.w + 120)} ${G + 2600} Z`, { fill, w: 5 });
+const bench = (x) => sv.path(`M${x - 92} ${G - 74} L${x + 92} ${G - 74} L${x + 92} ${G - 62} L${x - 92} ${G - 62} Z`, { fill: C.brown, w: 4 }) +
+  sv.line(x - 78, G - 62, x - 82, G, 6) + sv.line(x + 78, G - 62, x + 82, G, 6) + sv.line(x - 84, G - 74, x - 88, G - 150, 5) + sv.line(x + 84, G - 74, x + 88, G - 150, 5) +
+  sv.path(`M${x - 92} ${G - 150} L${x + 92} ${G - 150} L${x + 92} ${G - 128} L${x - 92} ${G - 128} Z`, { fill: C.brown, w: 4 });
+const capOn = (x, y, sc = 1.4, rot = 0) => sv.g(CAP, `translate(${x} ${y}) rotate(${rot}) scale(${sc})`);
+const sunAt = (t, x, y, sc) => sv.g(S.propSVG('sun', t), `translate(${f1(x)} ${f1(y)}) scale(${sc})`);
+const desk = (x, top = 112, w = 150) => sv.path(`M${x - w} ${top} L${x + w} ${top} L${x + w} ${top + 14} L${x - w} ${top + 14} Z`, { fill: C.brown, w: 5 }) +
+  sv.line(x - w + 20, top + 14, x - w + 14, G, 6) + sv.line(x + w - 20, top + 14, x + w - 14, G, 6);
+function windowFrame(id, x, y, w, h, inside) {
+  return `<clipPath id="${id}"><rect x="${x - w / 2}" y="${y - h / 2}" width="${w}" height="${h}"/></clipPath><g clip-path="url(#${id})">${inside}</g>` +
+    sv.path(`M${x - w / 2} ${y - h / 2} H${x + w / 2} V${y + h / 2} H${x - w / 2} Z M${x} ${y - h / 2} V${y + h / 2} M${x - w / 2} ${y} H${x + w / 2}`, { w: 7 }) +
+    sv.path(`M${x - w / 2 - 20} ${y + h / 2 + 10} H${x + w / 2 + 20}`, { w: 8 });
+}
+function skyline(v, o = {}) {
+  const y = o.y == null ? G : o.y, seed = o.seed || 1, hMax = o.h || 420, col = o.fill || C.paperDark, wcol = o.win || '#FFFFFF';
+  let s = '', x = v.x - 120, i = 0;
+  while (x < v.x + v.w + 120) {
+    const w = 90 + 80 * Math.abs(H(i * 1.7 + seed)), h = hMax * (0.45 + 0.55 * Math.abs(H(i * 2.9 + seed * 3)));
+    s += sv.path(`M${f1(x)} ${y} L${f1(x)} ${f1(y - h)} L${f1(x + w)} ${f1(y - h)} L${f1(x + w)} ${y} Z`, { fill: col, w: o.w || 4, op: o.op == null ? 1 : o.op });
+    if (o.windows !== false) for (let r = 0; r < Math.floor(h / 46) - 1; r++) for (let c = 0; c < Math.floor(w / 34); c++) {
+      const lit = o.lit ? H(i * 13 + r * 7 + c * 3) > 0.2 : true;
+      if (lit) s += `<rect x="${f1(x + 12 + c * 34)}" y="${f1(y - h + 18 + r * 46)}" width="14" height="20" fill="${wcol}" stroke="${C.ink}" stroke-width="2" opacity="${o.wop || 0.8}"/>`;
+    }
+    x += w + 14 + 20 * Math.abs(H(i * 4.3)); i++;
+  }
+  return s;
+}
+const label = (t, str, at, until, x, y, size = 64, rot = -4, write = 0.35) => {
+  if (t < at || t > until) return '';
+  const k = E.backOut(clamp((t - at) / write)), op = Math.min(clamp((t - at) / 0.2), clamp((until - t) / 0.3));
+  return `<text x="${x}" y="${y}" text-anchor="middle" font-family="Caveat, cursive" font-weight="700" font-size="${size}" fill="${C.ink}" opacity="${op.toFixed(2)}" transform="rotate(${rot} ${x} ${y}) translate(${x} ${y}) scale(${k.toFixed(3)}) translate(${-x} ${-y})">${str}</text>`;
+};
+// a soft paper vignette for the memory shot
+const vignette = (id, v, op = 0.85) => `<defs><radialGradient id="${id}" cx="50%" cy="50%" r="62%"><stop offset="55%" stop-color="${C.paperDark}" stop-opacity="0"/><stop offset="100%" stop-color="#D9CBAE" stop-opacity="${op}"/></radialGradient></defs><rect x="${f1(v.x - 60)}" y="${f1(v.y - 60)}" width="${f1(v.w + 120)}" height="${f1(v.h + 120)}" fill="url(#${id})"/>`;
+
+// a whole hillside set: far hills, clouds, wind, the hill, optional tree + bench (+ cap), foreground grass
+function hillSet(sh, o = {}) {
+  const ws = o.wind == null ? 600 : o.wind;
+  if (o.sun) sh.layer(0.18, (t, v) => sunAt(t, o.sun[0], o.sun[1], o.sun[2] || 1.2));
+  sh.layer(0.35, (t, v) => F2.bg.hills(v, { y: G - 40, h: 120, seed: o.seed || 3, op: 0.28 }));
+  if (o.clouds !== false) sh.layer(0.6, (t, v) => F2.bg.clouds(t, v, { n: o.cloudN || 4, y: o.cloudY == null ? -330 : o.cloudY, speed: o.cloudSpeed || 14 }));
+  if (o.birds) sh.layer(0.55, (t, v) => birds(t, v, { n: 3, y: -280 }));
+  sh.custom((t, sc) => hill(sc.view), 'back');
+  if (o.tree != null) sh.prop('tree', { x: o.tree, scale: o.treeScale || 2.5, draw: 0 });
+  if (o.bench != null) sh.custom((t) => bench(o.bench) + (o.cap ? capOn(o.bench - 30, G - 78, 1.5, -6) : ''), 'back');
+  if (ws > 0) sh.layer(0.85, (t, v) => wind(t, v, { speed: ws, n: o.windN || 12, op: o.windOp == null ? 0.28 : o.windOp }));
+  if (o.leaves) sh.layer(1.1, (t, v) => leaves(t, v, { n: o.leaves, speed: ws * 0.7 }), { front: true });
+  if (o.rain) sh.layer(0.9, (t, v) => F2.bg.rain(t, v, { n: 90, color: '#C8D3EE', op: 0.5 }), { front: true });
+  if (o.grass !== false) sh.layer(1.45, (t, v) => grassFG(t, v, o.grassStr || 1, o.grassOp ? o.grassOp(t) : 1), { blur: 5 });
+}
+
+/* ---------------------------------------------------------------- film */
+const film = F2.film(document.body, { duration: DUR, bpm: 72, fadeIn: 1.2, fadeOut: 2.4 });
+const B = (n) => film.beat(n);
+const KID = 1.45, ADULT = 2.25, GP = 2.25;
+const kidOpts = (o) => Object.assign({ scale: KID, expr: 'happy' }, o);
+const gpOpts = (o) => Object.assign({ scale: GP, scarf: false, hair: 'none', costume: 'grandpa', pose: 'oldIdle', expr: 'soft' }, o);
+
+/* ===================== ACT 1 · SPRING ===================== */
+
+/* SHOT 1 · hook: the kite in the sky, crane down to Grandpa and little Scribble (0 → B9) */
+const s1 = film.shot(0, B(9), { name: 'hook', frame: [250, -390, 440, 440], groundLine: false });
+hillSet(s1, { tree: -440, treeScale: 2.3, wind: 520, birds: true, sun: [-260, -340, 1.1], grassOp: (t) => clamp((t - 3.4) / 1.4) });
+const g1 = s1.character(gpOpts({ x: -80, pose: 'kiteHold', expr: 'happy' }));
+const k1 = s1.character(kidOpts({ x: -230, pose: 'idle', expr: 'excited', look: [3, -5] }));
+k1.look(0, [4, -5]).pose(4.6, 'pointUp', { dur: 0.35, expr: 'excited' }).pose(6.3, 'idle', { dur: 0.4 });
+g1.look(0, [4, -5]).expr(5.2, 'happy').look(5.4, [-4, 2]).look(6.6, [4, -5]);
+const kite1 = (t) => { const b = bob(t, 1); return [250 + b[0], -320 + b[1], -10 + b[2]]; };
+s1.custom((t) => { const [x, y, r] = kite1(t); return kiteString(handR(g1, t), bridle(x, y, r, 0.85), 0.14) + kite(t, x, y, r, 0.85); }, 'front');
+s1.cam.frame(2.4, 3.6, [-30, 30, 1000, 1000], 'quintInOut');
+film.cue('sfx', 0.6, { name: 'flap', gain: 0.16, pan: 0.4 }).cue('sfx', 3.1, { name: 'flap', gain: 0.13, pan: 0.35 }).cue('sfx', 5.8, { name: 'flap', gain: 0.1, pan: 0.3 });
+film.cut(B(9), 'cut');
+
+/* SHOT 2 · little Scribble tries alone: run, yank, crash (B9 → B15) */
+const s2 = film.shot(B(9), B(15), { name: 'try', frame: [-120, 130, 820, 820], groundLine: false, handheld: 0.6 });
+hillSet(s2, { wind: 520 });
+const k2 = s2.character(kidOpts({ x: -360, pose: 'tugBack', expr: 'excited' }));
+k2.walk(8.0, 10.9, 120, { run: true, keepArms: true }).expr(9.0, 'angry').pose(10.95, 'dragged', { dur: 0.12, expr: 'shocked' }).pose(11.2, 'sitGround', { dur: 0.25 }).expr(11.7, 'sad').look(11.8, [-4, 2]);
+const kite2 = (t) => {
+  const h = handR(k2, Math.min(t, 10.3)), bump = Math.abs(Math.sin(t * 9)) * 18;
+  if (t < 9.4) return [h[0] - 150, Math.min(G - 30, h[1] + 70) - bump, -70 + Math.sin(t * 9) * 12, false];
+  if (t < 10.3) { const k = E.sineInOut((t - 9.4) / 0.9); return [h[0] - lerp(150, 110, k), lerp(Math.min(G - 30, h[1] + 70), -130, k), lerp(-70, -20, k), false]; }
+  const h0 = handR(k2, 10.3), k = clamp((t - 10.3) / 0.7), x = h0[0] - 110 + 40 * k, y = lerp(-130, G - 26, E.expoIn(k));
+  return t < 11.0 ? [x, y, -20 + 340 * E.expoIn(k), false] : [h0[0] - 70, G - 26, 72, true];
+};
+s2.custom((t) => {
+  const [x, y, r, down] = kite2(t), h = handR(k2, t);
+  return kiteString(h, bridle(x, y, r, 0.55), down ? 0.02 : 0.08, 2.2) + (down ? crashedKite(t, x, { sc: 0.55 }) : kite(t, x, y, r, 0.55, { bows: 3 }));
+}, 'front');
+s2.cam.follow(8.0, 11.0, k2, { dx: -60, lag: 0.35 }).shake(11.0, 0.35, 10);
+film.cue('sfx', 9.4, { name: 'swish', gain: 0.22, pan: -0.3 }).cue('sfx', 10.98, { name: 'thump_soft', gain: 0.42, pan: -0.15 }).cue('sfx', 11.22, { name: 'thud', gain: 0.25 });
+film.cut(B(15), 'cut');
+
+/* SHOT 3 · Grandpa kneels beside him (B15 → B22) */
+const s3 = film.shot(B(15), B(22), { name: 'kneel', frame: [-40, 150, 760, 760], groundLine: false });
+hillSet(s3, { wind: 380, windN: 8 });
+const k3 = s3.character(kidOpts({ x: 110, pose: 'sitGround', expr: 'sad', facing: -1 }));
+const g3 = s3.character(gpOpts({ x: -430 }));
+g3.walk(12.6, 13.9, -130).pose(13.95, 'crouch', { dur: 0.5, expr: 'soft' }).talk(13.6, 15.99).look(14.0, [3, 2]).pose(16.2, 'crouchPoint', { dur: 0.45, expr: 'happy' }).look(16.3, [3, -5]);
+k3.look(12.6, [3, 3]).look(13.6, [-4, -1]).expr(14.6, 'confused').look(16.5, [-2, -5]).expr(16.8, 'soft');
+s3.custom((t) => crashedKite(t, 250, { sc: 0.55, bows: 3 }), 'back');
+s3.cam.push(12.8, 5.3, 1.12, [-20, 170]);
+film.cut(B(22), 'cut');
+
+/* SHOT 4 · close-up: "Don't fight it. Run with it." (B22 → B28) */
+const s4 = film.shot(B(22), B(28), { name: 'cu-grandpa', frame: [-70, -40, 420, 420], groundLine: false });
+hillSet(s4, { wind: 640, windN: 16, windOp: 0.34, leaves: 5, grass: false, clouds: true, cloudY: -240 });
+const g4 = s4.character(gpOpts({ x: -110, expr: 'soft', look: [3, 3] }));
+g4.talk(18.9, 21.76).pose(19.75, 'gpPointWind', { dur: 0.4, expr: 'soft' }).look(19.8, [5, -4]).expr(20.7, 'happy').pose(21.4, 'oldIdle', { dur: 0.5 }).look(21.5, [4, 4]);
+s4.cam.push(18.5, 4.8, 1.08, [-60, -50]);
+film.cue('sfx', 19.75, { name: 'swish', gain: 0.1, pan: 0.2 });
+film.cut(B(28), 'cut');
+
+/* SHOT 5 · he runs WITH the wind and the kite climbs (B28 → B36) */
+const s5 = film.shot(B(28), B(36), { name: 'run', frame: [-120, 70, 1000, 1000], groundLine: false });
+hillSet(s5, { wind: 700, windN: 14, birds: true });
+const g5 = s5.character(gpOpts({ x: -330, expr: 'happy', look: [5, -2] }));
+const k5 = s5.character(kidOpts({ x: -440, pose: 'kiteHold', expr: 'excited' }));
+k5.walk(23.6, 27.4, 260, { run: true, keepArms: true }).pose(27.5, 'lookUpHold', { dur: 0.4, expr: 'excited' }).look(27.5, [3, -6]).pose(28.4, 'kiteHold', { dur: 0.4, expr: 'happy' });
+g5.look(23.8, [5, -1]).look(26.5, [5, -5]);
+const kite5 = (t) => {
+  const h = handR(k5, t), b = bob(t, 5);
+  if (t < 24.3) return [h[0] - 150, Math.min(G - 30, h[1] + 60) - Math.abs(Math.sin(t * 8)) * 14, -60];
+  const k = E.sineInOut(clamp((t - 24.3) / 3.4));
+  return [h[0] + lerp(-150, 90, k) + b[0] * k, lerp(Math.min(G - 30, h[1] + 60), h[1] - 440, k) + b[1] * k, lerp(-60, -12, k) + b[2] * k];
+};
+s5.custom((t) => { const [x, y, r] = kite5(t); return kiteString(handR(k5, t), bridle(x, y, r, 0.6), t < 24.3 ? 0.03 : 0.1, 2.2) + kite(t, x, y, r, 0.6, { bows: 3 }); }, 'front');
+s5.cam.follow(23.6, 27.6, k5, { dx: 60, lag: 0.45 }).frame(27.4, 2.2, [160, -60, 960, 960], 'quintInOut');
+film.cue('sfx', 24.3, { name: 'whoosh', gain: 0.2, pan: 0.2 }).cue('sfx', 25.6, { name: 'flap', gain: 0.18, pan: 0.3 }).cue('sfx', 27.2, { name: 'flap', gain: 0.16, pan: 0.4 });
+film.cut(B(36), 'cut');
+
+/* SHOT 6 · the kite touches the clouds (B36 → B44) */
+const s6 = film.shot(B(36), B(44), { name: 'clouds', frame: [40, -90, 1000, 1000], groundLine: false });
+hillSet(s6, { wind: 500, cloudN: 5, cloudY: -360, birds: true, sun: [430, -400, 1.3] });
+const g6 = s6.character(gpOpts({ x: -250, pose: 'gpHand', expr: 'happy', look: [4, -5] }));
+const k6 = s6.character(kidOpts({ x: -110, pose: 'kiteHold', expr: 'happy', look: [3, -6] }));
+k6.pose(32.2, 'lookUpHold', { dur: 0.6, expr: 'excited' }).pose(34.0, 'kiteHold', { dur: 0.5, expr: 'happy' });
+g6.look(33.5, [4, 2]).expr(33.5, 'proud').look(35.2, [4, -5]).expr(35.2, 'happy');
+const kite6 = (t) => { const b = bob(t, 6), k = clamp((t - 30) / 6.7); return [230 + 60 * k + b[0], -300 - 70 * E.sineInOut(k) + b[1], -12 + b[2]]; };
+s6.custom((t) => { const [x, y, r] = kite6(t); return kiteString(handR(k6, t), bridle(x, y, r, 0.62), 0.12, 2.2) + kite(t, x, y, r, 0.62); }, 'front');
+s6.cam.push(30.2, 6.4, 1.32, [180, -260]);
+film.cue('sfx', 31.0, { name: 'flap', gain: 0.12, pan: 0.5 }).cue('sfx', 34.0, { name: 'chime', gain: 0.1, pan: 0.4 });
+film.cut(B(44), 'dip', { dur: 1.1 });
+
+/* ===================== ACT 2 · THE SPRINGS GET SHORTER ===================== */
+
+/* SHOT 7 · time-lapse on the hill: he grows up, Grandpa grows old (B44 → B52) */
+const s7 = film.shot(B(44), B(52), { name: 'years', frame: [0, 70, 1000, 1000], groundLine: false });
+s7.layer(0.18, (t, v) => { const k = ((t - 36.7) / 2.2) % 1, a = Math.PI * k; return sunAt(t, -520 + 1040 * k, 120 - 520 * Math.sin(a), 1.0); });
+s7.layer(0.35, (t, v) => F2.bg.hills(v, { y: G - 40, h: 120, seed: 3, op: 0.28 }));
+s7.layer(0.6, (t, v) => F2.bg.clouds(t * 14, v, { n: 5, y: -320, speed: 30 }));
+s7.custom((t, sc) => hill(sc.view), 'back');
+s7.prop('tree', { x: -400, scale: 2.4, draw: 0 });
+s7.custom((t) => kite(t, -350, G - 92, 10, 0.62, { wave: 0.2, drift: -0.5, bows: 3 }), 'back');
+s7.layer(1.1, (t, v) => (t > 38.9 && t < 41.1 ? leaves(t, v, { n: 8, speed: 260, fill: '#D9A35F' }) : '') + (t > 41.0 ? snow(t, v, { n: 36 }) : ''), { front: true });
+const g7 = s7.character(gpOpts({ x: -60, expr: 'soft', look: [5, 0] }));
+const k7 = s7.character({ x: 120, scale: KID, expr: 'happy', look: [-4, -3] });
+k7.scaleTo(37.2, 4.8, ADULT, 'sineInOut').look(38.2, [-4, -2]).expr(39.6, 'soft').look(40.6, [4, 0]).expr(41.3, 'neutral').walk(41.8, 43.4, 640);
+g7.scaleTo(37.2, 5, 2.12, 'sineInOut').pose(39.4, 'older', { dur: 1.2 }).look(41.4, [5, 0]).wave(42.0, 43.3).expr(42.0, 'soft').expr(43.0, 'sad');
+s7.tint(36.7, 0, NIGHT, 0);
+[37.8, 40.0, 42.2].forEach((tt) => s7.tint(tt, 0.4, NIGHT, 0.22).tint(tt + 0.6, 0.4, NIGHT, 0));
+film.cut(B(52), 'whip', { dir: 1 });
+
+/* SHOT 8 · the city got loud (B52 → B60) */
+const s8 = film.shot(B(52), B(60), { name: 'city', frame: [-80, 90, 900, 900], handheld: 1.0 });
+s8.layer(0.3, (t, v) => skyline(v, { y: G - 10, seed: 2, h: 640, fill: '#E3DCCB', op: 0.7, w: 3, wop: 0.5 }));
+s8.layer(0.6, (t, v) => skyline(v, { y: G, seed: 7, h: 470, fill: C.paperDark, w: 4 }));
+s8.custom((t, sc) => F2.bg.floorboards(sc.view, { y: G }), 'back');
+const extras8 = [
+  s8.character({ x: 520, scale: 2.05, scarf: false, hair: 'long', costume: 'dress', facing: -1, expr: 'neutral' }),
+  s8.character({ x: -620, scale: 2.1, scarf: false, hair: 'spiky', costume: 'coat', expr: 'neutral' }),
+  s8.character({ x: 640, scale: 2.0, scarf: false, hair: 'bun', costume: 'office', facing: -1, expr: 'neutral' })
+];
+extras8[0].walk(43.4, 49.8, -600); extras8[1].walk(44.6, 49.9, 520); extras8[2].walk(46.4, 50.0, -260);
+const k8 = s8.character({ x: -430, scale: ADULT, costume: 'office', pose: 'hold', hold: 'phone', expr: 'neutral', look: [3, 4] });
+k8.walk(43.6, 48.8, 280, { keepArms: true }).expr(47.0, 'sleepy').look(48.9, [3, 4]);
+s8.layer(1.35, (t, v) => { const k = clamp((t - 46.9) / 0.8); if (k <= 0 || k >= 1) return ''; const x = lerp(v.x + v.w + 300, v.x - 600, k);
+  return sv.g(sv.path('M-170 0 L-170 -60 L-90 -66 L-56 -110 L80 -110 L120 -64 L170 -60 L170 0 Z', { fill: '#A7A9AC', w: 5 }) + sv.circle(-100, 4, 26, { fill: C.ink, w: 4 }) + sv.circle(110, 4, 26, { fill: C.ink, w: 4 }), `translate(${f1(x)} ${f1(v.y + v.h - 40)})`); }, { blur: 6 });
+s8.cam.follow(43.6, 49.0, k8, { dx: 40, lag: 0.5 });
+film.cue('sfx', 46.95, { name: 'whoosh', gain: 0.3, pan: 0.6 }).cue('sfx', 45.2, { name: 'tap', gain: 0.06, pan: 0.1 });
+film.cut(B(60), 'cut');
+
+/* SHOT 9 · the office: papers pile up, the clock spins (B60 → B64) */
+const s9 = film.shot(B(60), B(64), { name: 'office', frame: [20, 70, 760, 760] });
+s9.custom((t, sc) => F2.bg.floorboards(sc.view, { y: G }) + windowFrame('w9', -280, -170, 300, 240, F2.bg.sky({ x: -440, y: -300, w: 320, h: 260 }, '#DDE3EA') + skyline({ x: -440, y: -300, w: 320, h: 260 }, { y: -40, seed: 4, h: 200, fill: '#E3DCCB', w: 3, wop: 0.5 })), 'back');
+s9.custom((t) => desk(110) + sv.g(S.propSVG('clock', 50 + (t - 50) * 24), 'translate(240 -150) scale(0.9)'), 'back');
+s9.prop('stool', { x: -40, scale: 1.08, draw: 0 });
+s9.custom((t) => { let s = ''; [50.3, 50.9, 51.5, 52.1, 52.7].forEach((tt, i) => { const k = E.backOut(clamp((t - tt) / 0.25)); if (k > 0) s += sv.g(sv.path('M-46 -6 L46 -10 L50 6 L-42 10 Z', { fill: '#FFFFFF', w: 4 }), `translate(${190 + H(i) * 8} ${f1(104 - i * 16 - (1 - k) * 60)}) rotate(${f1(H(i * 3) * 6)})`); }); return s + sv.g(S.propSVG('phone'), 'translate(40 108) rotate(90) scale(0.42)'); }, 'front');
+const k9 = s9.character({ x: -40, scale: ADULT, costume: 'office', pose: 'deskWork', expr: 'neutral', look: [4, 3] });
+for (let tt = 50.2, i = 0; tt < 53.2; tt += 0.32, i++) k9.pose(tt, i % 2 ? 'deskWork' : 'deskWork2', { dur: 0.14 });
+k9.expr(51.6, 'sleepy').expr(52.6, 'neutral');
+s9.cam.push(50.1, 3.3, 1.1, [40, 60]);
+[50.3, 50.9, 51.5, 52.1, 52.7].forEach((tt) => film.cue('sfx', tt, { name: 'paper_land', gain: 0.12, pan: 0.3 }));
+film.cut(B(64), 'cut');
+
+/* SHOT 10 · close-up: the phone buzzes, "Grandpa" (B64 → B69) */
+const s10 = film.shot(B(64), B(69), { name: 'phone', frame: [0, 20, 560, 560], groundLine: false });
+s10.custom((t, sc) => sv.path(`M${f1(sc.view.x - 60)} 230 L${f1(sc.view.x + sc.view.w + 60)} 230 L${f1(sc.view.x + sc.view.w + 60)} 1400 L${f1(sc.view.x - 60)} 1400 Z`, { fill: C.brown, w: 5 }) +
+  sv.g(sv.path('M-120 -10 L120 -18 L126 20 L-114 26 Z', { fill: '#FFFFFF', w: 4 }), 'translate(-250 236) rotate(-6)'), 'back');
+s10.custom((t) => {
+  const buzz = t > 53.5 && t < 54.0 ? Math.sin(t * 90) * 5 : 0, x = buzz, y = 30;
+  let s = sv.path(`M${x - 130} ${y - 230} Q${x - 130} ${y - 250} ${x - 110} ${y - 250} L${x + 110} ${y - 250} Q${x + 130} ${y - 250} ${x + 130} ${y - 230} L${x + 130} ${y + 200} Q${x + 130} ${y + 220} ${x + 110} ${y + 220} L${x - 110} ${y + 220} Q${x - 130} ${y + 220} ${x - 130} ${y + 200} Z`, { fill: C.ink, w: 5 }) +
+    sv.path(`M${x - 110} ${y - 220} L${x + 110} ${y - 220} L${x + 110} ${y + 180} L${x - 110} ${y + 180} Z`, { fill: '#F4F1E8', w: 2 });
+  s += kite(t, x, y - 110, -8, 0.5, { bows: 2, wave: 0.4 });
+  s += `<text x="${x}" y="${y + 30}" text-anchor="middle" font-family="Caveat, cursive" font-weight="700" font-size="50" fill="${C.ink}">Grandpa</text>`;
+  if (t < 54.0) {
+    const pulse = 1 + 0.08 * Math.sin(t * 14);
+    s += `<text x="${x}" y="${y + 80}" text-anchor="middle" font-family="Caveat, cursive" font-weight="700" font-size="34" fill="${C.ink}" opacity="0.6">calling...</text>` +
+      sv.g(sv.circle(0, 0, 26, { fill: C.green, w: 4 }), `translate(${x} ${y + 140}) scale(${pulse.toFixed(3)})`);
+  } else {
+    s += `<text x="${x}" y="${y + 80}" text-anchor="middle" font-family="Caveat, cursive" font-weight="700" font-size="34" fill="${C.ink}" opacity="0.6">voicemail</text>`;
+    let d = ''; for (let i = 0; i < 13; i++) { const live = t < 57.3 ? 1 : 0.15, hgt = 6 + live * 30 * Math.abs(Math.sin(t * 9 + i * 1.3) * Math.sin(t * 3.1 + i)); d += `M${x - 84 + i * 14} ${f1(y + 140 - hgt)}L${x - 84 + i * 14} ${f1(y + 140 + hgt)}`; }
+    s += sv.path(d, { w: 6 });
+  }
+  return s;
+}, 'front');
+s10.cam.push(53.4, 4, 1.12, [0, -20]);
+film.cue('sfx', 53.45, { name: 'buzz', gain: 0.22, d: 0.5 }).cue('sfx', 53.98, { name: 'click', gain: 0.12 });
+film.cut(B(69), 'cut');
+
+/* SHOT 11 · his face: he almost picks up (B69 → B73) */
+const s11 = film.shot(B(69), B(73), { name: 'hesitate', frame: [-20, -10, 380, 380] });
+s11.custom((t) => desk(130), 'back');
+s11.prop('stool', { x: -40, scale: 1.08, draw: 0 });
+const k11 = s11.character({ x: -40, scale: ADULT, costume: 'office', pose: 'deskWork', expr: 'neutral', look: [4, 4] });
+k11.expr(57.7, 'sad').pose(58.5, 'deskReach', { dur: 0.45, expr: 'sad' }).expr(59.3, 'eyesShut').pose(59.5, 'deskWork', { dur: 0.6 }).expr(60.1, 'sleepy').look(60.1, [4, 3]);
+s11.cam.push(57.6, 3.2, 1.1, [-10, 0]);
+film.cut(B(73), 'cut');
+
+/* SHOT 12 · Grandpa waits on the hill, then sits (B73 → B81) */
+const s12 = film.shot(B(73), B(81), { name: 'waiting', frame: [90, 80, 1000, 1000], groundLine: false });
+hillSet(s12, { tree: 360, wind: 260, windN: 6, windOp: 0.2, bench: 290, sun: [-420, 150, 1.4], cloudSpeed: 8 });
+const g12 = s12.character(gpOpts({ x: -80, pose: 'carryKite', expr: 'soft', look: [5, 0] }));
+g12.scaleTo(0, 0, 2.12).look(62.6, [5, -1]).expr(63.4, 'sad').look(63.5, [2, 4]).walk(63.8, 66.1, 290, { keepArms: true }).face(66.2, -1).pose(66.2, 'sitCarry', { dur: 0.7, expr: 'sad' }).look(66.9, [-3, 4]);
+s12.custom((t) => { const h = handR(g12, t), fc = g12.stateAt(t).facing; return kite(t, h[0] + 10 * fc, h[1] - 58, -6 * fc, 0.62, { bows: 3, wave: 0.6 }); }, 'front');
+s12.tint(60.8, 0, C.ochre, 0.12).tint(61, 6, C.ochre, 0.2);
+s12.cam.push(61.0, 6.4, 1.14, [180, 120]);
+film.cut(B(81), 'ink', { center: [0, 0] });
+
+/* ===================== ACT 3 · NO MORE SUNDAYS ===================== */
+
+/* SHOT 13 · night, rain, the phone call (B81 → B90) */
+const s13 = film.shot(B(81), B(90), { name: 'call', frame: [-20, 60, 860, 860] });
+s13.custom((t, sc) => F2.bg.floorboards(sc.view, { y: G }) + windowFrame('w13', -230, -150, 360, 320, F2.bg.sky({ x: -420, y: -320, w: 380, h: 340 }, '#2E3A5C') +
+  skyline({ x: -420, y: -320, w: 380, h: 340 }, { y: 20, seed: 9, h: 240, fill: '#25304D', w: 2, win: C.ochre, lit: true, wop: 0.9 }) +
+  F2.bg.rain(t, { x: -420, y: -320, w: 380, h: 340 }, { n: 34, color: '#C8D3EE', op: 0.55 })), 'back');
+const k13 = s13.character({ x: 150, scale: ADULT, pose: 'phoneEar', hold: 'phone', expr: 'neutral', facing: -1, look: [-3, 0] });
+k13.expr(69.6, 'shocked').look(69.7, [0, 2]).pose(71.0, 'phoneDown', { dur: 1.3, expr: 'sad' }).look(71.2, [-1, 5]).expr(73.0, 'tearful');
+s13.tint(67.5, 0, NIGHT, 0.4);
+s13.cam.push(67.8, 7.2, 1.28, [110, 20]);
+film.cut(B(90), 'dissolve', { dur: 1.2 });
+
+/* SHOT 14 · the empty bench in the rain (B90 → B96) */
+const s14 = film.shot(B(90), B(96), { name: 'empty', frame: [180, 60, 900, 900], groundLine: false });
+hillSet(s14, { tree: 360, wind: 200, windN: 5, windOp: 0.18, bench: 290, cap: true, rain: true, clouds: true, cloudSpeed: 6, grassStr: 0.6 });
+s14.tint(75, 0, NIGHT, 0.36);
+s14.cam.push(75.0, 5, 1.08, [260, 180]);
+film.cut(B(96), 'dip', { dur: 1.0, color: C.ink, paper: false });
+
+/* SHOT 15 · the attic: the old kite (B96 → B106) */
+const s15 = film.shot(B(96), B(106), { name: 'attic', frame: [-80, 80, 900, 900] });
+const atticSet = (sh) => {
+  sh.custom((t, sc) => {
+    const v = sc.view;
+    let s = sv.path(`M${f1(v.x - 80)} 120 L-40 -460 L${f1(v.x + v.w + 80)} 120`, { w: 8 }) + sv.path('M-300 -150 L-300 300 M220 -260 L220 300', { w: 5, op: 0.35 }) + F2.bg.floorboards(v, { y: G });
+    s += sv.circle(330, -110, 66, { fill: '#E7ECF2', w: 6 }) + sv.path('M330 -176 L330 -44 M264 -110 L396 -110', { w: 4 });
+    s += sv.path('M290 -60 L380 -60 L120 300 L-180 300 Z', { fill: '#FFF3D0', w: 0.01, op: 0.35 });
+    s += sv.path('M-470 300 L-470 170 L-330 170 L-330 300 Z M-460 170 L-460 60 L-340 60 L-340 170 Z', { fill: C.brown, w: 5 }) + sv.path('M-470 235 L-330 235 M-460 115 L-340 115', { w: 3, op: 0.5 });
+    return s;
+  }, 'back');
+  sh.layer(1.05, (t, v) => { let s = ''; for (let i = 0; i < 18; i++) { const x = -150 + 420 * (H(i * 2.2) * 0.5 + 0.5) + Math.sin(t * 0.6 + i) * 30, y = -40 + 320 * (H(i * 3.9) * 0.5 + 0.5) + Math.sin(t * 0.4 + i * 2) * 26; s += `<circle cx="${f1(x)}" cy="${f1(y)}" r="2.6" fill="#FFF6D8" stroke="${C.ink}" stroke-width="1" opacity="${f1(0.4 + 0.4 * Math.abs(Math.sin(t + i)))}"/>`; } return s; }, { front: true });
+};
+atticSet(s15);
+const k15 = s15.character({ x: 440, scale: ADULT, expr: 'sad', facing: -1, look: [-4, 1] });
+k15.walk(80.5, 82.6, -60).look(82.7, [-5, 3]).expr(82.8, 'shocked').expr(83.3, 'sad').pose(83.4, 'crouchReach', { dur: 0.6 }).pose(85.0, 'carryLook', { dur: 0.8, expr: 'sad' }).look(85.2, [-1, 5]).expr(87.0, 'tearful');
+s15.custom((t) => {
+  if (t < 84.6) return kite(t, -205, G - 100, -8, 0.86, { torn: true, bows: 2, wave: 0.12, drift: -0.4 });
+  const h = handR(k15, t);
+  return kite(t, h[0] - 6, h[1] - 52, 6, 0.74, { torn: true, bows: 2, wave: 0.25 });
+}, 'front');
+s15.tint(80, 0, '#7D88A6', 0.26);
+s15.cam.frame(82.9, 2.2, [-170, 110, 700, 700], 'quintInOut').push(85.4, 2.9, 1.08);
+film.cue('sfx', 84.6, { name: 'rustle', gain: 0.16, d: 0.6, pan: -0.2 });
+film.cut(B(106), 'cut');
+
+/* SHOT 16 · a folded note slips out of the kite (B106 → B112) */
+const s16 = film.shot(B(106), B(112), { name: 'note-falls', frame: [-30, -20, 520, 520] });
+atticSet(s16);
+const k16 = s16.character({ x: 20, scale: ADULT, pose: 'carryLook', expr: 'sad', facing: -1, look: [-1, 5] });
+k16.look(89.2, [-2, 4]).expr(90.25, 'confused').look(90.3, [-1, 6]).pose(91.35, 'crouchReach', { dur: 0.5, expr: 'thinking' }).hold(92.2, 'note').pose(92.55, 'readNote', { dur: 0.6, expr: 'thinking' }).look(92.7, [-2, 4]);
+const kiteDown = (() => { let p = null; return () => p || (p = handR(k16, 91.25)); })();
+s16.custom((t) => {
+  let s = '';
+  if (t < 91.25) { const h = handR(k16, t), k = clamp((t - 89.3) / 0.7), fl = Math.cos(Math.PI * E.inOut(k)); s += kite(t, h[0] - 6, h[1] - 52, 6, 0.74, { torn: true, bows: 2, wave: 0.25, flip: fl }); }
+  else { const p = kiteDown(), k = E.inOut(clamp((t - 91.25) / 0.35)); s += kite(t, lerp(p[0] - 6, -150, k), lerp(p[1] - 52, G - 92, k), lerp(6, -10, k), 0.74, { torn: true, bows: 2, wave: 0.2 }); }
+  if (t >= 90.2 && t < 92.2) { const k = clamp((t - 90.2) / 0.85), x = -40 + Math.sin((t - 90.2) * 9) * 34 * (1 - k), y = lerp(-20, G - 8, E.inOut(k)), r = Math.sin((t - 90.2) * 8) * 30 * (1 - k);
+    s += sv.g(S.propSVG('note'), `translate(${f1(x)} ${f1(y)}) rotate(${f1(r)}) scale(0.5)`); }
+  return s;
+}, 'front');
+s16.tint(88.3, 0, '#7D88A6', 0.26);
+s16.cam.frame(90.3, 0.8, [-30, 150, 560, 560], 'quintOut').frame(92.4, 0.8, [-30, -10, 560, 560], 'quintInOut');
+film.cue('sfx', 89.3, { name: 'rustle', gain: 0.14, d: 0.5 }).cue('sfx', 90.2, { name: 'flutter', gain: 0.16, d: 0.8, pan: -0.1 }).cue('sfx', 91.05, { name: 'paper_land', gain: 0.12 });
+film.cut(B(112), 'cut');
+
+/* SHOT 17 · insert: the note, in Grandpa's hand (B112 → B120) */
+const s17 = film.shot(B(112), B(120), { name: 'note', frame: [0, 0, 820, 820], groundLine: false });
+s17.custom((t, sc) => sv.path(`M${f1(sc.view.x - 60)} ${f1(sc.view.y - 60)} H${f1(sc.view.x + sc.view.w + 60)} V${f1(sc.view.y + sc.view.h + 60)} H${f1(sc.view.x - 60)} Z`, { fill: '#EFE6D2', w: 0.01 }), 'back');
+const NOTE = [
+  ['For the day the wind', 94.26, 95.15, -168, 52],
+  ['gets strong:', 95.15, 95.9, -92, 52],
+  ["don't fight it.", 95.9, 96.7, -10, 58],
+  ['Let it lift you.', 96.7, 97.74, 84, 74],
+  ['Grandpa', 98.2, 98.8, 178, 50]
+];
+s17.custom((t) => {
+  let s = sv.g(sv.path('M-370 -250 L366 -262 L376 252 L-362 262 Z', { fill: '#FFFFFF', w: 5 }) + sv.path('M-2 -256 L4 258', { w: 2, op: 0.25 }) + sv.path('M-370 -2 L374 -6', { w: 2, op: 0.18 }) +
+    sv.path('M-330 -186 L330 -192 M-330 -96 L330 -100 M-330 -4 L330 -8 M-330 92 L330 88 M-330 186 L330 182', { w: 2, op: 0.12 }), 'rotate(-2)');
+  NOTE.forEach(([str, a, b, y, size], i) => {
+    const k = clamp((t - a) / (b - a));
+    if (k <= 0) return;
+    const x0 = i === 4 ? 40 : -320, w = 700;
+    s += `<clipPath id="nl${i}"><rect x="${x0 - 20}" y="${y - size}" width="${f1((w + 40) * k)}" height="${size * 1.5}"/></clipPath>` +
+      `<g clip-path="url(#nl${i})" transform="rotate(-2)"><text x="${x0}" y="${y}" font-family="Caveat, cursive" font-weight="700" font-size="${size}" fill="${C.ink}">${i === 4 ? '— ' + str : str}</text></g>`;
+  });
+  const ku = clamp((t - 97.8) / 0.5); if (ku > 0) s += `<g class="sb-draw" style="--o:${(1 - E.inOut(ku)).toFixed(3)};--fo:1" transform="rotate(-2)">` + sv.path('M-322 104 Q-120 94 150 102', { w: 4 }) + '</g>';
+  const kk = clamp((t - 98.7) / 0.8); if (kk > 0) s += sv.g(kite(t, 0, 0, -14, 0.5, { bows: 2, wave: 0.6 }), 'translate(272 -130)', ` opacity="${kk.toFixed(2)}"`);
+  return s;
+}, 'front');
+s17.tint(93.3, 0, '#7D88A6', 0.22).tint(95.5, 3.5, C.ochre, 0.12);
+s17.cam.push(93.5, 6.4, 1.1, [-20, -20]).tilt(93.5, 6.4, 1.6, 'sineInOut');
+film.cue('sfx', 94.2, { name: 'scribble', gain: 0.07, d: 1.6 }).cue('sfx', 95.95, { name: 'scribble', gain: 0.06, d: 0.75 }).cue('sfx', 96.75, { name: 'scribble', gain: 0.07, d: 1.0 }).cue('sfx', 98.2, { name: 'scribble', gain: 0.05, d: 0.6 }).cue('sfx', 98.8, { name: 'pluck', gain: 0.14, note: 72 });
+film.cut(B(120), 'dissolve', { dur: 1.0 });
+
+/* SHOT 18 · memory: Grandpa and little Scribble holding the string together (B120 → B124) */
+const s18 = film.shot(B(120), B(124), { name: 'memory', frame: [-20, 90, 820, 820], groundLine: false });
+hillSet(s18, { wind: 300, windN: 6, windOp: 0.2, sun: [-380, -330, 1.0], grass: true });
+const g18 = s18.character(gpOpts({ x: -150, pose: 'gpCrouchHold', expr: 'happy', look: [4, 1] }));
+const k18 = s18.character(kidOpts({ x: 30, pose: 'kiteHold', expr: 'happy', look: [3, -6] }));
+k18.look(101.4, [-4, 1]).expr(101.5, 'excited').look(102.6, [3, -6]);
+g18.look(100.6, [4, 1]).expr(102.0, 'proud');
+const kite18 = (t) => { const b = bob(t, 18); return [300 + b[0], -270 + b[1], -12 + b[2]]; };
+s18.custom((t) => { const [x, y, r] = kite18(t), K = bridle(x, y, r, 0.6); return kiteString(handR(g18, t), K, 0.1, 2) + kiteString(handR(k18, t), K, 0.1, 2.2) + kite(t, x, y, r, 0.6, { bows: 3 }); }, 'front');
+s18.custom((t, sc) => vignette('vig18', sc.view, 0.9), 'front');
+s18.tint(100, 0, C.ochre, 0.24);
+s18.cam.push(100.0, 3.4, 1.07, [-40, 100]);
+film.cut(B(124), 'dissolve', { dur: 1.0 });
+
+/* SHOT 19 · back in the attic: tears, then a small smile (B124 → B128) */
+const s19 = film.shot(B(124), B(128), { name: 'decide', frame: [10, -40, 380, 380] });
+atticSet(s19);
+const k19 = s19.character({ x: 20, scale: ADULT, pose: 'readNote', hold: 'note', expr: 'tearful', facing: -1, look: [-2, 4] });
+k19.expr(104.3, 'calm').expr(105.3, 'soft').look(105.3, [-4, 0]).pose(105.75, 'nod', { dur: 0.18 }).pose(106.05, 'readNote', { dur: 0.25 });
+s19.tint(103.3, 0, C.ochre, 0.14);
+s19.cam.push(103.4, 3.3, 1.08, [10, -50]);
+film.cut(B(128), 'cut');
+
+/* ===================== ACT 4 · ONE PATCH AT A TIME ===================== */
+
+/* SHOT 20 · the workbench at dawn (B128 → B132) */
+const s20 = film.shot(B(128), B(132), { name: 'bench', frame: [10, 70, 820, 820] });
+s20.custom((t, sc) => F2.bg.floorboards(sc.view, { y: G }) + windowFrame('w20', -300, -170, 300, 250, F2.bg.sky({ x: -460, y: -300, w: 320, h: 270 }, '#F6E7C8') +
+  sunAt(t, -300, f1(-60 - 40 * clamp((t - 106.7) / 3.3)), 0.8) + F2.bg.hills({ x: -460, y: -300, w: 320, h: 270 }, { y: -70, h: 50, seed: 4, op: 0.4 })), 'back');
+const PATCH_T = [107.55, 108.35, 109.15];
+s20.custom((t) => desk(130) + sv.path('M230 112 L230 40 L262 10', { w: 5 }) + sv.path('M246 0 L290 22 L276 40 L232 18 Z', { fill: C.ochre, w: 4 }) +
+  kite(t, 120, 20, 0, 0.92, { torn: true, bows: 2, wave: 0.15, drift: 0.4, patches: 3, patchK: PATCH_T.map((p) => (t - p) / 0.3) }), 'back');
+s20.prop('stool', { x: -90, scale: 1.08, draw: 0 });
+const k20 = s20.character({ x: -90, scale: ADULT, pose: 'deskWork', expr: 'thinking', look: [4, 0] });
+PATCH_T.forEach((p) => k20.pose(p - 0.35, 'deskReach', { dur: 0.2 }).pose(p + 0.05, 'deskWork', { dur: 0.25 }));
+k20.expr(108.6, 'soft').expr(109.6, 'happy');
+s20.tint(106.7, 0, C.ochre, 0.1);
+s20.cam.push(106.8, 3.2, 1.08, [40, 40]);
+PATCH_T.forEach((p) => film.cue('sfx', p, { name: 'paper_fold', gain: 0.14, pan: 0.2 }).cue('sfx', p + 0.02, { name: 'pop', gain: 0.06 }));
+film.cut(B(132), 'cut');
+
+/* SHOT 21 · close-up: new tail bows, then the kite lifts (B132 → B136) */
+const s21 = film.shot(B(132), B(136), { name: 'tail', frame: [0, 40, 620, 620], groundLine: false });
+s21.custom((t, sc) => sv.path(`M${f1(sc.view.x - 60)} ${f1(sc.view.y - 60)} H${f1(sc.view.x + sc.view.w + 60)} V${f1(sc.view.y + sc.view.h + 60)} H${f1(sc.view.x - 60)} Z`, { fill: '#E7D3B3', w: 0.01 }) +
+  sv.path('M-600 -10 L600 -10 M-600 160 L600 160', { w: 3, op: 0.15 }), 'back');
+const BOW_T = [110.35, 110.95, 111.55, 112.15];
+s21.custom((t) => {
+  const nb = BOW_T.filter((b) => t >= b).length, lift = E.expoIn(clamp((t - 112.6) / 0.6));
+  return kite(t, 0, -60 - lift * 900, -4 + lift * 10, 2.3, { torn: true, patches: 3, bows: nb, wave: 0.25 + lift, drift: 0.6 });
+}, 'front');
+s21.tint(110, 0, C.ochre, 0.08);
+s21.cam.push(110.1, 3.0, 1.06, [0, 20]);
+BOW_T.forEach((b, i) => film.cue('sfx', b, { name: 'pluck', gain: 0.1, note: 72 + [0, 2, 4, 7][i] }));
+film.cue('sfx', 112.6, { name: 'swish', gain: 0.24 });
+film.cut(B(136), 'page', { dir: 1 });
+
+/* SHOT 22 · the hill, morning, strong wind (B136 → B142) */
+const s22 = film.shot(B(136), B(142), { name: 'morning', frame: [0, 60, 1000, 1000], groundLine: false });
+hillSet(s22, { tree: 420, treeScale: 2.4, bench: 330, cap: true, wind: 1000, windN: 20, windOp: 0.36, leaves: 7, cloudSpeed: 46, grassStr: 1.8, sun: [-400, -300, 1.1] });
+const k22 = s22.character({ x: -470, scale: ADULT, pose: 'carryKite', expr: 'neutral', look: [4, -1] });
+k22.walk(113.6, 116.2, -140, { keepArms: true }).look(116.3, [5, 1]).expr(116.4, 'soft').look(117.2, [3, -5]).pose(117.4, 'kiteRaise', { dur: 0.45, expr: 'neutral' });
+s22.custom((t) => {
+  const h = handR(k22, t);
+  if (t < 117.95) return kite(t, h[0] + 8, h[1] - 52, -4, 0.66, { patches: 3, torn: true, bows: 4, wave: 1.4, drift: 4 });
+  const k = E.quintOut(clamp((t - 117.95) / 0.45)), x = h[0] + 8 + 140 * k, y = h[1] - 52 - 160 * k;
+  return kiteString(h, bridle(x, y, -4 - 20 * k, 0.66), 0.03) + kite(t, x, y, -4 - 20 * k, 0.66, { patches: 3, torn: true, bows: 4, wave: 1.6, drift: 5 });
+}, 'front');
+s22.cam.frame(115.9, 2.4, [-90, 90, 820, 820], 'quintInOut');
+film.cue('sfx', 117.95, { name: 'whoosh', gain: 0.32, pan: 0.3 });
+film.cut(B(142), 'cut');
+
+/* SHOT 23 · he fights the wind and loses (B142 → B147) */
+const s23 = film.shot(B(142), B(147), { name: 'fight', frame: [40, 30, 820, 820], groundLine: false, handheld: 1.3 });
+hillSet(s23, { wind: 1200, windN: 22, windOp: 0.4, leaves: 8, cloudSpeed: 60, grassStr: 2 });
+const k23 = s23.character({ x: -140, scale: ADULT, pose: 'pullBack', expr: 'angry', look: [4, -4] });
+k23.pose(119.6, 'dragged', { dur: 0.14, expr: 'scared' }).moveTo(119.6, 0.45, -40, null, 'expoOut').pose(120.15, 'pullBack', { dur: 0.25, expr: 'angry' })
+  .expr(120.6, 'scared').pose(121.45, 'crouch', { dur: 0.25, expr: 'sad' }).look(121.5, [5, 3]);
+const kite23 = (t) => {
+  const j = [fbm(t * 3.1, 7) * 120, fbm(t * 2.6, 9) * 100, fbm(t * 4.0, 11) * 40];
+  if (t < 119.6) return [200 + j[0], -250 + j[1], -14 + j[2], false];
+  if (t < 120.4) { const k = E.expoOut(clamp((t - 119.6) / 0.4)); return [lerp(200, 330, k) + j[0] * 0.6, lerp(-250, -330, k) + j[1] * 0.6, -30 + j[2], false]; }
+  const k = clamp((t - 120.4) / 1.0), x = lerp(330, 360, k), y = lerp(-330, G - 26, E.expoIn(k));
+  return t < 121.4 ? [x, y, -30 + 420 * E.expoIn(k), false] : [360, G - 26, 72, true];
+};
+s23.custom((t) => { const [x, y, r, down] = kite23(t), h = handR(k23, t); return kiteString(h, bridle(x, y, r, 0.62), down ? 0.06 : 0.015) + (down ? crashedKite(t, x, { patches: 3, torn: true, sc: 0.6, bows: 4 }) : kite(t, x, y, r, 0.62, { patches: 3, torn: true, bows: 4, wave: 2, drift: 5 })); }, 'front');
+s23.cam.shake(119.6, 0.4, 12).shake(121.4, 0.45, 14).frame(121.5, 0.8, [-20, 80, 760, 760], 'quintOut');
+film.cue('sfx', 119.6, { name: 'whoosh', gain: 0.32, pan: 0.5 }).cue('sfx', 120.4, { name: 'dark_whoosh', gain: 0.18, d: 1.0, pan: 0.4 })
+  .cue('sfx', 121.4, { name: 'thump_soft', gain: 0.45, pan: 0.45 }).cue('sfx', 121.5, { name: 'thud', gain: 0.24, pan: -0.1 });
+film.cut(B(147), 'cut');
+
+/* SHOT 24 · close-up: he stops fighting. A memory stands behind him (B147 → B151) */
+const s24 = film.shot(B(147), B(151), { name: 'remember', frame: [-80, 10, 440, 440], groundLine: false });
+hillSet(s24, { wind: 900, windN: 14, windOp: 0.3, leaves: 4, grass: false, cloudSpeed: 40 });
+const ghost = s24.character(gpOpts({ x: -175, pose: 'gpHand', expr: 'soft', opacity: 0, look: [4, 3], motion: { breathe: 0.5 } }));
+ghost.fade(123.0, 0.9, 0.32).fade(124.7, 0.7, 0);
+const k24 = s24.character({ x: 15, scale: ADULT, pose: 'crouch', expr: 'sad', look: [3, 3] });
+k24.expr(122.75, 'eyesShut').look(122.8, [0, 2]).expr(124.55, 'soft').look(124.6, [4, -4]).pose(125.05, 'idle', { dur: 0.5, expr: 'soft' });
+s24.cam.push(122.6, 2.3, 1.06, [-60, 20]).frame(124.95, 0.8, [-50, -40, 560, 560], 'quintInOut');
+film.cue('sfx', 123.0, { name: 'chime', gain: 0.08, pan: -0.3 });
+film.cut(B(151), 'whip', { dir: 1 });
+
+/* SHOT 25 · he runs WITH the wind — the kite rises (B151 → B159) */
+const s25 = film.shot(B(151), B(159), { name: 'run2', frame: [-140, 70, 1000, 1000], groundLine: false });
+hillSet(s25, { tree: 470, treeScale: 2.3, bench: 370, cap: true, wind: 900, windN: 18, windOp: 0.32, cloudSpeed: 40, grassStr: 1.5, birds: true, sun: [380, -360, 1.2] });
+const k25 = s25.character({ x: -460, scale: ADULT, pose: 'kiteHold', expr: 'soft' });
+k25.walk(126.0, 129.6, 140, { run: true, keepArms: true }).expr(127.4, 'excited').pose(129.7, 'lookUpHold', { dur: 0.4, expr: 'excited' }).look(129.7, [3, -6]).expr(131.0, 'happy');
+const kite25 = (t) => {
+  const h = handR(k25, t), b = bob(t, 25);
+  if (t < 126.8) return [h[0] - 170, Math.min(G - 30, h[1] + 60) - Math.abs(Math.sin(t * 8)) * 14, -60];
+  const k = E.quintOut(clamp((t - 126.8) / 3.2));
+  return [h[0] + lerp(-170, 120, k) + b[0] * k, lerp(Math.min(G - 30, h[1] + 60), h[1] - 470, k) + b[1] * k, lerp(-60, -12, k) + b[2] * k];
+};
+s25.custom((t) => { const [x, y, r] = kite25(t); return kiteString(handR(k25, t), bridle(x, y, r, 0.66), t < 126.8 ? 0.03 : 0.08) + kite(t, x, y, r, 0.66, { patches: 3, torn: true, bows: 4, wave: 1.2, drift: 3 }); }, 'front');
+s25.cam.follow(126.0, 129.8, k25, { dx: 60, lag: 0.4 }).frame(129.6, 1.8, [100, -110, 1000, 1000], 'quintInOut');
+film.cue('sfx', 126.8, { name: 'whoosh', gain: 0.26, pan: 0.2 }).cue('sfx', 128.3, { name: 'flap', gain: 0.18, pan: 0.4 }).cue('sfx', 130.0, { name: 'flap', gain: 0.15, pan: 0.5 });
+const k25end = kite25(B(159));
+film.cut(B(159), 'match', { from: [k25end[0], k25end[1]], to: [-40, -150] });
+
+/* SHOT 26 · it soars (B159 → B163) */
+const s26 = film.shot(B(159), B(163), { name: 'soar', frame: [20, -170, 760, 760], groundLine: false });
+s26.layer(0.15, (t, v) => sunAt(t, 300, -330, 1.5));
+s26.layer(0.45, (t, v) => F2.bg.clouds(t, v, { n: 5, y: -260, speed: 70 }));
+s26.layer(0.75, (t, v) => F2.bg.clouds(t + 9, v, { n: 3, y: 60, speed: 110 }));
+s26.layer(0.6, (t, v) => birds(t, v, { n: 4, y: -330, speed: 120 }));
+s26.layer(0.9, (t, v) => wind(t, v, { speed: 900, n: 14, op: 0.26 }));
+const kite26 = (t) => { const k = clamp((t - 132.5) / 3.4), b = bob(t, 26); return [lerp(-40, 120, E.sineInOut(k)) + b[0], lerp(-150, -250, E.sineInOut(k)) + b[1], -14 + b[2]]; };
+s26.custom((t) => { const [x, y, r] = kite26(t), K = bridle(x, y, r, 1.05); return kiteString(K, [K[0] - 520, K[1] + 1100], -0.04, 3) + kite(t, x, y, r, 1.05, { patches: 3, torn: true, bows: 4, wave: 1.1, drift: 3 }); }, 'front');
+s26.cam.frame(132.6, 3.2, [60, -200, 900, 900], 'sineInOut');
+film.cut(B(163), 'cut');
+
+/* ===================== ACT 5 · IN THE WIND ===================== */
+
+/* SHOT 27 · he hands the string to a child (B163 → B171) */
+const s27 = film.shot(B(163), B(171), { name: 'handoff', frame: [60, 70, 900, 900], groundLine: false });
+hillSet(s27, { wind: 520, windN: 10, windOp: 0.24, cloudSpeed: 18, birds: true });
+const k27 = s27.character({ x: -80, scale: ADULT, pose: 'kiteHold', expr: 'soft', look: [3, -5] });
+const kid27 = s27.character({ x: 520, scale: 1.35, scarf: false, hair: 'bun', costume: 'kidtee', facing: -1, expr: 'neutral', look: [-3, 0] });
+kid27.walk(136.0, 137.8, 210).look(137.9, [2, -6]).expr(138.0, 'excited').look(138.9, [-4, -1]).walk(139.1, 139.8, 120).face(140.3, 1).pose(140.3, 'kiteHold', { dur: 0.3, expr: 'excited' }).look(140.6, [3, -6]).expr(141.6, 'happy');
+k27.look(137.4, [4, 0]).expr(138.2, 'happy').pose(138.9, 'handOver', { dur: 0.5, expr: 'soft' }).look(139.1, [4, 1]).pose(141.0, 'idle', { dur: 0.6, expr: 'happy' }).look(141.2, [3, -5]);
+const kite27 = (t) => { const b = bob(t, 27); return [300 + b[0], -330 + b[1], -12 + b[2]]; };
+s27.custom((t) => { const [x, y, r] = kite27(t), h = t < 140.3 ? handR(k27, t) : handR(kid27, t); return kiteString(h, bridle(x, y, r, 0.5), 0.12, 2.2) + kite(t, x, y, r, 0.5, { patches: 3, torn: true, bows: 4 }); }, 'front');
+s27.tint(135.8, 0, C.ochre, 0.1).tint(136, 6, C.ochre, 0.16);
+s27.cam.push(136.0, 6.4, 1.08, [80, 80]);
+film.cue('sfx', 140.3, { name: 'pluck', gain: 0.12, note: 76 });
+film.cut(B(171), 'dissolve', { dur: 1.2 });
+
+/* SHOT 28 · final wide: "Let it lift you." (B171 → end) */
+const s28 = film.shot(B(171), DUR, { name: 'end', frame: [0, 20, 950, 950], groundLine: false });
+hillSet(s28, { tree: 430, treeScale: 2.1, bench: 320, cap: true, wind: 420, windN: 8, windOp: 0.2, birds: true, sun: [-380, 140, 1.4], cloudSpeed: 12 });
+const k28 = s28.character({ x: -150, scale: 1.75, pose: 'pointUp', expr: 'happy', look: [4, -6] });
+const kid28 = s28.character({ x: -40, scale: 1.05, scarf: false, hair: 'bun', costume: 'kidtee', pose: 'kiteHold', expr: 'excited', look: [3, -6] });
+k28.pose(145.5, 'idle', { dur: 0.8, expr: 'soft' }).look(145.8, [4, 3]);
+const kite28 = (t) => { const b = bob(t, 28); return [210 + b[0], -260 + b[1], -12 + b[2]]; };
+s28.custom((t) => { const [x, y, r] = kite28(t); return kiteString(handR(kid28, t), bridle(x, y, r, 0.45), 0.12, 2) + kite(t, x, y, r, 0.45, { patches: 3, torn: true, bows: 4 }); }, 'front');
+s28.tint(142.5, 0, C.ochre, 0.18);
+s28.cam.frame(142.6, 7.3, [20, -30, 1150, 1150], 'sineInOut');
+film.title('Let it lift you.', { at: 144.2, until: 148.9, y: -380, size: 100, write: 1.0 });
+
+film.ready(LINES);
+}
+</script>
+</body>
+</html>
