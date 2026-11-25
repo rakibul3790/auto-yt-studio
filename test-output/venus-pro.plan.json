@@ -286,5 +286,6 @@
   }
  ],
  "style": "pro",
- "music_mood": "mysterious"
+ "music_mood": "mysterious",
+ "test_voice": "en-US-GuyNeural"
 }
