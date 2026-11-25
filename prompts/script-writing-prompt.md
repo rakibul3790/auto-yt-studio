@@ -1,11 +1,79 @@
 # স্ক্রিপ্ট লেখার প্রম্পট (Claude-কে দেওয়ার জন্য)
 
-নিচের ধূসর বক্সের লেখাটা পুরোটা কপি করে Claude-কে পাঠাও। শুধু `[ ]` বন্ধনীর ভেতরের অংশ বদলাও
-(ইংলিশেই লেখো)। Claude ইংলিশ দর্শকের জন্য ইংলিশ স্ক্রিপ্টের একটা JSON লিস্ট দেবে। সেটা GitHub-এ
-`scripts/queue/` ফোল্ডারে নতুন ফাইল হিসেবে রাখো, নাম দাও `batch-01.json`, `batch-02.json`
-(প্রতিবার নতুন নম্বর)।
+এখানে দুটো প্রম্পট আছে:
+
+1. **Shorts প্রম্পট** (এখনকার MindBlip চ্যানেলের জন্য): ৩০–৪০ সেকেন্ডের লুপ করা Short।
+2. **লম্বা ভিডিওর প্রম্পট**: ৩–১০ মিনিটের ভিডিও।
+
+যেটা লাগবে তার ধূসর বক্সের লেখাটা পুরোটা কপি করে Claude-কে পাঠাও। শুধু `[ ]` বন্ধনীর ভেতরের অংশ বদলাও
+(ইংলিশেই লেখো)। Claude একটা JSON লিস্ট দেবে। সেটা GitHub-এ `scripts/queue/` ফোল্ডারে নতুন ফাইল হিসেবে
+রাখো, নাম দাও `batch-05.json`, `batch-06.json` (প্রতিবার নতুন নম্বর)।
 
 ---
+
+## ১. Shorts প্রম্পট (retention অডিটের নিয়মসহ)
+
+এই নিয়মগুলো এসেছে চ্যানেলের প্রথম ৪টা Short-এর retention অডিট থেকে: প্রথম লাইনেই হুক, প্রতি ২–৩ সেকেন্ডে
+নতুন দৃশ্য, শেষে কোনো follow/subscribe নেই, আর শেষ লাইন ঘুরে প্রথম লাইনে মেলে যাতে ভিডিও লুপ হয়।
+
+```
+You are the scriptwriter for my faceless English-language YouTube Shorts channel about weird,
+surprising science and curiosity facts. Write 10 new Shorts scripts.
+
+Target audience: [e.g. curious adults in the US, UK, Canada and Australia]
+Topics already covered (skip these): [list, or "none"]
+
+Retention rules (follow every one):
+- Length: 70 to 95 spoken words in total, for a fast 30 to 40 second Short. Count the words.
+- The very first sentence is the hook. No greeting, no channel name, no setup line like
+  "The blue whale is the largest animal". Open with one of these:
+  a curiosity gap or negative bias ("This animal's heart stops every time it swims."),
+  an extreme contrast ("Your heart beats seventy times a minute. This one beats twice."),
+  or a direct question that interrupts the scroll ("What happens on Earth in one second?").
+- One short sentence or phrase per scene, so the picture changes every 2 to 3 seconds.
+  That means 8 to 12 scenes per Short.
+- Move fast from fact to fact and escalate: each scene should be stranger than the last.
+- Use a human comparison to make big numbers feel real (as heavy as two adults, slower than you breathe).
+- NO call to action of any kind: no "follow", "subscribe", "like" or "for more" anywhere.
+- Seamless loop: the last scene is an unfinished sentence that is completed by the first
+  scene's words, so when the Short replays it sounds like one continuous sentence.
+  Example: last scene "Now put a hand on your chest..." then the first scene
+  "Your heart beats about seventy times a minute."
+- Facts must be accurate and precise (check numbers such as days, weights and speeds).
+  If you are not sure about a claim, leave it out.
+- Natural, native-sounding English written to be spoken aloud, American spelling.
+  Punchy, fascinating and authoritative, no fluff.
+- No brand, company or trademark names, and no copyrighted characters, songs or films.
+- No emojis, symbols or stage directions in the spoken text. Write numbers the way they are
+  spoken ("two hundred and forty three").
+- Titles: curiosity-driven and searchable, under 70 characters, no clickbait lies.
+
+Reply with ONLY one JSON list inside one code block, nothing else, in exactly this format:
+
+[
+  {
+    "title": "Video title (max 70 characters, no < or > signs)",
+    "format": "short",
+    "description": "1–2 lines; the first line states the surprising fact",
+    "tags": ["6–10 relevant search tags"],
+    "hashtags": ["2", "hashtags"],
+    "thumbnail_text": "2–5 punchy words",
+    "scenes": [
+      {
+        "on_screen": "2–5 word kinetic text shown big on screen",
+        "visual": "stock clip search words, e.g. octopus swimming",
+        "subject": "the one main thing the clip must show, e.g. octopus",
+        "text": "One short sentence the voice says",
+        "highlight": ["1–3 most surprising words, copied exactly from text"]
+      }
+    ]
+  }
+]
+```
+
+---
+
+## ২. লম্বা ভিডিওর প্রম্পট
 
 ```
 You are the scriptwriter for my English-language YouTube channel. Write 10 new video scripts.
@@ -23,7 +91,8 @@ Rules:
   copy-paste structure from one video to the next.
 - Facts must be accurate. If you are not sure about a claim, leave it out.
 - No brand, company or trademark names, and no copyrighted characters, songs or films.
-- Open with a strong hook in the first 10 seconds; end with a short, natural call to subscribe.
+- Open with a strong hook in the first sentence, no greeting or setup line; end with a short,
+  natural call to subscribe.
 - No emojis, bullet points, symbols or stage directions in the spoken text, because
   it is read aloud by a voice. Write numbers the way they are spoken ("three and a half thousand").
 - 6–12 scenes per video, 2–4 sentences per scene.
@@ -55,9 +124,8 @@ Reply with ONLY one JSON list inside one code block, nothing else, in exactly th
 
 ## টিপস
 
-- **শুধু Shorts চাইলে (এখনকার চ্যানেলের জন্য):** প্রম্পটে লেখো
-  "Each video is a YouTube Short: 30–50 seconds (about 90–130 words), 4–6 scenes, and add `"format": "short"`"।
-  তখন শুধু খাড়া (9:16) Short বানাবে আর আপলোড করবে, লম্বা ভিডিও না।
+- **Shorts-এর জন্য উপরের ১ নম্বর প্রম্পট ব্যবহার করো।** ওটাতে `"format": "short"` আগে থেকেই আছে, তাই শুধু
+  খাড়া (9:16) Short বানাবে আর আপলোড করবে।
 - **হলুদ হাইলাইট:** প্রতিটা সিনের `highlight`-এ যে শব্দগুলো থাকবে (যেমন `"three hearts"`), সাবটাইটেলে সেগুলো
   হলুদ বক্সে কালো লেখায় দেখাবে। শব্দগুলো `text`-এ হুবহু থাকতে হবে, ছোট রাখো (৩ শব্দের মধ্যে)। `highlight` না দিলে
   সংখ্যা আর তার পরের শব্দটা নিজে থেকে হাইলাইট হবে। বন্ধ করতে চাইলে `config.yaml`-এ `highlight: false`।
