@@ -211,11 +211,15 @@ def render(data: dict, cfg: dict, work: Path, out_file: Path, size: tuple[int, i
     events = _sfx_events(shots, pops)
     sfx = _write_sfx(events, total, work / f"pro_sfx_{tag}.wav", voice,
                      float(vcfg.get("pro_sfx_volume", 0.45)))
-    track = _pick_music(data)
+    seek = True
+    if data.get("music_sections"):               # a long video: its own music for each part
+        track, seek = _section_music(data["music_sections"], scene_t, total, work), False
+    else:
+        track = _pick_music(data)
     gains = data.get("music_gains") or [MOOD_GAIN.get(str(sc.get("look", "")), 1.0) for sc in scenes]
     curve = [(a, b, float(g)) for (a, b), g in zip(scene_t, gains)]
     mix = _mix_audio(voice, sfx, track, total, float(data.get("music_volume", vcfg.get("music_volume", 0.06))),
-                     work, tag, curve)
+                     work, tag, curve, seek)
 
     # ---- final: burn captions, add the mix
     vf = (f"ass={ass.name}:fontsdir={FONT_DIR.resolve()},"
@@ -276,7 +280,7 @@ def _feelings(data: dict) -> dict:
 
 def _with_follow(data: dict, cfg: dict) -> dict:
     """Every Short ends on a clear follow line, unless the script already asks for it."""
-    line = str(cfg["video"].get("follow_line", "") or "").strip()
+    line = str(data.get("follow_line", cfg["video"].get("follow_line", "")) or "").strip()
     scenes = data.get("scenes") or []
     if not line or not scenes:
         return data
@@ -910,6 +914,8 @@ def write_captions(words: list[dict], size: tuple[int, int], out: Path,
     w, h = size
     fs = int(h * 0.053)                          # 101 px at 1920
     cy_base = int(h * 0.615)
+    if w > h:                                    # 16:9 long video: captions in the lower third
+        fs, cy_base = int(h * 0.062), int(h * 0.80)
     max_w = w * 0.78
     head = f"""[Script Info]
 ScriptType: v4.00+
@@ -1101,6 +1107,35 @@ def _write_sfx(events, total: float, out: Path, voice: Path, volume: float) -> P
     return out
 
 
+def _section_music(sections: list, scene_t: list[tuple[float, float]], total: float, work: Path) -> Path | None:
+    """One music bed for a long video: each part (from its first scene) gets its own track,
+    evened out in loudness and crossfaded over about 2 s."""
+    music = {m.name: m for m in MUSIC_DIR.glob("*.mp3")}
+    secs = [(max(0, min(int(si), len(scene_t) - 1)), str(name)) for si, name in sections
+            if str(name) in music or f"{name}.mp3" in music]
+    if not secs:
+        return None
+    inputs, parts = [], []
+    for k, (si, name) in enumerate(secs):
+        src = music.get(name) or music[f"{name}.mp3"]
+        start = 0.0 if k == 0 else max(scene_t[si][0] - 1.0, 0.0)
+        end = total if k == len(secs) - 1 else scene_t[secs[k + 1][0]][0] + 1.0
+        length = max(end - start, 2.0)
+        inputs += ["-stream_loop", "-1", "-i", str(src)]
+        fin = 0.4 if k == 0 else 2.0
+        parts.append(f"[{k}:a]aformat=sample_rates={SR}:channel_layouts=stereo,atrim=0:{length:.3f},"
+                     f"asetpts=PTS-STARTPTS,loudnorm=I=-20:TP=-2:LRA=11,aresample={SR},"
+                     f"afade=t=in:d={fin},afade=t=out:st={max(length - 2.0, 0):.3f}:d=2.0,"
+                     f"adelay={int(start * 1000)}:all=1[m{k}]")
+        log(f"Music part {k + 1}: {name} from {start:.1f}s")
+    fc = ";".join(parts) + ";" + "".join(f"[m{k}]" for k in range(len(secs))) + \
+        f"amix=inputs={len(secs)}:duration=longest:normalize=0,atrim=0:{total:.3f}[o]"
+    out = work / "pro_music_sections.wav"
+    run(["ffmpeg", "-y", "-loglevel", "error", *inputs, "-filter_complex", fc, "-map", "[o]",
+         "-t", f"{total:.3f}", "-ar", str(SR), "-c:a", "pcm_s16le", str(out)])
+    return out
+
+
 def _pick_music(data: dict) -> Path | None:
     music = {m.name: m for m in MUSIC_DIR.glob("*.mp3")}
     if not music:
@@ -1119,7 +1154,7 @@ def _mean_db(path: Path, seconds: float = 90) -> float | None:
 
 
 def _mix_audio(voice: Path, sfx: Path, track: Path | None, total: float, vol: float, work: Path, tag: str,
-               curve: list | None = None) -> Path:
+               curve: list | None = None, seek: bool = True) -> Path:
     """Voice + effects + ducked music, then two-pass loudness normalisation to -14 LUFS."""
     from .motion import _speech_rms
     raw = work / f"pro_mix_raw_{tag}.wav"
@@ -1131,7 +1166,7 @@ def _mix_audio(voice: Path, sfx: Path, track: Path | None, total: float, vol: fl
         if ref and mdb is not None:
             target = 20 * math.log10(ref) - 18 + 20 * math.log10(max(vol, 1e-4) / 0.06)
             gain = min(10 ** ((target - mdb) / 20), 1.0)
-        off = random.Random(track.name + str(total)).uniform(0, 12)
+        off = random.Random(track.name + str(total)).uniform(0, 12) if seek else 0.0
         inputs += ["-stream_loop", "-1", "-ss", f"{off:.2f}", "-i", str(track)]
         # the music follows the feeling of each part: softer when sad or whispered, louder when
         # it gets loud. Each change glides over 0.6 s so it is never a jump.

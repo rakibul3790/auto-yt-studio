@@ -1,0 +1,2593 @@
+{
+ "title": "5 Moments in History That Sound Fake (But Really Happened)",
+ "format": "long",
+ "style": "pro",
+ "description": "Five true stories that sound made up: the Emu War, the Dancing Plague of 1518, the Great Molasses Flood, the man who sold the Eiffel Tower, and Hiroo Onoda.",
+ "tags": [
+  "history",
+  "weird history",
+  "true stories",
+  "emu war",
+  "dancing plague",
+  "molasses flood",
+  "victor lustig",
+  "hiroo onoda",
+  "weird facts"
+ ],
+ "hashtags": [
+  "history",
+  "facts"
+ ],
+ "shorts": false,
+ "follow_line": "",
+ "scene_pause": 0,
+ "music_mood": "mysterious",
+ "music_sections": [
+  [
+   0,
+   "investigations.mp3"
+  ],
+  [
+   11,
+   "monkeys-spinning-monkeys.mp3"
+  ],
+  [
+   34,
+   "spy-glass.mp3"
+  ],
+  [
+   55,
+   "hitman.mp3"
+  ],
+  [
+   77,
+   "scheming-weasel-faster.mp3"
+  ],
+  [
+   98,
+   "inspired.mp3"
+  ],
+  [
+   121,
+   "carefree.mp3"
+  ]
+ ],
+ "voice_parts": [
+  0,
+  11,
+  25,
+  34,
+  42,
+  55,
+  63,
+  77,
+  85,
+  98,
+  106,
+  114,
+  121
+ ],
+ "voice_cache": "assets/history5/cache",
+ "scenes": [
+  {
+   "text": "March 1974.",
+   "say": "[serious] March 1974.",
+   "beats": [
+    {
+     "shot": "text",
+     "text": "MARCH 1974",
+     "query": "dense jungle trees",
+     "camera": "drift",
+     "transition": "fade",
+     "sfx": [
+      "impact"
+     ],
+     "at_word": 0
+    }
+   ],
+   "highlight": []
+  },
+  {
+   "text": "A Japanese soldier walks out of the jungle in a tattered uniform.",
+   "say": "A Japanese soldier walks out of the jungle in a tattered uniform.",
+   "beats": [
+    {
+     "shot": "clip",
+     "query": "soldier walking jungle",
+     "camera": "push_in",
+     "transition": "cut",
+     "at_word": 0
+    },
+    {
+     "shot": "clip",
+     "query": "dense jungle trees",
+     "camera": "pan_left",
+     "transition": "cut",
+     "at_word": 7
+    }
+   ],
+   "highlight": []
+  },
+  {
+   "text": "His rifle still works.",
+   "say": "His rifle still works.",
+   "beats": [
+    {
+     "shot": "clip",
+     "query": "old rifle",
+     "camera": "pull_out",
+     "transition": "cut",
+     "at_word": 0
+    }
+   ],
+   "highlight": [
+    "still works."
+   ]
+  },
+  {
+   "text": "And as far as he knows... World War Two is still going on.",
+   "say": "And as far as he knows... World War Two is still going on.",
+   "beats": [
+    {
+     "shot": "clip",
+     "query": "jungle mist",
+     "camera": "pan_right",
+     "transition": "whip_left",
+     "sfx": [
+      "swish"
+     ],
+     "at_word": 0
+    }
+   ],
+   "highlight": [
+    "still going on."
+   ]
+  },
+  {
+   "text": "That really happened.",
+   "say": "[curious] That really happened.",
+   "beats": [
+    {
+     "shot": "clip",
+     "query": "jungle sunlight",
+     "camera": "drift",
+     "transition": "cut",
+     "at_word": 0
+    }
+   ],
+   "highlight": []
+  },
+  {
+   "text": "And it's not the only story today that sounds made up.",
+   "say": "And it's not the only story today that sounds made up.",
+   "beats": [
+    {
+     "shot": "clip",
+     "query": "old book pages",
+     "camera": "tilt_up",
+     "transition": "slide_up",
+     "sfx": [
+      "whoosh"
+     ],
+     "at_word": 0
+    }
+   ],
+   "highlight": []
+  },
+  {
+   "text": "An army that lost a war... to birds.",
+   "say": "[excited] An army that lost a war... to birds.",
+   "beats": [
+    {
+     "shot": "clip",
+     "query": "emus running",
+     "camera": "push_in",
+     "transition": "cut",
+     "at_word": 0
+    }
+   ],
+   "highlight": [
+    "to birds."
+   ],
+   "look": "excited"
+  },
+  {
+   "text": "A town that couldn't stop dancing.",
+   "say": "A town that couldn't stop dancing.",
+   "beats": [
+    {
+     "shot": "clip",
+     "query": "people dancing street",
+     "camera": "pan_right",
+     "transition": "zoom",
+     "sfx": [
+      "whoosh"
+     ],
+     "at_word": 0
+    }
+   ],
+   "highlight": []
+  },
+  {
+   "text": "A wave of syrup taller than a house.",
+   "say": "A wave of syrup taller than a house.",
+   "beats": [
+    {
+     "shot": "clip",
+     "query": "brown liquid pouring",
+     "camera": "push_in",
+     "transition": "cut",
+     "at_word": 0
+    }
+   ],
+   "highlight": []
+  },
+  {
+   "text": "And a man who sold the Eiffel Tower.",
+   "say": "[chuckles] And a man who sold the Eiffel Tower.",
+   "beats": [
+    {
+     "shot": "clip",
+     "query": "eiffel tower",
+     "camera": "pan_left",
+     "transition": "whip_right",
+     "sfx": [
+      "swish"
+     ],
+     "at_word": 0
+    }
+   ],
+   "highlight": [
+    "Eiffel Tower."
+   ],
+   "look": "excited"
+  },
+  {
+   "text": "All true. Let's start with the birds.",
+   "say": "[whispers] All true. Let's start with the birds.",
+   "beats": [
+    {
+     "shot": "clip",
+     "query": "emu close up",
+     "camera": "pull_out",
+     "transition": "cut",
+     "at_word": 0
+    }
+   ],
+   "highlight": [],
+   "look": "whisper"
+  },
+  {
+   "text": "In 1932, wheat farmers in Western Australia had a big, feathery problem.",
+   "say": "[curious] In 1932, wheat farmers in Western Australia had a big, feathery problem.",
+   "beats": [
+    {
+     "shot": "text",
+     "text": "WESTERN AUSTRALIA 1932",
+     "query": "wheat field",
+     "camera": "drift",
+     "transition": "fade",
+     "sfx": [
+      "shimmer"
+     ],
+     "at_word": 0
+    },
+    {
+     "shot": "clip",
+     "query": "wheat field farmer",
+     "camera": "pan_right",
+     "transition": "cut",
+     "at_word": 6
+    }
+   ],
+   "highlight": [
+    "feathery problem."
+   ]
+  },
+  {
+   "text": "About twenty thousand emus had marched out of the outback and into their fields, eating everything.",
+   "say": "About twenty thousand emus had marched out of the outback and into their fields, eating everything.",
+   "beats": [
+    {
+     "shot": "number",
+     "query": "emus field",
+     "camera": "drift",
+     "transition": "zoom",
+     "sfx": [
+      "whoosh",
+      "tick"
+     ],
+     "number": {
+      "from": 0,
+      "to": 20000,
+      "suffix": " EMUS",
+      "label": "MARCHING IN",
+      "prefix": "",
+      "decimals": 0
+     },
+     "at_word": 0
+    },
+    {
+     "shot": "clip",
+     "query": "emus walking",
+     "camera": "drift",
+     "transition": "cut",
+     "at_word": 9
+    }
+   ],
+   "highlight": []
+  },
+  {
+   "text": "So the farmers asked the government for help.",
+   "say": "So the farmers asked the government for help.",
+   "beats": [
+    {
+     "shot": "clip",
+     "query": "farmer worried field",
+     "camera": "tilt_up",
+     "transition": "cut",
+     "at_word": 0
+    }
+   ],
+   "highlight": []
+  },
+  {
+   "text": "And the government sent... the army.",
+   "say": "[excited] And the government sent... the army.",
+   "beats": [
+    {
+     "shot": "clip",
+     "query": "soldiers marching",
+     "camera": "push_in",
+     "transition": "cut",
+     "at_word": 0
+    }
+   ],
+   "highlight": [
+    "the army."
+   ],
+   "look": "excited"
+  },
+  {
+   "text": "A major named Meredith, two machine guns, and ten thousand rounds of ammunition.",
+   "say": "A major named Meredith, two machine guns, and ten thousand rounds of ammunition.",
+   "beats": [
+    {
+     "shot": "clip",
+     "query": "military officer vintage",
+     "camera": "pan_right",
+     "transition": "whip_left",
+     "sfx": [
+      "swish"
+     ],
+     "at_word": 0
+    },
+    {
+     "shot": "number",
+     "query": "ammunition bullets",
+     "camera": "drift",
+     "transition": "zoom",
+     "sfx": [
+      "whoosh",
+      "tick"
+     ],
+     "number": {
+      "from": 0,
+      "to": 10000,
+      "suffix": " ROUNDS",
+      "label": "OF AMMUNITION",
+      "prefix": "",
+      "decimals": 0
+     },
+     "at_word": 5
+    }
+   ],
+   "highlight": []
+  },
+  {
+   "text": "On paper, this should have taken an afternoon.",
+   "say": "[confident] On paper, this should have taken an afternoon.",
+   "beats": [
+    {
+     "shot": "clip",
+     "query": "clock ticking",
+     "camera": "push_in",
+     "transition": "cut",
+     "at_word": 0
+    }
+   ],
+   "highlight": [
+    "an afternoon."
+   ]
+  },
+  {
+   "text": "It did not.",
+   "say": "[chuckles] It did not.",
+   "beats": [
+    {
+     "shot": "clip",
+     "query": "emu funny",
+     "camera": "pan_left",
+     "transition": "slide_up",
+     "sfx": [
+      "whoosh"
+     ],
+     "at_word": 0
+    }
+   ],
+   "highlight": [
+    "It did not."
+   ],
+   "look": "excited"
+  },
+  {
+   "text": "The moment the guns fired, the emus scattered in every direction.",
+   "say": "The moment the guns fired, the emus scattered in every direction.",
+   "beats": [
+    {
+     "shot": "clip",
+     "query": "emus running",
+     "camera": "pull_out",
+     "transition": "cut",
+     "at_word": 0
+    },
+    {
+     "shot": "clip",
+     "query": "birds scattering",
+     "camera": "pan_right",
+     "transition": "cut",
+     "at_word": 6
+    }
+   ],
+   "highlight": []
+  },
+  {
+   "text": "The soldiers set an ambush at a watering hole, and a huge flock walked right toward them.",
+   "say": "The soldiers set an ambush at a watering hole, and a huge flock walked right toward them.",
+   "beats": [
+    {
+     "shot": "clip",
+     "query": "watering hole outback",
+     "camera": "drift",
+     "transition": "zoom",
+     "sfx": [
+      "whoosh"
+     ],
+     "at_word": 0
+    },
+    {
+     "shot": "clip",
+     "query": "emus flock",
+     "camera": "tilt_up",
+     "transition": "cut",
+     "at_word": 10
+    }
+   ],
+   "highlight": []
+  },
+  {
+   "text": "They got about a dozen birds. Then the gun jammed.",
+   "say": "They got about a dozen birds. Then the gun jammed.",
+   "beats": [
+    {
+     "shot": "clip",
+     "query": "emu",
+     "camera": "push_in",
+     "transition": "cut",
+     "at_word": 0
+    },
+    {
+     "shot": "clip",
+     "query": "machine gun",
+     "camera": "pan_right",
+     "transition": "cut",
+     "at_word": 6
+    }
+   ],
+   "highlight": [
+    "gun jammed."
+   ]
+  },
+  {
+   "text": "They even mounted a gun on a truck, but the ground was so rough that nobody could aim.",
+   "say": "They even mounted a gun on a truck, but the ground was so rough that nobody could aim.",
+   "beats": [
+    {
+     "shot": "clip",
+     "query": "old truck dirt road",
+     "camera": "push_in",
+     "transition": "whip_right",
+     "sfx": [
+      "swish"
+     ],
+     "at_word": 0
+    },
+    {
+     "shot": "clip",
+     "query": "bumpy dirt road",
+     "camera": "pan_left",
+     "transition": "cut",
+     "at_word": 9
+    }
+   ],
+   "highlight": []
+  },
+  {
+   "text": "After about a week, the soldiers were called home.",
+   "say": "After about a week, the soldiers were called home.",
+   "beats": [
+    {
+     "shot": "clip",
+     "query": "soldiers walking away",
+     "camera": "pull_out",
+     "transition": "cut",
+     "at_word": 0
+    }
+   ],
+   "highlight": []
+  },
+  {
+   "text": "Meredith later said that if he had a division with the bullet-carrying capacity of these birds,",
+   "say": "Meredith later said that if he had a division with the bullet-carrying capacity of these birds,",
+   "beats": [
+    {
+     "shot": "clip",
+     "query": "emu portrait",
+     "camera": "pan_right",
+     "transition": "cut",
+     "at_word": 0
+    }
+   ],
+   "highlight": []
+  },
+  {
+   "text": "it could face any army in the world.",
+   "say": "it could face any army in the world.",
+   "beats": [
+    {
+     "shot": "clip",
+     "query": "emus running field",
+     "camera": "drift",
+     "transition": "cut",
+     "at_word": 0
+    }
+   ],
+   "highlight": [
+    "any army"
+   ]
+  },
+  {
+   "text": "The farmers begged again, so the army went back for round two.",
+   "say": "[curious] The farmers begged again, so the army went back for round two.",
+   "beats": [
+    {
+     "shot": "clip",
+     "query": "wheat field",
+     "camera": "tilt_up",
+     "transition": "whip_left",
+     "sfx": [
+      "swish"
+     ],
+     "at_word": 0
+    },
+    {
+     "shot": "clip",
+     "query": "soldiers",
+     "camera": "push_in",
+     "transition": "cut",
+     "at_word": 7
+    }
+   ],
+   "highlight": [
+    "round two."
+   ]
+  },
+  {
+   "text": "In the end, Meredith's report claimed nine hundred and eighty-six emus...",
+   "say": "In the end, Meredith's report claimed nine hundred and eighty-six emus...",
+   "beats": [
+    {
+     "shot": "clip",
+     "query": "old typewriter report",
+     "camera": "pan_right",
+     "transition": "cut",
+     "at_word": 0
+    }
+   ],
+   "highlight": []
+  },
+  {
+   "text": "using nine thousand eight hundred and sixty bullets.",
+   "say": "using nine thousand eight hundred and sixty bullets.",
+   "beats": [
+    {
+     "shot": "compare",
+     "query": "bullets",
+     "camera": "drift",
+     "transition": "flash",
+     "sfx": [
+      "impact",
+      "tick"
+     ],
+     "compare": {
+      "left": {
+       "label": "EMUS",
+       "value": 986
+      },
+      "right": {
+       "label": "BULLETS",
+       "value": 9860
+      },
+      "unit": ""
+     },
+     "at_word": 0
+    }
+   ],
+   "highlight": []
+  },
+  {
+   "text": "Exactly ten bullets per bird.",
+   "say": "[laughs] Exactly ten bullets per bird.",
+   "beats": [
+    {
+     "shot": "clip",
+     "query": "emu close up",
+     "camera": "push_in",
+     "transition": "slide_up",
+     "sfx": [
+      "whoosh"
+     ],
+     "at_word": 0
+    }
+   ],
+   "highlight": [
+    "ten bullets"
+   ],
+   "look": "excited"
+  },
+  {
+   "text": "Newspapers called it \"the Emu War.\"",
+   "say": "Newspapers called it \"the Emu War.\"",
+   "beats": [
+    {
+     "shot": "clip",
+     "query": "old newspaper",
+     "camera": "pan_left",
+     "transition": "cut",
+     "at_word": 0
+    }
+   ],
+   "highlight": [
+    "the Emu War.\""
+   ]
+  },
+  {
+   "text": "And the emus? Still there. Still eating the wheat.",
+   "say": "And the emus? [amused] Still there. Still eating the wheat.",
+   "beats": [
+    {
+     "shot": "clip",
+     "query": "emus wheat",
+     "camera": "pull_out",
+     "transition": "zoom",
+     "sfx": [
+      "whoosh"
+     ],
+     "at_word": 0
+    },
+    {
+     "shot": "clip",
+     "query": "emu eating",
+     "camera": "pan_right",
+     "transition": "cut",
+     "at_word": 3
+    }
+   ],
+   "highlight": [],
+   "look": "excited"
+  },
+  {
+   "text": "The army had lost a war to birds.",
+   "say": "The army had lost a war to birds.",
+   "beats": [
+    {
+     "shot": "clip",
+     "query": "emus running",
+     "camera": "drift",
+     "transition": "cut",
+     "at_word": 0
+    }
+   ],
+   "highlight": [
+    "to birds."
+   ]
+  },
+  {
+   "text": "Birds beating an army is funny.",
+   "say": "[softly] Birds beating an army is funny.",
+   "beats": [
+    {
+     "shot": "clip",
+     "query": "birds flying sunset",
+     "camera": "tilt_up",
+     "transition": "whip_right",
+     "sfx": [
+      "swish"
+     ],
+     "at_word": 0
+    }
+   ],
+   "highlight": [],
+   "look": "whisper"
+  },
+  {
+   "text": "What happened in one European city, four centuries earlier... was not.",
+   "say": "What happened in one European city, four centuries earlier... was not.",
+   "beats": [
+    {
+     "shot": "clip",
+     "query": "old european town",
+     "camera": "push_in",
+     "transition": "cut",
+     "at_word": 0
+    }
+   ],
+   "highlight": [
+    "was not."
+   ]
+  },
+  {
+   "text": "July 14, 1518. Strasbourg.",
+   "say": "[mysterious] July 14, 1518. Strasbourg.",
+   "beats": [
+    {
+     "shot": "text",
+     "text": "STRASBOURG 1518",
+     "query": "medieval town",
+     "camera": "drift",
+     "transition": "fade",
+     "sfx": [
+      "shimmer"
+     ],
+     "at_word": 0
+    }
+   ],
+   "highlight": [],
+   "look": "whisper"
+  },
+  {
+   "text": "A woman named Frau Troffea stepped into the street and started to dance.",
+   "say": "A woman named Frau Troffea stepped into the street and started to dance.",
+   "beats": [
+    {
+     "shot": "clip",
+     "query": "medieval street",
+     "camera": "pan_right",
+     "transition": "cut",
+     "at_word": 0
+    },
+    {
+     "shot": "clip",
+     "query": "woman dancing",
+     "camera": "push_in",
+     "transition": "cut",
+     "at_word": 8
+    }
+   ],
+   "highlight": []
+  },
+  {
+   "text": "No music. No reason.",
+   "say": "No music. No reason.",
+   "beats": [
+    {
+     "shot": "clip",
+     "query": "empty street old town",
+     "camera": "pan_left",
+     "transition": "cut",
+     "at_word": 0
+    }
+   ],
+   "highlight": [
+    "No reason."
+   ]
+  },
+  {
+   "text": "She danced all day, until she collapsed.",
+   "say": "She danced all day, until she collapsed.",
+   "beats": [
+    {
+     "shot": "clip",
+     "query": "dancing feet",
+     "camera": "pull_out",
+     "transition": "whip_left",
+     "sfx": [
+      "swish"
+     ],
+     "at_word": 0
+    }
+   ],
+   "highlight": []
+  },
+  {
+   "text": "The next day, on swollen, bleeding feet, she danced again.",
+   "say": "[uneasy] The next day, on swollen, bleeding feet, she danced again.",
+   "beats": [
+    {
+     "shot": "clip",
+     "query": "bare feet stone",
+     "camera": "pan_right",
+     "transition": "cut",
+     "at_word": 0
+    }
+   ],
+   "highlight": [
+    "danced again."
+   ]
+  },
+  {
+   "text": "By the end of the week, more than thirty people had joined her.",
+   "say": "By the end of the week, more than thirty people had joined her.",
+   "beats": [
+    {
+     "shot": "clip",
+     "query": "crowd dancing",
+     "camera": "drift",
+     "transition": "slide_up",
+     "sfx": [
+      "whoosh"
+     ],
+     "at_word": 0
+    }
+   ],
+   "highlight": []
+  },
+  {
+   "text": "Within a month, some accounts say, four hundred.",
+   "say": "Within a month, some accounts say, four hundred.",
+   "beats": [
+    {
+     "shot": "number",
+     "query": "crowd dancing",
+     "camera": "drift",
+     "transition": "zoom",
+     "sfx": [
+      "whoosh",
+      "tick"
+     ],
+     "number": {
+      "from": 0,
+      "to": 400,
+      "suffix": " DANCERS",
+      "label": "WITHIN A MONTH",
+      "prefix": "",
+      "decimals": 0
+     },
+     "at_word": 0
+    }
+   ],
+   "highlight": []
+  },
+  {
+   "text": "People who wanted to stop... and couldn't.",
+   "say": "People who wanted to stop... and couldn't.",
+   "beats": [
+    {
+     "shot": "clip",
+     "query": "people dancing night",
+     "camera": "tilt_up",
+     "transition": "cut",
+     "at_word": 0
+    }
+   ],
+   "highlight": [
+    "and couldn't."
+   ]
+  },
+  {
+   "text": "The city's doctors blamed \"hot blood,\" and their cure was simple: more dancing.",
+   "say": "[curious] The city's doctors blamed \"hot blood,\" and their cure was simple: more dancing.",
+   "beats": [
+    {
+     "shot": "clip",
+     "query": "old medicine bottles",
+     "camera": "push_in",
+     "transition": "zoom",
+     "sfx": [
+      "whoosh"
+     ],
+     "at_word": 0
+    },
+    {
+     "shot": "clip",
+     "query": "people dancing",
+     "camera": "pan_right",
+     "transition": "cut",
+     "at_word": 9
+    }
+   ],
+   "highlight": [
+    "more dancing."
+   ]
+  },
+  {
+   "text": "So the city built a stage, hired musicians, and paid people to keep the dancers moving.",
+   "say": "[sighs] So the city built a stage, hired musicians, and paid people to keep the dancers moving.",
+   "beats": [
+    {
+     "shot": "clip",
+     "query": "wooden stage",
+     "camera": "push_in",
+     "transition": "cut",
+     "at_word": 0
+    },
+    {
+     "shot": "clip",
+     "query": "musicians playing violin",
+     "camera": "pan_left",
+     "transition": "cut",
+     "at_word": 8
+    }
+   ],
+   "highlight": [],
+   "look": "sad"
+  },
+  {
+   "text": "It made everything worse.",
+   "say": "It made everything worse.",
+   "beats": [
+    {
+     "shot": "clip",
+     "query": "storm clouds",
+     "camera": "pull_out",
+     "transition": "whip_right",
+     "sfx": [
+      "swish"
+     ],
+     "at_word": 0
+    }
+   ],
+   "highlight": [
+    "everything worse."
+   ]
+  },
+  {
+   "text": "Some old records claim dancers collapsed and even died, though historians still argue about how many.",
+   "say": "Some old records claim dancers collapsed and even died, though historians still argue about how many.",
+   "beats": [
+    {
+     "shot": "clip",
+     "query": "old manuscript",
+     "camera": "pan_right",
+     "transition": "cut",
+     "at_word": 0
+    },
+    {
+     "shot": "clip",
+     "query": "candle dark",
+     "camera": "drift",
+     "transition": "cut",
+     "at_word": 9
+    }
+   ],
+   "highlight": []
+  },
+  {
+   "text": "Finally, the city changed its mind.",
+   "say": "Finally, the city changed its mind.",
+   "beats": [
+    {
+     "shot": "clip",
+     "query": "cathedral",
+     "camera": "tilt_up",
+     "transition": "cut",
+     "at_word": 0
+    }
+   ],
+   "highlight": []
+  },
+  {
+   "text": "Music was banned, and the dancers were taken to a shrine in the hills to pray.",
+   "say": "Music was banned, and the dancers were taken to a shrine in the hills to pray.",
+   "beats": [
+    {
+     "shot": "clip",
+     "query": "chapel hills",
+     "camera": "push_in",
+     "transition": "cut",
+     "at_word": 0
+    },
+    {
+     "shot": "clip",
+     "query": "candles church",
+     "camera": "pan_right",
+     "transition": "cut",
+     "at_word": 8
+    }
+   ],
+   "highlight": []
+  },
+  {
+   "text": "Slowly, the dancing stopped.",
+   "say": "Slowly, the dancing stopped.",
+   "beats": [
+    {
+     "shot": "clip",
+     "query": "sunrise old town",
+     "camera": "push_in",
+     "transition": "whip_left",
+     "sfx": [
+      "swish"
+     ],
+     "at_word": 0
+    }
+   ],
+   "highlight": []
+  },
+  {
+   "text": "So what was it? Nobody knows for sure.",
+   "say": "[whispers] So what was it? Nobody knows for sure.",
+   "beats": [
+    {
+     "shot": "clip",
+     "query": "fog forest",
+     "camera": "pan_left",
+     "transition": "cut",
+     "at_word": 0
+    }
+   ],
+   "highlight": [
+    "Nobody knows"
+   ],
+   "look": "whisper"
+  },
+  {
+   "text": "Many historians think it was mass panic, in a city worn down by failed harvests, record grain prices, and disease.",
+   "say": "Many historians think it was mass panic, in a city worn down by failed harvests, record grain prices, and disease.",
+   "beats": [
+    {
+     "shot": "clip",
+     "query": "dry wheat field",
+     "camera": "pull_out",
+     "transition": "slide_up",
+     "sfx": [
+      "whoosh"
+     ],
+     "at_word": 0
+    },
+    {
+     "shot": "clip",
+     "query": "grain sacks",
+     "camera": "pan_right",
+     "transition": "cut",
+     "at_word": 10
+    }
+   ],
+   "highlight": []
+  },
+  {
+   "text": "Fear spread from person to person, until it took over their bodies.",
+   "say": "Fear spread from person to person, until it took over their bodies.",
+   "beats": [
+    {
+     "shot": "clip",
+     "query": "crowd silhouette",
+     "camera": "drift",
+     "transition": "cut",
+     "at_word": 0
+    }
+   ],
+   "highlight": []
+  },
+  {
+   "text": "A whole town, dancing, and not one of them wanted to.",
+   "say": "[softly] A whole town, dancing, and not one of them wanted to.",
+   "beats": [
+    {
+     "shot": "clip",
+     "query": "medieval town night",
+     "camera": "tilt_up",
+     "transition": "zoom",
+     "sfx": [
+      "whoosh"
+     ],
+     "at_word": 0
+    }
+   ],
+   "highlight": [
+    "wanted to."
+   ],
+   "look": "whisper"
+  },
+  {
+   "text": "That town couldn't stop moving.",
+   "say": "[tense] That town couldn't stop moving.",
+   "beats": [
+    {
+     "shot": "clip",
+     "query": "people dancing",
+     "camera": "push_in",
+     "transition": "cut",
+     "at_word": 0
+    }
+   ],
+   "highlight": [],
+   "look": "angry"
+  },
+  {
+   "text": "Four hundred years later, in Boston, something else started moving... and it weighed about thirteen thousand tons.",
+   "say": "Four hundred years later, in Boston, something else started moving... and it weighed about thirteen thousand tons.",
+   "beats": [
+    {
+     "shot": "clip",
+     "query": "boston city",
+     "camera": "pan_right",
+     "transition": "whip_right",
+     "sfx": [
+      "swish"
+     ],
+     "at_word": 0
+    },
+    {
+     "shot": "clip",
+     "query": "industrial tank",
+     "camera": "push_in",
+     "transition": "cut",
+     "at_word": 10
+    }
+   ],
+   "highlight": [
+    "thirteen thousand tons."
+   ]
+  },
+  {
+   "text": "January 15, 1919. Boston's North End.",
+   "say": "[calm] January 15, 1919. Boston's North End.",
+   "beats": [
+    {
+     "shot": "text",
+     "text": "BOSTON 1919",
+     "query": "boston old street",
+     "camera": "drift",
+     "transition": "fade",
+     "sfx": [
+      "shimmer"
+     ],
+     "at_word": 0
+    }
+   ],
+   "highlight": []
+  },
+  {
+   "text": "It was strangely warm for January, and the streets were full of people.",
+   "say": "It was strangely warm for January, and the streets were full of people.",
+   "beats": [
+    {
+     "shot": "clip",
+     "query": "old city street people",
+     "camera": "pan_left",
+     "transition": "cut",
+     "at_word": 0
+    }
+   ],
+   "highlight": []
+  },
+  {
+   "text": "Near the harbor stood a giant steel tank.",
+   "say": "Near the harbor stood a giant steel tank.",
+   "beats": [
+    {
+     "shot": "clip",
+     "query": "boston harbor",
+     "camera": "pull_out",
+     "transition": "cut",
+     "at_word": 0
+    },
+    {
+     "shot": "clip",
+     "query": "steel storage tank",
+     "camera": "pan_right",
+     "transition": "cut",
+     "at_word": 4
+    }
+   ],
+   "highlight": []
+  },
+  {
+   "text": "Fifty feet tall. Ninety feet wide.",
+   "say": "Fifty feet tall. Ninety feet wide.",
+   "beats": [
+    {
+     "shot": "clip",
+     "query": "industrial tank",
+     "camera": "drift",
+     "transition": "cut",
+     "at_word": 0
+    }
+   ],
+   "highlight": []
+  },
+  {
+   "text": "Filled with two point three million gallons of molasses.",
+   "say": "Filled with two point three million gallons of molasses.",
+   "beats": [
+    {
+     "shot": "number",
+     "query": "molasses dripping",
+     "camera": "drift",
+     "transition": "zoom",
+     "sfx": [
+      "whoosh",
+      "tick"
+     ],
+     "number": {
+      "from": 0,
+      "to": 2.3,
+      "suffix": "M GALLONS",
+      "label": "OF MOLASSES",
+      "prefix": "",
+      "decimals": 1
+     },
+     "at_word": 0
+    }
+   ],
+   "highlight": []
+  },
+  {
+   "text": "And the neighbors had noticed something. The tank leaked.",
+   "say": "[serious] And the neighbors had noticed something. The tank leaked.",
+   "beats": [
+    {
+     "shot": "clip",
+     "query": "rusty metal",
+     "camera": "tilt_up",
+     "transition": "whip_left",
+     "sfx": [
+      "swish"
+     ],
+     "at_word": 0
+    },
+    {
+     "shot": "clip",
+     "query": "liquid leaking",
+     "camera": "push_in",
+     "transition": "cut",
+     "at_word": 6
+    }
+   ],
+   "highlight": [
+    "The tank leaked."
+   ]
+  },
+  {
+   "text": "Brown syrup oozed from its seams.",
+   "say": "Brown syrup oozed from its seams.",
+   "beats": [
+    {
+     "shot": "clip",
+     "query": "syrup dripping",
+     "camera": "pan_right",
+     "transition": "cut",
+     "at_word": 0
+    }
+   ],
+   "highlight": []
+  },
+  {
+   "text": "The company's fix? They painted the tank brown.",
+   "say": "The company's fix? [scoffs] They painted the tank brown.",
+   "beats": [
+    {
+     "shot": "clip",
+     "query": "paint brush",
+     "camera": "push_in",
+     "transition": "slide_up",
+     "sfx": [
+      "whoosh"
+     ],
+     "at_word": 0
+    }
+   ],
+   "highlight": [
+    "painted the tank brown."
+   ]
+  },
+  {
+   "text": "Just after noon, people heard a deep rumble... then a rattling, like machine guns.",
+   "say": "[tense] Just after noon, people heard a deep rumble... then a rattling, like machine guns.",
+   "beats": [
+    {
+     "shot": "clip",
+     "query": "old street",
+     "camera": "pan_left",
+     "transition": "cut",
+     "at_word": 0
+    },
+    {
+     "shot": "clip",
+     "query": "metal rivets",
+     "camera": "pull_out",
+     "transition": "cut",
+     "at_word": 8
+    }
+   ],
+   "highlight": [],
+   "look": "angry"
+  },
+  {
+   "text": "That was the rivets bursting out of the steel.",
+   "say": "That was the rivets bursting out of the steel.",
+   "beats": [
+    {
+     "shot": "clip",
+     "query": "steel rivets",
+     "camera": "pan_right",
+     "transition": "zoom",
+     "sfx": [
+      "whoosh"
+     ],
+     "at_word": 0
+    }
+   ],
+   "highlight": [
+    "rivets bursting"
+   ]
+  },
+  {
+   "text": "And then the whole tank split open.",
+   "say": "[shocked] And then the whole tank split open.",
+   "beats": [
+    {
+     "shot": "clip",
+     "query": "brown liquid wave",
+     "camera": "drift",
+     "transition": "cut",
+     "at_word": 0
+    }
+   ],
+   "highlight": [
+    "split open."
+   ],
+   "look": "angry"
+  },
+  {
+   "text": "A wave of molasses, twenty-five feet high, rolled through the streets at about thirty-five miles an hour.",
+   "say": "A wave of molasses, twenty-five feet high, rolled through the streets at about thirty-five miles an hour.",
+   "beats": [
+    {
+     "shot": "clip",
+     "query": "brown liquid flowing",
+     "camera": "tilt_up",
+     "transition": "whip_right",
+     "sfx": [
+      "swish"
+     ],
+     "at_word": 0
+    },
+    {
+     "shot": "number",
+     "query": "brown liquid flowing",
+     "camera": "drift",
+     "transition": "zoom",
+     "sfx": [
+      "whoosh",
+      "tick"
+     ],
+     "number": {
+      "from": 0,
+      "to": 35,
+      "suffix": " MPH",
+      "label": "WAVE OF MOLASSES",
+      "prefix": "",
+      "decimals": 0
+     },
+     "at_word": 9
+    }
+   ],
+   "highlight": []
+  },
+  {
+   "text": "Faster than any person can run.",
+   "say": "Faster than any person can run.",
+   "beats": [
+    {
+     "shot": "clip",
+     "query": "people running",
+     "camera": "push_in",
+     "transition": "cut",
+     "at_word": 0
+    }
+   ],
+   "highlight": [
+    "any person can run."
+   ]
+  },
+  {
+   "text": "It knocked buildings off their foundations, smashed into the steel supports of the elevated railway,",
+   "say": "It knocked buildings off their foundations, smashed into the steel supports of the elevated railway,",
+   "beats": [
+    {
+     "shot": "clip",
+     "query": "flood damage",
+     "camera": "pan_right",
+     "transition": "cut",
+     "at_word": 0
+    },
+    {
+     "shot": "clip",
+     "query": "elevated railway",
+     "camera": "push_in",
+     "transition": "cut",
+     "at_word": 8
+    }
+   ],
+   "highlight": []
+  },
+  {
+   "text": "and swept up wagons, horses, and people.",
+   "say": "and swept up wagons, horses, and people.",
+   "beats": [
+    {
+     "shot": "clip",
+     "query": "horse cart old",
+     "camera": "pan_left",
+     "transition": "cut",
+     "at_word": 0
+    }
+   ],
+   "highlight": []
+  },
+  {
+   "text": "Twenty-one people died. Around a hundred and fifty were hurt.",
+   "say": "[sad] Twenty-one people died. Around a hundred and fifty were hurt.",
+   "beats": [
+    {
+     "shot": "clip",
+     "query": "candle memorial",
+     "camera": "pull_out",
+     "transition": "whip_left",
+     "sfx": [
+      "swish"
+     ],
+     "at_word": 0
+    }
+   ],
+   "highlight": [
+    "Twenty-one people died."
+   ],
+   "look": "sad"
+  },
+  {
+   "text": "Rescuers struggled for days, because as the air cooled, the molasses grew thicker, trapping anyone caught inside.",
+   "say": "Rescuers struggled for days, because as the air cooled, the molasses grew thicker, trapping anyone caught inside.",
+   "beats": [
+    {
+     "shot": "clip",
+     "query": "rescue workers",
+     "camera": "pan_right",
+     "transition": "cut",
+     "at_word": 0
+    },
+    {
+     "shot": "clip",
+     "query": "thick syrup",
+     "camera": "drift",
+     "transition": "cut",
+     "at_word": 10
+    }
+   ],
+   "highlight": []
+  },
+  {
+   "text": "Investigators found the tank had been badly built and barely tested.",
+   "say": "[softly] Investigators found the tank had been badly built and barely tested.",
+   "beats": [
+    {
+     "shot": "clip",
+     "query": "blueprint",
+     "camera": "tilt_up",
+     "transition": "slide_up",
+     "sfx": [
+      "whoosh"
+     ],
+     "at_word": 0
+    },
+    {
+     "shot": "clip",
+     "query": "inspection steel",
+     "camera": "push_in",
+     "transition": "cut",
+     "at_word": 6
+    }
+   ],
+   "highlight": [],
+   "look": "whisper"
+  },
+  {
+   "text": "After that, engineers had to sign off on projects like this.",
+   "say": "After that, engineers had to sign off on projects like this.",
+   "beats": [
+    {
+     "shot": "clip",
+     "query": "engineer signing",
+     "camera": "pan_right",
+     "transition": "cut",
+     "at_word": 0
+    }
+   ],
+   "highlight": []
+  },
+  {
+   "text": "And locals said that for decades, on hot summer days, the neighborhood still smelled sweet.",
+   "say": "[sighs] And locals said that for decades, on hot summer days, the neighborhood still smelled sweet.",
+   "beats": [
+    {
+     "shot": "clip",
+     "query": "summer street",
+     "camera": "push_in",
+     "transition": "zoom",
+     "sfx": [
+      "whoosh"
+     ],
+     "at_word": 0
+    },
+    {
+     "shot": "clip",
+     "query": "honey sweet",
+     "camera": "pan_left",
+     "transition": "cut",
+     "at_word": 8
+    }
+   ],
+   "highlight": [
+    "smelled sweet."
+   ],
+   "look": "sad"
+  },
+  {
+   "text": "That disaster came from cutting corners.",
+   "say": "[curious] That disaster came from cutting corners.",
+   "beats": [
+    {
+     "shot": "clip",
+     "query": "old city",
+     "camera": "pull_out",
+     "transition": "cut",
+     "at_word": 0
+    }
+   ],
+   "highlight": []
+  },
+  {
+   "text": "Our next one came from a very careful plan... to sell something that wasn't for sale.",
+   "say": "Our next one came from a very careful plan... to sell something that wasn't for sale.",
+   "beats": [
+    {
+     "shot": "clip",
+     "query": "paris street",
+     "camera": "pan_right",
+     "transition": "whip_right",
+     "sfx": [
+      "swish"
+     ],
+     "at_word": 0
+    }
+   ],
+   "highlight": [
+    "wasn't for sale."
+   ]
+  },
+  {
+   "text": "In 1925, a smooth-talking con man named Victor Lustig read a small story in a Paris newspaper.",
+   "say": "[curious] In 1925, a smooth-talking con man named Victor Lustig read a small story in a Paris newspaper.",
+   "beats": [
+    {
+     "shot": "text",
+     "text": "PARIS 1925",
+     "query": "paris vintage",
+     "camera": "drift",
+     "transition": "fade",
+     "sfx": [
+      "shimmer"
+     ],
+     "at_word": 0
+    },
+    {
+     "shot": "clip",
+     "query": "man reading newspaper",
+     "camera": "drift",
+     "transition": "cut",
+     "at_word": 6
+    }
+   ],
+   "highlight": []
+  },
+  {
+   "text": "The Eiffel Tower was rusting, and repairs were costing the city a fortune.",
+   "say": "The Eiffel Tower was rusting, and repairs were costing the city a fortune.",
+   "beats": [
+    {
+     "shot": "clip",
+     "query": "eiffel tower",
+     "camera": "tilt_up",
+     "transition": "cut",
+     "at_word": 0
+    },
+    {
+     "shot": "clip",
+     "query": "rust metal",
+     "camera": "push_in",
+     "transition": "cut",
+     "at_word": 5
+    }
+   ],
+   "highlight": []
+  },
+  {
+   "text": "Most people saw a news story. Lustig saw a product.",
+   "say": "[sly] Most people saw a news story. Lustig saw a product.",
+   "beats": [
+    {
+     "shot": "clip",
+     "query": "newspaper",
+     "camera": "pan_right",
+     "transition": "cut",
+     "at_word": 0
+    },
+    {
+     "shot": "clip",
+     "query": "eiffel tower night",
+     "camera": "push_in",
+     "transition": "cut",
+     "at_word": 6
+    }
+   ],
+   "highlight": [
+    "a product."
+   ]
+  },
+  {
+   "text": "He had fake government letterhead made, posing as a top official from France's Ministry of Posts and Telegraphs.",
+   "say": "He had fake government letterhead made, posing as a top official from France's Ministry of Posts and Telegraphs.",
+   "beats": [
+    {
+     "shot": "clip",
+     "query": "old letter stamp",
+     "camera": "pan_left",
+     "transition": "cut",
+     "at_word": 0
+    },
+    {
+     "shot": "clip",
+     "query": "typewriter",
+     "camera": "pull_out",
+     "transition": "cut",
+     "at_word": 9
+    }
+   ],
+   "highlight": []
+  },
+  {
+   "text": "Then he invited a handful of scrap metal dealers to one of the fanciest hotels in Paris.",
+   "say": "Then he invited a handful of scrap metal dealers to one of the fanciest hotels in Paris.",
+   "beats": [
+    {
+     "shot": "clip",
+     "query": "scrap metal",
+     "camera": "pan_right",
+     "transition": "whip_left",
+     "sfx": [
+      "swish"
+     ],
+     "at_word": 0
+    },
+    {
+     "shot": "clip",
+     "query": "luxury hotel",
+     "camera": "drift",
+     "transition": "cut",
+     "at_word": 9
+    }
+   ],
+   "highlight": []
+  },
+  {
+   "text": "There, he told them a secret.",
+   "say": "There, he told them a secret.",
+   "beats": [
+    {
+     "shot": "clip",
+     "query": "hotel room vintage",
+     "camera": "tilt_up",
+     "transition": "cut",
+     "at_word": 0
+    }
+   ],
+   "highlight": []
+  },
+  {
+   "text": "The city was going to tear down the Eiffel Tower and sell it for scrap.",
+   "say": "[whispers] The city was going to tear down the Eiffel Tower and sell it for scrap.",
+   "beats": [
+    {
+     "shot": "clip",
+     "query": "eiffel tower",
+     "camera": "push_in",
+     "transition": "slide_up",
+     "sfx": [
+      "whoosh"
+     ],
+     "at_word": 0
+    }
+   ],
+   "highlight": [
+    "sell it for scrap."
+   ],
+   "look": "whisper"
+  },
+  {
+   "text": "And it all had to stay quiet.",
+   "say": "And it all had to stay quiet.",
+   "beats": [
+    {
+     "shot": "clip",
+     "query": "finger on lips",
+     "camera": "pan_right",
+     "transition": "cut",
+     "at_word": 0
+    }
+   ],
+   "highlight": []
+  },
+  {
+   "text": "One dealer, André Poisson, wanted the deal badly.",
+   "say": "[excited] One dealer, André Poisson, wanted the deal badly.",
+   "beats": [
+    {
+     "shot": "clip",
+     "query": "businessman vintage",
+     "camera": "push_in",
+     "transition": "zoom",
+     "sfx": [
+      "whoosh"
+     ],
+     "at_word": 0
+    }
+   ],
+   "highlight": [],
+   "look": "excited"
+  },
+  {
+   "text": "He was new in town and wanted to make a name for himself.",
+   "say": "He was new in town and wanted to make a name for himself.",
+   "beats": [
+    {
+     "shot": "clip",
+     "query": "paris street",
+     "camera": "pan_left",
+     "transition": "cut",
+     "at_word": 0
+    }
+   ],
+   "highlight": []
+  },
+  {
+   "text": "Then Lustig hinted that government officials don't earn very much...",
+   "say": "Then Lustig hinted that government officials don't earn very much...",
+   "beats": [
+    {
+     "shot": "clip",
+     "query": "money cash",
+     "camera": "pull_out",
+     "transition": "whip_right",
+     "sfx": [
+      "swish"
+     ],
+     "at_word": 0
+    }
+   ],
+   "highlight": []
+  },
+  {
+   "text": "So Poisson paid him a bribe, on top of the price.",
+   "say": "So Poisson paid him a bribe, on top of the price.",
+   "beats": [
+    {
+     "shot": "clip",
+     "query": "money envelope",
+     "camera": "pan_right",
+     "transition": "cut",
+     "at_word": 0
+    }
+   ],
+   "highlight": [
+    "a bribe,"
+   ]
+  },
+  {
+   "text": "Lustig grabbed the money and caught a train to Vienna.",
+   "say": "[laughs] Lustig grabbed the money and caught a train to Vienna.",
+   "beats": [
+    {
+     "shot": "clip",
+     "query": "money hand",
+     "camera": "drift",
+     "transition": "cut",
+     "at_word": 0
+    },
+    {
+     "shot": "clip",
+     "query": "steam train",
+     "camera": "tilt_up",
+     "transition": "cut",
+     "at_word": 6
+    }
+   ],
+   "highlight": [],
+   "look": "excited"
+  },
+  {
+   "text": "And Poisson? He was too embarrassed to go to the police.",
+   "say": "And Poisson? He was too embarrassed to go to the police.",
+   "beats": [
+    {
+     "shot": "clip",
+     "query": "man embarrassed",
+     "camera": "push_in",
+     "transition": "cut",
+     "at_word": 0
+    }
+   ],
+   "highlight": [
+    "too embarrassed"
+   ]
+  },
+  {
+   "text": "Lustig watched the newspapers. Not a word.",
+   "say": "[chuckles] Lustig watched the newspapers. Not a word.",
+   "beats": [
+    {
+     "shot": "clip",
+     "query": "reading newspaper",
+     "camera": "pan_right",
+     "transition": "whip_left",
+     "sfx": [
+      "swish"
+     ],
+     "at_word": 0
+    }
+   ],
+   "highlight": [
+    "Not a word."
+   ],
+   "look": "excited"
+  },
+  {
+   "text": "So not long after, he came back... and tried to sell the tower again.",
+   "say": "So not long after, he came back... and tried to sell the tower again.",
+   "beats": [
+    {
+     "shot": "clip",
+     "query": "eiffel tower",
+     "camera": "push_in",
+     "transition": "cut",
+     "at_word": 0
+    }
+   ],
+   "highlight": [
+    "again."
+   ]
+  },
+  {
+   "text": "This time, a dealer did go to the police, and Lustig had to run.",
+   "say": "This time, a dealer did go to the police, and Lustig had to run.",
+   "beats": [
+    {
+     "shot": "clip",
+     "query": "police vintage",
+     "camera": "pan_left",
+     "transition": "slide_up",
+     "sfx": [
+      "whoosh"
+     ],
+     "at_word": 0
+    },
+    {
+     "shot": "clip",
+     "query": "running street",
+     "camera": "pull_out",
+     "transition": "cut",
+     "at_word": 10
+    }
+   ],
+   "highlight": []
+  },
+  {
+   "text": "Years later, he was caught in the United States, for printing fake money.",
+   "say": "Years later, he was caught in the United States, for printing fake money.",
+   "beats": [
+    {
+     "shot": "clip",
+     "query": "new york city",
+     "camera": "pan_right",
+     "transition": "cut",
+     "at_word": 0
+    },
+    {
+     "shot": "clip",
+     "query": "money printing",
+     "camera": "drift",
+     "transition": "cut",
+     "at_word": 8
+    }
+   ],
+   "highlight": []
+  },
+  {
+   "text": "But for a few days in 1925, a scrap dealer truly believed he owned the most famous tower in the world.",
+   "say": "[amused] But for a few days in 1925, a scrap dealer truly believed he owned the most famous tower in the world.",
+   "beats": [
+    {
+     "shot": "clip",
+     "query": "eiffel tower sunset",
+     "camera": "tilt_up",
+     "transition": "zoom",
+     "sfx": [
+      "whoosh"
+     ],
+     "at_word": 0
+    },
+    {
+     "shot": "clip",
+     "query": "eiffel tower",
+     "camera": "push_in",
+     "transition": "cut",
+     "at_word": 11
+    }
+   ],
+   "highlight": [
+    "the most famous tower"
+   ],
+   "look": "excited"
+  },
+  {
+   "text": "Lustig lied, and everyone believed him.",
+   "say": "[serious] Lustig lied, and everyone believed him.",
+   "beats": [
+    {
+     "shot": "clip",
+     "query": "eiffel tower night",
+     "camera": "pan_right",
+     "transition": "cut",
+     "at_word": 0
+    }
+   ],
+   "highlight": []
+  },
+  {
+   "text": "Our last man was told the truth, again and again... and refused to believe it for twenty-nine years.",
+   "say": "Our last man was told the truth, again and again... and refused to believe it for twenty-nine years.",
+   "beats": [
+    {
+     "shot": "clip",
+     "query": "jungle",
+     "camera": "push_in",
+     "transition": "whip_right",
+     "sfx": [
+      "swish"
+     ],
+     "at_word": 0
+    },
+    {
+     "shot": "clip",
+     "query": "jungle dark",
+     "camera": "pan_left",
+     "transition": "cut",
+     "at_word": 11
+    }
+   ],
+   "highlight": [
+    "twenty-nine years."
+   ]
+  },
+  {
+   "text": "In December 1944, a young Japanese officer named Hiroo Onoda was sent to Lubang, a small island in the Philippines.",
+   "say": "[serious] In December 1944, a young Japanese officer named Hiroo Onoda was sent to Lubang, a small island in the Philippines.",
+   "beats": [
+    {
+     "shot": "text",
+     "text": "LUBANG ISLAND 1944",
+     "query": "tropical island",
+     "camera": "drift",
+     "transition": "fade",
+     "sfx": [
+      "shimmer"
+     ],
+     "at_word": 0
+    },
+    {
+     "shot": "clip",
+     "query": "tropical island aerial",
+     "camera": "pull_out",
+     "transition": "cut",
+     "at_word": 8
+    }
+   ],
+   "highlight": []
+  },
+  {
+   "text": "His orders: keep fighting, and never surrender.",
+   "say": "His orders: keep fighting, and never surrender.",
+   "beats": [
+    {
+     "shot": "clip",
+     "query": "soldier jungle",
+     "camera": "pan_right",
+     "transition": "cut",
+     "at_word": 0
+    }
+   ],
+   "highlight": [
+    "never surrender."
+   ]
+  },
+  {
+   "text": "As American forces landed, his commander, Major Yoshimi Taniguchi, made him a promise.",
+   "say": "As American forces landed, his commander, Major Yoshimi Taniguchi, made him a promise.",
+   "beats": [
+    {
+     "shot": "clip",
+     "query": "warships sea",
+     "camera": "drift",
+     "transition": "cut",
+     "at_word": 0
+    },
+    {
+     "shot": "clip",
+     "query": "military officer",
+     "camera": "tilt_up",
+     "transition": "cut",
+     "at_word": 6
+    }
+   ],
+   "highlight": []
+  },
+  {
+   "text": "Whatever happens, we'll come back for you.",
+   "say": "Whatever happens, we'll come back for you.",
+   "beats": [
+    {
+     "shot": "clip",
+     "query": "jungle sunlight",
+     "camera": "push_in",
+     "transition": "cut",
+     "at_word": 0
+    }
+   ],
+   "highlight": [
+    "come back for you."
+   ]
+  },
+  {
+   "text": "A few months later, World War Two ended. But no one came.",
+   "say": "A few months later, World War Two ended. [softly] But no one came.",
+   "beats": [
+    {
+     "shot": "clip",
+     "query": "peace dove",
+     "camera": "pan_right",
+     "transition": "whip_left",
+     "sfx": [
+      "swish"
+     ],
+     "at_word": 0
+    },
+    {
+     "shot": "clip",
+     "query": "empty beach",
+     "camera": "push_in",
+     "transition": "cut",
+     "at_word": 7
+    }
+   ],
+   "highlight": [
+    "no one came."
+   ],
+   "look": "whisper"
+  },
+  {
+   "text": "Leaflets fell from planes saying the war was over. Onoda decided they were fake.",
+   "say": "Leaflets fell from planes saying the war was over. Onoda decided they were fake.",
+   "beats": [
+    {
+     "shot": "clip",
+     "query": "paper falling",
+     "camera": "pan_left",
+     "transition": "cut",
+     "at_word": 0
+    },
+    {
+     "shot": "clip",
+     "query": "jungle",
+     "camera": "pull_out",
+     "transition": "cut",
+     "at_word": 10
+    }
+   ],
+   "highlight": []
+  },
+  {
+   "text": "Newspapers were left for him. Letters from his family. He believed none of it.",
+   "say": "Newspapers were left for him. Letters from his family. He believed none of it.",
+   "beats": [
+    {
+     "shot": "clip",
+     "query": "old letters",
+     "camera": "pan_right",
+     "transition": "slide_up",
+     "sfx": [
+      "whoosh"
+     ],
+     "at_word": 0
+    },
+    {
+     "shot": "clip",
+     "query": "jungle",
+     "camera": "drift",
+     "transition": "cut",
+     "at_word": 9
+    }
+   ],
+   "highlight": [
+    "none of it."
+   ]
+  },
+  {
+   "text": "So he stayed hidden in the jungle with a few other soldiers, still fighting his war.",
+   "say": "[sighs] So he stayed hidden in the jungle with a few other soldiers, still fighting his war.",
+   "beats": [
+    {
+     "shot": "clip",
+     "query": "jungle hiding",
+     "camera": "tilt_up",
+     "transition": "cut",
+     "at_word": 0
+    },
+    {
+     "shot": "clip",
+     "query": "dense jungle",
+     "camera": "push_in",
+     "transition": "cut",
+     "at_word": 10
+    }
+   ],
+   "highlight": [],
+   "look": "sad"
+  },
+  {
+   "text": "And that war was real for the people of Lubang.",
+   "say": "[serious] And that war was real for the people of Lubang.",
+   "beats": [
+    {
+     "shot": "clip",
+     "query": "philippines village",
+     "camera": "pan_right",
+     "transition": "zoom",
+     "sfx": [
+      "whoosh"
+     ],
+     "at_word": 0
+    }
+   ],
+   "highlight": []
+  },
+  {
+   "text": "Over the years, Onoda's group killed local islanders. As many as thirty, by some accounts.",
+   "say": "Over the years, Onoda's group killed local islanders. As many as thirty, by some accounts.",
+   "beats": [
+    {
+     "shot": "clip",
+     "query": "island village",
+     "camera": "push_in",
+     "transition": "cut",
+     "at_word": 0
+    },
+    {
+     "shot": "clip",
+     "query": "candle",
+     "camera": "pan_left",
+     "transition": "cut",
+     "at_word": 8
+    }
+   ],
+   "highlight": []
+  },
+  {
+   "text": "One by one, his companions were gone. By 1972, Onoda was alone.",
+   "say": "One by one, his companions were gone. By 1972, Onoda was alone.",
+   "beats": [
+    {
+     "shot": "clip",
+     "query": "jungle",
+     "camera": "pull_out",
+     "transition": "whip_right",
+     "sfx": [
+      "swish"
+     ],
+     "at_word": 0
+    },
+    {
+     "shot": "clip",
+     "query": "lonely jungle",
+     "camera": "pan_right",
+     "transition": "cut",
+     "at_word": 7
+    }
+   ],
+   "highlight": [
+    "alone."
+   ]
+  },
+  {
+   "text": "Then, in 1974, a young Japanese traveler named Norio Suzuki arrived.",
+   "say": "[curious] Then, in 1974, a young Japanese traveler named Norio Suzuki arrived.",
+   "beats": [
+    {
+     "shot": "clip",
+     "query": "backpacker travel",
+     "camera": "drift",
+     "transition": "cut",
+     "at_word": 0
+    }
+   ],
+   "highlight": []
+  },
+  {
+   "text": "He'd told friends he was searching for three things: Lieutenant Onoda, a panda, and the Abominable Snowman, in that order.",
+   "say": "He'd told friends he was searching for three things: Lieutenant Onoda, a panda, and the Abominable Snowman, in that order.",
+   "beats": [
+    {
+     "shot": "clip",
+     "query": "backpacker map",
+     "camera": "tilt_up",
+     "transition": "cut",
+     "at_word": 0
+    },
+    {
+     "shot": "clip",
+     "query": "panda",
+     "camera": "push_in",
+     "transition": "cut",
+     "at_word": 9
+    },
+    {
+     "shot": "clip",
+     "query": "snowy mountain",
+     "camera": "pan_right",
+     "transition": "cut",
+     "at_word": 14
+    }
+   ],
+   "highlight": []
+  },
+  {
+   "text": "He found the first one in four days.",
+   "say": "[chuckles] He found the first one in four days.",
+   "beats": [
+    {
+     "shot": "clip",
+     "query": "jungle campfire",
+     "camera": "push_in",
+     "transition": "cut",
+     "at_word": 0
+    }
+   ],
+   "highlight": [
+    "in four days."
+   ],
+   "look": "excited"
+  },
+  {
+   "text": "The two became friends. But Onoda still wouldn't come out.",
+   "say": "The two became friends. But Onoda still wouldn't come out.",
+   "beats": [
+    {
+     "shot": "clip",
+     "query": "campfire night",
+     "camera": "pan_left",
+     "transition": "whip_left",
+     "sfx": [
+      "swish"
+     ],
+     "at_word": 0
+    }
+   ],
+   "highlight": []
+  },
+  {
+   "text": "He would only stop if his commanding officer ordered him to.",
+   "say": "He would only stop if his commanding officer ordered him to.",
+   "beats": [
+    {
+     "shot": "clip",
+     "query": "jungle",
+     "camera": "pull_out",
+     "transition": "cut",
+     "at_word": 0
+    }
+   ],
+   "highlight": []
+  },
+  {
+   "text": "So Japan found Major Taniguchi, now an old man working in a bookshop, and flew him to the island.",
+   "say": "[emotional] So Japan found Major Taniguchi, now an old man working in a bookshop, and flew him to the island.",
+   "beats": [
+    {
+     "shot": "clip",
+     "query": "old bookshop",
+     "camera": "pan_right",
+     "transition": "slide_up",
+     "sfx": [
+      "whoosh"
+     ],
+     "at_word": 0
+    },
+    {
+     "shot": "clip",
+     "query": "airplane flying",
+     "camera": "drift",
+     "transition": "cut",
+     "at_word": 12
+    }
+   ],
+   "highlight": [],
+   "look": "sad"
+  },
+  {
+   "text": "On March 9, 1974, Taniguchi stood in front of Onoda and read him his final orders.",
+   "say": "On March 9, 1974, Taniguchi stood in front of Onoda and read him his final orders.",
+   "beats": [
+    {
+     "shot": "clip",
+     "query": "jungle clearing",
+     "camera": "tilt_up",
+     "transition": "cut",
+     "at_word": 0
+    }
+   ],
+   "highlight": []
+  },
+  {
+   "text": "The war was over.",
+   "say": "The war was over.",
+   "beats": [
+    {
+     "shot": "clip",
+     "query": "jungle sunrise",
+     "camera": "push_in",
+     "transition": "zoom",
+     "sfx": [
+      "whoosh"
+     ],
+     "at_word": 0
+    }
+   ],
+   "highlight": [
+    "The war was over."
+   ]
+  },
+  {
+   "text": "Onoda handed over his sword and his rifle. It still worked.",
+   "say": "[softly] Onoda handed over his sword and his rifle. It still worked.",
+   "beats": [
+    {
+     "shot": "clip",
+     "query": "sword",
+     "camera": "pan_right",
+     "transition": "cut",
+     "at_word": 0
+    },
+    {
+     "shot": "clip",
+     "query": "old rifle",
+     "camera": "push_in",
+     "transition": "cut",
+     "at_word": 8
+    }
+   ],
+   "highlight": [],
+   "look": "whisper"
+  },
+  {
+   "text": "He had fought for twenty-nine years, for a war that had ended long before.",
+   "say": "[sad] He had fought for twenty-nine years, for a war that had ended long before.",
+   "beats": [
+    {
+     "shot": "number",
+     "query": "jungle",
+     "camera": "drift",
+     "transition": "zoom",
+     "sfx": [
+      "whoosh",
+      "tick"
+     ],
+     "number": {
+      "from": 0,
+      "to": 29,
+      "suffix": " YEARS",
+      "label": "STILL FIGHTING",
+      "prefix": "",
+      "decimals": 0
+     },
+     "at_word": 0
+    },
+    {
+     "shot": "clip",
+     "query": "jungle mist",
+     "camera": "pan_left",
+     "transition": "cut",
+     "at_word": 6
+    }
+   ],
+   "highlight": [],
+   "look": "sad"
+  },
+  {
+   "text": "And Taniguchi had promised to come back.",
+   "say": "[emotional] And Taniguchi had promised to come back.",
+   "beats": [
+    {
+     "shot": "clip",
+     "query": "sunset jungle",
+     "camera": "pull_out",
+     "transition": "whip_right",
+     "sfx": [
+      "swish"
+     ],
+     "at_word": 0
+    }
+   ],
+   "highlight": [],
+   "look": "sad"
+  },
+  {
+   "text": "Twenty-nine years later... he did.",
+   "say": "Twenty-nine years later... he did.",
+   "beats": [
+    {
+     "shot": "clip",
+     "query": "sunrise sky",
+     "camera": "pan_right",
+     "transition": "cut",
+     "at_word": 0
+    }
+   ],
+   "highlight": [
+    "he did."
+   ]
+  },
+  {
+   "text": "So, which one got you? The emus, the dancers, the syrup wave, the con man, or the soldier?",
+   "say": "[warm] So, which one got you? The emus, the dancers, the syrup wave, the con man, or the soldier?",
+   "beats": [
+    {
+     "shot": "clip",
+     "query": "sunset sky",
+     "camera": "drift",
+     "transition": "cut",
+     "at_word": 0
+    },
+    {
+     "shot": "clip",
+     "query": "emus running",
+     "camera": "tilt_up",
+     "transition": "cut",
+     "at_word": 5
+    },
+    {
+     "shot": "clip",
+     "query": "people dancing",
+     "camera": "push_in",
+     "transition": "cut",
+     "at_word": 7
+    },
+    {
+     "shot": "clip",
+     "query": "brown liquid",
+     "camera": "pan_right",
+     "transition": "cut",
+     "at_word": 9
+    },
+    {
+     "shot": "clip",
+     "query": "eiffel tower",
+     "camera": "push_in",
+     "transition": "cut",
+     "at_word": 13
+    },
+    {
+     "shot": "clip",
+     "query": "jungle",
+     "camera": "pan_left",
+     "transition": "cut",
+     "at_word": 16
+    }
+   ],
+   "highlight": []
+  },
+  {
+   "text": "Tell me in the comments.",
+   "say": "Tell me in the comments.",
+   "beats": [
+    {
+     "shot": "clip",
+     "query": "typing phone",
+     "camera": "pull_out",
+     "transition": "cut",
+     "at_word": 0
+    }
+   ],
+   "highlight": []
+  },
+  {
+   "text": "Next time: a war shorter than a lunch break, a dead pope put on trial,",
+   "say": "[excited] Next time: a war shorter than a lunch break, a dead pope put on trial,",
+   "beats": [
+    {
+     "shot": "clip",
+     "query": "clock",
+     "camera": "pan_right",
+     "transition": "whip_left",
+     "sfx": [
+      "swish"
+     ],
+     "at_word": 0
+    },
+    {
+     "shot": "clip",
+     "query": "old church",
+     "camera": "drift",
+     "transition": "cut",
+     "at_word": 9
+    }
+   ],
+   "highlight": [],
+   "look": "excited"
+  },
+  {
+   "text": "and a man who survived two atomic bombs.",
+   "say": "[whispers] and a man who survived two atomic bombs.",
+   "beats": [
+    {
+     "shot": "clip",
+     "query": "storm clouds",
+     "camera": "tilt_up",
+     "transition": "cut",
+     "at_word": 0
+    }
+   ],
+   "highlight": [],
+   "look": "whisper"
+  },
+  {
+   "text": "Subscribe for more weird facts.",
+   "say": "[chuckles] Subscribe for more weird facts.",
+   "beats": [
+    {
+     "shot": "text",
+     "text": "SUBSCRIBE FOR MORE",
+     "query": "sunset sky",
+     "camera": "drift",
+     "transition": "fade",
+     "sfx": [
+      "shimmer"
+     ],
+     "at_word": 0
+    }
+   ],
+   "highlight": [],
+   "look": "excited",
+   "pause": 2.0
+  }
+ ]
+}

@@ -22,6 +22,8 @@ def safe_area(size: tuple[int, int]) -> tuple[float, float, float, float]:
     """Where text may go on a Short: clear of the edges, the top bar and the
     bottom title/description area of the YouTube Shorts player."""
     w, h = size
+    if w > h:                                   # a normal 16:9 video: only keep off the edges
+        return (w * 0.04, h * 0.05, w * 0.96, h * 0.95)
     return (w * 0.04, h * 0.10, w * 0.96, h * 0.80)
 
 
