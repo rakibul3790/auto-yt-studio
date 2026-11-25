@@ -1,0 +1,22 @@
+{
+ "file": "_tensec_v3-short.mp4",
+ "ok": true,
+ "errors": [],
+ "warnings": [
+  "black picture 11.67-11.83s"
+ ],
+ "info": {
+  "duration": 11.87,
+  "size": "1080x1920",
+  "fps": 30.0,
+  "black": [
+   [
+    11.6667,
+    11.8333
+   ]
+  ],
+  "lufs": -14.3,
+  "true_peak": -1.3,
+  "caption_boxes": 15
+ }
+}
