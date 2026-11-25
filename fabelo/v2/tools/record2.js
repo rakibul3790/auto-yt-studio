@@ -65,7 +65,8 @@ function subTimes(t, hardCuts, T1) {
   return ts.map((x) => Math.min(Math.max(0, x), T1 - 1e-4));
 }
 
-async function recordPart(browser, idx, f0, f1, T0, T1, hardCuts, tmp) {
+async function recordPart(idx, f0, f1, T0, T1, hardCuts, tmp) {
+  const browser = await launch();
   const page = await openPage(browser);
   const out = path.join(tmp, `part_${String(idx).padStart(2, '0')}.mkv`);
   const vf = BLUR > 1
@@ -85,20 +86,25 @@ async function recordPart(browser, idx, f0, f1, T0, T1, hardCuts, tmp) {
   }
   ff.stdin.end();
   await new Promise((r, j) => ff.on('close', (code) => (code ? j(new Error('ffmpeg failed on part ' + idx)) : r())));
-  await page.close();
+  await browser.close();
   return out;
 }
 
+// one browser per worker: a background tab in a shared headless browser may never paint (screenshots hang)
+const launch = () => puppeteer.launch({
+  headless: 'new',
+  protocolTimeout: 600000,
+  executablePath: arg('chrome', process.env.CHROME_PATH || undefined),
+  args: ['--no-sandbox', '--disable-dev-shm-usage', '--font-render-hinting=none', '--force-color-profile=srgb',
+    '--disable-background-timer-throttling', '--disable-renderer-backgrounding', '--disable-backgrounding-occluded-windows']
+});
+
 const progress = [];
 (async () => {
-  const browser = await puppeteer.launch({
-    headless: 'new',
-    executablePath: arg('chrome', process.env.CHROME_PATH || undefined),
-    args: ['--no-sandbox', '--disable-dev-shm-usage', '--font-render-hinting=none', '--force-color-profile=srgb']
-  });
+  const browser = await launch();
   const probe = await openPage(browser);
   const info = await probe.evaluate(() => ({ duration: window.__duration, cues: window.__CUES || null }));
-  await probe.close();
+  await browser.close();
   if (!info.duration) throw new Error('page did not call film.ready() / exposeForRecording()');
   if (arg('cues')) { fs.writeFileSync(arg('cues'), JSON.stringify(info.cues || {}, null, 1)); console.log('cues →', arg('cues')); }
   const hardCuts = ((info.cues && info.cues.cues) || []).filter((c) => c.kind === 'transition' && (c.type === 'cut' || c.type === 'smash')).map((c) => c.at);
@@ -117,11 +123,10 @@ const progress = [];
   const jobs = [];
   for (let k = 0; k < parts; k++) {
     const f0 = Math.round((frames * k) / parts), f1 = Math.round((frames * (k + 1)) / parts);
-    jobs.push(recordPart(browser, k, f0, f1, T0, T1, hardCuts, tmp));
+    jobs.push(recordPart(k, f0, f1, T0, T1, hardCuts, tmp));
   }
   const files = await Promise.all(jobs);
   clearInterval(timer);
-  await browser.close();
 
   const list = path.join(tmp, 'list.txt');
   fs.writeFileSync(list, files.map((f) => `file '${f}'`).join('\n'));
