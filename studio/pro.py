@@ -86,7 +86,7 @@ def render(data: dict, cfg: dict, work: Path, out_file: Path, size: tuple[int, i
 
     # ---- voice, scene by scene, with the time of every word
     whole_cfg = data.get("eleven_whole", vcfg.get("eleven_whole", False))
-    if str(cfg["channel"].get("voice", "")).startswith("elevenlabs:"):
+    if str(cfg["channel"].get("voice", "")).startswith("elevenlabs:") and not data.get("voice_cache"):
         # a paid voice that fails must never cost the day's video: fall back to the free voice
         reason = ""
         if not os.environ.get("ELEVENLABS_API_KEY", "").strip():
@@ -114,7 +114,8 @@ def render(data: dict, cfg: dict, work: Path, out_file: Path, size: tuple[int, i
     scene_t: list[tuple[float, float]] = []
     parts: list[Path] = []
     t0 = 0.0
-    edge = str(cfg["channel"].get("voice", "")).split(":")[0] not in ("kokoro", "chatterbox")
+    edge = str(cfg["channel"].get("voice", "")).split(":")[0] not in ("kokoro", "chatterbox") \
+        and not data.get("voice_cache")      # a ready-made read keeps its own breaths and laughs
     base_rate = _pct(data.get("voice_rate", cfg["channel"].get("voice_rate", "+0%")))
     base_pitch = str(data.get("voice_pitch", cfg["channel"].get("voice_pitch", "+0Hz")))
     eleven = str(cfg["channel"].get("voice", "")).startswith("elevenlabs:") and bool(whole_cfg)
@@ -208,8 +209,10 @@ def render(data: dict, cfg: dict, work: Path, out_file: Path, size: tuple[int, i
     sfx = _write_sfx(events, total, work / f"pro_sfx_{tag}.wav", voice,
                      float(vcfg.get("pro_sfx_volume", 0.45)))
     track = _pick_music(data)
+    gains = data.get("music_gains") or []
+    curve = [(a, b, float(g)) for (a, b), g in zip(scene_t, gains)]
     mix = _mix_audio(voice, sfx, track, total, float(data.get("music_volume", vcfg.get("music_volume", 0.06))),
-                     work, tag)
+                     work, tag, curve)
 
     # ---- final: burn captions, add the mix
     vf = (f"ass={ass.name}:fontsdir={FONT_DIR.resolve()},"
@@ -493,6 +496,13 @@ def _camera(move: str, frames: int, fps: int, shake: bool) -> tuple[str, str, st
 
 
 GRADE = "eq=contrast=1.06:saturation=1.12:gamma=0.98,unsharp=5:5:0.35:5:5:0,vignette=angle=PI/5"
+# a beat may set the feeling of the picture ("look"), so the screen follows the voice
+LOOKS = {
+    "excited": ",eq=saturation=1.25:contrast=1.06:brightness=0.02",
+    "sad": ",eq=saturation=0.45:brightness=-0.05:contrast=0.96,colorbalance=bs=0.10:bm=0.06,vignette=angle=PI/3.5",
+    "angry": ",eq=saturation=1.3:contrast=1.14,colorbalance=rs=0.16:rm=0.10:bs=-0.08,vignette=angle=PI/4",
+    "whisper": ",eq=brightness=-0.10:saturation=0.85,vignette=angle=PI/3",
+}
 
 
 def _fx(tr_in: str, tr_out: str, length: float) -> list[str]:
@@ -525,7 +535,7 @@ def _render_shot(sh: dict, n: int, data: dict, size: tuple[int, int], fps: int, 
     src = footage(beat, n, data["title"], size, work)
     sh["src"] = src
     camera = beat.get("camera") or ("drift" if kind in ("number", "compare", "text") else "push_in")
-    shake = "impact" in (beat.get("sfx") or []) and camera == "punch"
+    shake = bool(beat.get("shake")) or ("impact" in (beat.get("sfx") or []) and camera == "punch")
     z, x, y = _camera(camera, frames, fps, shake)
     up = 1.5 if camera in ("punch", "push_in", "pull_out", "drift") else 1.25
     sw, shh = int(w * up) // 2 * 2, int(h * up) // 2 * 2
@@ -542,7 +552,7 @@ def _render_shot(sh: dict, n: int, data: dict, size: tuple[int, int], fps: int, 
         inputs += ["-loop", "1", "-framerate", str(fps), "-i", str(src["src"])]
         chain = "[0:v]"
     chain += (f"scale={sw}:{shh}:force_original_aspect_ratio=increase,crop={sw}:{shh},setsar=1,"
-              f"zoompan=z='{z}':x='{x}':y='{y}':d=1:s={w}x{h}:fps={fps},{GRADE}")
+              f"zoompan=z='{z}':x='{x}':y='{y}':d=1:s={w}x{h}:fps={fps},{GRADE}{LOOKS.get(beat.get('look'), '')}")
     if kind in ("number", "compare", "text"):
         chain += ",gblur=sigma=16,eq=brightness=-0.08:saturation=0.8,colorlevels=romin=0.09:gomin=0.09:bomin=0.1:romax=0.8:gomax=0.8:bomax=0.82"
     fx = _fx(sh["tr"], tr_out, length)
@@ -1037,7 +1047,8 @@ def _mean_db(path: Path, seconds: float = 90) -> float | None:
     return float(m.group(1)) if m else None
 
 
-def _mix_audio(voice: Path, sfx: Path, track: Path | None, total: float, vol: float, work: Path, tag: str) -> Path:
+def _mix_audio(voice: Path, sfx: Path, track: Path | None, total: float, vol: float, work: Path, tag: str,
+               curve: list | None = None) -> Path:
     """Voice + effects + ducked music, then two-pass loudness normalisation to -14 LUFS."""
     from .motion import _speech_rms
     raw = work / f"pro_mix_raw_{tag}.wav"
@@ -1051,8 +1062,16 @@ def _mix_audio(voice: Path, sfx: Path, track: Path | None, total: float, vol: fl
             gain = min(10 ** ((target - mdb) / 20), 1.0)
         off = random.Random(track.name + str(total)).uniform(0, 12)
         inputs += ["-stream_loop", "-1", "-ss", f"{off:.2f}", "-i", str(track)]
+        # the music follows the mood of each part: softer when sad, louder when it gets loud.
+        # Each change glides over 0.6 s so it is never a jump.
+        expr = "1"
+        for a, b, g in curve or []:
+            if abs(g - 1) > 1e-3:
+                ramp = f"min(max((t-{a - 0.3:.3f})/0.6,0),1)*min(max(({b + 0.3:.3f}-t)/0.6,0),1)"
+                expr += f"*(1+{g - 1:.3f}*{ramp})"
+        mood = f"volume='{expr}':eval=frame," if expr != "1" else ""
         fc = (f"[0:a]aformat=sample_rates={SR}:channel_layouts=mono,asplit=2[vo][key];"
-              f"[2:a]aformat=sample_rates={SR}:channel_layouts=stereo,atrim=0:{total:.3f},volume={gain:.4f},"
+              f"[2:a]aformat=sample_rates={SR}:channel_layouts=stereo,atrim=0:{total:.3f},asetpts=PTS-STARTPTS,{mood}volume={gain:.4f},"
               f"afade=t=in:st=0:d=0.4,afade=t=out:st={max(total - 1.8, 0):.3f}:d=1.8[m0];"
               f"[key]aformat=channel_layouts=stereo[k2];"
               f"[m0][k2]sidechaincompress=threshold=0.02:ratio=7:attack=20:release=320:makeup=1,"

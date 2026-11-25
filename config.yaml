@@ -16,7 +16,7 @@ channel:
   #   British:          en-GB-RyanNeural (ছেলে), en-GB-SoniaNeural (মেয়ে)
   #   বাংলা চাইলে:      bn-BD-NabanitaNeural, bn-BD-PradeepNeural (language: "bn" করো)
   #   ElevenLabs (পেইড, ক্রেডিট খরচ হয়):  "elevenlabs:<Voice ID>"
-  voice: "elevenlabs:eVbXsk380msCd98VvvmQ"   # রাকিবের বাছাই করা ElevenLabs ভয়েস
+  voice: "elevenlabs:XA3P1cj7XJexe6Zq0ATX"   # রাকিবের বাছাই করা ElevenLabs ভয়েস
   # ElevenLabs কাজ না করলে (key নেই, ক্রেডিট শেষ, সার্ভার সমস্যা) এই ফ্রি ভয়েসে ভিডিও হবে
   voice_fallback: "en-US-AndrewNeural"
   voice_rate: "+4%"      # কথার গতি, যেমন "+10%" বা "-5%"
