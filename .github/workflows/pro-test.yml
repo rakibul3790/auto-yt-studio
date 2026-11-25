@@ -91,7 +91,11 @@ jobs:
           git config user.name  "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git add -A && git commit -qm "Editing source files from ${GITHUB_SHA::7}"
-          git push -qf "https://x-access-token:${GH_TOKEN}@github.com/${GITHUB_REPOSITORY}.git" pro-sources
+          for i in 1 2 3 4 5; do
+            git push -qf "https://x-access-token:${GH_TOKEN}@github.com/${GITHUB_REPOSITORY}.git" pro-sources && break
+            [ $i -eq 5 ] && exit 1
+            echo "Push failed, trying again"; sleep $((i * 15))
+          done
           ls -la /tmp/src
 
       - name: Save the test videos on this branch
