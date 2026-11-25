@@ -371,28 +371,42 @@
    ]
   },
   {
-   "on_screen": "That deep",
-   "visual": "mount everest aerial",
-   "subject": "mountain",
-   "text": "It's so deep that",
+   "on_screen": "Follow for more",
+   "visual": "deep dark ocean underwater",
+   "subject": "ocean",
+   "text": "The deepest place on our planet, and almost nobody has ever seen it. Follow for more weird facts.",
    "highlight": [
-    "so deep"
+    "almost nobody",
+    "Follow"
    ],
-   "rate": "+0%",
-   "pause": 0.0,
+   "rate": "-3%",
+   "pause": 1.6,
    "beats": [
     {
      "at_word": 0,
      "shot": "clip",
-     "query": "mount everest aerial snow",
-     "subject": "mountain",
-     "camera": "pull_out",
-     "transition": "flash",
+     "query": "deep dark ocean underwater",
+     "subject": "ocean",
+     "camera": "tilt_down",
+     "transition": "fade",
      "sfx": [
       "riser"
+     ]
+    },
+    {
+     "at_word": 13,
+     "shot": "text",
+     "text": "FOLLOW FOR MORE",
+     "query": "deep ocean dark blue water",
+     "subject": "ocean",
+     "camera": "pull_out",
+     "transition": "zoom",
+     "sfx": [
+      "whoosh"
      ]
     }
    ]
   }
- ]
+ ],
+ "voice_cache": "scripts/pro-tests/voice-cache/mariana-pro"
 }
