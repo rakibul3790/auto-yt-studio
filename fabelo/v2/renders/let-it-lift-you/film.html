@@ -882,6 +882,10 @@
   const clamp = (v, a = 0, b = 1) => Math.max(a, Math.min(b, v));
   const lerp = (a, b, k) => a + (b - a) * k;
   const f = (n) => Math.round(n * 100) / 100;
+  // Precise number for anything that moves the whole picture (camera, zoom, root fade).
+  // f()'s 0.01 steps are fine for drawing, but on a scale they snap a slow push-in into
+  // visible 1 % jumps (about 10 px at the frame edge on a 1080p frame), which reads as a shaky zoom.
+  const fp = (n) => { const r = Math.round(n * 1e5) / 1e5; return Object.is(r, -0) ? 0 : r; };
   const TAU = Math.PI * 2;
   // deterministic smooth noise in [-1, 1]
   const hash = (n) => { const s = Math.sin(n * 127.1 + 311.7) * 43758.5453; return (s - Math.floor(s)) * 2 - 1; };
@@ -890,6 +894,13 @@
     return lerp(hash(i + seed * 57.3), hash(i + 1 + seed * 57.3), u);
   };
   const fbm = (x, seed = 0) => vnoise(x, seed) * 0.62 + vnoise(x * 2.07, seed + 3) * 0.28 + vnoise(x * 4.11, seed + 7) * 0.1;
+  // camera drift noise: quintic fade, so speed AND acceleration are continuous (no micro-jolts),
+  // and only the two low octaves, so handheld reads as a slow breath, never as a tremble
+  const qnoise = (x, seed = 0) => {
+    const i = Math.floor(x), fr = x - i, u = fr * fr * fr * (fr * (fr * 6 - 15) + 10);
+    return lerp(hash(i + seed * 57.3), hash(i + 1 + seed * 57.3), u);
+  };
+  const drift = (x, seed = 0) => qnoise(x, seed) * 0.72 + qnoise(x * 1.93, seed + 3) * 0.28;
 
   /* ---------------------------------------------------------- pro easings */
   // Added to Scribble.EASE so every v1 track (moveTo, scaleTo, rotateTo) can use them too.
@@ -923,13 +934,26 @@
     constructor(v) { this.v0 = v; this.segs = []; }
     to(t0, dur, value, e = 'inOut') { this.segs.push({ t0, t1: t0 + Math.max(0, dur), to: value, e: ease(e) }); this.segs.sort((a, b) => a.t0 - b.t0); return this; }
     at(t) {
+      // The latest move that has started wins, and it starts from the value the track has at
+      // that moment. (A move added on top of one still running used to be ignored until the
+      // first ended and then jump, which showed up as a snap in an overlapping push / frame.)
       let v = this.v0;
-      for (const s of this.segs) {
+      for (let i = 0; i < this.segs.length; i++) {
+        const s = this.segs[i];
         if (t < s.t0) break;
-        if (t >= s.t1) { v = s.to; continue; }
-        return lerp(v, s.to, s.e((t - s.t0) / (s.t1 - s.t0)));
+        const nxt = this.segs[i + 1];
+        const from = this._from(i);
+        if (nxt && nxt.t0 <= t) { v = from; continue; }
+        if (t >= s.t1) return s.to;
+        return lerp(from, s.to, s.e((t - s.t0) / (s.t1 - s.t0 || 1)));
       }
       return v;
+    }
+    _from(i) {
+      if (!this._cache || this._cache.n !== this.segs.length || this._cache.v0 !== this.v0) this._cache = { n: this.segs.length, v0: this.v0, v: [] };
+      const c = this._cache.v;
+      if (c[i] === undefined) c[i] = i === 0 ? this.v0 : this.at(this.segs[i].t0 - 1e-9);
+      return c[i];
     }
   }
 
@@ -1026,6 +1050,15 @@
   }
 
   /* --------------------------------------------------------------- camera */
+  // Camera moves use easings whose acceleration is continuous too (not only the speed). A plain
+  // cubic / quint in-out flips its acceleration in one frame at the midpoint, which shows as a small
+  // lurch on a big zoom. Named in-out easings are swapped for smooth ones of similar steepness.
+  const camEase = (e) => {
+    if (typeof e !== 'string') return e;
+    if (e === 'inOut' || e === 'cubicInOut' || e === 'quadInOut') return E.smooth;
+    if (e === 'quintInOut' || e === 'expoInOut') return (k) => E.smooth(E.smooth(k));
+    return e;
+  };
   class Camera {
     constructor(shot) {
       this.shot = shot;
@@ -1039,6 +1072,7 @@
     set(box) { this.cx.v0 = box[0]; this.cy.v0 = box[1]; this.lw.v0 = Math.log(box[2]); this.lh.v0 = Math.log(box[3] || box[2]); return this; }
     /** Move / zoom the framing to `box` between at and at+dur. */
     frame(at, dur, box, e = 'inOut') {
+      e = camEase(e);
       this.cx.to(at, dur, box[0], e); this.cy.to(at, dur, box[1], e);
       this.lw.to(at, dur, Math.log(box[2]), e); this.lh.to(at, dur, Math.log(box[3] || box[2]), e);
       return this;
@@ -1052,7 +1086,7 @@
     /** Follow a character's x (with lag) between t0 and t1. */
     follow(t0, t1, ch, o = {}) { this.follows.push(Object.assign({ t0, t1, ch, dx: 0, lag: 0.3, ramp: 0.5 }, o)); return this; }
     /** Dutch angle (degrees). */
-    tilt(at, dur, deg, e = 'inOut') { this.rot.to(at, dur, deg, e); return this; }
+    tilt(at, dur, deg, e = 'inOut') { this.rot.to(at, dur, deg, camEase(e)); return this; }
     /** Camera shake (impacts, smash cuts). amp in world units. */
     shake(at, dur = 0.4, amp = 14) { this.shakes.push({ at, dur, amp }); return this; }
     /** Subtle handheld drift for the whole shot (0 = locked tripod, 1 = gentle, 2 = nervous). */
@@ -1071,8 +1105,10 @@
       let rot = this.rot.at(t);
       const sd = this.shot.seed;
       if (this.hand) {
-        const a = this.hand;
-        cx += fbm(t * 0.35, sd) * 6 * a / z; cy += fbm(t * 0.3, sd + 11) * 4 * a / z; rot += fbm(t * 0.25, sd + 23) * 0.25 * a;
+        // calmer while the framing zooms, so a push-in stays a clean glide instead of a wobble
+        const zr = Math.abs(this.lw.at(t + 0.05) - this.lw.at(t - 0.05)) / 0.1;
+        const a = this.hand / (1 + zr * 25);
+        cx += drift(t * 0.35, sd) * 6 * a / z; cy += drift(t * 0.3, sd + 11) * 4 * a / z; rot += drift(t * 0.25, sd + 23) * 0.25 * a;
       }
       for (const s of this.shakes) {
         const k = (t - s.at) / s.dur;
@@ -1157,6 +1193,8 @@
       if (container && typeof document !== 'undefined') {
         this.stage = S.createScene(container, { duration: this.duration, groundLine: false, fadeIn: this.fadeIn, fadeOut: this.fadeOut, loop: true });
         this.stage.render = (t) => this.render(t);
+        // scale text and lines as pure geometry: hinted glyphs snap to whole pixels and wobble on a zoom
+        if (this.stage.svg) { this.stage.svg.setAttribute('text-rendering', 'geometricPrecision'); this.stage.svg.setAttribute('shape-rendering', 'geometricPrecision'); }
         this.stage.fit();
       }
     }
@@ -1220,7 +1258,7 @@
       const c = sh.cam.at(t, v);
       const tr = (d) => {
         const zd = 1 + (c.z - 1) * d;
-        return { zd, s: `rotate(${f(c.rot)}) scale(${f(zd)}) translate(${f(-c.cx * d)} ${f(-c.cy * d)})`, view: { x: c.cx * d - v.w / (2 * zd), y: c.cy * d - v.h / (2 * zd), w: v.w / zd, h: v.h / zd } };
+        return { zd, s: `rotate(${fp(c.rot)}) scale(${fp(zd)}) translate(${fp(-c.cx * d)} ${fp(-c.cy * d)})`, view: { x: c.cx * d - v.w / (2 * zd), y: c.cy * d - v.h / (2 * zd), w: v.w / zd, h: v.h / zd } };
       };
       let defs = '', out = '';
       const layerSVG = (L, i) => {
@@ -1228,7 +1266,7 @@
         let body = L.fn(t, T.view, sh);
         if (!body) return '';
         let attr = '';
-        if (L.blur > 0) { const id = `${uid}b${i}`; defs += `<filter id="${id}" x="-20%" y="-20%" width="140%" height="140%"><feGaussianBlur stdDeviation="${f(L.blur / T.zd)}"/></filter>`; attr += ` filter="url(#${id})"`; }
+        if (L.blur > 0) { const id = `${uid}b${i}`; defs += `<filter id="${id}" x="-20%" y="-20%" width="140%" height="140%"><feGaussianBlur stdDeviation="${fp(L.blur / T.zd)}"/></filter>`; attr += ` filter="url(#${id})"`; }
         if (L.op < 1) attr += ` opacity="${f(L.op)}"`;
         return `<g transform="${T.s}"${attr}>${body}</g>`;
       };
@@ -1282,7 +1320,7 @@
           const dx = (first ? -1 : 1) * cu.dir * k * v.w * 0.62;
           const blur = 3 + 55 * k;
           return `<defs><filter id="whipF" x="-50%" y="-10%" width="200%" height="120%"><feGaussianBlur stdDeviation="${f(blur)} 0"/></filter></defs>` +
-            `<g transform="translate(${f(dx)} 0)" filter="url(#whipF)">${first ? out() : inn()}</g>`;
+            `<g transform="translate(${fp(dx)} 0)" filter="url(#whipF)">${first ? out() : inn()}</g>`;
         }
         case 'iris': {
           const first = p < 0.5;
@@ -1335,7 +1373,7 @@
           const kz = E.inOut(p);
           const zA = 1 + 0.35 * kz, zB = 1.35 - 0.35 * kz;
           const mix = E.sineInOut(clamp((p - 0.3) / 0.4));
-          const g = (pt, z) => `translate(${f(pt[0])} ${f(pt[1])}) scale(${f(z)}) translate(${f(-pt[0])} ${f(-pt[1])})`;
+          const g = (pt, z) => `translate(${fp(pt[0])} ${fp(pt[1])}) scale(${fp(z)}) translate(${fp(-pt[0])} ${fp(-pt[1])})`;
           return `<g transform="${g(sA, zA)}">${out()}</g><g transform="${g(sB, zB)}" opacity="${f(mix)}">${inn()}</g>`;
         }
         default: return t < cu.at ? out() : inn();
@@ -1372,7 +1410,7 @@
         x += widths[i] + space;
       });
       const sc = 0.86 + 0.14 * fin;
-      return `<g data-qc="cap" transform="translate(0 ${f(cfg.y)}) scale(${f(sc)})" opacity="${f(Math.min(1, fin * 1.4) * fout)}">${s}</g>`;
+      return `<g data-qc="cap" transform="translate(0 ${f(cfg.y)}) scale(${fp(sc)})" opacity="${f(Math.min(1, fin * 1.4) * fout)}">${s}</g>`;
     }
 
     /** Full frame contents (inside the stage root) at time t. */
@@ -1400,8 +1438,8 @@
       const fi = this.fadeIn > 0 ? E.quintOut(clamp(t / this.fadeIn)) : 1;
       const fo = this.fadeOut > 0 ? E.sineInOut(clamp((D - t) / this.fadeOut)) : 1;
       const op = Math.min(fi, fo);
-      st.root.setAttribute('opacity', f(op));
-      st.root.setAttribute('transform', `scale(${f(0.92 + 0.08 * op)})`);
+      st.root.setAttribute('opacity', fp(op));
+      st.root.setAttribute('transform', `scale(${fp(0.92 + 0.08 * op)})`);
       st.root.innerHTML = `<g>${this.frame(t)}</g>`;
     }
 
@@ -1414,7 +1452,7 @@
       return `<svg xmlns="http://www.w3.org/2000/svg" width="${W}" height="${H}" viewBox="${f(-vw / 2)} ${f(-vh / 2)} ${f(vw)} ${f(vh)}">` +
         `<style>.sb-draw [pathLength]{stroke-dasharray:1 1;stroke-dashoffset:var(--o)}.sb-draw .f{fill-opacity:var(--fo)}</style>` +
         `<rect x="${f(-vw / 2)}" y="${f(-vh / 2)}" width="${f(vw)}" height="${f(vh)}" fill="${C.paper}"/>` +
-        `<g opacity="${f(op)}" transform="scale(${f(0.92 + 0.08 * op)})">${this.frame(t)}</g></svg>`;
+        `<g opacity="${fp(op)}" transform="scale(${fp(0.92 + 0.08 * op)})">${this.frame(t)}</g></svg>`;
     }
 
     /** Make the page recordable (record.js / record2.js) and play or freeze (?t=). */
@@ -1557,7 +1595,7 @@
 })(typeof window !== 'undefined' ? window : globalThis);
 
 </script>
-<script>window.__TIMING = {"lines":[{"i":0,"speaker":"narrator","start":1.4,"dur":2.178,"end":3.578,"text":"Every spring, Grandpa built a kite.","speed":0.9,"file":"line_00.wav","words":[["Every",1.4,1.904],["spring,",1.904,2.28],["Grandpa",2.28,2.618],["built",2.618,2.826],["a",2.826,2.986],["kite.",2.986,3.49]]},{"i":1,"speaker":"narrator","start":7.9,"dur":2.604,"end":10.504,"text":"And every spring, Scribble couldn't make it fly.","speed":0.9,"file":"line_01.wav","words":[["And",7.9,8.084],["every",8.084,8.589],["spring,",8.589,8.955],["Scribble",8.955,9.316],["couldn't",9.316,9.559],["make",9.559,9.904],["it",9.904,10.076],["fly.",10.076,10.42]]},{"i":2,"speaker":"grandpa","start":13.6,"dur":2.386,"end":15.986,"text":"You're pulling against the wind, little one.","speed":0.86,"file":"line_02.wav","words":[["You're",13.61,13.949],["pulling",13.949,14.299],["against",14.299,14.565],["the",14.565,14.819],["wind,",14.819,15.107],["little",15.107,15.446],["one.",15.446,15.9]]},{"i":3,"speaker":"grandpa","start":18.9,"dur":2.827,"end":21.727,"text":"Don't fight it. Run with it... and let it lift you.","speed":0.86,"file":"line_03.wav","words":[["Don't",18.94,19.158],["fight",19.158,19.376],["it.",19.376,19.725],["Run",19.725,19.918],["with",19.918,20.155],["it...",20.155,20.43],["and",20.43,20.69],["let",20.69,20.883],["it",20.883,21.063],["lift",21.063,21.235],["you.",21.235,21.63]]},{"i":4,"speaker":"narrator","start":30.6,"dur":2.26,"end":32.861,"text":"That spring, the kite touched the clouds.","speed":0.9,"file":"line_04.wav","words":[["That",30.6,30.812],["spring,",30.812,31.175],["the",31.175,31.39],["kite",31.39,31.748],["touched",31.748,32.159],["the",32.159,32.359],["clouds.",32.359,32.77]]},{"i":5,"speaker":"narrator","start":39.2,"dur":1.471,"end":40.671,"text":"Then the springs got shorter.","speed":0.9,"file":"line_05.wav","words":[["Then",39.2,39.404],["the",39.404,39.565],["springs",39.565,39.836],["got",39.836,40.028],["shorter.",40.028,40.59]]},{"i":6,"speaker":"narrator","start":44.4,"dur":2.376,"end":46.776,"text":"Scribble grew up. The city got loud.","speed":0.9,"file":"line_06.wav","words":[["Scribble",44.41,44.857],["grew",44.857,45.081],["up.",45.081,45.45],["The",45.45,45.67],["city",45.67,46.063],["got",46.063,46.273],["loud.",46.273,46.68]]},{"i":7,"speaker":"phone","start":54.0,"dur":3.15,"end":57.15,"text":"Wind's good this Sunday. Kite's ready... if you are.","speed":0.86,"file":"line_07.wav","words":[["Wind's",54.03,54.257],["good",54.257,54.459],["this",54.459,54.661],["Sunday.",54.661,55.206],["Kite's",55.206,55.586],["ready...",55.586,56.225],["if",56.225,56.322],["you",56.322,56.46],["are.",56.46,57.02]]},{"i":8,"speaker":"narrator","start":61.6,"dur":2.746,"end":64.346,"text":"He always meant to go. Next Sunday, he thought.","speed":0.9,"file":"line_08.wav","words":[["He",61.62,61.801],["always",61.801,62.189],["meant",62.189,62.408],["to",62.408,62.589],["go.",62.589,62.895],["Next",62.895,63.146],["Sunday,",63.146,63.656],["he",63.656,63.87],["thought.",63.87,64.25]]},{"i":9,"speaker":"narrator","start":69.2,"dur":2.709,"end":71.909,"text":"And then, one spring, there were no more Sundays.","speed":0.9,"file":"line_09.wav","words":[["And",69.21,69.376],["then,",69.376,69.656],["one",69.656,69.956],["spring,",69.956,70.258],["there",70.258,70.49],["were",70.49,70.888],["no",70.888,71.044],["more",71.044,71.354],["Sundays.",71.354,71.84]]},{"i":10,"speaker":"narrator","start":81.0,"dur":4.645,"end":85.645,"text":"He found the old kite in the attic. Torn. Tired. A lot like him.","speed":0.9,"file":"line_10.wav","words":[["He",81.02,81.222],["found",81.222,81.466],["the",81.466,81.682],["old",81.682,81.965],["kite",81.965,82.301],["in",82.301,82.57],["the",82.57,82.719],["attic.",82.719,83.325],["Torn.",83.325,83.73],["Tired.",83.73,84.348],["A",84.348,84.54],["lot",84.54,84.752],["like",84.752,85.156],["him.",85.156,85.56]]},{"i":11,"speaker":"memory","start":94.2,"dur":3.749,"end":97.949,"text":"For the day the wind gets strong: don't fight it. Let it lift you.","speed":0.84,"file":"line_11.wav","words":[["For",94.25,94.461],["the",94.461,94.672],["day",94.672,94.882],["the",94.882,95.093],["wind",95.093,95.318],["gets",95.318,95.542],["strong:",95.542,95.926],["don't",95.926,96.12],["fight",96.12,96.402],["it.",96.402,96.74],["Let",96.74,96.994],["it",96.994,97.191],["lift",97.191,97.45],["you.",97.45,97.81]]},{"i":12,"speaker":"narrator","start":107.2,"dur":2.369,"end":109.569,"text":"So he fixed it. One patch at a time.","speed":0.9,"file":"line_12.wav","words":[["So",107.21,107.372],["he",107.372,107.534],["fixed",107.534,107.87],["it.",107.87,108.065],["One",108.065,108.496],["patch",108.496,108.692],["at",108.692,108.854],["a",108.854,109.005],["time.",109.005,109.48]]},{"i":13,"speaker":"narrator","start":114.2,"dur":1.567,"end":115.767,"text":"The wind was strong that morning.","speed":0.9,"file":"line_13.wav","words":[["The",114.2,114.38],["wind",114.38,114.572],["was",114.572,114.753],["strong",114.753,114.968],["that",114.968,115.16],["morning.",115.16,115.69]]},{"i":14,"speaker":"narrator","start":136.6,"dur":2.326,"end":138.926,"text":"The people who love us never really leave.","speed":0.9,"file":"line_14.wav","words":[["The",136.61,136.773],["people",136.773,137.099],["who",137.099,137.262],["love",137.262,137.568],["us",137.568,137.69],["never",137.69,138.036],["really",138.036,138.362],["leave.",138.362,138.82]]},{"i":15,"speaker":"narrator","start":140.4,"dur":1.522,"end":141.922,"text":"They stay... in the wind.","speed":0.9,"file":"line_15.wav","words":[["They",140.41,140.624],["stay...",140.624,141.04],["in",141.04,141.14],["the",141.14,141.43],["wind.",141.43,141.82]]}],"warnings":[]};</script>
+<script>window.__TIMING = {"lines":[{"i":0,"speaker":"narrator","start":1.4,"dur":2.19,"end":3.59,"text":"Every spring, Grandpa built a kite.","speed":0.9,"file":"line_00.wav","words":[["Every",1.42,1.922],["spring,",1.922,2.295],["Grandpa",2.295,2.633],["built",2.633,2.839],["a",2.839,2.998],["kite.",2.998,3.5]]},{"i":1,"speaker":"narrator","start":7.9,"dur":2.63,"end":10.53,"text":"And every spring, Scribble couldn't make it fly.","speed":0.9,"file":"line_01.wav","words":[["And",7.9,8.085],["every",8.085,8.485],["spring,",8.485,8.965],["Scribble",8.965,9.327],["couldn't",9.327,9.572],["make",9.572,9.919],["it",9.919,10.093],["fly.",10.093,10.44]]},{"i":2,"speaker":"grandpa","start":13.6,"dur":2.386,"end":15.986,"text":"You're pulling against the wind, little one.","speed":0.86,"file":"line_02.wav","words":[["You're",13.61,13.949],["pulling",13.949,14.299],["against",14.299,14.565],["the",14.565,14.819],["wind,",14.819,15.107],["little",15.107,15.446],["one.",15.446,15.9]]},{"i":3,"speaker":"grandpa","start":18.9,"dur":2.88,"end":21.78,"text":"Don't fight it. Run with it... and let it lift you.","speed":0.86,"file":"line_03.wav","words":[["Don't",18.94,19.162],["fight",19.162,19.384],["it.",19.384,19.739],["Run",19.739,19.936],["with",19.936,20.18],["it...",20.18,20.485],["and",20.485,20.722],["let",20.722,20.919],["it",20.919,21.103],["lift",21.103,21.285],["you.",21.285,21.68]]},{"i":4,"speaker":"narrator","start":30.6,"dur":2.238,"end":32.838,"text":"That spring, the kite touched the clouds.","speed":0.9,"file":"line_04.wav","words":[["That",30.61,30.819],["spring,",30.819,31.177],["the",31.177,31.39],["kite",31.39,31.742],["touched",31.742,32.148],["the",32.148,32.344],["clouds.",32.344,32.75]]},{"i":5,"speaker":"narrator","start":39.2,"dur":1.502,"end":40.703,"text":"Then the springs got shorter.","speed":0.9,"file":"line_05.wav","words":[["Then",39.21,39.417],["the",39.417,39.611],["springs",39.611,39.855],["got",39.855,40.05],["shorter.",40.05,40.62]]},{"i":6,"speaker":"narrator","start":44.4,"dur":2.37,"end":46.77,"text":"Scribble grew up. The city got loud.","speed":0.9,"file":"line_06.wav","words":[["Scribble",44.41,44.857],["grew",44.857,45.081],["up.",45.081,45.45],["The",45.45,45.67],["city",45.67,46.063],["got",46.063,46.273],["loud.",46.273,46.68]]},{"i":7,"speaker":"phone","start":54.0,"dur":3.139,"end":57.139,"text":"Wind's good this Sunday. Kite's ready... if you are.","speed":0.86,"file":"line_07.wav","words":[["Wind's",54.03,54.257],["good",54.257,54.459],["this",54.459,54.661],["Sunday.",54.661,55.206],["Kite's",55.206,55.586],["ready...",55.586,56.22],["if",56.22,56.322],["you",56.322,56.455],["are.",56.455,57.02]]},{"i":8,"speaker":"narrator","start":61.6,"dur":2.746,"end":64.346,"text":"He always meant to go. Next Sunday, he thought.","speed":0.9,"file":"line_08.wav","words":[["He",61.62,61.801],["always",61.801,62.189],["meant",62.189,62.408],["to",62.408,62.589],["go.",62.589,62.895],["Next",62.895,63.146],["Sunday,",63.146,63.656],["he",63.656,63.87],["thought.",63.87,64.25]]},{"i":9,"speaker":"narrator","start":69.2,"dur":2.688,"end":71.888,"text":"And then, one spring, there were no more Sundays.","speed":0.9,"file":"line_09.wav","words":[["And",69.21,69.374],["then,",69.374,69.653],["one",69.653,69.95],["spring,",69.95,70.25],["there",70.25,70.49],["were",70.49,70.876],["no",70.876,71.03],["more",71.03,71.337],["Sundays.",71.337,71.82]]},{"i":10,"speaker":"narrator","start":81.0,"dur":4.571,"end":85.571,"text":"He found the old kite in the attic. Torn. Tired. A lot like him.","speed":0.9,"file":"line_10.wav","words":[["He",81.02,81.218],["found",81.218,81.458],["the",81.458,81.67],["old",81.67,81.96],["kite",81.96,82.279],["in",82.279,82.55],["the",82.55,82.689],["attic.",82.689,83.284],["Torn.",83.284,83.695],["Tired.",83.695,84.29],["A",84.29,84.49],["lot",84.49,84.687],["like",84.687,85.083],["him.",85.083,85.48]]},{"i":11,"speaker":"memory","start":94.2,"dur":3.832,"end":98.032,"text":"For the day the wind gets strong: don't fight it. Let it lift you.","speed":0.84,"file":"line_11.wav","words":[["For",94.25,94.467],["the",94.467,94.685],["day",94.685,94.902],["the",94.902,95.119],["wind",95.119,95.255],["gets",95.255,95.582],["strong:",95.582,95.978],["don't",95.978,96.175],["fight",96.175,96.469],["it.",96.469,96.835],["Let",96.835,97.079],["it",97.079,97.282],["lift",97.282,97.56],["you.",97.56,97.92]]},{"i":12,"speaker":"narrator","start":107.2,"dur":2.369,"end":109.569,"text":"So he fixed it. One patch at a time.","speed":0.9,"file":"line_12.wav","words":[["So",107.21,107.372],["he",107.372,107.534],["fixed",107.534,107.87],["it.",107.87,108.065],["One",108.065,108.496],["patch",108.496,108.692],["at",108.692,108.854],["a",108.854,109.005],["time.",109.005,109.48]]},{"i":13,"speaker":"narrator","start":114.2,"dur":1.567,"end":115.767,"text":"The wind was strong that morning.","speed":0.9,"file":"line_13.wav","words":[["The",114.2,114.38],["wind",114.38,114.572],["was",114.572,114.753],["strong",114.753,114.968],["that",114.968,115.16],["morning.",115.16,115.69]]},{"i":14,"speaker":"narrator","start":136.6,"dur":2.326,"end":138.926,"text":"The people who love us never really leave.","speed":0.9,"file":"line_14.wav","words":[["The",136.61,136.773],["people",136.773,137.099],["who",137.099,137.262],["love",137.262,137.568],["us",137.568,137.69],["never",137.69,138.036],["really",138.036,138.362],["leave.",138.362,138.82]]},{"i":15,"speaker":"narrator","start":140.4,"dur":1.522,"end":141.922,"text":"They stay... in the wind.","speed":0.9,"file":"line_15.wav","words":[["They",140.41,140.624],["stay...",140.624,141.04],["in",141.04,141.14],["the",141.14,141.43],["wind.",141.43,141.82]]}],"warnings":[]};</script>
 </head>
 <body>
 <script>
@@ -1822,7 +1860,7 @@ film.cut(B(15), 'cut');
 const s3 = film.shot(B(15), B(22), { name: 'kneel', frame: [-40, 150, 760, 760], groundLine: false });
 hillSet(s3, { wind: 380, windN: 8 });
 const k3 = s3.character(kidOpts({ x: 110, pose: 'sitGround', expr: 'sad', facing: -1 }));
-const g3 = s3.character(gpOpts({ x: -600 }));
+const g3 = s3.character(gpOpts({ x: -270 }));
 g3.walk(12.6, 13.95, -130).pose(13.95, 'crouch', { dur: 0.5, expr: 'soft' }).talk(13.6, 15.99).look(14.0, [3, 2]).pose(16.2, 'crouchPoint', { dur: 0.45, expr: 'happy' }).look(16.3, [3, -5]);
 k3.look(12.6, [3, 3]).look(13.6, [-4, -1]).expr(14.6, 'confused').look(16.5, [-2, -5]).expr(16.8, 'soft');
 s3.custom((t) => crashedKite(t, 250, { sc: 0.55, bows: 3 }), 'back');
@@ -1894,16 +1932,16 @@ s8.layer(0.3, (t, v) => skyline(v, { y: G - 10, seed: 2, h: 640, fill: '#E3DCCB'
 s8.layer(0.6, (t, v) => skyline(v, { y: G, seed: 7, h: 470, fill: C.paperDark, w: 4 }));
 s8.custom((t, sc) => F2.bg.floorboards(sc.view, { y: G }), 'back');
 const extras8 = [
-  s8.character({ x: 560, scale: 2.05, scarf: false, hair: 'long', costume: 'dress', facing: -1, expr: 'neutral' }),
-  s8.character({ x: -620, scale: 2.1, scarf: false, hair: 'spiky', costume: 'coat', expr: 'neutral' }),
+  s8.character({ x: 660, scale: 2.05, scarf: false, hair: 'long', costume: 'dress', facing: -1, expr: 'neutral' }),
+  s8.character({ x: -720, scale: 2.1, scarf: false, hair: 'spiky', costume: 'coat', expr: 'neutral' }),
   s8.character({ x: 1000, scale: 2.0, scarf: false, hair: 'bun', costume: 'office', facing: -1, expr: 'neutral' })
 ];
-extras8[0].walk(43.4, 49.2, -1300); extras8[1].walk(44.6, 49.3, 1300); extras8[2].walk(43.9, 49.3, -1300);
+extras8[0].walk(43.4, 47.3, -1300); extras8[1].walk(44.6, 49.3, 1300); extras8[2].walk(43.9, 49.3, -1300);
 const k8 = s8.character({ x: -430, scale: ADULT, costume: 'office', pose: 'hold', hold: 'phone', expr: 'neutral', look: [3, 4] });
 k8.walk(43.6, 48.8, 280, { keepArms: true }).expr(47.0, 'sleepy').look(48.9, [3, 4]);
 s8.layer(1.35, (t, v) => { const k = clamp((t - 46.9) / 0.8); if (k <= 0 || k >= 1) return ''; const x = lerp(v.x + v.w + 300, v.x - 600, k);
   return sv.g(sv.path('M-170 0 L-170 -60 L-90 -66 L-56 -110 L80 -110 L120 -64 L170 -60 L170 0 Z', { fill: '#A7A9AC', w: 5 }) + sv.circle(-100, 4, 26, { fill: C.ink, w: 4 }) + sv.circle(110, 4, 26, { fill: C.ink, w: 4 }), `translate(${f1(x)} ${f1(v.y + v.h - 40)})`); }, { blur: 6 });
-s8.cam.follow(43.6, 49.0, k8, { dx: 40, lag: 0.5 });
+s8.cam.follow(43.6, 50.6, k8, { dx: 40, lag: 0.5 });
 film.cue('sfx', 46.95, { name: 'whoosh', gain: 0.3, pan: 0.6 }).cue('sfx', 45.2, { name: 'tap', gain: 0.06, pan: 0.1 });
 film.cut(B(60), 'cut');
 
@@ -2025,7 +2063,7 @@ s16.custom((t) => {
   return s;
 }, 'front');
 s16.tint(88.3, 0, '#7D88A6', 0.26);
-s16.cam.frame(90.3, 0.8, [-30, 150, 560, 560], 'quintOut').frame(92.4, 0.8, [-30, -10, 560, 560], 'quintInOut');
+s16.cam.frame(90.2, 1.0, [-30, 110, 640, 640], 'sineInOut').frame(92.2, 1.0, [-30, -10, 600, 600], 'sineInOut');
 film.cue('sfx', 89.3, { name: 'rustle', gain: 0.14, d: 0.5 }).cue('sfx', 90.2, { name: 'flutter', gain: 0.16, d: 0.8, pan: -0.1 }).cue('sfx', 91.05, { name: 'paper_land', gain: 0.12 });
 film.cut(B(112), 'cut');
 
@@ -2143,7 +2181,7 @@ const kite23 = (t) => {
   return t < 121.4 ? [x, y, -30 + 420 * E.expoIn(k), false] : [360, G - 26, 72, true];
 };
 s23.custom((t) => { const [x, y, r, down] = kite23(t), h = handR(k23, t); return kiteString(h, bridle(x, y, r, 0.62), down ? 0.06 : 0.015) + (down ? crashedKite(t, x, { patches: 3, torn: true, sc: 0.6, bows: 4 }) : kite(t, x, y, r, 0.62, { patches: 3, torn: true, bows: 4, wave: 2, drift: 5 })); }, 'front');
-s23.cam.shake(119.6, 0.4, 12).shake(121.4, 0.45, 14).frame(121.5, 0.8, [-20, 80, 760, 760], 'quintOut');
+s23.cam.shake(119.6, 0.4, 12).shake(121.4, 0.4, 10).frame(121.45, 0.95, [-20, 80, 760, 760], 'sineInOut');
 film.cue('sfx', 119.6, { name: 'whoosh', gain: 0.32, pan: 0.5 }).cue('sfx', 120.4, { name: 'dark_whoosh', gain: 0.18, d: 1.0, pan: 0.4 })
   .cue('sfx', 121.4, { name: 'thump_soft', gain: 0.45, pan: 0.45 }).cue('sfx', 121.5, { name: 'thud', gain: 0.24, pan: -0.1 });
 film.cut(B(147), 'cut');
