@@ -209,13 +209,13 @@ const k7 = s7.character({ x: -120, y: G - 48, scale: 2.4, pose: 'holdUp', expr: 
 k7.look(29.0, [4, -3]).expr(30.6, 'proud').pose(30.9, 'windup', { dur: 0.55, expr: 'proud' }).pose(31.62, 'throw', { dur: 0.15, expr: 'excited' }).hold(31.66, null);
 const fl7 = (t) => { if (t < 31.66) return null; const tau = t - 31.66; return { x: -30 + 560 * tau, y: -60 - 240 * tau + 60 * tau * tau, rot: -24 + 14 * tau }; };
 s7.custom((t) => { const p = fl7(t); return p ? plane(p.x, p.y, p.rot, 0.9) : ''; }, 'front');
-s7.cam.frame(31.3, 0.6, [-60, 20, 820, 820], 'quintOut').frame(31.75, 0.75, [220, -80, 760, 760], 'quintOut');
+s7.cam.frame(31.3, 0.6, [-60, 20, 820, 820], 'quintOut').frame(31.75, 0.75, [160, -70, 820, 820], 'quintOut');
 film.cue('sfx', 31.62, { name: 'swish', gain: 0.4 });
 film.cue('sfx', 31.66, { name: 'plane_fly', gain: 0.3, d: 1.6 });
 film.cut(B(39), 'match', { from: [-30 + 560 * (B(39) - 31.66), -60 - 240 * (B(39) - 31.66) + 60 * (B(39) - 31.66) ** 2], to: [-200, -60] });
 
 /* =========================== SHOT 8 · it soars (B39 → B44) =========================== */
-const s8 = film.shot(B(39), B(44), { name: 'soar', frame: [-200, -60, 700, 700], groundLine: false });
+const s8 = film.shot(B(39), B(44), { name: 'soar', frame: [-180, -10, 760, 760], groundLine: false });
 s8.layer(0.15, (t, v) => sv.g(S.propSVG('sun', t), 'translate(330 -180) scale(1.5)'));
 s8.layer(0.5, (t, v) => F2.bg.clouds(t, v, { n: 5, y: -150, speed: 30 }));
 s8.layer(0.8, (t, v) => F2.bg.clouds(t + 7, v, { n: 3, y: 120, speed: 50 }));
