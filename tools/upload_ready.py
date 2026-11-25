@@ -57,7 +57,9 @@ def main() -> int:
         run_cfg["channel"] = dict(cfg["channel"])
         if meta.get("category_id"):
             run_cfg["channel"]["category_id"] = str(meta["category_id"])
-        run_cfg["run"] = dict(cfg.get("run", {}), privacy="private")   # never public automatically
+        # private unless this video's own JSON asks for public or unlisted (set by hand, per video)
+        privacy = meta.get("privacy") if meta.get("privacy") in ("private", "unlisted", "public") else "private"
+        run_cfg["run"] = dict(cfg.get("run", {}), privacy=privacy)
         thumb = READY / meta["thumbnail"] if meta.get("thumbnail") else None
         vid = upload(video, meta["title"], meta.get("description", ""), meta.get("tags", []), run_cfg, thumb)
         url = f"https://youtu.be/{vid}"
@@ -70,7 +72,7 @@ def main() -> int:
             if new_file:
                 w.writerow(["time", "file", "title", "url", "short_url"])
             w.writerow([dt.datetime.utcnow().strftime("%Y-%m-%dT%H:%M:%SZ"), f"{args.folder}/{meta_path.name}", meta["title"], url, ""])
-        log(f"Done ({args.channel}): {meta['title']} → {url} (Private)")
+        log(f"Done ({args.channel}): {meta['title']} → {url} ({privacy})")
         done += 1
     log(f"Uploaded {done} video(s).")
     return 0
