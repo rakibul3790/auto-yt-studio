@@ -46,6 +46,9 @@ groups = [list(range(a, b)) for a, b in zip(starts, starts[1:] + [len(scenes)])]
 assert groups[0][0] == 0
 
 
+COST: list[int] = []
+
+
 def balance() -> tuple[int, int] | None:
     req = urllib.request.Request(f"{tts.ELEVEN_API}/user/subscription", headers={"xi-api-key": KEY})
     try:
@@ -72,6 +75,10 @@ def v3_once(text: str, out: Path) -> None:
         try:
             with urllib.request.urlopen(req, timeout=300) as r:
                 audio = r.read()
+                cost = r.headers.get("character-cost")
+            if cost and cost.isdigit():
+                COST.append(int(cost))
+                print(f"  charged {cost} credits")
             if len(audio) < 2000:
                 raise RuntimeError("empty audio")
             out.write_bytes(audio)
@@ -92,20 +99,25 @@ print(f"Parts: {len(groups)}, already made: {len(groups) - len(todo)}, to make n
 if todo:
     if not KEY:
         sys.exit("ELEVENLABS_API_KEY is not set")
-    b = balance()
-    if b is None:
-        sys.exit("Could not read the ElevenLabs balance, stopping before any paid call")
-    used, limit = b
-    print(f"ElevenLabs balance before: {limit - used} characters left ({used} of {limit} used)")
     if need > 9000:
         sys.exit(f"Would use {need} characters, over 9000: stopping")
-    if limit - used < need + 200:
-        sys.exit("Not enough ElevenLabs characters left: stopping before any paid call")
+    b = balance()
+    used = None
+    if b is None:
+        # this key may not read the balance; Rakib said on 25 Nov he has enough credits.
+        # Running out is safe: ElevenLabs refuses the request (not billed) and made parts are kept.
+        print("ElevenLabs balance not readable with this key; going ahead (Rakib confirmed he has enough)")
+    else:
+        used, limit = b
+        print(f"ElevenLabs balance before: {limit - used} characters left ({used} of {limit} used)")
+        if limit - used < need + 200:
+            sys.exit("Not enough ElevenLabs characters left: stopping before any paid call")
     for k in todo:
         print(f"Part {k + 1}/{len(groups)}: {len(texts[k])} characters")
         v3_once(texts[k], PARTS / f"p{k:02d}.mp3")
+    print(f"Credits charged this run (ElevenLabs character-cost headers): {sum(COST)}")
     b = balance()
-    if b:
+    if b and used is not None:
         print(f"ElevenLabs balance after: {b[1] - b[0]} characters left (this run: {b[0] - used})")
 
 # ---- join the parts with pauses, word times from whisper
