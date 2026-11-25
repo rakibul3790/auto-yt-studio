@@ -28,6 +28,10 @@
   const clamp = (v, a = 0, b = 1) => Math.max(a, Math.min(b, v));
   const lerp = (a, b, k) => a + (b - a) * k;
   const f = (n) => Math.round(n * 100) / 100;
+  // Precise number for anything that moves the whole picture (camera, zoom, root fade).
+  // f()'s 0.01 steps are fine for drawing, but on a scale they snap a slow push-in into
+  // visible 1 % jumps (about 10 px at the frame edge on a 1080p frame), which reads as a shaky zoom.
+  const fp = (n) => { const r = Math.round(n * 1e5) / 1e5; return Object.is(r, -0) ? 0 : r; };
   const TAU = Math.PI * 2;
   // deterministic smooth noise in [-1, 1]
   const hash = (n) => { const s = Math.sin(n * 127.1 + 311.7) * 43758.5453; return (s - Math.floor(s)) * 2 - 1; };
@@ -36,6 +40,13 @@
     return lerp(hash(i + seed * 57.3), hash(i + 1 + seed * 57.3), u);
   };
   const fbm = (x, seed = 0) => vnoise(x, seed) * 0.62 + vnoise(x * 2.07, seed + 3) * 0.28 + vnoise(x * 4.11, seed + 7) * 0.1;
+  // camera drift noise: quintic fade, so speed AND acceleration are continuous (no micro-jolts),
+  // and only the two low octaves, so handheld reads as a slow breath, never as a tremble
+  const qnoise = (x, seed = 0) => {
+    const i = Math.floor(x), fr = x - i, u = fr * fr * fr * (fr * (fr * 6 - 15) + 10);
+    return lerp(hash(i + seed * 57.3), hash(i + 1 + seed * 57.3), u);
+  };
+  const drift = (x, seed = 0) => qnoise(x, seed) * 0.72 + qnoise(x * 1.93, seed + 3) * 0.28;
 
   /* ---------------------------------------------------------- pro easings */
   // Added to Scribble.EASE so every v1 track (moveTo, scaleTo, rotateTo) can use them too.
@@ -69,13 +80,26 @@
     constructor(v) { this.v0 = v; this.segs = []; }
     to(t0, dur, value, e = 'inOut') { this.segs.push({ t0, t1: t0 + Math.max(0, dur), to: value, e: ease(e) }); this.segs.sort((a, b) => a.t0 - b.t0); return this; }
     at(t) {
+      // The latest move that has started wins, and it starts from the value the track has at
+      // that moment. (A move added on top of one still running used to be ignored until the
+      // first ended and then jump, which showed up as a snap in an overlapping push / frame.)
       let v = this.v0;
-      for (const s of this.segs) {
+      for (let i = 0; i < this.segs.length; i++) {
+        const s = this.segs[i];
         if (t < s.t0) break;
-        if (t >= s.t1) { v = s.to; continue; }
-        return lerp(v, s.to, s.e((t - s.t0) / (s.t1 - s.t0)));
+        const nxt = this.segs[i + 1];
+        const from = this._from(i);
+        if (nxt && nxt.t0 <= t) { v = from; continue; }
+        if (t >= s.t1) return s.to;
+        return lerp(from, s.to, s.e((t - s.t0) / (s.t1 - s.t0 || 1)));
       }
       return v;
+    }
+    _from(i) {
+      if (!this._cache || this._cache.n !== this.segs.length || this._cache.v0 !== this.v0) this._cache = { n: this.segs.length, v0: this.v0, v: [] };
+      const c = this._cache.v;
+      if (c[i] === undefined) c[i] = i === 0 ? this.v0 : this.at(this.segs[i].t0 - 1e-9);
+      return c[i];
     }
   }
 
@@ -172,6 +196,15 @@
   }
 
   /* --------------------------------------------------------------- camera */
+  // Camera moves use easings whose acceleration is continuous too (not only the speed). A plain
+  // cubic / quint in-out flips its acceleration in one frame at the midpoint, which shows as a small
+  // lurch on a big zoom. Named in-out easings are swapped for smooth ones of similar steepness.
+  const camEase = (e) => {
+    if (typeof e !== 'string') return e;
+    if (e === 'inOut' || e === 'cubicInOut' || e === 'quadInOut') return E.smooth;
+    if (e === 'quintInOut' || e === 'expoInOut') return (k) => E.smooth(E.smooth(k));
+    return e;
+  };
   class Camera {
     constructor(shot) {
       this.shot = shot;
@@ -185,6 +218,7 @@
     set(box) { this.cx.v0 = box[0]; this.cy.v0 = box[1]; this.lw.v0 = Math.log(box[2]); this.lh.v0 = Math.log(box[3] || box[2]); return this; }
     /** Move / zoom the framing to `box` between at and at+dur. */
     frame(at, dur, box, e = 'inOut') {
+      e = camEase(e);
       this.cx.to(at, dur, box[0], e); this.cy.to(at, dur, box[1], e);
       this.lw.to(at, dur, Math.log(box[2]), e); this.lh.to(at, dur, Math.log(box[3] || box[2]), e);
       return this;
@@ -198,7 +232,7 @@
     /** Follow a character's x (with lag) between t0 and t1. */
     follow(t0, t1, ch, o = {}) { this.follows.push(Object.assign({ t0, t1, ch, dx: 0, lag: 0.3, ramp: 0.5 }, o)); return this; }
     /** Dutch angle (degrees). */
-    tilt(at, dur, deg, e = 'inOut') { this.rot.to(at, dur, deg, e); return this; }
+    tilt(at, dur, deg, e = 'inOut') { this.rot.to(at, dur, deg, camEase(e)); return this; }
     /** Camera shake (impacts, smash cuts). amp in world units. */
     shake(at, dur = 0.4, amp = 14) { this.shakes.push({ at, dur, amp }); return this; }
     /** Subtle handheld drift for the whole shot (0 = locked tripod, 1 = gentle, 2 = nervous). */
@@ -217,8 +251,10 @@
       let rot = this.rot.at(t);
       const sd = this.shot.seed;
       if (this.hand) {
-        const a = this.hand;
-        cx += fbm(t * 0.35, sd) * 6 * a / z; cy += fbm(t * 0.3, sd + 11) * 4 * a / z; rot += fbm(t * 0.25, sd + 23) * 0.25 * a;
+        // calmer while the framing zooms, so a push-in stays a clean glide instead of a wobble
+        const zr = Math.abs(this.lw.at(t + 0.05) - this.lw.at(t - 0.05)) / 0.1;
+        const a = this.hand / (1 + zr * 25);
+        cx += drift(t * 0.35, sd) * 6 * a / z; cy += drift(t * 0.3, sd + 11) * 4 * a / z; rot += drift(t * 0.25, sd + 23) * 0.25 * a;
       }
       for (const s of this.shakes) {
         const k = (t - s.at) / s.dur;
@@ -303,6 +339,8 @@
       if (container && typeof document !== 'undefined') {
         this.stage = S.createScene(container, { duration: this.duration, groundLine: false, fadeIn: this.fadeIn, fadeOut: this.fadeOut, loop: true });
         this.stage.render = (t) => this.render(t);
+        // scale text and lines as pure geometry: hinted glyphs snap to whole pixels and wobble on a zoom
+        if (this.stage.svg) { this.stage.svg.setAttribute('text-rendering', 'geometricPrecision'); this.stage.svg.setAttribute('shape-rendering', 'geometricPrecision'); }
         this.stage.fit();
       }
     }
@@ -366,7 +404,7 @@
       const c = sh.cam.at(t, v);
       const tr = (d) => {
         const zd = 1 + (c.z - 1) * d;
-        return { zd, s: `rotate(${f(c.rot)}) scale(${f(zd)}) translate(${f(-c.cx * d)} ${f(-c.cy * d)})`, view: { x: c.cx * d - v.w / (2 * zd), y: c.cy * d - v.h / (2 * zd), w: v.w / zd, h: v.h / zd } };
+        return { zd, s: `rotate(${fp(c.rot)}) scale(${fp(zd)}) translate(${fp(-c.cx * d)} ${fp(-c.cy * d)})`, view: { x: c.cx * d - v.w / (2 * zd), y: c.cy * d - v.h / (2 * zd), w: v.w / zd, h: v.h / zd } };
       };
       let defs = '', out = '';
       const layerSVG = (L, i) => {
@@ -374,7 +412,7 @@
         let body = L.fn(t, T.view, sh);
         if (!body) return '';
         let attr = '';
-        if (L.blur > 0) { const id = `${uid}b${i}`; defs += `<filter id="${id}" x="-20%" y="-20%" width="140%" height="140%"><feGaussianBlur stdDeviation="${f(L.blur / T.zd)}"/></filter>`; attr += ` filter="url(#${id})"`; }
+        if (L.blur > 0) { const id = `${uid}b${i}`; defs += `<filter id="${id}" x="-20%" y="-20%" width="140%" height="140%"><feGaussianBlur stdDeviation="${fp(L.blur / T.zd)}"/></filter>`; attr += ` filter="url(#${id})"`; }
         if (L.op < 1) attr += ` opacity="${f(L.op)}"`;
         return `<g transform="${T.s}"${attr}>${body}</g>`;
       };
@@ -428,7 +466,7 @@
           const dx = (first ? -1 : 1) * cu.dir * k * v.w * 0.62;
           const blur = 3 + 55 * k;
           return `<defs><filter id="whipF" x="-50%" y="-10%" width="200%" height="120%"><feGaussianBlur stdDeviation="${f(blur)} 0"/></filter></defs>` +
-            `<g transform="translate(${f(dx)} 0)" filter="url(#whipF)">${first ? out() : inn()}</g>`;
+            `<g transform="translate(${fp(dx)} 0)" filter="url(#whipF)">${first ? out() : inn()}</g>`;
         }
         case 'iris': {
           const first = p < 0.5;
@@ -481,7 +519,7 @@
           const kz = E.inOut(p);
           const zA = 1 + 0.35 * kz, zB = 1.35 - 0.35 * kz;
           const mix = E.sineInOut(clamp((p - 0.3) / 0.4));
-          const g = (pt, z) => `translate(${f(pt[0])} ${f(pt[1])}) scale(${f(z)}) translate(${f(-pt[0])} ${f(-pt[1])})`;
+          const g = (pt, z) => `translate(${fp(pt[0])} ${fp(pt[1])}) scale(${fp(z)}) translate(${fp(-pt[0])} ${fp(-pt[1])})`;
           return `<g transform="${g(sA, zA)}">${out()}</g><g transform="${g(sB, zB)}" opacity="${f(mix)}">${inn()}</g>`;
         }
         default: return t < cu.at ? out() : inn();
@@ -518,7 +556,7 @@
         x += widths[i] + space;
       });
       const sc = 0.86 + 0.14 * fin;
-      return `<g data-qc="cap" transform="translate(0 ${f(cfg.y)}) scale(${f(sc)})" opacity="${f(Math.min(1, fin * 1.4) * fout)}">${s}</g>`;
+      return `<g data-qc="cap" transform="translate(0 ${f(cfg.y)}) scale(${fp(sc)})" opacity="${f(Math.min(1, fin * 1.4) * fout)}">${s}</g>`;
     }
 
     /** Full frame contents (inside the stage root) at time t. */
@@ -546,8 +584,8 @@
       const fi = this.fadeIn > 0 ? E.quintOut(clamp(t / this.fadeIn)) : 1;
       const fo = this.fadeOut > 0 ? E.sineInOut(clamp((D - t) / this.fadeOut)) : 1;
       const op = Math.min(fi, fo);
-      st.root.setAttribute('opacity', f(op));
-      st.root.setAttribute('transform', `scale(${f(0.92 + 0.08 * op)})`);
+      st.root.setAttribute('opacity', fp(op));
+      st.root.setAttribute('transform', `scale(${fp(0.92 + 0.08 * op)})`);
       st.root.innerHTML = `<g>${this.frame(t)}</g>`;
     }
 
@@ -560,7 +598,7 @@
       return `<svg xmlns="http://www.w3.org/2000/svg" width="${W}" height="${H}" viewBox="${f(-vw / 2)} ${f(-vh / 2)} ${f(vw)} ${f(vh)}">` +
         `<style>.sb-draw [pathLength]{stroke-dasharray:1 1;stroke-dashoffset:var(--o)}.sb-draw .f{fill-opacity:var(--fo)}</style>` +
         `<rect x="${f(-vw / 2)}" y="${f(-vh / 2)}" width="${f(vw)}" height="${f(vh)}" fill="${C.paper}"/>` +
-        `<g opacity="${f(op)}" transform="scale(${f(0.92 + 0.08 * op)})">${this.frame(t)}</g></svg>`;
+        `<g opacity="${fp(op)}" transform="scale(${fp(0.92 + 0.08 * op)})">${this.frame(t)}</g></svg>`;
     }
 
     /** Make the page recordable (record.js / record2.js) and play or freeze (?t=). */
