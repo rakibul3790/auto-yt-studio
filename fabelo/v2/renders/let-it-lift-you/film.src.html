@@ -275,7 +275,7 @@ film.cut(B(15), 'cut');
 const s3 = film.shot(B(15), B(22), { name: 'kneel', frame: [-40, 150, 760, 760], groundLine: false });
 hillSet(s3, { wind: 380, windN: 8 });
 const k3 = s3.character(kidOpts({ x: 110, pose: 'sitGround', expr: 'sad', facing: -1 }));
-const g3 = s3.character(gpOpts({ x: -600 }));
+const g3 = s3.character(gpOpts({ x: -270 }));
 g3.walk(12.6, 13.95, -130).pose(13.95, 'crouch', { dur: 0.5, expr: 'soft' }).talk(13.6, 15.99).look(14.0, [3, 2]).pose(16.2, 'crouchPoint', { dur: 0.45, expr: 'happy' }).look(16.3, [3, -5]);
 k3.look(12.6, [3, 3]).look(13.6, [-4, -1]).expr(14.6, 'confused').look(16.5, [-2, -5]).expr(16.8, 'soft');
 s3.custom((t) => crashedKite(t, 250, { sc: 0.55, bows: 3 }), 'back');
@@ -347,16 +347,16 @@ s8.layer(0.3, (t, v) => skyline(v, { y: G - 10, seed: 2, h: 640, fill: '#E3DCCB'
 s8.layer(0.6, (t, v) => skyline(v, { y: G, seed: 7, h: 470, fill: C.paperDark, w: 4 }));
 s8.custom((t, sc) => F2.bg.floorboards(sc.view, { y: G }), 'back');
 const extras8 = [
-  s8.character({ x: 560, scale: 2.05, scarf: false, hair: 'long', costume: 'dress', facing: -1, expr: 'neutral' }),
-  s8.character({ x: -620, scale: 2.1, scarf: false, hair: 'spiky', costume: 'coat', expr: 'neutral' }),
+  s8.character({ x: 660, scale: 2.05, scarf: false, hair: 'long', costume: 'dress', facing: -1, expr: 'neutral' }),
+  s8.character({ x: -720, scale: 2.1, scarf: false, hair: 'spiky', costume: 'coat', expr: 'neutral' }),
   s8.character({ x: 1000, scale: 2.0, scarf: false, hair: 'bun', costume: 'office', facing: -1, expr: 'neutral' })
 ];
-extras8[0].walk(43.4, 49.2, -1300); extras8[1].walk(44.6, 49.3, 1300); extras8[2].walk(43.9, 49.3, -1300);
+extras8[0].walk(43.4, 47.3, -1300); extras8[1].walk(44.6, 49.3, 1300); extras8[2].walk(43.9, 49.3, -1300);
 const k8 = s8.character({ x: -430, scale: ADULT, costume: 'office', pose: 'hold', hold: 'phone', expr: 'neutral', look: [3, 4] });
 k8.walk(43.6, 48.8, 280, { keepArms: true }).expr(47.0, 'sleepy').look(48.9, [3, 4]);
 s8.layer(1.35, (t, v) => { const k = clamp((t - 46.9) / 0.8); if (k <= 0 || k >= 1) return ''; const x = lerp(v.x + v.w + 300, v.x - 600, k);
   return sv.g(sv.path('M-170 0 L-170 -60 L-90 -66 L-56 -110 L80 -110 L120 -64 L170 -60 L170 0 Z', { fill: '#A7A9AC', w: 5 }) + sv.circle(-100, 4, 26, { fill: C.ink, w: 4 }) + sv.circle(110, 4, 26, { fill: C.ink, w: 4 }), `translate(${f1(x)} ${f1(v.y + v.h - 40)})`); }, { blur: 6 });
-s8.cam.follow(43.6, 49.0, k8, { dx: 40, lag: 0.5 });
+s8.cam.follow(43.6, 50.6, k8, { dx: 40, lag: 0.5 });
 film.cue('sfx', 46.95, { name: 'whoosh', gain: 0.3, pan: 0.6 }).cue('sfx', 45.2, { name: 'tap', gain: 0.06, pan: 0.1 });
 film.cut(B(60), 'cut');
 
@@ -478,7 +478,7 @@ s16.custom((t) => {
   return s;
 }, 'front');
 s16.tint(88.3, 0, '#7D88A6', 0.26);
-s16.cam.frame(90.3, 0.8, [-30, 150, 560, 560], 'quintOut').frame(92.4, 0.8, [-30, -10, 560, 560], 'quintInOut');
+s16.cam.frame(90.2, 1.0, [-30, 110, 640, 640], 'sineInOut').frame(92.2, 1.0, [-30, -10, 600, 600], 'sineInOut');
 film.cue('sfx', 89.3, { name: 'rustle', gain: 0.14, d: 0.5 }).cue('sfx', 90.2, { name: 'flutter', gain: 0.16, d: 0.8, pan: -0.1 }).cue('sfx', 91.05, { name: 'paper_land', gain: 0.12 });
 film.cut(B(112), 'cut');
 
@@ -596,7 +596,7 @@ const kite23 = (t) => {
   return t < 121.4 ? [x, y, -30 + 420 * E.expoIn(k), false] : [360, G - 26, 72, true];
 };
 s23.custom((t) => { const [x, y, r, down] = kite23(t), h = handR(k23, t); return kiteString(h, bridle(x, y, r, 0.62), down ? 0.06 : 0.015) + (down ? crashedKite(t, x, { patches: 3, torn: true, sc: 0.6, bows: 4 }) : kite(t, x, y, r, 0.62, { patches: 3, torn: true, bows: 4, wave: 2, drift: 5 })); }, 'front');
-s23.cam.shake(119.6, 0.4, 12).shake(121.4, 0.45, 14).frame(121.5, 0.8, [-20, 80, 760, 760], 'quintOut');
+s23.cam.shake(119.6, 0.4, 12).shake(121.4, 0.4, 10).frame(121.45, 0.95, [-20, 80, 760, 760], 'sineInOut');
 film.cue('sfx', 119.6, { name: 'whoosh', gain: 0.32, pan: 0.5 }).cue('sfx', 120.4, { name: 'dark_whoosh', gain: 0.18, d: 1.0, pan: 0.4 })
   .cue('sfx', 121.4, { name: 'thump_soft', gain: 0.45, pan: 0.45 }).cue('sfx', 121.5, { name: 'thud', gain: 0.24, pan: -0.1 });
 film.cut(B(147), 'cut');
