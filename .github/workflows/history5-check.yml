@@ -1,0 +1,28 @@
+# Free check: what whisper hears in the history5 voice parts (no paid calls).
+name: History 5 voice check
+on:
+  push:
+    branches: [history5-check]
+jobs:
+  check:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-python@v6
+        with:
+          python-version: "3.11"
+      - run: pip install faster-whisper
+      - uses: actions/cache@v4
+        with:
+          path: ~/.cache/huggingface/hub/models--Systran--faster-whisper-small.en
+          key: whisper-small-en-v1
+      - run: |
+          git fetch -q origin +refs/heads/history5-voice:refs/remotes/origin/history5-voice
+          mkdir -p p && for f in p05 p06 p08 p01; do git show origin/history5-voice:$f.mp3 > p/$f.mp3; done
+          python - <<'PY'
+          from faster_whisper import WhisperModel
+          m = WhisperModel("small.en", device="cpu", compute_type="int8")
+          for f in ["p05", "p06", "p08", "p01"]:
+              segs, _ = m.transcribe(f"p/{f}.mp3", beam_size=5, language="en")
+              print(f, "::", " ".join(s.text.strip() for s in segs))
+          PY
