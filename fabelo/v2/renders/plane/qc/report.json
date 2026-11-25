@@ -4,72 +4,7 @@
  "shots": 9,
  "transitions": 6,
  "frames_checked": 105,
- "problems": [
-  {
-   "ratio": "16x9",
-   "t": 32.85,
-   "where": "soar start",
-   "cut": [
-    {
-     "kind": "char",
-     "box": [
-      617,
-      461,
-      732,
-      751
-     ]
-    }
-   ]
-  },
-  {
-   "ratio": "9x16",
-   "t": 32.15,
-   "where": "throw end",
-   "cut": [
-    {
-     "kind": "char",
-     "box": [
-      -33,
-      521,
-      198,
-      954
-     ]
-    }
-   ]
-  },
-  {
-   "ratio": "1x1",
-   "t": 32.15,
-   "where": "throw end",
-   "cut": [
-    {
-     "kind": "char",
-     "box": [
-      -41,
-      301,
-      248,
-      843
-     ]
-    }
-   ]
-  },
-  {
-   "ratio": "1x1",
-   "t": 32.85,
-   "where": "soar start",
-   "cut": [
-    {
-     "kind": "char",
-     "box": [
-      421,
-      577,
-      565,
-      938
-     ]
-    }
-   ]
-  }
- ],
+ "problems": [],
  "video": {
   "duration_s": 44,
   "size": "1080x1920",
@@ -83,5 +18,5 @@
    "true_peak_dbtp": -1
   }
  },
- "pass": false
+ "pass": true
 }
