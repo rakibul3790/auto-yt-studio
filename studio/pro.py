@@ -91,22 +91,41 @@ def render(data: dict, cfg: dict, work: Path, out_file: Path, size: tuple[int, i
     scene_t: list[tuple[float, float]] = []
     parts: list[Path] = []
     t0 = 0.0
+    edge = str(cfg["channel"].get("voice", "")).split(":")[0] not in ("kokoro", "chatterbox")
+    base_rate = _pct(data.get("voice_rate", cfg["channel"].get("voice_rate", "+0%")))
+    base_pitch = str(data.get("voice_pitch", cfg["channel"].get("voice_pitch", "+0Hz")))
     for i, sc in enumerate(data["scenes"]):
         text = str(sc.get("text", "")).strip()
-        audio = work / f"pro_{voice_tag}_{i:02d}.mp3"
+        # delivery: each scene may speed up or slow down a little ("rate": "-8%") and hold
+        # a longer or shorter beat after it ("pause": 0.4), so the narration has rhythm
+        rate = max(-30, min(30, base_rate + _pct(sc.get("rate", "+0%"))))
+        scfg = {**cfg, "channel": {**cfg["channel"], "voice_rate": f"{rate:+d}%", "voice_pitch": base_pitch}}
+        rtag = f"r{rate:+d}{re.sub(r'[^0-9+-]', '', base_pitch)}"
+        audio = work / f"pro_{voice_tag}_{rtag}_{i:02d}.mp3"
         meta = audio.with_suffix(".json")
         if audio.exists() and meta.exists():
             dur, wl = json.loads(meta.read_text(encoding="utf-8"))
         else:
-            dur, wl = tts.speak_words(text, audio, cfg)
+            dur, wl = tts.speak_words(text, audio, scfg)
             meta.write_text(json.dumps([dur, wl], ensure_ascii=False), encoding="utf-8")
-        length = dur + pause
+        trim0 = 0.0
+        if edge and wl:                    # cut the voice engine's own silence at both ends
+            trim0 = max(float(wl[0][0]) - 0.03, 0.0)
+            end = min(float(wl[-1][1]) + 0.09, dur)
+            wl = [(a - trim0, b - trim0, t) for a, b, t in wl]
+            dur = max(end - trim0, 0.3)
+        try:
+            gap = float(sc.get("pause", pause))
+        except (TypeError, ValueError):
+            gap = pause
+        length = dur + max(0.0, min(gap, 1.2))
         if max_seconds and t0 + length > max_seconds:
             log(f"Stopping at scene {i} to stay under {max_seconds}s")
             break
         part = work / f"pro_{voice_tag}_{i:02d}.wav"
-        run(["ffmpeg", "-y", "-loglevel", "error", "-i", str(audio), "-af",
-             f"apad=whole_dur={length:.3f}", "-t", f"{length:.3f}", "-ar", str(SR), "-ac", "1", str(part)])
+        run(["ffmpeg", "-y", "-loglevel", "error", "-ss", f"{trim0:.3f}", "-i", str(audio), "-af",
+             f"atrim=0:{dur:.3f},afade=t=out:st={max(dur - 0.04, 0):.3f}:d=0.04,apad=whole_dur={length:.3f}",
+             "-t", f"{length:.3f}", "-ar", str(SR), "-ac", "1", str(part)])
         parts.append(part)
         hi = _highlight_mask(sc, [x[2] for x in wl])
         for k, (s, e, tok) in enumerate(wl):
@@ -178,6 +197,11 @@ def render(data: dict, cfg: dict, work: Path, out_file: Path, size: tuple[int, i
         raise RuntimeError("Quality check failed: " + "; ".join(report["errors"]))
     return {"duration": total, "first_image": first_img, "music": track.name if track else None,
             "chapters": [], "qc": report, "plan": data}
+
+
+def _pct(v) -> int:
+    m = re.match(r"\s*([+-]?\d+)", str(v or "0"))
+    return int(m.group(1)) if m else 0
 
 
 # ===================================================================== shots
@@ -733,7 +757,7 @@ Format: Layer, Start, End, Style, Name, MarginL, MarginR, MarginV, Effect, Text
         size_px = fs
         while True:
             f = _font(size_px * ASS_K)
-            space = f.getlength(" ") + size_px * 0.06
+            space = f.getlength(" ") + size_px * 0.17     # room for the outline and the pop
             widths = [f.getlength(c["disp"]) + size_px * 0.01 * len(c["disp"]) for c in ch]
             lines, cur, cw = [], [], 0.0
             for k, ww in enumerate(widths):
