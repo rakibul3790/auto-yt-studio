@@ -396,13 +396,16 @@ class ClipFrames:
         self.path = path
         self.size = size
         w, h = size
-        self.proc = subprocess.Popen(
+        self.proc = None
+        self.cmd = (
             ["ffmpeg", "-loglevel", "error", "-ss", "0.5", "-stream_loop", "-1", "-i", str(path), "-vf",
              f"fps={FPS},scale={w}:{h}:force_original_aspect_ratio=increase,crop={w}:{h}",
-             "-f", "rawvideo", "-pix_fmt", "rgb24", "-"], stdout=subprocess.PIPE)
+             "-f", "rawvideo", "-pix_fmt", "rgb24", "-"])
         self.last = Image.new("RGB", size, (20, 30, 40))
 
     def next(self) -> Image.Image:
+        if self.proc is None:
+            self.proc = subprocess.Popen(self.cmd, stdout=subprocess.PIPE)
         raw = self.proc.stdout.read(self.size[0] * self.size[1] * 3)
         if len(raw) == self.size[0] * self.size[1] * 3:
             self.last = Image.frombuffer("RGB", self.size, raw, "raw", "RGB", 0, 1)
@@ -454,7 +457,6 @@ def save_media() -> None:
         else:
             if m.path.stat().st_size < 60_000_000:
                 shutil.copy(m.path, MEDIA / f"card_{k}.mp4")
-            m.proc.kill()
         log(f"saved card {k} ({kind})")
 
 
