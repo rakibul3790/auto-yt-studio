@@ -1,0 +1,10 @@
+[
+ {"id": "counter_click", "text": "one single short dry mechanical counter click, isolated, very short, no reverb", "duration": 0.5, "influence": 0.7},
+ {"id": "type_key", "text": "one single vintage typewriter key strike, isolated, dry, close microphone, no reverb", "duration": 0.5, "influence": 0.7},
+ {"id": "type_bell", "text": "typewriter carriage return bell ding, single, clean", "duration": 1.0},
+ {"id": "count_done", "text": "small soft satisfying ding when a number counter stops, clean UI sound", "duration": 0.8},
+ {"id": "drone_intro", "text": "dark mysterious cinematic drone for a history documentary intro, low strings and soft pulse, slowly swelling, no melody", "duration": 9.0},
+ {"id": "projector", "text": "old 16mm film projector running, steady mechanical clatter, close", "duration": 6.0, "loop": true},
+ {"id": "title_hit", "text": "deep warm cinematic impact for a title reveal, soft attack, long low tail, not harsh", "duration": 3.0},
+ {"id": "brass_clink", "text": "one single brass bullet casing dropping onto a wooden table, one clink, isolated", "duration": 0.6, "influence": 0.7}
+]

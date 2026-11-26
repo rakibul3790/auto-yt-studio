@@ -132,7 +132,39 @@ def sfx(job):
         {"before": used0, "after": used1, "limit": limit, "items": log}, indent=1))
 
 
+def tts(job):
+    """New narration lines with the channel's ElevenLabs v3 voice, with character timings."""
+    import base64
+    if not XI:
+        sys.exit("ELEVENLABS_API_KEY is not set")
+    log = []
+    for s in job:
+        body = {"text": s["text"], "model_id": s.get("model", "eleven_v3"),
+                "voice_settings": {"stability": s.get("stability", 0.0), "similarity_boost": s.get("similarity", 0.8)}}
+        r = requests.post(f"https://api.elevenlabs.io/v1/text-to-speech/{s['voice']}/with-timestamps",
+                          params={"output_format": "mp3_44100_192"},
+                          headers={"xi-api-key": XI, "Content-Type": "application/json"}, json=body, timeout=300)
+        if not r.ok:
+            print("FAILED", s["id"], r.status_code, r.text[:200])
+            continue
+        j = r.json()
+        d = OUT / "tts"
+        d.mkdir(parents=True, exist_ok=True)
+        (d / f"{s['id']}.mp3").write_bytes(base64.b64decode(j["audio_base64"]))
+        (d / f"{s['id']}_align.json").write_text(json.dumps(j.get("normalized_alignment") or j.get("alignment")))
+        cost = r.headers.get("character-cost")
+        log.append({"id": s["id"], "text": s["text"], "cost": cost})
+        print(f"tts {s['id']:<12} cost={cost}")
+    (OUT / "tts_log.json").write_text(json.dumps(log, indent=1))
+
+
+def batch(job):
+    for step in job:
+        sub = json.loads((pathlib.Path("reedit") / step["job"]).read_text(encoding="utf-8"))
+        {"search": search, "get": get, "sfx": sfx, "tts": tts}[step["mode"]](sub)
+
+
 if __name__ == "__main__":
     mode, path = sys.argv[1], sys.argv[2]
     job = json.loads(pathlib.Path(path).read_text(encoding="utf-8"))
-    {"search": search, "get": get, "sfx": sfx}[mode](job)
+    {"search": search, "get": get, "sfx": sfx, "tts": tts, "batch": batch}[mode](job)

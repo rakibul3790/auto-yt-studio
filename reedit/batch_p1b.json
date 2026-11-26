@@ -1,0 +1,4 @@
+[
+ {"mode": "tts", "job": "tts_intro.json"},
+ {"mode": "sfx", "job": "sfx_p1b.json"}
+]
