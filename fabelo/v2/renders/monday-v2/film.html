@@ -788,7 +788,7 @@ const segAt = (t) => SEGS.findIndex((s) => t >= s[0] && t < s[1]);
 const mug = (x, y, a = 0) => `<g transform="rotate(${a} ${x} ${y})"><rect x="${x - 20}" y="${y - 52}" width="40" height="48" rx="8" fill="#EDE6D8" stroke="#2A231C" stroke-width="4"/><path d="M${x + 20} ${y - 42} q18 2 16 16 q-2 12 -16 12" stroke="#2A231C" stroke-width="4" fill="none"/>${[0, 1].map((i) => `<path d="M${x - 6 + i * 12} ${y - 62} q-8 -12 0 -24 q8 -12 0 -24" stroke="#FFFFFF" stroke-width="3" fill="none" opacity="0.5"/>`).join('')}</g>`;
 function counter(x, y, n, col, label) {
   const str = String(Math.max(0, Math.round(n))).padStart(4, '0');
-  let s = `<rect x="${x - 18}" y="${y - 40}" width="330" height="128" rx="22" fill="#07080B" opacity="0.62"/>`;
+  let s = `<rect x="${x - 18}" y="${y - 40}" width="400" height="128" rx="22" fill="#07080B" opacity="0.62"/>`;
   s += S(label, x, y - 6, 22, { anchor: 'start', ls: 3, fill: '#FFFFFF', op: 0.9, w: 700 });
   s += `<text x="${x - 2}" y="${y + 68}" font-size="76" fill="${col}" font-family="'Courier New', 'Liberation Mono', monospace" font-weight="700" letter-spacing="6">${str}</text>`;
   return s;
@@ -955,8 +955,8 @@ function frame(t) {
     s += `<g opacity="${cIn}">` + counter(46, PT.y + 70, topN, '#FF5A5F', 'MONDAYS REMEMBERED') + counter(46, PB.y + 70, botN, '#F6B73C', 'MONDAYS REMEMBERED') + `</g>`;
     s += `<linearGradient id="lb" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#07080B" stop-opacity="0"/><stop offset="1" stop-color="#07080B" stop-opacity="0.85"/></linearGradient>`;
     s += `<rect x="0" y="${PT.y + PT.h - 110}" width="${W}" height="110" fill="url(#lb)"/><rect x="0" y="${PB.y + PB.h - 110}" width="${W}" height="110" fill="url(#lb)"/>`;
-    s += S('S N O O Z E', W / 2, PT.y + PT.h - 30, 36, { ls: 4, op: 0.96 });
-    s += S('G E T S   U P', W / 2, PB.y + PB.h - 30, 36, { ls: 4, op: 0.96 });
+    s += S('SNOOZE', W / 2, PT.y + PT.h - 30, 38, { ls: 16, op: 0.96 });
+    s += S('GETS UP', W / 2, PB.y + PB.h - 30, 38, { ls: 16, op: 0.96 });
     // header: title + time chip
     const drop = backOut(t / 0.35);
     s += `<g transform="translate(${W / 2} ${154 + (1 - clamp(drop, 0, 2)) * -60}) scale(${t < 0.35 ? lerp(1.4, 1, t / 0.35) : 1})">` + S('MONDAY.', 0, 0, 100, { w: 900, ls: 2 }) + `</g>`;
