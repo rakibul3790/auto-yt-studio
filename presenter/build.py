@@ -17,6 +17,7 @@ import json
 import math
 import os
 import random
+import shutil
 import subprocess
 import sys
 import time
@@ -33,6 +34,7 @@ from studio.common import MUSIC_DIR, ROOT, log, media_duration, run
 P = ROOT / "presenter"
 OUT = P / "out"
 WORK = P / "work"
+MEDIA = OUT / "media"
 W, H, FPS = 1080, 1920, 30
 HOST_W, HOST_H = 1080, 1350          # the host's picture, placed at the bottom of the frame
 HOST_Y = H - HOST_H
@@ -81,7 +83,8 @@ def prep() -> None:
     WORK.mkdir(parents=True, exist_ok=True)
     data = load_script()
     make_voice(data)
-    make_host(data)
+    if data.get("host") != "cartoon":
+        make_host(data)
     make_cutouts()
 
 
@@ -390,6 +393,7 @@ class ClipFrames:
     """A stock video clip decoded at card size."""
 
     def __init__(self, path: Path, size: tuple[int, int]):
+        self.path = path
         self.size = size
         w, h = size
         self.proc = subprocess.Popen(
@@ -413,19 +417,45 @@ def card_media(tl: Timeline) -> dict:
         c = b.get("card")
         if not c or c["kind"] not in ("photo", "video"):
             continue
+        saved_p, saved_v = MEDIA / f"card_{k}.jpg", MEDIA / f"card_{k}.mp4"
         if c["kind"] == "photo":
-            img = visuals.pixabay_photo(c["query"], False, 11 + k, c.get("subject"))
-            if img is None and c.get("subject"):
-                img = visuals.pixabay_photo(c["subject"], False, 11 + k, c.get("subject"))
-            if img is not None:
-                media[k] = ("photo", img)
+            if saved_p.exists():
+                media[k] = ("photo", Image.open(saved_p).convert("RGB"))
+            else:
+                img = visuals.pixabay_photo(c["query"], False, 11 + k, c.get("subject"))
+                if img is None and c.get("subject"):
+                    img = visuals.pixabay_photo(c["subject"], False, 11 + k, c.get("subject"))
+                if img is not None:
+                    media[k] = ("photo", img)
         else:
-            out = WORK / f"clip_{k}.mp4"
-            got = visuals.pixabay_video(c["query"], 0, out, c.get("subject"))
-            if got:
-                media[k] = ("video", ClipFrames(got, (cw, ch)))
+            if saved_v.exists():
+                media[k] = ("video", ClipFrames(saved_v, (cw, ch)))
+            else:
+                out = WORK / f"clip_{k}.mp4"
+                got = visuals.pixabay_video(c["query"], 0, out, c.get("subject"))
+                if got:
+                    media[k] = ("video", ClipFrames(got, (cw, ch)))
         log(f"card {k}: {media.get(k, ('none',))[0]}")
     return media
+
+
+def save_media() -> None:
+    """Download the card photos and clips once, so the Short can be drawn anywhere."""
+    data = load_script()
+    words = [tuple(w) for w in json.loads((OUT / "words.json").read_text())]
+    tl = Timeline(data, words)
+    MEDIA.mkdir(parents=True, exist_ok=True)
+    WORK.mkdir(parents=True, exist_ok=True)
+    for k, (kind, m) in card_media(tl).items():
+        if kind == "photo":
+            im = m.copy()
+            im.thumbnail((1600, 1600))
+            im.save(MEDIA / f"card_{k}.jpg", quality=90)
+        else:
+            if m.path.stat().st_size < 60_000_000:
+                shutil.copy(m.path, MEDIA / f"card_{k}.mp4")
+            m.proc.kill()
+        log(f"saved card {k} ({kind})")
 
 
 # ================================================================== world
@@ -522,7 +552,12 @@ def compose() -> None:
     tl = Timeline(data, words)
     log(f"compose: {tl.total:.1f}s, {len(tl.beats)} beats")
     WORK.mkdir(parents=True, exist_ok=True)
-    host = HostVideo()
+    if data.get("host") == "cartoon":
+        from presenter.cartoon import CartoonHost
+        host = CartoonHost(tl, OUT / "voice16k.wav", words)
+        log("host: cartoon presenter")
+    else:
+        host = HostVideo()
     mp = Map()
     media = card_media(tl)
     cuts = {}
@@ -912,4 +947,4 @@ def caption_img(words: list, active: int) -> Image.Image:
 
 if __name__ == "__main__":
     step = sys.argv[1] if len(sys.argv) > 1 else "prep"
-    {"prep": prep, "compose": compose}[step]()
+    {"prep": prep, "compose": compose, "media": save_media}[step]()
