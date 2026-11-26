@@ -135,28 +135,29 @@ def make_host(data: dict) -> None:
         return
     prompt = data["presenter_prompt"]
     ua = {"User-Agent": "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 Chrome/124 Safari/537.36"}
-    tries = []
-    for seed in (101, 202):
-        tries.append(("https://image.pollinations.ai/prompt/" + urllib.parse.quote(prompt),
-                      {"width": 1080, "height": 1350, "seed": seed, "model": "flux", "nologo": "true"}))
-    tries.append(("https://image.pollinations.ai/prompt/" + urllib.parse.quote(prompt),
-                  {"width": 1080, "height": 1350, "seed": 303}))
-    for url, params in tries:
+    # The free tier allows one picture every 45 s per address, so wait between tries.
+    url = "https://image.pollinations.ai/prompt/" + urllib.parse.quote(prompt)
+    for n, seed in enumerate((101, 101, 202, 202, 303, 404, 505, 606)):
+        params = {"width": 1080, "height": 1350, "seed": seed, "nologo": "true"}
+        if n < 6:
+            params["model"] = "flux"
         try:
-            r = requests.get(url, timeout=180, params=params, headers=ua)
+            r = requests.get(url, timeout=240, params=params, headers=ua)
             ctype = r.headers.get("content-type", "")
             if r.status_code != 200 or not ctype.startswith("image"):
-                log(f"host picture: pollinations said {r.status_code} {ctype}: {r.text[:200]!r}")
-                time.sleep(5)
+                log(f"host picture: pollinations said {r.status_code}: {r.text[:160]!r}")
+                time.sleep(55)
                 continue
             img = Image.open(io.BytesIO(r.content)).convert("RGB")
             if img.width >= 700:
                 img = cover(img, (HOST_W, HOST_H))
                 img.save(out)
-                log(f"host picture: made by pollinations ({params.get('seed')}, {img.size})")
+                log(f"host picture: made by pollinations (seed {seed}, {img.size})")
                 return
+            log(f"host picture: too small {img.size}")
         except Exception as e:  # noqa: BLE001
             log(f"host picture attempt failed: {type(e).__name__}: {e}")
+        time.sleep(55)
     # Fallback: a made-up face from a StyleGAN generator (not a real person).
     for _ in range(3):
         try:
