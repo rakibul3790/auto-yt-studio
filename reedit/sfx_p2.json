@@ -1,0 +1,10 @@
+[
+ {"id": "amb_stone", "text": "quiet medieval stone street at night, faint distant murmur of a town, occasional far footsteps, light wind between stone walls, no music", "duration": 22, "loop": true},
+ {"id": "church_bell", "text": "single distant church bell toll echoing over an old town, slow decay", "duration": 4.0},
+ {"id": "feet_dance", "text": "bare feet stamping and shuffling rhythmically on wet stone cobbles, someone dancing tirelessly, close, no music", "duration": 6.0, "loop": true},
+ {"id": "crowd_dark", "text": "large crowd of exhausted people shuffling and moaning softly in a stone square at night, uneasy, torches crackling, no music", "duration": 10.0, "loop": true},
+ {"id": "hammering", "text": "carpenters hammering wooden planks to build a stage in a town square, a few hammer blows, slight echo", "duration": 2.6},
+ {"id": "thunder_far", "text": "deep distant rolling thunder, ominous, long tail", "duration": 3.5},
+ {"id": "quill", "text": "quill pen scratching on old parchment paper, close, slow writing", "duration": 2.6},
+ {"id": "low_hit", "text": "deep soft cinematic low hit with a dark reverb tail, for a mysterious question, not harsh", "duration": 2.5}
+]
