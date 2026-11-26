@@ -1,0 +1,23 @@
+[
+ {"id": "h02a", "q": "silhouette man walking jungle", "n": 6},
+ {"id": "h02b", "q": "soldier silhouette forest", "n": 6},
+ {"id": "h03a", "q": "torn fabric", "n": 6},
+ {"id": "h03b", "q": "old military jacket", "n": 6},
+ {"id": "h04a", "q": "antique rifle", "n": 6},
+ {"id": "h04b", "q": "bolt action rifle", "n": 6},
+ {"id": "e_run", "q": "emu running", "n": 8},
+ {"id": "e_walk", "q": "emus walking", "n": 8},
+ {"id": "e_emu", "q": "emu", "n": 12},
+ {"id": "e_eat", "q": "emu eating", "n": 6},
+ {"id": "e_flock", "q": "emus group", "n": 6},
+ {"id": "e_runimg", "q": "emu running", "n": 6, "kind": "image"},
+ {"id": "e_sunimg", "q": "emu silhouette", "n": 6, "kind": "image"},
+ {"id": "s_truck", "q": "vintage truck", "n": 8},
+ {"id": "s_truck2", "q": "old truck dirt road", "n": 6},
+ {"id": "s_solsun", "q": "soldiers silhouette sunset", "n": 8},
+ {"id": "s_march", "q": "marching silhouette", "n": 6},
+ {"id": "s_mgun", "q": "vintage machine gun", "n": 6},
+ {"id": "s_outback", "q": "australian outback", "n": 6},
+ {"id": "s_dust", "q": "dust particles dark", "n": 4},
+ {"id": "s_paper", "q": "old paper texture", "n": 4, "kind": "image"}
+]

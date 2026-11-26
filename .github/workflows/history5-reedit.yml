@@ -1,0 +1,39 @@
+# History 5 re-edit: fetch stock (Pixabay) and make sound effects (ElevenLabs text-to-sound).
+# Branch history-5 only. Runs when reedit/run.json changes; that file names the mode and job.
+# Never calls the ElevenLabs voice API. Results come back as an artifact.
+name: History 5 re-edit assets
+
+on:
+  push:
+    branches: [history-5]
+    paths:
+      - "reedit/run.json"
+
+permissions:
+  contents: read
+
+jobs:
+  fetch:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: pip install requests
+      - name: Read run.json
+        id: run
+        run: |
+          echo "mode=$(python -c 'import json;print(json.load(open("reedit/run.json"))["mode"])')" >> "$GITHUB_OUTPUT"
+          echo "job=$(python -c 'import json;print(json.load(open("reedit/run.json"))["job"])')" >> "$GITHUB_OUTPUT"
+      - name: Fetch
+        env:
+          PIXABAY_API_KEY: ${{ secrets.PIXABAY_API_KEY }}
+          ELEVENLABS_API_KEY: ${{ secrets.ELEVENLABS_API_KEY }}
+        run: python tools/reedit_fetch.py "${{ steps.run.outputs.mode }}" "reedit/${{ steps.run.outputs.job }}"
+      - uses: actions/upload-artifact@v4
+        with:
+          name: reedit-${{ steps.run.outputs.mode }}-${{ github.run_number }}
+          path: out/
+          retention-days: 5
