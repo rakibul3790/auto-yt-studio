@@ -1,0 +1,402 @@
+{
+ "lines": [
+  {
+   "i": 0,
+   "file": "line_00.wav",
+   "speaker": "narrator",
+   "start": 0.3,
+   "dur": 5.68,
+   "end": 5.98,
+   "text": "If you're thirty... you've lived over fifteen hundred Mondays.",
+   "take": 1,
+   "words": [
+    [
+     "If",
+     0.513,
+     0.54
+    ],
+    [
+     "you're",
+     0.58,
+     0.94
+    ],
+    [
+     "thirty...",
+     1.009,
+     2.22
+    ],
+    [
+     "you've",
+     2.26,
+     2.54
+    ],
+    [
+     "lived",
+     2.607,
+     2.94
+    ],
+    [
+     "over",
+     2.988,
+     3.18
+    ],
+    [
+     "fifteen",
+     3.28,
+     3.98
+    ],
+    [
+     "hundred",
+     4.06,
+     4.62
+    ],
+    [
+     "Mondays.",
+     4.72,
+     5.98
+    ]
+   ]
+  },
+  {
+   "i": 1,
+   "file": "line_01.wav",
+   "speaker": "narrator",
+   "start": 6.3,
+   "dur": 2.48,
+   "end": 8.78,
+   "text": "How many do you actually remember?",
+   "take": 1,
+   "words": [
+    [
+     "How",
+     6.523,
+     6.54
+    ],
+    [
+     "many",
+     6.604,
+     6.86
+    ],
+    [
+     "do",
+     6.913,
+     7.02
+    ],
+    [
+     "you",
+     7.1,
+     7.34
+    ],
+    [
+     "actually",
+     7.42,
+     8.06
+    ],
+    [
+     "remember?",
+     8.122,
+     8.78
+    ]
+   ]
+  },
+  {
+   "i": 2,
+   "file": "line_02.wav",
+   "speaker": "narrator",
+   "start": 9.3,
+   "dur": 7.68,
+   "end": 16.98,
+   "text": "Wake up. Scroll. Work. Scroll. Sleep.",
+   "take": 2,
+   "words": [
+    [
+     "Wake",
+     9.615,
+     9.7
+    ],
+    [
+     "up.",
+     9.887,
+     10.34
+    ],
+    [
+     "Scroll.",
+     10.557,
+     12.58
+    ],
+    [
+     "Work.",
+     12.724,
+     13.38
+    ],
+    [
+     "Scroll.",
+     13.586,
+     15.14
+    ],
+    [
+     "Sleep.",
+     15.313,
+     16.98
+    ]
+   ]
+  },
+  {
+   "i": 3,
+   "file": "line_03.wav",
+   "speaker": "narrator",
+   "start": 17.6,
+   "dur": 1.52,
+   "end": 19.12,
+   "text": "Repeat.",
+   "take": 2,
+   "words": [
+    [
+     "Repeat.",
+     18.274,
+     19.12
+    ]
+   ]
+  },
+  {
+   "i": 4,
+   "file": "line_04.wav",
+   "speaker": "narrator",
+   "start": 20.2,
+   "dur": 4.404,
+   "end": 24.604,
+   "text": "Every day felt the same... so they all blurred into one.",
+   "take": 2,
+   "words": [
+    [
+     "Every",
+     20.435,
+     20.524
+    ],
+    [
+     "day",
+     20.604,
+     20.844
+    ],
+    [
+     "felt",
+     20.924,
+     21.244
+    ],
+    [
+     "the",
+     21.284,
+     21.404
+    ],
+    [
+     "same...",
+     21.5,
+     22.684
+    ],
+    [
+     "so",
+     22.826,
+     22.844
+    ],
+    [
+     "they",
+     22.892,
+     23.084
+    ],
+    [
+     "all",
+     23.164,
+     23.404
+    ],
+    [
+     "blurred",
+     23.454,
+     23.804
+    ],
+    [
+     "into",
+     23.868,
+     24.124
+    ],
+    [
+     "one.",
+     24.224,
+     24.604
+    ]
+   ]
+  },
+  {
+   "i": 5,
+   "file": "line_05.wav",
+   "speaker": "narrator",
+   "start": 28.0,
+   "dur": 5.04,
+   "end": 33.04,
+   "text": "But something was still alive... waiting for him to notice.",
+   "take": 2,
+   "words": [
+    [
+     "But",
+     28.136,
+     28.16
+    ],
+    [
+     "something",
+     28.224,
+     28.8
+    ],
+    [
+     "was",
+     28.88,
+     29.12
+    ],
+    [
+     "still",
+     29.173,
+     29.44
+    ],
+    [
+     "alive...",
+     29.547,
+     30.88
+    ],
+    [
+     "waiting",
+     30.95,
+     31.44
+    ],
+    [
+     "for",
+     31.5,
+     31.68
+    ],
+    [
+     "him",
+     31.76,
+     32.0
+    ],
+    [
+     "to",
+     32.08,
+     32.24
+    ],
+    [
+     "notice.",
+     32.343,
+     33.04
+    ]
+   ]
+  },
+  {
+   "i": 6,
+   "file": "line_06.wav",
+   "speaker": "narrator",
+   "start": 34.2,
+   "dur": 2.894,
+   "end": 37.094,
+   "text": "So he changed one small thing.",
+   "take": 0,
+   "words": [
+    [
+     "So",
+     34.411,
+     34.454
+    ],
+    [
+     "he",
+     34.534,
+     34.694
+    ],
+    [
+     "changed",
+     34.764,
+     35.254
+    ],
+    [
+     "one",
+     35.414,
+     35.894
+    ],
+    [
+     "small",
+     36.001,
+     36.534
+    ],
+    [
+     "thing.",
+     36.614,
+     37.094
+    ]
+   ]
+  },
+  {
+   "i": 7,
+   "file": "line_07.wav",
+   "speaker": "narrator",
+   "start": 41.0,
+   "dur": 3.6,
+   "end": 44.6,
+   "text": "Then another. And another.",
+   "take": 2,
+   "words": [
+    [
+     "Then",
+     41.134,
+     41.16
+    ],
+    [
+     "another.",
+     41.25,
+     42.76
+    ],
+    [
+     "And",
+     43.705,
+     43.72
+    ],
+    [
+     "another.",
+     43.81,
+     44.6
+    ]
+   ]
+  },
+  {
+   "i": 8,
+   "file": "line_08.wav",
+   "speaker": "narrator",
+   "start": 47.4,
+   "dur": 2.72,
+   "end": 50.12,
+   "text": "Same day? Change one thing.",
+   "take": 1,
+   "words": [
+    [
+     "Same",
+     47.696,
+     47.72
+    ],
+    [
+     "day?",
+     47.82,
+     48.56
+    ],
+    [
+     "Change",
+     48.623,
+     49.0
+    ],
+    [
+     "one",
+     49.12,
+     49.48
+    ],
+    [
+     "thing.",
+     49.56,
+     50.12
+    ]
+   ]
+  }
+ ]
+}
