@@ -1,0 +1,61 @@
+name: History 5 edit pack
+# Builds Rakib's edit pack (audio, video only, final, elements, originals, README) from the
+# finished History 5 render, on the runner, and saves it as one download. No rendering, no ElevenLabs.
+on:
+  push:
+    branches: [history-5]
+    paths:
+      - "tools/history5_pack.py"
+      - ".github/workflows/history5-pack.yml"
+permissions:
+  contents: write
+  actions: read
+jobs:
+  pack:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 120
+    steps:
+      - uses: actions/checkout@v5
+      - name: Free disk space
+        run: sudo rm -rf /usr/share/dotnet /usr/local/lib/android /opt/ghc /opt/hostedtoolcache/CodeQL && df -h /
+      - name: Install ffmpeg
+        run: sudo apt-get update -qq && sudo apt-get install -y -qq ffmpeg > /dev/null
+      - name: Get the finished render
+        uses: actions/download-artifact@v4
+        with:
+          name: history5-5
+          run-id: 45720053522
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          path: dl
+      - name: Get the voice parts
+        run: |
+          git fetch -q origin history5-voice
+          mkdir -p parts && git --work-tree=parts checkout origin/history5-voice -- . && git reset -q
+          ls parts && find dl -maxdepth 3 | head -20
+      - name: Build the pack
+        run: |
+          python3 tools/history5_pack.py dl/output/_history5-sources dl/output/_history5.mp4 \
+            dl/work/_history5/plan.json parts parts/voice_report.json History5-edit-pack
+          du -sh History5-edit-pack/*
+      - name: Small preview files for checking (frames, 480p preview, README)
+        run: |
+          mkdir -p prev/frames
+          for t in 2 20 45 70 100 125 150 180 212 240 270 300 315 345 380 410 440 470 500 525 538; do
+            ffmpeg -loglevel error -ss $t -i dl/output/_history5.mp4 -frames:v 1 -vf scale=640:-2 -q:v 4 prev/frames/t$(printf %03d $t).jpg
+          done
+          ffmpeg -loglevel error -i dl/output/_history5.mp4 -vf scale=-2:480 -c:v libx264 -preset veryfast -b:v 900k \
+            -maxrate 1000k -bufsize 2000k -c:a aac -b:a 96k prev/History5_preview_480p.mp4
+          cp History5-edit-pack/README.md History5-edit-pack/narration_with_emotion_tags.txt prev/
+          cp History5-edit-pack/05_ORIGINAL_SOURCES/stock_sources.csv prev/
+          cp dl/output/_history5.qc.json prev/ 2>/dev/null || true
+          ffprobe -v error -show_entries format=duration,size -of default=nw=1 dl/output/_history5.mp4 > prev/final_info.txt
+          du -sh History5-edit-pack > prev/pack_size.txt; du -sh History5-edit-pack/* >> prev/pack_size.txt
+          ls -la prev prev/frames
+          git config user.name "github-actions[bot]"; git config user.email "41898299+github-actions[bot]@users.noreply.github.com"
+          git checkout -q --orphan history5-preview && git rm -rqf --cached . && git add -f prev && git commit -qm "History 5 preview" && git push -qf origin history5-preview
+      - name: Save the edit pack (one download)
+        uses: actions/upload-artifact@v4
+        with:
+          name: History5-edit-pack
+          path: History5-edit-pack/
+          compression-level: 0
