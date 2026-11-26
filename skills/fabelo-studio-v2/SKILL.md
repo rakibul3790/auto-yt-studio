@@ -55,7 +55,7 @@ Fabelo Studio has **two** main characters. Whenever Rakib asks you to make anyth
 ## 0.1 Production rules (read before every video: long films AND Shorts)
 
 Before anything else, read `fabelo/PRODUCTION_RULES.md` in the repo and follow it; it overrides older lines here where they differ.
-- Stages with Rakib's OK at each: ideas, full A-Z script, raw cut, full-frame QC (1 fps + close-up crops, 16:9 and 9:16), review, full edit, 1080p review, then 4K (`--w 3840 --h 2160 --scale 2`, at most 3 workers on 15 GB RAM), Shorts, thumbnail and EN/BN SRT. Projects live in `video for yt\Project File N\` (never touch `Project 2`).
+- Stages with Rakib's OK at each: ideas, full A-Z script, raw cut, full-frame QC (1 fps + close-up crops, 16:9 and 9:16), review, full edit, 1080p review, then 4K (`--w 3840 --h 2160 --scale 2`, at most 3 workers on 15 GB RAM), Shorts, thumbnail and EN/BN SRT. Projects live in `F:\video for yt\Fabelo Studio\Project File N\` (MindBlip videos: `F:\video for yt\MindBlip\`; keep big renders and scratch files off the C drive) (never touch `Project 2`).
 - Voices: ask first. ElevenLabs **Eleven v3** only with consent; otherwise the free model (Kokoro).
 - Mood on every line, free or paid, natural and never over-acted (v3 audio tags; for Kokoro use per-line speed/pitch/pauses/processing and breath sounds). Best of 3 takes.
 - Upload: long videos are saved to the output folder only and uploaded only when Rakib says so; Shorts go up straight away as **Public** after QC. `ready-fabelo` uploads are Public by default (`"privacy": "private"` in the JSON makes one Private).
