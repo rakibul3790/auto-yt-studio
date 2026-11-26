@@ -1,0 +1,82 @@
+{
+  "title": "The Land No Country Wants",
+  "voice_id": "XA3P1cj7XJexe6Zq0ATX",
+  "model": "eleven_v3",
+  "stability": 0.0,
+  "similarity": 0.8,
+  "music": "sneaky-snitch.mp3",
+  "beats": [
+    {
+      "say": "[curious] This patch of desert is one of the only places on Earth that no country wants.",
+      "layout": "map",
+      "shot": "hook",
+      "label": "NO COUNTRY WANTS IT",
+      "label_word": "no"
+    },
+    {
+      "say": "[excited] It's called Bir Tawil, squeezed right between Egypt and Sudan.",
+      "layout": "map",
+      "shot": "countries",
+      "label": "BIR TAWIL",
+      "label_word": "Bir"
+    },
+    {
+      "say": "Back in 1899, the British drew a perfectly straight border right here.",
+      "layout": "map",
+      "shot": "line1899",
+      "label": "1899 BORDER",
+      "label_word": "straight"
+    },
+    {
+      "say": "[sighs] But three years later, they drew a second one. And this one bends.",
+      "layout": "map",
+      "shot": "line1902",
+      "label": "1902 BORDER",
+      "label_word": "second"
+    },
+    {
+      "say": "That left two pieces of land: tiny Bir Tawil, and the Halaib Triangle, ten times bigger, right on the Red Sea.",
+      "layout": "map",
+      "shot": "pieces"
+    },
+    {
+      "say": "Here's the trap. [whispers] Whoever claims Bir Tawil has to give up Halaib.",
+      "layout": "face",
+      "mood": "whisper",
+      "card": {"kind": "versus"}
+    },
+    {
+      "say": "[laughs] So Egypt and Sudan both say: Bir Tawil? Not ours!",
+      "layout": "face",
+      "mood": "laugh",
+      "card": {"kind": "flags"}
+    },
+    {
+      "say": "No towns. No water. No people. And no country.",
+      "layout": "face",
+      "mood": "serious",
+      "card": {"kind": "video", "query": "desert sand dunes", "subject": "desert",
+               "chips": [["NO TOWNS", "towns"], ["NO WATER", "water"], ["NO PEOPLE", "people"]]}
+    },
+    {
+      "say": "In 2014, an American dad even planted a flag here, so his daughter could be a real princess.",
+      "layout": "face",
+      "mood": "excited",
+      "card": {"kind": "photo", "query": "flag on a pole in the desert", "subject": "flag",
+               "tag": "2014", "chip": "A REAL PRINCESS?", "chip_word": "princess"}
+    },
+    {
+      "say": "[laughs] No country recognized it.",
+      "layout": "face",
+      "mood": "laugh",
+      "card": {"kind": "stamp", "text": "NOT RECOGNIZED"}
+    },
+    {
+      "say": "So today, it's still nobody's land. [whispers] Totally up for grabs.",
+      "layout": "map",
+      "shot": "outro",
+      "label": "UP FOR GRABS",
+      "label_word": "Totally"
+    }
+  ]
+}

@@ -1,0 +1,52 @@
+# Presenter Short v2: ONE ElevenLabs eleven_v3 read of presenter/script2.json (skipped when
+# presenter/out2/voice.mp3 already matches the script), its word times, and the Pixabay card
+# media. The video itself is drawn off GitHub. Never uploads anything.
+name: Presenter Short v2 voice and media
+
+on:
+  push:
+    branches: [presenter-test]
+    paths:
+      - "presenter/v2-request"
+
+permissions:
+  contents: write
+
+concurrency:
+  group: presenter-v2
+  cancel-in-progress: false
+
+jobs:
+  voice:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-python@v6
+        with:
+          python-version: "3.10"
+      - name: Install Python packages
+        run: pip install -q requests Pillow numpy PyYAML faster-whisper
+      - name: Voice (ElevenLabs, one read) and word times
+        env:
+          ELEVENLABS_API_KEY: ${{ secrets.ELEVENLABS_API_KEY }}
+        run: python -m presenter.pro2 voice
+      - name: Save voice now
+        run: |
+          git config user.name "github-actions"
+          git config user.email "github-actions@users.noreply.github.com"
+          git add presenter/out2
+          git commit -m "presenter v2: voice [skip ci]" || true
+          git pull --rebase origin presenter-test || true
+          git push origin HEAD:presenter-test
+      - name: Card photos and clips
+        continue-on-error: true
+        env:
+          PIXABAY_API_KEY: ${{ secrets.PIXABAY_API_KEY }}
+        run: python -m presenter.pro2 media
+      - name: Save media
+        run: |
+          git add presenter/out2
+          git commit -m "presenter v2: media [skip ci]" || true
+          git pull --rebase origin presenter-test || true
+          git push origin HEAD:presenter-test
