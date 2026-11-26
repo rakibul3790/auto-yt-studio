@@ -77,6 +77,9 @@ jobs:
 
       - name: Talking host (SadTalker, free and open source)
         if: hashFiles('presenter/out/talk.mp4') == ''
+        continue-on-error: true
+        env:
+          PYTHONUNBUFFERED: "1"
         run: |
           set -e
           [ -d /tmp/SadTalker/.git ] || { mkdir -p /tmp/st_src && git clone --depth 1 https://github.com/OpenTalker/SadTalker /tmp/st_src \
@@ -93,12 +96,15 @@ jobs:
             pydub==0.25.1 scipy==1.10.1 kornia==0.6.8 tqdm yacs==0.1.8 pyyaml joblib==1.1.0 scikit-image==0.19.3 \
             facexlib==0.3.0 gfpgan==1.3.8 av safetensors opencv-python==4.8.1.78 "numba<0.59" numpy==1.23.5
           python -c "import pkg_resources, librosa, basicsr, gfpgan, facexlib, face_alignment, kornia, safetensors, cv2, av; print('imports ok')"
-          if [ ! -f checkpoints/SadTalker_V0.0.2_256.safetensors ]; then bash scripts/download_models.sh; fi
+          if [ ! -f checkpoints/SadTalker_V0.0.2_256.safetensors ] || [ ! -f gfpgan/weights/parsing_parsenet.pth ]; then
+            sed -i -e '/_512/d' -e 's/wget -nc/wget -nc -q --timeout=60 --tries=5/' scripts/download_models.sh
+            timeout 20m bash scripts/download_models.sh
+          fi
           ls -la checkpoints gfpgan/weights || true
           start=$(date +%s)
-          python inference.py --driven_audio "$GITHUB_WORKSPACE/presenter/out/voice16k.wav" \
+          timeout 150m python inference.py --driven_audio "$GITHUB_WORKSPACE/presenter/out/voice16k.wav" \
             --source_image "$GITHUB_WORKSPACE/presenter/out/presenter.png" \
-            --result_dir /tmp/st_out --still --preprocess full --enhancer gfpgan --size 256 --cpu
+            --result_dir /tmp/st_out --still --preprocess full --size 256 --cpu
           echo "SadTalker took $(( $(date +%s) - start )) s"
           f=$(ls -t $(find /tmp/st_out -name '*.mp4') | head -1)
           ffmpeg -y -loglevel error -i "$f" -an -c:v libx264 -crf 17 -preset medium -pix_fmt yuv420p \
