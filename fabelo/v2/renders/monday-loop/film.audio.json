@@ -1,0 +1,72 @@
+{
+  "duration": 51.3,
+  "voice_ready": "voice/timing.json (ElevenLabs v3, Shelby, best of 3 takes)",
+  "voices": {
+    "narrator": { "voice": "af_heart", "space": "room", "gain": 0.95 }
+  },
+  "lines": [],
+  "sfx": [
+    ["impact", 0.0, 0.5],
+    ["tick", 2.2, 0.06, {"every": 0.09, "until": 4.6}],
+    ["pop", 4.7, 0.22],
+    ["rustle", 6.25, 0.2],
+    ["pop", 8.1, 0.18],
+    ["whip", 10.25, 0.22, {"d": 0.3}], ["whip", 12.35, 0.22, {"d": 0.3}], ["whip", 13.35, 0.22, {"d": 0.3}], ["whip", 15.05, 0.22, {"d": 0.3}],
+    ["tap", 10.5, 0.1, {"every": 0.45, "until": 12.3}],
+    ["tap", 13.6, 0.1, {"every": 0.5, "until": 15.0}],
+    ["whip", 17.25, 0.18, {"d": 0.25}], ["whip", 17.65, 0.18, {"d": 0.25}], ["whip", 18.05, 0.18, {"d": 0.25}], ["whip", 18.45, 0.18, {"d": 0.25}],
+    ["whip", 19.38, 0.14, {"d": 0.2}], ["whip", 19.55, 0.14, {"d": 0.2}], ["whip", 19.7, 0.14, {"d": 0.2}],
+    ["tap", 20.6, 0.05, {"every": 1.1, "until": 25.0}],
+    ["click", 32.65, 0.16],
+    ["page", 41.85, 0.25], ["page", 43.35, 0.25], ["page", 44.85, 0.25],
+    ["chime", 42.25, 0.16],
+    ["step", 43.5, 0.3, {"every": 0.5, "until": 44.9}],
+    ["click", 47.42, 0.22],
+    ["chime", 49.6, 0.22]
+  ],
+  "sfx_files": [
+    ["alarm", 0.0, -7, {"cut": 2.7, "fade_out": 0.25}],
+    ["alarm", 6.0, -17, {"cut": 2.1, "fade_out": 0.5}],
+    ["alarm", 9.0, -11, {"cut": 0.62, "fade_out": 0.05}],
+    ["snooze", 9.58, -7],
+    ["keyboard", 12.42, -13, {"cut": 0.95, "fade_out": 0.1}],
+    ["pillow", 15.28, -9],
+    ["rewind", 16.38, -8, {"cut": 0.55, "fade_out": 0.06}],
+    ["alarm", 16.9, -13, {"cut": 0.08}],
+    ["snooze", 16.98, -9],
+    ["keyboard", 17.7, -15, {"cut": 0.38, "fade_out": 0.06}],
+    ["pillow", 18.55, -11],
+    ["rewind", 18.88, -9, {"cut": 0.38, "fade_out": 0.05}],
+    ["snooze", 19.27, -11],
+    ["pillow", 19.85, -12],
+    ["tick", 20.0, -16, {"loop_until": 27.9, "fade_in": 0.6, "fade_out": 1.2}],
+    ["leaf", 25.45, -9],
+    ["water", 34.15, -10, {"cut": 0.95, "fade_out": 0.2}],
+    ["curtain", 35.22, -6],
+    ["bloom", 35.45, -9],
+    ["morning", 35.6, -19, {"loop_until": 46.6, "fade_in": 1.0, "fade_out": 0.8}],
+    ["window", 40.5, -11],
+    ["pencil", 44.98, -13],
+    ["alarm", 47.0, -9, {"cut": 0.42, "fade_out": 0.03}],
+    ["morning", 46.6, -23, {"loop_until": 50.8, "fade_out": 0.1}]
+  ],
+  "beds": [
+    ["roomtone", 6.0, 20.0, 0.04],
+    ["roomtone", 20.0, 33.6, 0.05],
+    ["crickets", 20.0, 33.6, 0.03],
+    ["roomtone", 33.6, 50.8, 0.03]
+  ],
+  "music": {
+    "level": 0.075, "bpm": 84, "reverb": 0.32, "final_chord": true,
+    "sections": [
+      [8.0, 16.4, ["C", "Em", "Am", "G"], 2, 96, "sparse", 0.42],
+      [16.9, 20.0, ["C", "Em", "Am", "G"], 1, 120, "sparse", 0.32],
+      [20.0, 25.2, ["Am", "F"], 4, 58, "dark", 0.34],
+      [32.3, 35.5, ["F", "G"], 2, 70, "build", 0.45],
+      [35.5, 46.6, ["C", "G", "Am", "F"], 4, 84, "warm", 0.85],
+      [46.6, 50.85, ["F", "C"], 4, 84, "tender", 0.75]
+    ],
+    "hits": [[35.5, "swell", 0.24], [46.6, "swell", 0.12]]
+  },
+  "mix": { "duck_db": 8, "bed_duck_db": 4, "auto_sfx": false }
+}

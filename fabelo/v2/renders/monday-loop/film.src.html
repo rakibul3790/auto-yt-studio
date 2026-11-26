@@ -1,0 +1,473 @@
+<!DOCTYPE html>
+<html><head><meta charset="utf-8"><title>Monday Loop — Smooth Scribble Short</title>
+<style>
+@font-face{font-family:'Caveat';src:url(data:font/woff2;base64,__CAVEAT__) format('woff2');font-weight:700}
+html,body{margin:0;background:#000;overflow:hidden}svg{display:block}
+</style>
+<script src="../../s2/lib/scribble2.js"></script>
+<script src="../../s2/lib/sets2.js"></script></head>
+<body>
+<svg id="s" xmlns="http://www.w3.org/2000/svg"></svg>
+<script>
+/* MONDAY LOOP — "1,500 Mondays". 1080x1920 Short, Smooth Scribble, ElevenLabs v3 narration (timing below).
+   One bedroom world (wall, bed, nightstand + alarm clock, window + plant, desk) and a camera that moves through it. */
+const K = Scribble2, DUR = 51.3;
+const TIMING = __TIMING_JSON__;
+const W = 1080, H = 1920;
+const svg = document.getElementById('s');
+svg.setAttribute('width', W); svg.setAttribute('height', H); svg.setAttribute('viewBox', `0 0 ${W} ${H}`);
+const { prog, lp, lerp, clamp, ease, walkAt, blinkAt } = S2;
+const FONT = S2.FONT, INK = '#151314';
+const GY = 1560, SC = 1.0;
+const sm = (u) => { u = clamp(u); return u * u * (3 - 2 * u); };
+const backOut = (u) => { u = clamp(u); const c = 1.9; return 1 + (c + 1) * Math.pow(u - 1, 3) + c * Math.pow(u - 1, 2); };
+const n1 = (t, f = 1) => Math.sin(t * 2.1 * f) * 0.6 + Math.sin(t * 3.7 * f + 1.3) * 0.4;   // smooth handheld noise
+let uid = 0;
+
+// ---------------- world layout ----------------
+const BED = { x0: 180, x1: 1100, top: GY - 178 };           // mattress top; headboard + pillow at x1
+const PIL = { x: 820, y: BED.top - 70, w: 250, h: 82 };
+const NS = { x0: 1150, x1: 1320, top: GY - 250 };           // nightstand right of the headboard
+const CLK = { x: 1235, y: GY - 300 };
+const WIN = { x0: 1440, x1: 1840, y0: 560, y1: 1130 };
+const PLANT = { x: 1640, y: WIN.y1 };
+const DESK = { x0: 2030, x1: 2480, top: GY - 330 };
+
+// ---------------- small drawing helpers ----------------
+const T = (txt, x, y, size, o = {}) => `<text x="${x}" y="${y}" font-size="${size}" text-anchor="${o.anchor || 'middle'}" fill="${o.fill || '#1B1817'}" opacity="${o.op == null ? 1 : o.op}" font-family="${FONT}" font-weight="700" ${o.extra || ''}>${txt}</text>`;
+// 7-segment digit
+const SEG = { 0: 'abcdef', 1: 'bc', 2: 'abged', 3: 'abgcd', 4: 'fgbc', 5: 'afgcd', 6: 'afgedc', 7: 'abc', 8: 'abcdefg', 9: 'abcdfg' };
+function digit(ch, x, y, h, col) {
+  const w = h * 0.55, t = h * 0.12, segs = SEG[ch] || '';
+  const P = { a: [x + t, y, w - 2 * t, t], d: [x + t, y + h - t, w - 2 * t, t], g: [x + t, y + h / 2 - t / 2, w - 2 * t, t],
+    f: [x, y + t * 0.6, t, h / 2 - t * 0.9], b: [x + w - t, y + t * 0.6, t, h / 2 - t * 0.9], e: [x, y + h / 2 + t * 0.3, t, h / 2 - t * 0.9], c: [x + w - t, y + h / 2 + t * 0.3, t, h / 2 - t * 0.9] };
+  let s = '';
+  for (const k of 'abcdefg') { const [a, b, c, d] = P[k]; s += `<rect x="${a}" y="${b}" width="${c}" height="${d}" rx="${t * 0.45}" fill="${col}" opacity="${segs.includes(k) ? 1 : 0.08}"/>`; }
+  return s;
+}
+function clock(cx, cy, s, time, o = {}) {   // digital alarm clock; time 'H:MM'
+  const w = 300 * s, h = 170 * s, sq = o.squash || 0;
+  let g = `<g transform="translate(${cx} ${cy + h / 2}) scale(${1 + sq * 0.12} ${1 - sq * 0.18}) translate(${-cx} ${-(cy + h / 2)})">`;
+  g += `<rect x="${cx - w / 2}" y="${cy - h / 2}" width="${w}" height="${h}" rx="${40 * s}" fill="#2B2D33" stroke="#111" stroke-width="${6 * s}"/>`;
+  g += `<rect x="${cx - w / 2 + 22 * s}" y="${cy - h / 2 + 22 * s}" width="${w - 44 * s}" height="${h - 44 * s}" rx="${18 * s}" fill="#14161B"/>`;
+  const col = o.col || '#BFF6E4', dh = 92 * s, x0 = cx - 118 * s, y0 = cy - dh / 2 - 4 * s;
+  const [hh, mm] = time.split(':');
+  g += digit(hh, x0, y0, dh, col);
+  g += `<circle cx="${x0 + 70 * s}" cy="${y0 + dh * 0.32}" r="${5 * s}" fill="${col}"/><circle cx="${x0 + 70 * s}" cy="${y0 + dh * 0.68}" r="${5 * s}" fill="${col}"/>`;
+  g += digit(mm[0], x0 + 86 * s, y0, dh, col) + digit(mm[1], x0 + 146 * s, y0, dh, col);
+  g += `<text x="${cx + 108 * s}" y="${cy + 40 * s}" font-size="${22 * s}" fill="${col}" font-family="Arial" font-weight="700" text-anchor="middle">MON</text>`;
+  if (o.ring) g += `<circle cx="${cx}" cy="${cy}" r="${(190 + 40 * o.ring) * s}" fill="none" stroke="${col}" stroke-width="${6 * s}" opacity="${0.35 * (1 - o.ring)}"/>`;
+  g += `<rect x="${cx - 70 * s}" y="${cy - h / 2 - 16 * s}" width="${140 * s}" height="${18 * s}" rx="${8 * s}" fill="#3A3D45" stroke="#111" stroke-width="${4 * s}"/>`;   // snooze bar
+  return g + '</g>';
+}
+// plant: health 1 = lush green, 0 = dead brown. leaves = how many still attached. flower 0..1 (yellow)
+const LEAVES = [[-48, 0.62, 1], [42, 0.58, -1], [-22, 0.86, 1], [18, 0.9, -1], [-60, 0.4, 1], [58, 0.36, -1], [0, 1.0, 1]];
+function plant(x, y, health, leaves, flower, sway, t) {
+  const g1 = [127, 160, 113], b = [150, 118, 74];
+  const c = g1.map((v, i) => Math.round(lerp(b[i], v, health)));
+  const col = `rgb(${c})`, dark = `rgb(${c.map((v) => Math.round(v * 0.7))})`;
+  let s = `<path d="M${x - 70} ${y} L${x - 58} ${y - 110} L${x + 58} ${y - 110} L${x + 70} ${y} Z" fill="#C98F62" stroke="#2A231C" stroke-width="5"/>`;
+  s += `<rect x="${x - 76}" y="${y - 126}" width="152" height="24" rx="8" fill="#B87D52" stroke="#2A231C" stroke-width="5"/>`;
+  const droop = (1 - health) * 46, base = y - 120;
+  const stemTop = [x + sway * 6, base - 210 + droop * 1.6];
+  s += `<path d="M${x} ${base} Q${x + sway * 3} ${base - 110} ${stemTop[0]} ${stemTop[1]}" stroke="${dark}" stroke-width="7" fill="none" stroke-linecap="round"/>`;
+  for (let i = 0; i < Math.min(leaves, LEAVES.length); i++) {
+    const [a, hgt, k] = LEAVES[i];
+    const py = base - 210 * hgt + droop * hgt * 1.2, px = x + sway * 4 * hgt;
+    const ang = a + k * droop * 1.2 + Math.sin(t * 1.3 + i) * 2.5 * health;
+    const r = (ang * Math.PI) / 180, lx = px + Math.sin(r) * 70, ly = py - Math.cos(r) * 70 * (1 - (1 - health) * 0.5) + droop * 0.4;
+    s += `<path d="M${px} ${py} Q${(px + lx) / 2} ${py - 20} ${lx} ${ly}" stroke="${dark}" stroke-width="4" fill="none"/>`;
+    s += `<ellipse cx="${lx}" cy="${ly}" rx="${24}" ry="${48 - (1 - health) * 10}" transform="rotate(${ang + k * (1 - health) * 40} ${lx} ${ly})" fill="${col}" stroke="#2A231C" stroke-width="4"/>`;
+    s += `<path d="M${lx} ${ly - 34} L${lx} ${ly + 34}" transform="rotate(${ang + k * (1 - health) * 40} ${lx} ${ly})" stroke="${dark}" stroke-width="2.5" opacity="0.6"/>`;
+  }
+  if (flower > 0) {
+    const fx = stemTop[0], fy = stemTop[1] - 6, fr = 34 * backOut(flower);
+    for (let i = 0; i < 6; i++) { const a = i * 60 + t * 6; s += `<ellipse cx="${fx + Math.cos(a * Math.PI / 180) * fr * 0.85}" cy="${fy + Math.sin(a * Math.PI / 180) * fr * 0.85}" rx="${fr * 0.55}" ry="${fr * 0.36}" transform="rotate(${a} ${fx + Math.cos(a * Math.PI / 180) * fr * 0.85} ${fy + Math.sin(a * Math.PI / 180) * fr * 0.85})" fill="#F6C945" stroke="#2A231C" stroke-width="3.5"/>`; }
+    s += `<circle cx="${fx}" cy="${fy}" r="${fr * 0.42}" fill="#E69B2E" stroke="#2A231C" stroke-width="3.5"/>`;
+  }
+  return s;
+}
+function leafShape(x, y, rot, op = 1) {
+  return `<g transform="translate(${x} ${y}) rotate(${rot})" opacity="${op}"><ellipse cx="0" cy="0" rx="22" ry="40" fill="rgb(150,118,74)" stroke="#2A231C" stroke-width="4"/><path d="M0 -30 L0 30" stroke="#6E5536" stroke-width="2.5"/></g>`;
+}
+
+// ---------------- the room ----------------
+function room(o = {}) {
+  const night = !!o.night, open = o.open || 0, cur = o.curtain == null ? 1 : o.curtain;   // curtain 1 = closed
+  let s = '';
+  s += `<rect x="-600" y="-400" width="3600" height="${GY + 400}" fill="#F3E8D3"/>`;
+  for (let x = -600; x < 3000; x += 120) s += `<path d="M${x} -400 L${x} ${GY}" stroke="#EADCC2" stroke-width="3" opacity="0.7"/>`;   // soft wallpaper stripes
+  s += `<rect x="-600" y="${GY}" width="3600" height="900" fill="#E3D1B0"/><path d="M-600 ${GY} L3000 ${GY}" stroke="#B9A27C" stroke-width="5"/>`;
+  for (let i = 1; i < 6; i++) s += `<path d="M-600 ${GY + i * 70} L3000 ${GY + i * 70}" stroke="#D4BF99" stroke-width="2.5" opacity="0.55"/>`;
+  // window: outside view, clipped
+  const id = 'wc' + (++uid);
+  s += `<clipPath id="${id}"><rect x="${WIN.x0}" y="${WIN.y0}" width="${WIN.x1 - WIN.x0}" height="${WIN.y1 - WIN.y0}" rx="10"/></clipPath>`;
+  s += `<g clip-path="url(#${id})">`;
+  s += night ? `<rect x="${WIN.x0}" y="${WIN.y0}" width="400" height="570" fill="#1B2547"/><circle cx="${WIN.x0 + 290}" cy="${WIN.y0 + 120}" r="36" fill="#F4F1DE"/><circle cx="${WIN.x0 + 305}" cy="${WIN.y0 + 110}" r="32" fill="#1B2547"/>`
+    : `<rect x="${WIN.x0}" y="${WIN.y0}" width="400" height="570" fill="#BFE0F4"/><rect x="${WIN.x0}" y="${WIN.y0 + 300}" width="400" height="270" fill="#E4F2FA"/>`;
+  // far houses + street seen through the window
+  const hc = night ? '#2A3358' : '#D9CBB4', rc = night ? '#222A4A' : '#B88A6A';
+  for (const [hx, hw, hh] of [[WIN.x0 - 20, 150, 210], [WIN.x0 + 140, 130, 260], [WIN.x0 + 280, 170, 190]]) {
+    s += `<rect x="${hx}" y="${WIN.y1 - hh}" width="${hw}" height="${hh}" fill="${hc}" stroke="#2A231C" stroke-width="4"/><path d="M${hx - 10} ${WIN.y1 - hh} L${hx + hw / 2} ${WIN.y1 - hh - 70} L${hx + hw + 10} ${WIN.y1 - hh} Z" fill="${rc}" stroke="#2A231C" stroke-width="4"/>`;
+    s += `<rect x="${hx + hw * 0.35}" y="${WIN.y1 - hh + 50}" width="${hw * 0.3}" height="44" fill="${night ? '#F2D27A' : '#F7F1E3'}" stroke="#2A231C" stroke-width="3" opacity="${night ? 0.9 : 1}"/>`;
+  }
+  if (o.neighbour) s += o.neighbour;
+  s += `</g>`;
+  // window frame (sash slides up when open)
+  s += `<rect x="${WIN.x0}" y="${WIN.y0}" width="400" height="570" rx="10" fill="none" stroke="#2A231C" stroke-width="9"/>`;
+  const sashY = WIN.y0 + 285 - open * 270;
+  s += `<rect x="${WIN.x0 + 6}" y="${sashY}" width="388" height="279" fill="#DCEFF9" opacity="${0.18 * (1 - open)}"/>`;
+  s += `<path d="M${WIN.x0} ${sashY} L${WIN.x1} ${sashY} M${WIN.x0 + 200} ${WIN.y0} L${WIN.x0 + 200} ${WIN.y1}" stroke="#2A231C" stroke-width="8"/>`;
+  s += `<rect x="${WIN.x0 - 30}" y="${WIN.y1}" width="460" height="30" rx="8" fill="#D8C4A2" stroke="#2A231C" stroke-width="5"/>`;
+  // curtains (slide open)
+  const cw = lerp(70, 210, cur);
+  const curtain = (x0, dir) => {
+    const x1 = x0 + dir * cw;
+    let p = `M${x0} ${WIN.y0 - 40} L${x1} ${WIN.y0 - 40} `;
+    const n = 4;
+    for (let i = 0; i <= n; i++) { const yy = WIN.y0 - 40 + (i / n) * 680; p += `Q${x1 + dir * (i % 2 ? 18 : -18)} ${yy - 85} ${x1 + dir * (i % 2 ? 0 : 10)} ${yy} `; }
+    p += `L${x0} ${WIN.y0 + 640} Z`;
+    let g = `<path d="${p}" fill="#E9DDC6" stroke="#2A231C" stroke-width="5"/>`;
+    for (let i = 1; i < 4; i++) g += `<path d="M${x0 + dir * cw * i / 4} ${WIN.y0 - 30} Q${x0 + dir * cw * i / 4 + dir * 8} ${WIN.y0 + 300} ${x0 + dir * cw * i / 4} ${WIN.y0 + 630}" stroke="#CDBD9F" stroke-width="4" fill="none"/>`;
+    return g;
+  };
+  s += curtain(WIN.x0 - 50, 1) + curtain(WIN.x1 + 50, -1);
+  s += `<path d="M${WIN.x0 - 80} ${WIN.y0 - 42} L${WIN.x1 + 80} ${WIN.y0 - 42}" stroke="#2A231C" stroke-width="9" stroke-linecap="round"/>`;
+  // picture frame + lamp
+  s += `<rect x="420" y="560" width="240" height="180" rx="8" fill="#FBF6EA" stroke="#2A231C" stroke-width="7"/><path d="M442 720 L500 640 L544 690 L582 650 L640 720 Z" fill="#9FB7A0" stroke="#2A231C" stroke-width="3.5"/><circle cx="605" cy="600" r="16" fill="#F2C46B"/>`;
+  // bed
+  s += `<rect x="${BED.x1 - 14}" y="${BED.top - 360}" width="44" height="${GY - BED.top + 360}" rx="12" fill="#7A5A44" stroke="#2A231C" stroke-width="6"/>`;
+  s += `<rect x="${BED.x0}" y="${BED.top + 40}" width="${BED.x1 - BED.x0}" height="${GY - BED.top - 40}" rx="14" fill="#6B5240" stroke="#2A231C" stroke-width="6"/>`;
+  s += `<rect x="${BED.x0}" y="${BED.top}" width="${BED.x1 - BED.x0}" height="70" rx="22" fill="#EFE7D8" stroke="#2A231C" stroke-width="6"/>`;
+  s += `<path d="M${BED.x0 + 14} ${BED.top + 40} L${BED.x0 + 14} ${GY}" stroke="#2A231C" stroke-width="6"/>`;
+  // nightstand + clock
+  s += `<rect x="${NS.x0}" y="${NS.top}" width="${NS.x1 - NS.x0}" height="${GY - NS.top}" rx="10" fill="#8A6A50" stroke="#2A231C" stroke-width="6"/><path d="M${NS.x0} ${NS.top + 110} L${NS.x1} ${NS.top + 110}" stroke="#2A231C" stroke-width="5"/><circle cx="${(NS.x0 + NS.x1) / 2}" cy="${NS.top + 60}" r="8" fill="#2A231C"/>`;
+  // desk + laptop
+  s += `<rect x="${DESK.x0}" y="${DESK.top}" width="${DESK.x1 - DESK.x0}" height="24" rx="8" fill="#C9A77F" stroke="#2A231C" stroke-width="6"/><path d="M${DESK.x0 + 30} ${DESK.top + 24} L${DESK.x0 + 30} ${GY} M${DESK.x1 - 30} ${DESK.top + 24} L${DESK.x1 - 30} ${GY}" stroke="#2A231C" stroke-width="12" stroke-linecap="round"/>`;
+  return s;
+}
+function laptop(on) {
+  const x = DESK.x0 + 210, y = DESK.top;
+  let s = `<path d="M${x - 120} ${y} L${x + 100} ${y} L${x + 120} ${y - 8} L${x - 100} ${y - 8} Z" fill="#9A9DA6" stroke="#2A231C" stroke-width="4"/>`;
+  s += `<path d="M${x + 60} ${y - 8} L${x + 120} ${y - 190} L${x + 135} ${y - 186} L${x + 75} ${y - 4} Z" fill="#6F737D" stroke="#2A231C" stroke-width="4"/>`;
+  if (on) s += `<circle cx="${x + 70}" cy="${y - 100}" r="130" fill="url(#s2glow)" opacity="0.6"/>`;
+  return s;
+}
+function notebook(prog_) {
+  const x = DESK.x0 + 170, y = DESK.top - 4;
+  let s = `<path d="M${x - 110} ${y} L${x + 110} ${y} L${x + 95} ${y - 14} L${x - 95} ${y - 14} Z" fill="#FBF7EE" stroke="#2A231C" stroke-width="4"/>`;
+  return s;
+}
+// blanket + lying head (the body is under the blanket)
+function inBed(o) {
+  const r = 122 * 0.86, hx = PIL.x + 120 + (o.hx || 0), hy = PIL.y - 22 + (o.hy || 0);
+  K.LAST.head = [hx, hy, r];
+  let s = `<rect x="${PIL.x}" y="${PIL.y - 6}" width="${PIL.w}" height="${PIL.h}" rx="38" fill="#FFFFFF" stroke="#2A231C" stroke-width="6"/>`;
+  // arm (behind the head, comes from the shoulder under the chin)
+  if (o.arm) s += K.arm(Object.assign({ x: hx + r * 0.35, y: hy + r * 0.95 }, o.arm));
+  s += K.head(hx, hy, r, { view: 'front', face: o.face || 'neutral', look: o.look || [0, 0], tilt: o.tilt == null ? 12 : o.tilt, blink: o.blink, glow: o.glow });
+  // scarf roll at the neck
+  s += `<path d="M${hx - 96} ${hy + r * 0.78} Q${hx - 10} ${hy + r * 1.16} ${hx + 70} ${hy + r * 0.9} L${hx + 62} ${hy + r * 1.16} Q${hx - 20} ${hy + r * 1.42} ${hx - 104} ${hy + r * 1.04} Z" fill="url(#s2red)" stroke="#9A2620" stroke-width="3"/>`;
+  // blanket from the chin to the foot of the bed (a shoulder bump, then the legs)
+  const bt = BED.top - 30 + (o.breath || 0) * 5, xs = hx - r * 0.72;
+  s += `<path d="M${xs} ${hy + r * 1.05} C${xs - 60} ${bt - 70} ${xs - 230} ${bt - 66} ${xs - 330} ${bt - 20} C${xs - 430} ${bt + 6} ${BED.x0 + 120} ${bt - 6} ${BED.x0 - 8} ${bt + 18} L${BED.x0 - 8} ${BED.top + 118} L${xs + 40} ${BED.top + 118} Z" fill="#7F93B5" stroke="#2A231C" stroke-width="6"/>`;
+  s += `<path d="M${xs - 30} ${bt - 44} C${xs - 150} ${bt - 72} ${xs - 260} ${bt - 52} ${xs - 340} ${bt - 14}" stroke="#A9B8D2" stroke-width="10" fill="none" opacity="0.7" stroke-linecap="round"/>`;
+  s += `<path d="M${BED.x0 - 8} ${BED.top + 60} L${xs + 30} ${BED.top + 60}" stroke="#6A7EA0" stroke-width="5" opacity="0.6"/>`;
+  return s;
+}
+// ---------------- colour control ----------------
+function satFilter(id, v) { return `<filter id="${id}" color-interpolation-filters="sRGB"><feColorMatrix type="saturate" values="${clamp(v, 0, 1.2)}"/></filter>`; }
+function contrastDim(id, v) { return `<filter id="${id}"><feComponentTransfer><feFuncR type="linear" slope="${v}" intercept="${(1 - v) * 0.5}"/><feFuncG type="linear" slope="${v}" intercept="${(1 - v) * 0.5}"/><feFuncB type="linear" slope="${v}" intercept="${(1 - v) * 0.5}"/></feComponentTransfer></filter>`; }
+
+// ---------------- montage beats (scene 3) ----------------
+const BEATS = ['wake', 'scrollBed', 'work', 'scrollSit', 'sleep'];
+const LOOP1 = [[9.0, 10.3], [10.3, 12.4], [12.4, 13.4], [13.4, 15.1], [15.1, 16.4]];
+function beatShot(kind, u, d, tt, sat) {
+  // returns { world, cam, light } for one beat; u = 0..1 within the beat, d = beat length (s)
+  let w = '', cam, light = null, phoneAt = null;
+  const breathe = Math.sin(tt * 2.2);
+  if (kind === 'wake') {
+    const up = sm(u / 0.38), slap = u > 0.42 ? 1 : 0, back = sm((u - 0.6) / 0.4);
+    const deg = lerp(70, 128, up) - (slap ? lerp(40, 0, back) : 0);
+    w += clock(CLK.x, CLK.y, 0.62, '6:00', { squash: slap ? Math.max(0, 1 - (u - 0.42) * 9) : 0, ring: u < 0.42 ? (tt * 3) % 1 : 0 });
+    w += inBed({ face: u < 0.5 ? 'sleepy' : 'neutral', blink: u < 0.3, look: [0.8, -0.2], breath: breathe,
+      arm: { deg: deg + 10, bend: lerp(30, 8, up), scale: 0.86, hand: slap ? 'open' : 'relax', k: 1 } });
+    cam = { z: 1.5 + u * 0.06, cx: 1010, cy: GY - 330 };
+  } else if (kind === 'scrollBed') {
+    w += clock(CLK.x, CLK.y, 0.62, '6:0' + Math.min(9, 1 + Math.floor(u * 5)));
+    w += inBed({ face: 'focused', look: [0.85, -0.25], breath: breathe, glow: true, tilt: 8,
+      arm: { deg: 150, bend: -30, scale: 0.86, hand: 'phone', k: 1, phone: { ang: -20 + Math.sin(tt * 9) * 3, dx: 6, dy: -10 }, glow: true } });
+    cam = { z: 1.7, cx: PIL.x + 170 + u * 20, cy: PIL.y - 70 };
+    light = 1;
+  } else if (kind === 'work') {
+    w += S2.chair(DESK.x0 - 40, { GY }, SC, false) + laptop(true);
+    const typ = Math.sin(tt * 32) * 7;
+    w += K.draw({ view: 'side', f: 1, x: DESK.x0 - 40, y: GY, scale: SC, pose: { seat: 150, l1: [88, 92], l2: [84, 86], lean: 12 + breathe * 0.6, tilt: 10, a1: [62, 26 + typ], a2: [58, 30 - typ] }, face: 'sleepy', look: [0.6, 0.6], blink: u > 0.7 && u < 0.78 });
+    cam = { z: 1.3, cx: DESK.x0 + 80, cy: GY - 520 };
+  } else if (kind === 'scrollSit') {
+    const x = BED.x0 + 140;
+    w += K.draw({ view: 'q', f: -1, x, y: GY, scale: SC, pose: { seat: 172, l1: [84, 86], l2: [80, 84], lean: 18 + breathe, a1: [6, 72], a2: [2, 74], tilt: 16 }, face: 'sleepy', look: [0.2, 0.9],
+      hands: ['phone', 'fist'], phone: { ang: -30 + Math.sin(tt * 8) * 3, dy: -18 }, glow: true, blink: u > 0.55 && u < 0.62 });
+    phoneAt = K.LAST.phone;
+    cam = { z: 1.35, cx: x + 40, cy: GY - 470 };
+    light = 1;
+  } else {   // sleep: flop onto the pillow
+    const fall = backOut(u / 0.35);
+    w += clock(CLK.x, CLK.y, 0.62, '11:4' + Math.min(9, Math.floor(u * 9)));
+    w += inBed({ face: 'closed', hy: lerp(-120, 0, fall), tilt: lerp(-30, -14, fall), breath: breathe });
+    cam = { z: 1.45, cx: PIL.x + 60, cy: GY - 330 };
+  }
+  return { w, cam, light };
+}
+function montageAt(t, ranges) {
+  for (let i = 0; i < ranges.length; i++) if (t >= ranges[i][0] && t < ranges[i][1]) return { i, u: (t - ranges[i][0]) / (ranges[i][1] - ranges[i][0]), d: ranges[i][1] - ranges[i][0] };
+  return { i: ranges.length - 1, u: 0.999, d: 1 };
+}
+const mk = (t0, d) => BEATS.map((_, i) => [t0 + i * d, t0 + (i + 1) * d]);
+const LOOP2 = mk(16.9, 0.4), LOOP3 = mk(19.25, 0.15);
+
+// ---------------- frame ----------------
+function frame(t) {
+  uid = 0;
+  let s = K.defs();
+  let world = '', fxl = '', hud = '', cam = { z: 1, cx: W / 2, cy: H / 2, rot: 0 }, sat = 1, satC = 1, night = 0, light = 0, fade = 0, caption = true, rewind = 0;
+  K.LAST.phone = null;
+  const COUNTER = (n, op = 1) => `<g opacity="${op}"><rect x="610" y="120" width="420" height="92" rx="46" fill="#1B1817" opacity="0.82"/>` + T(`Monday #${n.toLocaleString('en-US')}`, 820, 182, 52, { fill: '#FBF7EE' }) + `</g>`;
+
+  if (t < 6.0) {
+    // ===== 1 · HOOK =====
+    caption = false;
+    hud += `<rect width="${W}" height="${H}" fill="#0E0F13"/>`;
+    const sl = backOut(t / 0.2), sh = t < 0.3 ? Math.sin(t * 160) * 14 * (1 - t / 0.3) : 0;
+    hud += `<g transform="translate(${sh} 0)"><g transform="translate(540 700) scale(${lerp(1.7, 1, clamp(sl, 0, 2))}) translate(-540 -700)">${clock(540, 700, 1.9, '6:00', { ring: t < 2.4 ? (t * 2) % 1 : 0 })}</g></g>`;
+    hud += `<circle cx="540" cy="700" r="520" fill="#BFF6E4" opacity="${0.06 + 0.03 * Math.sin(t * 12)}"/>`;
+    const a1 = prog(t, 0.55, 1.0), a2 = prog(t, 2.2, 2.6), a3 = prog(t, 4.6, 5.0);
+    hud += T("If you're 30, you've lived", 540, 1130, 78, { fill: '#FBF7EE', op: a1 });
+    const cnt = Math.round(1565 * ease(clamp((t - 2.2) / 2.4)));
+    hud += `<g opacity="${a2}" transform="translate(540 1330) scale(${1 + 0.06 * Math.max(0, 1 - Math.abs(t - 4.65) * 6)})">` + T(cnt.toLocaleString('en-US'), 0, 0, 220, { fill: '#FBF7EE' }) + `</g>`;
+    hud += T('Mondays.', 540, 1470, 96, { fill: '#FBF7EE', op: a3 });
+    hud += `<path d="M380 1500 Q540 1488 700 1498" stroke="#E63946" stroke-width="10" fill="none" stroke-linecap="round" stroke-dasharray="330" stroke-dashoffset="${330 * (1 - prog(t, 4.75, 5.3))}"/>`;
+    fade = prog(t, 5.75, 6.0) * 0.0;
+  } else if (t < 9.0) {
+    // ===== 2 · THE QUESTION (match cut: round clock → round head) =====
+    sat = 0.85; satC = 0.9;
+    world += room({ curtain: 0.6 });
+    world += plant(PLANT.x, PLANT.y, 0.95, 7, 0, 0, t);
+    world += clock(CLK.x, CLK.y, 0.62, '6:00', { ring: (t * 2) % 1 });
+    const open = t > 8.05 ? 1 : 0;
+    world += inBed({ face: open ? 'surprised' : 'closed', look: open ? [0.8, -0.2] : [0, 0], blink: false, breath: Math.sin(t * 2), tilt: 12 });
+    const pull = prog(t, 6.0, 7.6);
+    cam = { z: lerp(3.4, 1.9, pull) + (t > 8.05 ? 0.06 * Math.max(0, 1 - (t - 8.05) * 4) : 0), cx: lerp(PIL.x + 120, PIL.x + 40, pull), cy: lerp(PIL.y - 22, PIL.y + 20, pull) };
+    fade = clamp(1 - (t - 6.0) / 0.25);
+  } else if (t < 20.0) {
+    // ===== 3 · THE LOOP =====
+    caption = false;
+    let lt = t, R = LOOP1, loopN = 1;
+    if (t >= 16.4 && t < 16.9) { rewind = 1; lt = 16.4 - (t - 16.4) * 14; }                 // rewind loop 1
+    else if (t >= 16.9 && t < 18.9) { R = LOOP2; loopN = 2; }
+    else if (t >= 18.9 && t < 19.25) { rewind = 1; R = LOOP2; loopN = 2; lt = 18.9 - (t - 18.9) * 5.5; }
+    else if (t >= 19.25) { R = LOOP3; loopN = 3; }
+    if (lt < 9.0) lt = 9.0;
+    const m = montageAt(lt, R);
+    sat = [0, 0.62, 0.38, 0.2][loopN] - m.i * 0.02; satC = Math.max(sat, 0.45);
+    world += room({ curtain: 0.6 });
+    const health = [0, 0.75, 0.5, 0.3][loopN] - m.i * 0.03;
+    world += plant(PLANT.x, PLANT.y, health, [0, 6, 4, 2][loopN], 0, 0, t);
+    const b = beatShot(BEATS[m.i], m.u, m.d, t, sat);
+    world += b.w; cam = Object.assign({}, b.cam);
+    const shake = loopN * 0.6;
+    cam.cx += n1(t * 3) * 6 * shake; cam.cy += n1(t * 2.6 + 4) * 6 * shake;
+    // whip between beats: quick lateral offset at beat starts
+    if (!rewind && m.u < 0.12) cam.cx += (1 - m.u / 0.12) * 260 * (m.i % 2 ? -1 : 1);
+    light = b.light ? 0.55 : 0;
+    // stamp words (loop 1 synced to the voice)
+    const STAMP = ['WAKE UP.', 'SCROLL.', 'WORK.', 'SCROLL.', 'SLEEP.'];
+    if (!rewind) {
+      const pop = backOut(Math.min(1, m.u * m.d / 0.16));
+      hud += `<g transform="translate(540 ${loopN === 1 ? 430 : 470}) scale(${pop * (loopN === 3 ? 0.8 : 1)}) rotate(${(m.i % 2 ? 4 : -4)})">` + T(STAMP[m.i], 0, 0, loopN === 1 ? 150 : 120, { fill: '#1B1817', extra: `paint-order="stroke" stroke="#FBF7EE" stroke-width="22" stroke-linejoin="round"` }) + `</g>`;
+    }
+    hud += COUNTER(1211 + loopN);
+    if (t > 17.9 && t < 19.0) hud += `<g opacity="${prog(t, 17.95, 18.25) * (1 - prog(t, 18.8, 18.95))}">` + T('Repeat.', 540, 1480, 120, { fill: '#1B1817', extra: `paint-order="stroke" stroke="#FBF7EE" stroke-width="20"` }) + `</g>`;
+    if (loopN === 1 && t < 9.25) fade = clamp(1 - (t - 9.0) / 0.25) * 0.7;
+  } else if (t < 25.2) {
+    // ===== 4 · THE BLUR (night, slow motion) =====
+    sat = 0.08; satC = 0.22; night = 0.78;
+    world += room({ night: true, curtain: 0.6 });
+    world += plant(PLANT.x, PLANT.y, 0.08, 0, 0, 0, t * 0.3) + leafShape(PLANT.x + 34, PLANT.y - 270, 28);
+    world += clock(CLK.x, CLK.y, 0.62, '2:47');
+    world += inBed({ face: 'sad', look: [0.85, -0.25], breath: Math.sin(t * 1.1), glow: true, tilt: 8, blink: blinkAt(t * 0.6),
+      arm: { deg: 150, bend: -30, scale: 0.86, hand: 'phone', k: 1, phone: { ang: -20 + Math.sin(t * 3) * 2, dx: 6, dy: -10 }, glow: true } });
+    light = 1;
+    const p = prog(t, 20.0, 25.2);
+    cam = { z: lerp(1.0, 1.55, p), cx: lerp(820, PIL.x + 120, p), cy: lerp(GY - 560, PIL.y - 60, p) };
+    fade = clamp(1 - (t - 20.0) / 0.2) * 0.8;
+  } else if (t < 33.6) {
+    // ===== 5 · THE LEAF =====
+    sat = 0.07; satC = 0.2; night = t < 27.4 ? 0.55 : 0.78;
+    world += room({ night: true, curtain: 0.6 });
+    world += `<ellipse cx="${PLANT.x}" cy="${PLANT.y - 160}" rx="230" ry="300" fill="#DCE6FF" opacity="0.22"/>`;
+    const fallU = clamp((t - 25.4) / 2.3);
+    world += plant(PLANT.x, PLANT.y, 0.05, 0, 0, 0, 0);
+    // falling leaf: curved flutter path from the stem to the sill
+    const lx0 = PLANT.x - 6, ly0 = PLANT.y - 120 - 150;
+    if (fallU <= 0) world += leafShape(lx0 + 40 + Math.sin(t * 2) * 2, ly0, 28 + Math.sin(t * 2.4) * 4);
+    else {
+      const e = fallU < 1 ? fallU : 1;
+      const lx = lx0 + 50 + Math.sin(e * Math.PI * 2.2) * 70 - e * 30, ly = lerp(ly0, PLANT.y - 18, sm(e)), rot = 20 + Math.sin(e * Math.PI * 3) * 60 + e * 70;
+      world += leafShape(lx, fallU >= 1 ? PLANT.y - 18 : ly, fallU >= 1 ? 92 : rot);
+    }
+    world += clock(CLK.x, CLK.y, 0.62, '3:07');
+    const look = prog(t, 27.6, 28.4), down = prog(t, 31.8, 32.7);
+    world += inBed({ face: t > 28.4 ? 'worried' : 'sad', look: [lerp(0.85, 0.95, look), lerp(-0.25, -0.75, look)], tilt: lerp(8, -4, look), breath: Math.sin(t * 1.1), glow: down < 0.6, blink: t > 30.0 && t < 30.12,
+      arm: { deg: lerp(150, 95, Math.max(look * 0.4, down)), bend: lerp(-30, 10, down), scale: 0.86, hand: 'phone', k: 1, phone: { ang: lerp(-20, 160, down), dx: 6, dy: -10 }, glow: down < 0.6 } });
+    light = 1 - down;
+    if (t < 27.4) cam = { z: 1.85, cx: PLANT.x - 10, cy: lerp(PLANT.y - 330, PLANT.y - 200, prog(t, 25.2, 27.4)) };   // close on the leaf
+    else { const p = prog(t, 27.4, 33.6); cam = { z: lerp(1.04, 1.14, p), cx: lerp(1350, 1320, p), cy: lerp(1160, 1150, p) }; }
+  } else if (t < 40.4) {
+    // ===== 6 · ONE SMALL THING (sunbeam + colour bloom) =====
+    const pull = prog(t, 35.25, 35.6), bloom = prog(t, 35.5, 37.4);
+    sat = 0.07; satC = lerp(0.2, 1, bloom);
+    world += room({ curtain: 0.6 * (1 - pull) });
+    const water = prog(t, 34.1, 34.9);
+    world += plant(PLANT.x, PLANT.y, lerp(0.12, 1, prog(t, 35.6, 37.2)), Math.round(lerp(1, 3, prog(t, 36.0, 37.6))), 0, 0, t);
+    // Scribble at the window, 3/4 facing right
+    const stand = { view: 'q', f: 1, x: PLANT.x - 400, y: GY, scale: SC, face: bloom > 0.3 ? 'happy' : 'neutral', look: [0.6, 0.2], blink: blinkAt(t, 1.1) };
+    let pose;
+    if (t < 35.0) pose = { a1: [lerp(-6, 72, prog(t, 33.6, 34.1)), lerp(6, 18, prog(t, 33.6, 34.1))], a2: [9, 10], l1: [-3, 1], l2: [5, 2], tilt: 8, lean: 6 * prog(t, 33.6, 34.1) };
+    else pose = { a1: [lerp(55, 120, prog(t, 35.0, 35.25)) - 70 * pull, lerp(40, 10, prog(t, 35.0, 35.25))], a2: [9, 10], l1: [-3, 1], l2: [5, 2], lean: -8 * pull + 4 * prog(t, 35.0, 35.25), tilt: lerp(6, -6, bloom) };
+    world += K.draw(Object.assign(stand, { pose, hands: [t < 35.0 ? 'fist' : 'open', 'relax'], over: [] }));
+    if (t < 35.0 && K.LAST.hand && K.LAST.hand[1]) {   // glass in the near hand + water arc into the pot
+      const [gx, gy] = K.LAST.hand[1];
+      world += `<g transform="rotate(${lerp(0, 75, water)} ${gx} ${gy})"><path d="M${gx - 22} ${gy - 70} L${gx + 22} ${gy - 70} L${gx + 17} ${gy} L${gx - 17} ${gy} Z" fill="#DCEFF9" stroke="#2A231C" stroke-width="4" opacity="0.95"/><rect x="${gx - 19}" y="${gy - 40}" width="38" height="38" fill="#9CCBFF" opacity="${0.7 * (1 - water)}"/></g>`;
+      if (water > 0.25) for (let i = 0; i < 8; i++) { const k = ((t * 2.6 + i / 8) % 1); world += `<circle cx="${lerp(gx + 30, PLANT.x - 20, k)}" cy="${gy - 60 + Math.sin(k * Math.PI) * -50 + k * (PLANT.y - 110 - gy + 60)}" r="${7 - k * 3}" fill="#9CCBFF" opacity="0.9"/>`; }
+    }
+    // sunbeam
+    if (pull > 0) fxl += `<polygon points="${WIN.x0 + 60},${WIN.y0} ${WIN.x1},${WIN.y0} ${PLANT.x + 160},${GY + 200} ${PLANT.x - 420},${GY + 200}" fill="#FFE7A8" opacity="${0.32 * pull}" style="mix-blend-mode:screen"/>`;
+    const p = prog(t, 33.6, 35.3), z2 = prog(t, 35.4, 36.6);
+    const back = prog(t, 37.5, 39.0);
+    cam = { z: lerp(1.05, 1.15, p) + 0.18 * z2 - 0.13 * back, cx: lerp(lerp(PLANT.x - 220, PLANT.x - 160, z2), PLANT.x - 230, back), cy: lerp(lerp(GY - 520, PLANT.y - 120, z2), GY - 560, back) };
+    if (t > 35.45 && t < 35.75) { cam.cx += Math.sin(t * 90) * 8; }
+    if (bloom > 0) world = `__BLOOM__${bloom}__` + world;    // handled below
+    fade = clamp(1 - (t - 33.6) / 0.2) * 0.7;
+  } else if (t < 46.6) {
+    // ===== 7 · ANOTHER… AND ANOTHER =====
+    sat = 1; satC = 1;
+    const shot = t < 41.9 ? 0 : t < 43.4 ? 1 : t < 44.9 ? 2 : 3;
+    const st0 = [40.4, 41.9, 43.4, 44.9][shot], u = (t - st0) / 1.5;
+    if (shot === 0) {   // open the window, breathe
+      world += room({ curtain: 0, open: prog(t, 40.5, 41.0) });
+      world += plant(PLANT.x, PLANT.y, 1, 4, 0, Math.sin(t * 2), t);
+      const br = Math.sin(clamp((t - 40.9) / 0.9) * Math.PI);
+      world += K.draw({ view: 'front', x: PLANT.x - 260, y: GY, scale: SC, pose: { a1: [lerp(8, 30, br), -3], a2: [lerp(8, 30, br), -3], l1: [2.5, 0], l2: [2.5, 0], tilt: -6 * br, lean: 0 }, face: br > 0.3 ? 'closed' : 'smile', wind: 0.25 * br, phase: t });
+      cam = { z: 1.15, cx: PLANT.x - 200, cy: GY - 560 };
+    } else if (shot === 1) {   // neighbour waves through the window, he waves back
+      const wv = Math.sin(t * 13) * 14;
+      const nb = K.draw({ view: 'front', x: WIN.x0 + 270, y: WIN.y1 + 120, scale: 0.6, scarf: false, pose: { a1: [8, -3], a2: [100, 48 + wv] }, face: 'happy', hands: ['relax', 'open'] });
+      world += room({ curtain: 0, open: 1, neighbour: nb });
+      world += plant(PLANT.x, PLANT.y, 1, 5, 0, Math.sin(t * 2), t);
+      const up = prog(t, 42.2, 42.5);
+      world += K.draw({ view: 'q', f: 1, x: PLANT.x - 420, y: GY, scale: SC, pose: { a1: [lerp(-6, 110, up), lerp(6, 40 + wv * up, up)], a2: [9, 10], l1: [-3, 1], l2: [5, 2] }, face: 'happy', hands: [up > 0.4 ? 'open' : 'relax', 'relax'], look: [0.7, -0.2] });
+      cam = { z: 1.1, cx: PLANT.x - 120, cy: GY - 600 };
+    } else if (shot === 2) {   // a new way: walk outside in the sun
+      world += street(t);
+      const x = lerp(250, 830, u);
+      world += K.draw({ view: 'side', f: 1, x, y: GY, scale: SC, pose: walkAt(t * 1.0), face: 'smile', wind: 0.35, phase: t, blink: blinkAt(t) });
+      cam = { z: 1.0, cx: lerp(470, 600, u), cy: H / 2 + 40 };
+    } else {   // sketching instead of scrolling
+      world += room({ curtain: 0, open: 1 }) + S2.chair(DESK.x0 - 40, { GY }, SC, false) + notebook();
+      const sk = Math.sin(t * 18) * 6;
+      world += K.draw({ view: 'side', f: 1, x: DESK.x0 - 40, y: GY, scale: SC, pose: { seat: 150, l1: [88, 92], l2: [84, 86], lean: 10, tilt: 12, a1: [58, 34 + sk], a2: [40, 50] }, face: 'happy', look: [0.6, 0.7] });
+      const bx = DESK.x0 + 190, by = DESK.top - 6, pr = clamp((t - 44.95) / 1.3);
+      world += `<g transform="translate(${bx} ${by}) rotate(-14)"><rect x="-10" y="-200" width="190" height="200" rx="8" fill="#FBF7EE" stroke="#2A231C" stroke-width="5"/>
+        <circle cx="85" cy="-110" r="34" fill="none" stroke="#E69B2E" stroke-width="7" stroke-dasharray="214" stroke-dashoffset="${214 * (1 - clamp(pr * 1.6))}"/>
+        ${[0, 45, 90, 135, 180, 225, 270, 315].map((a, i) => { const rr = (a * Math.PI) / 180, k = clamp(pr * 8 / 3 - 0.6 - i * 0.12); return `<path d="M${85 + Math.cos(rr) * 46} ${-110 + Math.sin(rr) * 46} L${85 + Math.cos(rr) * (46 + 26 * k)} ${-110 + Math.sin(rr) * (46 + 26 * k)}" stroke="#E69B2E" stroke-width="6" stroke-linecap="round" opacity="${k > 0 ? 1 : 0}"/>`; }).join('')}</g>`;
+      cam = { z: 1.35, cx: DESK.x0 + 90, cy: GY - 470 };
+    }
+    // page-flip transitions between the shots
+    const since = t - st0;
+    if (since < 0.18 && shot > 0) fxl += `<rect x="${-200 + since / 0.18 * 2600}" y="-400" width="260" height="3000" fill="#FBF7EE" opacity="0.85" transform="skewX(-12)"/>`;
+    const n = t < 41.9 ? 1215 : 0;
+    hud += `<g opacity="${1 - prog(t, 41.4, 41.9)}">${COUNTER(1215)}</g>`;
+    hud += `<g opacity="${prog(t, 41.6, 42.1)}"><rect x="640" y="120" width="390" height="92" rx="46" fill="#FBF7EE" opacity="0.9" stroke="#1B1817" stroke-width="4"/>` + T('A new Monday', 835, 182, 52, { fill: '#1B1817' }) + `</g>`;
+    if (t < 40.6) fade = clamp(1 - (t - 40.4) / 0.2) * 0.5;
+  } else {
+    // ===== 8 · ENDING (loops back to the alarm) =====
+    sat = 1; satC = 1;
+    world += room({ curtain: 0 });
+    world += plant(PLANT.x, PLANT.y, 1, 7, prog(t, 46.8, 47.6), Math.sin(t * 1.5), t);
+    const tm = t < 47.0 ? '5:59' : '6:00';
+    const tap = prog(t, 47.25, 47.45), back = prog(t, 47.55, 47.9);
+    world += clock(CLK.x, CLK.y, 0.62, tm, { ring: t > 47.0 && t < 47.4 ? (t - 47.0) / 0.4 : 0, squash: t > 47.42 && t < 47.6 ? 1 - (t - 47.42) / 0.18 : 0 });
+    const turn = t > 47.75;
+    const reach = tap * (1 - back);
+    world += K.draw({ view: turn ? 'front' : 'q', f: -1, x: NS.x1 + 120, y: GY, scale: SC,
+      pose: { a1: [lerp(8, 58, reach), lerp(-3, 12, reach)], a2: [8, -3], l1: [2.5, 0], l2: [2.5, 0], lean: lerp(0, 8, reach), tilt: turn ? -3 + Math.sin((t - 47.75) * 3) * 2 : 4 },
+      face: turn ? (t > 48.4 ? 'happy' : 'smile') : 'neutral', look: turn ? [0, 0] : [-0.6, 0.4], hands: ['open', 'relax'], blink: !turn && blinkAt(t) });
+    const p = prog(t, 46.6, 50.5);
+    cam = { z: lerp(1.05, 1.3, p), cx: lerp(1240, NS.x1 + 90, p), cy: lerp(GY - 520, GY - 640, p) };
+    const tx = prog(t, 48.5, 49.3);
+    hud += `<g opacity="${tx}">` + T('Same day?', 540, 360, 120, { extra: `paint-order="stroke" stroke="#FBF7EE" stroke-width="20"` }) + T('Change one thing.', 540, 500, 120, { extra: `paint-order="stroke" stroke="#FBF7EE" stroke-width="20"` }) + `</g>`;
+    hud += `<path d="M330 530 Q540 515 760 528" stroke="#E63946" stroke-width="11" fill="none" stroke-linecap="round" stroke-dasharray="440" stroke-dashoffset="${440 * (1 - prog(t, 49.4, 50.0))}"/>`;
+    caption = t < 48.4;
+    if (t >= 50.85) { hud += `<rect width="${W}" height="${H}" fill="#0E0F13"/>`; caption = false; }
+    if (t < 46.8) fade = clamp(1 - (t - 46.6) / 0.2) * 0.6;
+  }
+
+  // ---------- compose ----------
+  let bloom = 0;
+  const bm = world.match(/^__BLOOM__([\d.]+)__/);
+  if (bm) { bloom = +bm[1]; world = world.slice(bm[0].length); }
+  const camT = `translate(${W / 2} ${H / 2}) scale(${cam.z}) translate(${-cam.cx} ${-cam.cy})`;
+  s += satFilter('fs', sat) + satFilter('fc', satC);
+  if (t >= 6.0) {
+    if (bloom > 0) {
+      // grey world + the same world in full colour revealed by a soft circle growing from the plant
+      const r = 60 + bloom * 2400;
+      s += `<radialGradient id="bm" gradientUnits="userSpaceOnUse" cx="${PLANT.x}" cy="${PLANT.y - 200}" r="${r}"><stop offset="0.82" stop-color="#fff"/><stop offset="1" stop-color="#000"/></radialGradient><mask id="bmk" maskUnits="userSpaceOnUse" x="-1000" y="-1000" width="5000" height="5000"><rect x="-1000" y="-1000" width="5000" height="5000" fill="url(#bm)"/></mask>`;
+      s += `<g transform="${camT}"><g filter="url(#fs)">${world}</g><g mask="url(#bmk)">${world}</g>${fxl}</g>`;
+      s += `<circle cx="${W / 2}" cy="${H / 2}" r="900" fill="#FFF3D6" opacity="${0.35 * Math.sin(Math.PI * clamp(bloom * 1.4))}" style="mix-blend-mode:screen"/>`;
+    } else {
+      s += `<g transform="${camT}"><g filter="url(#fs)">${world}</g>${fxl}</g>`;
+    }
+    if (satC > sat + 0.01 && !bloom) {
+      // keep the scarf's red alive longer than the room: overlay a red-only boost (scarf area) — tint by multiply of a red ghost is overkill; a gentle global warm keeps it readable
+      s += `<rect width="${W}" height="${H}" fill="#E63946" opacity="${0.025 * (satC - sat)}" style="mix-blend-mode:color"/>`;
+    }
+    if (night > 0) s += `<g transform="${camT}">${S2.night(night, light, { W: 3600, H: 3000 })}</g>`.replace('<rect width="3600" height="3000"', '<rect x="-800" y="-600" width="3600" height="3000"').replace('<rect width="3600" height="3000"', '<rect x="-800" y="-600" width="3600" height="3000"');
+    else if (light > 0 && K.LAST.phone) s += `<g transform="${camT}"><circle cx="${K.LAST.phone[0]}" cy="${K.LAST.phone[1]}" r="160" fill="url(#s2glow)" opacity="${light}"/></g>`;
+  }
+  if (rewind) {
+    // VHS rewind: scan lines, tracking bars, chroma tint, ◀◀
+    s += `<rect width="${W}" height="${H}" fill="#3A4A7A" opacity="0.18" style="mix-blend-mode:color"/>`;
+    for (let i = 0; i < 9; i++) { const y = ((t * 2600 + i * 230) % (H + 200)) - 100; s += `<rect x="0" y="${y}" width="${W}" height="${10 + (i % 3) * 14}" fill="#FFFFFF" opacity="${0.12 + (i % 2) * 0.1}"/>`; }
+    s += `<rect x="0" y="${(t * 1800) % H}" width="${W}" height="60" fill="#000" opacity="0.25"/>`;
+    s += `<g opacity="0.95"><path d="M120 150 L60 190 L120 230 Z M190 150 L130 190 L190 230 Z" fill="#FBF7EE" stroke="#1B1817" stroke-width="6" stroke-linejoin="round"/></g>` + T('REWIND', 210, 212, 64, { fill: '#FBF7EE', anchor: 'start', extra: `paint-order="stroke" stroke="#1B1817" stroke-width="10"` });
+  }
+  s += hud;
+  if (caption) s += S2.caption(t, TIMING, { W, H, GY: 1500 }, { y: 1510, size: 74, maxWords: 5 });
+  if (fade > 0) s += `<rect width="${W}" height="${H}" fill="#0B0D14" opacity="${clamp(fade)}"/>`;
+  svg.innerHTML = s;
+}
+// outdoor street for scene 7
+function street(t) {
+  let s = `<rect x="-600" y="-400" width="2400" height="${GY + 400}" fill="#CFE8F6"/><rect x="-600" y="${GY - 520}" width="2400" height="520" fill="#E9F4FA"/>`;
+  s += `<circle cx="860" cy="520" r="90" fill="#F6D266"/><circle cx="860" cy="520" r="150" fill="#F6D266" opacity="0.25"/>`;
+  for (const [hx, hw, hh, c] of [[-200, 260, 420, '#E8D5B7'], [90, 230, 520, '#D9C2A0'], [360, 280, 380, '#EBDCC4'], [680, 240, 470, '#DCC7A6'], [960, 260, 400, '#E8D5B7']]) {
+    s += `<rect x="${hx}" y="${GY - hh}" width="${hw}" height="${hh}" fill="${c}" stroke="#2A231C" stroke-width="5"/><path d="M${hx - 14} ${GY - hh} L${hx + hw / 2} ${GY - hh - 110} L${hx + hw + 14} ${GY - hh} Z" fill="#B88A6A" stroke="#2A231C" stroke-width="5"/>`;
+    s += `<rect x="${hx + hw * 0.2}" y="${GY - hh + 70}" width="${hw * 0.25}" height="70" fill="#F7F1E3" stroke="#2A231C" stroke-width="4"/><rect x="${hx + hw * 0.58}" y="${GY - hh + 70}" width="${hw * 0.25}" height="70" fill="#F7F1E3" stroke="#2A231C" stroke-width="4"/>`;
+  }
+  s += `<rect x="-600" y="${GY}" width="2400" height="900" fill="#C9C2B4"/><path d="M-600 ${GY} L1800 ${GY}" stroke="#2A231C" stroke-width="5"/>`;
+  for (let x = -600; x < 1800; x += 160) s += `<path d="M${x} ${GY + 8} L${x + 40} ${GY + 120}" stroke="#ADA595" stroke-width="4"/>`;
+  // tree
+  s += `<path d="M640 ${GY} L652 ${GY - 330} L676 ${GY - 330} L688 ${GY}" fill="#8A6A50" stroke="#2A231C" stroke-width="5"/>`;
+  for (const [x, y, r] of [[664, GY - 420, 120], [580, GY - 360, 90], [750, GY - 360, 95], [664, GY - 520, 90]]) s += `<circle cx="${x + Math.sin(t * 1.4 + x) * 3}" cy="${y}" r="${r}" fill="#86A877" stroke="#2A231C" stroke-width="5"/>`;
+  // birds
+  for (let i = 0; i < 3; i++) { const bx = ((t * 120 + i * 260) % 1500) - 200, by = 420 + i * 60 + Math.sin(t * 3 + i) * 10; s += `<path d="M${bx - 18} ${by} q9 -10 18 0 q9 -10 18 0" stroke="#2A231C" stroke-width="4" fill="none"/>`; }
+  return s;
+}
+window.__duration = DUR;
+window.__seek = (t) => frame(t);
+const q = new URLSearchParams(location.search);
+frame(q.has('t') ? +q.get('t') : 2);
+</script>
+</body></html>
