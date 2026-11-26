@@ -610,7 +610,10 @@ def compose() -> None:
     for fi in range(nframes):
         t = fi / FPS
         if only and fi not in only:
-            host.next()
+            if hasattr(host, "fi"):
+                host.fi += 1
+            else:
+                host.next()
             continue
         k, b = tl.beat_at(t)
         bt = t - b["start"]
@@ -830,8 +833,15 @@ def draw_card(frame, tl, k, b, bt, blen, media, pre, card_shadow, card_pad, card
         n = len(pre["chips"][k])
         if n == 1:
             px, py = CARD[2] - im.width / 2 + 10, CARD[3] - 10
-        else:
-            px, py = W / 2, CARD[3] + 70 + idx * 105
+        else:   # a row along the bottom of the card, clear of the host's face
+            ims = [c[0] for c in pre["chips"][k]]
+            gap = 16
+            tot = sum(c.width for c in ims) + gap * (n - 1)
+            fit = min(1.0, (CARD[2] - CARD[0] - 50) / tot)
+            x0 = W / 2 - tot * fit / 2
+            px = x0 + sum(c.width + gap for c in ims[:idx]) * fit + im.width * fit / 2
+            py = CARD[3] - 52
+            s *= fit
         if bt > blen - 0.25 and k + 1 < len(tl.beats):
             continue
         paste_center(frame, im, px, py, scale=s, alpha=min(1, (bt - lt) / 0.1))
