@@ -1,0 +1,15 @@
+{
+ "file": "_history5.mp4",
+ "ok": true,
+ "errors": [],
+ "warnings": [],
+ "info": {
+  "duration": 542.53,
+  "size": "1920x1080",
+  "fps": 30.0,
+  "black": [],
+  "lufs": -14.7,
+  "true_peak": -1.1,
+  "caption_boxes": 656
+ }
+}

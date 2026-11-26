@@ -1,0 +1,9 @@
+6.0G	History5-edit-pack
+494M	History5-edit-pack/01_MAIN_FINAL_VIDEO
+464M	History5-edit-pack/02_AUDIO
+1.6G	History5-edit-pack/03_VIDEO_ONLY
+853M	History5-edit-pack/04_ELEMENTS
+2.6G	History5-edit-pack/05_ORIGINAL_SOURCES
+32K	History5-edit-pack/README.md
+32K	History5-edit-pack/README_render_log_timeline.txt
+12K	History5-edit-pack/narration_with_emotion_tags.txt
