@@ -149,10 +149,13 @@ def make_host(data: dict) -> None:
                 time.sleep(55)
                 continue
             img = Image.open(io.BytesIO(r.content)).convert("RGB")
-            if img.width >= 700:
-                img = cover(img, (HOST_W, HOST_H))
+            if img.width >= 600:  # the free tier gives about 686x858
+                from PIL import ImageFilter
+                small = img.size
+                img = cover(img, (HOST_W, HOST_H)).filter(
+                    ImageFilter.UnsharpMask(radius=2, percent=60, threshold=2))
                 img.save(out)
-                log(f"host picture: made by pollinations (seed {seed}, {img.size})")
+                log(f"host picture: made by pollinations (seed {seed}, {small} -> {img.size})")
                 return
             log(f"host picture: too small {img.size}")
         except Exception as e:  # noqa: BLE001
