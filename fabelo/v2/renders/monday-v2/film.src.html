@@ -1,0 +1,396 @@
+<!DOCTYPE html>
+<html><head><meta charset="utf-8"><title>MONDAY. — split-screen Smooth Scribble Short</title>
+<style>
+@font-face{font-family:'Caveat';src:url(data:font/woff2;base64,__CAVEAT__) format('woff2');font-weight:700}
+html,body{margin:0;background:#000;overflow:hidden}svg{display:block}
+</style>
+<script src="../../s2/lib/scribble2.js"></script>
+<script src="../../s2/lib/sets2.js"></script></head>
+<body>
+<svg id="s" xmlns="http://www.w3.org/2000/svg"></svg>
+<script>
+/* MONDAY LOOP — "1,500 Mondays". 1080x1920 Short, Smooth Scribble, ElevenLabs v3 narration (timing below).
+   One bedroom world (wall, bed, nightstand + alarm clock, window + plant, desk) and a camera that moves through it. */
+const K = Scribble2, DUR = 26.4;
+const TIMING = __TIMING_JSON__;
+const W = 1080, H = 1920;
+const svg = document.getElementById('s');
+svg.setAttribute('width', W); svg.setAttribute('height', H); svg.setAttribute('viewBox', `0 0 ${W} ${H}`);
+const { prog, lp, lerp, clamp, ease, walkAt, blinkAt } = S2;
+const FONT = S2.FONT, INK = '#151314';
+const GY = 1560, SC = 1.0;
+const sm = (u) => { u = clamp(u); return u * u * (3 - 2 * u); };
+const backOut = (u) => { u = clamp(u); const c = 1.9; return 1 + (c + 1) * Math.pow(u - 1, 3) + c * Math.pow(u - 1, 2); };
+const n1 = (t, f = 1) => Math.sin(t * 2.1 * f) * 0.6 + Math.sin(t * 3.7 * f + 1.3) * 0.4;   // smooth handheld noise
+let uid = 0;
+
+// ---------------- world layout ----------------
+const BED = { x0: 180, x1: 1100, top: GY - 178 };           // mattress top; headboard + pillow at x1
+const PIL = { x: 820, y: BED.top - 70, w: 250, h: 82 };
+const NS = { x0: 1150, x1: 1320, top: GY - 250 };           // nightstand right of the headboard
+const CLK = { x: 1235, y: GY - 300 };
+const WIN = { x0: 1440, x1: 1840, y0: 560, y1: 1130 };
+const PLANT = { x: 1640, y: WIN.y1 };
+const DESK = { x0: 2030, x1: 2480, top: GY - 330 };
+
+// ---------------- small drawing helpers ----------------
+const T = (txt, x, y, size, o = {}) => `<text x="${x}" y="${y}" font-size="${size}" text-anchor="${o.anchor || 'middle'}" fill="${o.fill || '#1B1817'}" opacity="${o.op == null ? 1 : o.op}" font-family="${FONT}" font-weight="700" ${o.extra || ''}>${txt}</text>`;
+// 7-segment digit
+const SEG = { 0: 'abcdef', 1: 'bc', 2: 'abged', 3: 'abgcd', 4: 'fgbc', 5: 'afgcd', 6: 'afgedc', 7: 'abc', 8: 'abcdefg', 9: 'abcdfg' };
+function digit(ch, x, y, h, col) {
+  const w = h * 0.55, t = h * 0.12, segs = SEG[ch] || '';
+  const P = { a: [x + t, y, w - 2 * t, t], d: [x + t, y + h - t, w - 2 * t, t], g: [x + t, y + h / 2 - t / 2, w - 2 * t, t],
+    f: [x, y + t * 0.6, t, h / 2 - t * 0.9], b: [x + w - t, y + t * 0.6, t, h / 2 - t * 0.9], e: [x, y + h / 2 + t * 0.3, t, h / 2 - t * 0.9], c: [x + w - t, y + h / 2 + t * 0.3, t, h / 2 - t * 0.9] };
+  let s = '';
+  for (const k of 'abcdefg') { const [a, b, c, d] = P[k]; s += `<rect x="${a}" y="${b}" width="${c}" height="${d}" rx="${t * 0.45}" fill="${col}" opacity="${segs.includes(k) ? 1 : 0.08}"/>`; }
+  return s;
+}
+function clock(cx, cy, s, time, o = {}) {   // digital alarm clock; time 'H:MM'
+  const w = 300 * s, h = 170 * s, sq = o.squash || 0;
+  let g = `<g transform="translate(${cx} ${cy + h / 2}) scale(${1 + sq * 0.12} ${1 - sq * 0.18}) translate(${-cx} ${-(cy + h / 2)})">`;
+  g += `<rect x="${cx - w / 2}" y="${cy - h / 2}" width="${w}" height="${h}" rx="${40 * s}" fill="#2B2D33" stroke="#111" stroke-width="${6 * s}"/>`;
+  g += `<rect x="${cx - w / 2 + 22 * s}" y="${cy - h / 2 + 22 * s}" width="${w - 44 * s}" height="${h - 44 * s}" rx="${18 * s}" fill="#14161B"/>`;
+  const col = o.col || '#BFF6E4', dh = 92 * s, x0 = cx - 118 * s, y0 = cy - dh / 2 - 4 * s;
+  const [hh, mm] = time.split(':');
+  g += digit(hh, x0, y0, dh, col);
+  g += `<circle cx="${x0 + 70 * s}" cy="${y0 + dh * 0.32}" r="${5 * s}" fill="${col}"/><circle cx="${x0 + 70 * s}" cy="${y0 + dh * 0.68}" r="${5 * s}" fill="${col}"/>`;
+  g += digit(mm[0], x0 + 86 * s, y0, dh, col) + digit(mm[1], x0 + 146 * s, y0, dh, col);
+  g += `<text x="${cx + 108 * s}" y="${cy + 40 * s}" font-size="${22 * s}" fill="${col}" font-family="Arial" font-weight="700" text-anchor="middle">MON</text>`;
+  if (o.ring) g += `<circle cx="${cx}" cy="${cy}" r="${(190 + 40 * o.ring) * s}" fill="none" stroke="${col}" stroke-width="${6 * s}" opacity="${0.35 * (1 - o.ring)}"/>`;
+  g += `<rect x="${cx - 70 * s}" y="${cy - h / 2 - 16 * s}" width="${140 * s}" height="${18 * s}" rx="${8 * s}" fill="#3A3D45" stroke="#111" stroke-width="${4 * s}"/>`;   // snooze bar
+  return g + '</g>';
+}
+// plant: health 1 = lush green, 0 = dead brown. leaves = how many still attached. flower 0..1 (yellow)
+const LEAVES = [[-48, 0.62, 1], [42, 0.58, -1], [-22, 0.86, 1], [18, 0.9, -1], [-60, 0.4, 1], [58, 0.36, -1], [0, 1.0, 1]];
+function plant(x, y, health, leaves, flower, sway, t) {
+  const g1 = [127, 160, 113], b = [150, 118, 74];
+  const c = g1.map((v, i) => Math.round(lerp(b[i], v, health)));
+  const col = `rgb(${c})`, dark = `rgb(${c.map((v) => Math.round(v * 0.7))})`;
+  let s = `<path d="M${x - 70} ${y} L${x - 58} ${y - 110} L${x + 58} ${y - 110} L${x + 70} ${y} Z" fill="#C98F62" stroke="#2A231C" stroke-width="5"/>`;
+  s += `<rect x="${x - 76}" y="${y - 126}" width="152" height="24" rx="8" fill="#B87D52" stroke="#2A231C" stroke-width="5"/>`;
+  const droop = (1 - health) * 46, base = y - 120;
+  const stemTop = [x + sway * 6, base - 210 + droop * 1.6];
+  s += `<path d="M${x} ${base} Q${x + sway * 3} ${base - 110} ${stemTop[0]} ${stemTop[1]}" stroke="${dark}" stroke-width="7" fill="none" stroke-linecap="round"/>`;
+  for (let i = 0; i < Math.min(leaves, LEAVES.length); i++) {
+    const [a, hgt, k] = LEAVES[i];
+    const py = base - 210 * hgt + droop * hgt * 1.2, px = x + sway * 4 * hgt;
+    const ang = a + k * droop * 1.2 + Math.sin(t * 1.3 + i) * 2.5 * health;
+    const r = (ang * Math.PI) / 180, lx = px + Math.sin(r) * 70, ly = py - Math.cos(r) * 70 * (1 - (1 - health) * 0.5) + droop * 0.4;
+    s += `<path d="M${px} ${py} Q${(px + lx) / 2} ${py - 20} ${lx} ${ly}" stroke="${dark}" stroke-width="4" fill="none"/>`;
+    s += `<ellipse cx="${lx}" cy="${ly}" rx="${24}" ry="${48 - (1 - health) * 10}" transform="rotate(${ang + k * (1 - health) * 40} ${lx} ${ly})" fill="${col}" stroke="#2A231C" stroke-width="4"/>`;
+    s += `<path d="M${lx} ${ly - 34} L${lx} ${ly + 34}" transform="rotate(${ang + k * (1 - health) * 40} ${lx} ${ly})" stroke="${dark}" stroke-width="2.5" opacity="0.6"/>`;
+  }
+  if (flower > 0) {
+    const fx = stemTop[0], fy = stemTop[1] - 6, fr = 46 * backOut(flower);
+    for (let i = 0; i < 6; i++) { const a = i * 60 + t * 6; s += `<ellipse cx="${fx + Math.cos(a * Math.PI / 180) * fr * 0.85}" cy="${fy + Math.sin(a * Math.PI / 180) * fr * 0.85}" rx="${fr * 0.55}" ry="${fr * 0.36}" transform="rotate(${a} ${fx + Math.cos(a * Math.PI / 180) * fr * 0.85} ${fy + Math.sin(a * Math.PI / 180) * fr * 0.85})" fill="#F6C945" stroke="#2A231C" stroke-width="3.5"/>`; }
+    s += `<circle cx="${fx}" cy="${fy}" r="${fr * 0.42}" fill="#E69B2E" stroke="#2A231C" stroke-width="3.5"/>`;
+  }
+  return s;
+}
+function leafShape(x, y, rot, op = 1) {
+  return `<g transform="translate(${x} ${y}) rotate(${rot})" opacity="${op}"><ellipse cx="0" cy="0" rx="22" ry="40" fill="rgb(150,118,74)" stroke="#2A231C" stroke-width="4"/><path d="M0 -30 L0 30" stroke="#6E5536" stroke-width="2.5"/></g>`;
+}
+
+// ---------------- the room ----------------
+function room(o = {}) {
+  const night = !!o.night, open = o.open || 0, cur = o.curtain == null ? 1 : o.curtain;   // curtain 1 = closed
+  let s = '';
+  s += `<rect x="-600" y="-400" width="3600" height="${GY + 400}" fill="#F3E8D3"/>`;
+  for (let x = -600; x < 3000; x += 120) s += `<path d="M${x} -400 L${x} ${GY}" stroke="#EADCC2" stroke-width="3" opacity="0.7"/>`;   // soft wallpaper stripes
+  s += `<rect x="-600" y="${GY}" width="3600" height="900" fill="#E3D1B0"/><path d="M-600 ${GY} L3000 ${GY}" stroke="#B9A27C" stroke-width="5"/>`;
+  for (let i = 1; i < 6; i++) s += `<path d="M-600 ${GY + i * 70} L3000 ${GY + i * 70}" stroke="#D4BF99" stroke-width="2.5" opacity="0.55"/>`;
+  // window: outside view, clipped
+  const id = 'wc' + (++uid);
+  s += `<clipPath id="${id}"><rect x="${WIN.x0}" y="${WIN.y0}" width="${WIN.x1 - WIN.x0}" height="${WIN.y1 - WIN.y0}" rx="10"/></clipPath>`;
+  s += `<g clip-path="url(#${id})">`;
+  s += night ? `<rect x="${WIN.x0}" y="${WIN.y0}" width="400" height="570" fill="#1B2547"/><circle cx="${WIN.x0 + 290}" cy="${WIN.y0 + 120}" r="36" fill="#F4F1DE"/><circle cx="${WIN.x0 + 305}" cy="${WIN.y0 + 110}" r="32" fill="#1B2547"/>`
+    : `<rect x="${WIN.x0}" y="${WIN.y0}" width="400" height="570" fill="#BFE0F4"/><rect x="${WIN.x0}" y="${WIN.y0 + 300}" width="400" height="270" fill="#E4F2FA"/>`;
+  // far houses + street seen through the window
+  const hc = night ? '#2A3358' : '#D9CBB4', rc = night ? '#222A4A' : '#B88A6A';
+  for (const [hx, hw, hh] of [[WIN.x0 - 20, 150, 210], [WIN.x0 + 140, 130, 260], [WIN.x0 + 280, 170, 190]]) {
+    s += `<rect x="${hx}" y="${WIN.y1 - hh}" width="${hw}" height="${hh}" fill="${hc}" stroke="#2A231C" stroke-width="4"/><path d="M${hx - 10} ${WIN.y1 - hh} L${hx + hw / 2} ${WIN.y1 - hh - 70} L${hx + hw + 10} ${WIN.y1 - hh} Z" fill="${rc}" stroke="#2A231C" stroke-width="4"/>`;
+    s += `<rect x="${hx + hw * 0.35}" y="${WIN.y1 - hh + 50}" width="${hw * 0.3}" height="44" fill="${night ? '#F2D27A' : '#F7F1E3'}" stroke="#2A231C" stroke-width="3" opacity="${night ? 0.9 : 1}"/>`;
+  }
+  if (o.neighbour) s += o.neighbour;
+  s += `</g>`;
+  // window frame (sash slides up when open)
+  s += `<rect x="${WIN.x0}" y="${WIN.y0}" width="400" height="570" rx="10" fill="none" stroke="#2A231C" stroke-width="9"/>`;
+  const sashY = WIN.y0 + 285 - open * 270;
+  s += `<rect x="${WIN.x0 + 6}" y="${sashY}" width="388" height="279" fill="#DCEFF9" opacity="${0.18 * (1 - open)}"/>`;
+  s += `<path d="M${WIN.x0} ${sashY} L${WIN.x1} ${sashY} M${WIN.x0 + 200} ${WIN.y0} L${WIN.x0 + 200} ${WIN.y1}" stroke="#2A231C" stroke-width="8"/>`;
+  s += `<rect x="${WIN.x0 - 30}" y="${WIN.y1}" width="460" height="30" rx="8" fill="#D8C4A2" stroke="#2A231C" stroke-width="5"/>`;
+  // curtains (slide open)
+  const cw = lerp(70, 210, cur);
+  const curtain = (x0, dir) => {
+    const x1 = x0 + dir * cw;
+    let p = `M${x0} ${WIN.y0 - 40} L${x1} ${WIN.y0 - 40} `;
+    const n = 4;
+    for (let i = 0; i <= n; i++) { const yy = WIN.y0 - 40 + (i / n) * 680; p += `Q${x1 + dir * (i % 2 ? 18 : -18)} ${yy - 85} ${x1 + dir * (i % 2 ? 0 : 10)} ${yy} `; }
+    p += `L${x0} ${WIN.y0 + 640} Z`;
+    let g = `<path d="${p}" fill="#E9DDC6" stroke="#2A231C" stroke-width="5"/>`;
+    for (let i = 1; i < 4; i++) g += `<path d="M${x0 + dir * cw * i / 4} ${WIN.y0 - 30} Q${x0 + dir * cw * i / 4 + dir * 8} ${WIN.y0 + 300} ${x0 + dir * cw * i / 4} ${WIN.y0 + 630}" stroke="#CDBD9F" stroke-width="4" fill="none"/>`;
+    return g;
+  };
+  s += curtain(WIN.x0 - 50, 1) + curtain(WIN.x1 + 50, -1);
+  s += `<path d="M${WIN.x0 - 80} ${WIN.y0 - 42} L${WIN.x1 + 80} ${WIN.y0 - 42}" stroke="#2A231C" stroke-width="9" stroke-linecap="round"/>`;
+  // picture frame + lamp
+  s += `<rect x="420" y="560" width="240" height="180" rx="8" fill="#FBF6EA" stroke="#2A231C" stroke-width="7"/><path d="M442 720 L500 640 L544 690 L582 650 L640 720 Z" fill="#9FB7A0" stroke="#2A231C" stroke-width="3.5"/><circle cx="605" cy="600" r="16" fill="#F2C46B"/>`;
+  // bed
+  s += `<rect x="${BED.x1 - 14}" y="${BED.top - 360}" width="44" height="${GY - BED.top + 360}" rx="12" fill="#7A5A44" stroke="#2A231C" stroke-width="6"/>`;
+  s += `<rect x="${BED.x0}" y="${BED.top + 40}" width="${BED.x1 - BED.x0}" height="${GY - BED.top - 40}" rx="14" fill="#6B5240" stroke="#2A231C" stroke-width="6"/>`;
+  s += `<rect x="${BED.x0}" y="${BED.top}" width="${BED.x1 - BED.x0}" height="70" rx="22" fill="#EFE7D8" stroke="#2A231C" stroke-width="6"/>`;
+  s += `<path d="M${BED.x0 + 14} ${BED.top + 40} L${BED.x0 + 14} ${GY}" stroke="#2A231C" stroke-width="6"/>`;
+  // nightstand + clock
+  s += `<rect x="${NS.x0}" y="${NS.top}" width="${NS.x1 - NS.x0}" height="${GY - NS.top}" rx="10" fill="#8A6A50" stroke="#2A231C" stroke-width="6"/><path d="M${NS.x0} ${NS.top + 110} L${NS.x1} ${NS.top + 110}" stroke="#2A231C" stroke-width="5"/><circle cx="${(NS.x0 + NS.x1) / 2}" cy="${NS.top + 60}" r="8" fill="#2A231C"/>`;
+  // desk + laptop
+  s += `<rect x="${DESK.x0}" y="${DESK.top}" width="${DESK.x1 - DESK.x0}" height="24" rx="8" fill="#C9A77F" stroke="#2A231C" stroke-width="6"/><path d="M${DESK.x0 + 30} ${DESK.top + 24} L${DESK.x0 + 30} ${GY} M${DESK.x1 - 30} ${DESK.top + 24} L${DESK.x1 - 30} ${GY}" stroke="#2A231C" stroke-width="12" stroke-linecap="round"/>`;
+  return s;
+}
+function laptop(on) {
+  const x = DESK.x0 + 210, y = DESK.top;
+  let s = `<path d="M${x - 120} ${y} L${x + 100} ${y} L${x + 120} ${y - 8} L${x - 100} ${y - 8} Z" fill="#9A9DA6" stroke="#2A231C" stroke-width="4"/>`;
+  s += `<path d="M${x + 60} ${y - 8} L${x + 120} ${y - 190} L${x + 135} ${y - 186} L${x + 75} ${y - 4} Z" fill="#6F737D" stroke="#2A231C" stroke-width="4"/>`;
+  if (on) s += `<circle cx="${x + 70}" cy="${y - 100}" r="130" fill="url(#s2glow)" opacity="0.6"/>`;
+  return s;
+}
+function notebook(prog_) {
+  const x = DESK.x0 + 170, y = DESK.top - 4;
+  let s = `<path d="M${x - 110} ${y} L${x + 110} ${y} L${x + 95} ${y - 14} L${x - 95} ${y - 14} Z" fill="#FBF7EE" stroke="#2A231C" stroke-width="4"/>`;
+  return s;
+}
+// blanket + lying head (the body is under the blanket)
+function inBed(o) {
+  const r = 122 * 0.86, hx = PIL.x + 120 + (o.hx || 0), hy = PIL.y - 22 + (o.hy || 0);
+  K.LAST.head = [hx, hy, r];
+  let s = `<rect x="${PIL.x}" y="${PIL.y - 6}" width="${PIL.w}" height="${PIL.h}" rx="38" fill="#FFFFFF" stroke="#2A231C" stroke-width="6"/>`;
+  // arm (behind the head, comes from the shoulder under the chin)
+  if (o.arm) s += K.arm(Object.assign({ x: hx + r * 0.35, y: hy + r * 0.95 }, o.arm));
+  s += K.head(hx, hy, r, { view: 'front', face: o.face || 'neutral', look: o.look || [0, 0], tilt: o.tilt == null ? 12 : o.tilt, blink: o.blink, glow: o.glow });
+  // scarf roll at the neck
+  s += `<path d="M${hx - 96} ${hy + r * 0.78} Q${hx - 10} ${hy + r * 1.16} ${hx + 70} ${hy + r * 0.9} L${hx + 62} ${hy + r * 1.16} Q${hx - 20} ${hy + r * 1.42} ${hx - 104} ${hy + r * 1.04} Z" fill="url(#s2red)" stroke="#9A2620" stroke-width="3"/>`;
+  // blanket from the chin to the foot of the bed (a shoulder bump, then the legs)
+  const bt = BED.top - 30 + (o.breath || 0) * 5, xs = hx - r * 0.72;
+  s += `<path d="M${xs} ${hy + r * 1.05} C${xs - 60} ${bt - 70} ${xs - 230} ${bt - 66} ${xs - 330} ${bt - 20} C${xs - 430} ${bt + 6} ${BED.x0 + 120} ${bt - 6} ${BED.x0 - 8} ${bt + 18} L${BED.x0 - 8} ${BED.top + 118} L${xs + 40} ${BED.top + 118} Z" fill="#7F93B5" stroke="#2A231C" stroke-width="6"/>`;
+  s += `<path d="M${xs - 30} ${bt - 44} C${xs - 150} ${bt - 72} ${xs - 260} ${bt - 52} ${xs - 340} ${bt - 14}" stroke="#A9B8D2" stroke-width="10" fill="none" opacity="0.7" stroke-linecap="round"/>`;
+  s += `<path d="M${BED.x0 - 8} ${BED.top + 60} L${xs + 30} ${BED.top + 60}" stroke="#6A7EA0" stroke-width="5" opacity="0.6"/>`;
+  return s;
+}
+// ---------------- colour control ----------------
+function satFilter(id, v) { return `<filter id="${id}" color-interpolation-filters="sRGB"><feColorMatrix type="saturate" values="${clamp(v, 0, 1.2)}"/></filter>`; }
+function contrastDim(id, v) { return `<filter id="${id}"><feComponentTransfer><feFuncR type="linear" slope="${v}" intercept="${(1 - v) * 0.5}"/><feFuncG type="linear" slope="${v}" intercept="${(1 - v) * 0.5}"/><feFuncB type="linear" slope="${v}" intercept="${(1 - v) * 0.5}"/></feComponentTransfer></filter>`; }
+
+// ================= MONDAY. — split-screen v2 =================
+// Top panel: SNOOZE (keeps snoozing / scrolling, the room greys out, the plant dies).
+// Bottom panel: GETS UP (one small change each day: curtain, water, walk, wave, sketch → the plant blooms).
+const SANS = "Arial, 'Liberation Sans', 'Helvetica Neue', sans-serif";
+const PT = { x: 0, y: 250, w: 1080, h: 735 }, PB = { x: 0, y: 1000, w: 1080, h: 735 };
+const SEGS = [[0, 9.0, 'WEEK 1'], [9.0, 14.0, 'YEAR 1'], [14.0, 19.0, 'YEAR 5'], [19.0, 22.4, 'YEARS LATER']];
+const END = 22.4;
+const S = (txt, x, y, size, o = {}) => `<text x="${x}" y="${y}" font-size="${size}" text-anchor="${o.anchor || 'middle'}" fill="${o.fill || '#FFFFFF'}" opacity="${o.op == null ? 1 : o.op}" font-family="${SANS}" font-weight="${o.w || 800}" letter-spacing="${o.ls || 0}" ${o.extra || ''}>${txt}</text>`;
+const segAt = (t) => SEGS.findIndex((s) => t >= s[0] && t < s[1]);
+const mug = (x, y, a = 0) => `<g transform="rotate(${a} ${x} ${y})"><rect x="${x - 20}" y="${y - 52}" width="40" height="48" rx="8" fill="#EDE6D8" stroke="#2A231C" stroke-width="4"/><path d="M${x + 20} ${y - 42} q18 2 16 16 q-2 12 -16 12" stroke="#2A231C" stroke-width="4" fill="none"/>${[0, 1].map((i) => `<path d="M${x - 6 + i * 12} ${y - 62} q-8 -12 0 -24 q8 -12 0 -24" stroke="#FFFFFF" stroke-width="3" fill="none" opacity="0.5"/>`).join('')}</g>`;
+function counter(x, y, n, col, label) {
+  const str = String(Math.max(0, Math.round(n))).padStart(4, '0');
+  let s = `<rect x="${x - 18}" y="${y - 40}" width="330" height="128" rx="22" fill="#07080B" opacity="0.62"/>`;
+  s += S(label, x, y - 6, 22, { anchor: 'start', ls: 3, fill: '#FFFFFF', op: 0.9, w: 700 });
+  s += `<text x="${x - 2}" y="${y + 68}" font-size="76" fill="${col}" font-family="'Courier New', 'Liberation Mono', monospace" font-weight="700" letter-spacing="6">${str}</text>`;
+  return s;
+}
+
+// ---------------- TOP timeline: SNOOZE ----------------
+function topPanel(t) {
+  const sg = segAt(t);
+  const sat = t < 9 ? 0.85 : t < 14 ? 0.6 : t < 19 ? 0.3 : 0.12;
+  const satC = t < 14 ? Math.max(sat, 0.7) : t < 19 ? 0.4 : 0.25;
+  const night = sg === 2 ? 0.75 : sg === 3 ? 0.35 : 0;
+  let w = room({ curtain: 1, night: sg === 2 });
+  const health = t < 9 ? 0.9 : t < 14 ? 0.55 : t < 19 ? 0.18 : 0.05;
+  const leaves = t < 9 ? 6 : t < 14 ? 4 : t < 19 ? 1 : 0;
+  w += plant(PLANT.x, PLANT.y, health, leaves, 0, 0, t);
+  if (sg === 3) {   // the last leaf falls
+    const u = clamp((t - 19.25) / 1.5), lx0 = PLANT.x - 6, ly0 = PLANT.y - 270;
+    const lx = lx0 + 40 + Math.sin(u * Math.PI * 2.2) * 60 - u * 20, ly = lerp(ly0, PLANT.y - 18, sm(u));
+    w += leafShape(lx, ly, u >= 1 ? 92 : 28 + Math.sin(u * Math.PI * 3) * 60 + u * 60);
+  }
+  let cam = { z: 0.74, cx: 1060, cy: 1090 }, light = 0;
+  const br = Math.sin(t * 1.6);
+  if (t < 3.0) {   // alarm → slap → pull the blanket up
+    const ring = t < 1.6;
+    const up = sm((t - 0.4) / 0.9), slap = t > 1.55;
+    w += clock(CLK.x, CLK.y, 0.62, '6:00', { ring: ring ? (t * 2.5) % 1 : 0, squash: slap && t < 1.8 ? 1 - (t - 1.55) / 0.25 : 0 });
+    const back = sm((t - 1.7) / 0.5);
+    w += inBed({ face: t < 1.6 ? 'sleepy' : 'closed', blink: false, look: [0.8, -0.2], breath: br, hy: back * 14,
+      arm: t < 2.3 ? { deg: lerp(80, 132, up) - back * 60, bend: lerp(28, 6, up), scale: 0.86, hand: slap ? 'open' : 'relax', k: 1 } : null });
+    cam = { z: 1.05 + t * 0.01 + 0.25 * Math.max(0, 1 - t / 0.45), cx: 1030, cy: 1250 };
+  } else if (t < 9.0) {   // scrolling in bed
+    const mm = String(Math.min(59, Math.floor((t - 3) * 9))).padStart(2, '0');
+    w += clock(CLK.x, CLK.y, 0.62, (t < 8 ? '6:' : '7:') + (t < 8 ? mm : '3' + Math.floor((t - 8) * 9)));
+    w += inBed({ face: 'focused', look: [0.85, -0.25], breath: br, glow: true, tilt: 8, blink: blinkAt(t),
+      arm: { deg: 150, bend: -30, scale: 0.86, hand: 'phone', k: 1, phone: { ang: -20 + Math.sin(t * 9) * 3, dx: 6, dy: -10 }, glow: true } });
+    light = 0.8; cam = { z: 1.08 + (t - 3) * 0.01, cx: 1020, cy: 1250 };
+  } else if (t < 14.0) {   // slumped on the bed edge, scrolling
+    const u = (t - 9) / 5;
+    w += clock(CLK.x, CLK.y, 0.62, '9:4' + Math.floor(u * 9));
+    w += K.draw({ view: 'q', f: 1, x: 760, y: GY, scale: SC, pose: { seat: 172, l1: [84, 86], l2: [80, 84], lean: 22 + br, a1: [6, 72], a2: [2, 74], tilt: 18 }, face: 'sleepy', look: [0.2, 0.9],
+      hands: ['phone', 'fist'], phone: { ang: -30 + Math.sin(t * 8) * 3, dy: -18 }, glow: true, blink: blinkAt(t, 0.7) });
+    light = 0.8; cam = { z: 0.86 + u * 0.04, cx: 1000, cy: 1170 };
+  } else if (t < 19.0) {   // night, phone in bed
+    w += clock(CLK.x, CLK.y, 0.62, '2:47');
+    w += inBed({ face: 'sad', look: [0.85, -0.25], breath: br * 0.6, glow: true, tilt: 8, blink: blinkAt(t * 0.7),
+      arm: { deg: 150, bend: -30, scale: 0.86, hand: 'phone', k: 1, phone: { ang: -20 + Math.sin(t * 3) * 2, dx: 6, dy: -10 }, glow: true } });
+    light = 1; const u = (t - 14) / 5; cam = { z: 1.25 + u * 0.08, cx: 1000, cy: 1260 };
+  } else {   // years later: alone on the bed edge, staring at the empty pot
+    const look = prog(t, 20.3, 21.0);
+    w += clock(CLK.x, CLK.y, 0.62, '6:00');
+    w += K.draw({ view: 'q', f: 1, x: 760, y: GY, scale: SC, pose: { seat: 172, l1: [84, 86], l2: [80, 84], lean: 20 - 8 * look, a1: [8, 40], a2: [4, 44], tilt: lerp(18, -2, look) }, face: look > 0.5 ? 'sad' : 'sleepy', look: [lerp(0.2, 0.9, look), lerp(0.9, -0.3, look)], blink: blinkAt(t, 1.4) });
+    const u = (t - 19) / 3.4; cam = { z: 0.8 + u * 0.05, cx: lerp(1150, 1230, u), cy: 1150 };
+  }
+  return { w, cam, sat, satC, night, light, tint: '#5E77AE', tintA: 0.42 };
+}
+
+// ---------------- BOTTOM timeline: GETS UP ----------------
+function bottomPanel(t) {
+  const sg = segAt(t);
+  const curtain = t < 4.8 ? 1 : t < 5.3 ? 1 - sm((t - 4.8) / 0.5) : 0;
+  let w = '';
+  let nb = '';
+  if (sg === 1) {
+    const wv = Math.sin(t * 12) * 14;
+    nb = K.draw({ view: 'front', x: WIN.x0 + 270, y: WIN.y1 + 120, scale: 0.6, scarf: false, pose: { a1: [8, -3], a2: [100, 48 + wv] }, face: 'happy', hands: ['relax', 'open'] });
+  }
+  w += room({ curtain, open: sg >= 1 && sg !== 2 ? 1 : 0, neighbour: nb });
+  const health = t < 5.4 ? 0.9 : t < 9 ? lerp(0.9, 1, prog(t, 6.6, 7.6)) : 1;
+  const leaves = t < 9 ? 6 : 7;
+  const flower = sg === 3 ? prog(t, 19.3, 20.4) : 0;
+  let cam = { z: 0.74, cx: 1180, cy: 1090 }, light = 0, sun = 0;
+  const br = Math.sin(t * 1.6);
+  if (sg !== 2) w += plant(PLANT.x, PLANT.y, health, leaves, flower, Math.sin(t * 1.3), t);
+  if (t < 2.2) {   // alarm → switch it off → sit up
+    const up = sm((t - 0.4) / 0.7), tap = t > 1.25;
+    w += clock(CLK.x, CLK.y, 0.62, '6:00', { ring: t < 1.25 ? (t * 2.5) % 1 : 0, squash: tap && t < 1.45 ? 1 - (t - 1.25) / 0.2 : 0 });
+    const rise = sm((t - 1.5) / 0.6);
+    w += inBed({ face: t < 1.3 ? 'sleepy' : 'smile', look: [0.8, -0.2], breath: br, hy: -rise * 70, tilt: lerp(12, 0, rise),
+      arm: t < 1.7 ? { deg: lerp(80, 128, up), bend: lerp(28, 6, up), scale: 0.86, hand: tap ? 'open' : 'relax', k: 1 } : null });
+    cam = { z: 1.05 + 0.25 * Math.max(0, 1 - t / 0.45), cx: 1030, cy: 1250 };
+  } else if (t < 3.2) {   // big morning stretch beside the bed
+    w += clock(CLK.x, CLK.y, 0.62, '6:01');
+    const s = sm((t - 2.2) / 0.35) * (1 - sm((t - 2.9) / 0.3));
+    w += K.draw({ view: 'front', x: 1010, y: GY, scale: SC, pose: { a1: [lerp(8, 125, s), lerp(-3, 22, s)], a2: [lerp(8, 125, s), lerp(-3, 22, s)], l1: [3, 0], l2: [3, 0], lift: -12 * s, tilt: -6 * s }, face: s > 0.4 ? 'closed' : 'smile', hands: ['fist', 'fist'] });
+    cam = { z: 0.86, cx: 1080, cy: 1170 };
+  } else if (t < 4.6) {   // walk to the window
+    w += clock(CLK.x, CLK.y, 0.62, '6:02');
+    const u = sm((t - 3.2) / 1.4), x = lerp(1010, 1390, u);
+    w += K.draw({ view: 'side', f: 1, x, y: GY, scale: SC, pose: u < 0.98 ? walkAt((x - 1010) / 460) : K.POSES.idleSide, face: 'smile', wind: 0.25, phase: t, blink: blinkAt(t) });
+    cam = { z: 0.86, cx: lerp(1100, 1420, u), cy: 1170 };
+  } else if (t < 9.0) {   // curtain → water the plant → coffee at the window
+    w += clock(CLK.x, CLK.y, 0.62, '6:0' + Math.min(9, 3 + Math.floor((t - 4.6))));
+    let pose = { a1: [-6, 6], a2: [9, 10], l1: [-3, 1], l2: [5, 2], tilt: 0 }, hands = ['relax', 'relax'], face = 'smile';
+    if (t < 5.4) { const r = sm((t - 4.6) / 0.25), p = sm((t - 4.85) / 0.45); pose.a1 = [lerp(-6, 115, r) - 75 * p, lerp(6, 12, r)]; pose.lean = -6 * p; hands[0] = 'fist'; face = p > 0.6 ? 'happy' : 'smile'; }
+    else if (t < 6.2) { face = 'happy'; pose.tilt = -6; }
+    else if (t < 7.3) { const r = sm((t - 6.2) / 0.4); pose.a1 = [lerp(-6, 72, r), lerp(6, 18, r)]; pose.lean = 6 * r; pose.tilt = 8; hands[0] = 'fist'; }
+    else { const r = sm((t - 7.3) / 0.4), sip = Math.sin(clamp((t - 8.0) / 0.7) * Math.PI); pose.a1 = [lerp(-6, 40, r) + 25 * sip, lerp(6, 95, r) + 30 * sip]; hands[0] = 'fist'; face = sip > 0.4 ? 'closed' : 'smile'; pose.tilt = -4 * sip; }
+    w += K.draw({ view: 'q', f: 1, x: 1390, y: GY, scale: SC, pose, hands, face, look: [0.7, -0.1], blink: blinkAt(t, 0.5) });
+    if (t >= 6.2 && t < 7.3 && K.LAST.hand && K.LAST.hand[1]) {   // glass + water
+      const [gx, gy] = K.LAST.hand[1], tip = sm((t - 6.5) / 0.3);
+      w += `<g transform="rotate(${lerp(0, 75, tip)} ${gx} ${gy})"><path d="M${gx - 22} ${gy - 70} L${gx + 22} ${gy - 70} L${gx + 17} ${gy} L${gx - 17} ${gy} Z" fill="#DCEFF9" stroke="#2A231C" stroke-width="4"/></g>`;
+      if (tip > 0.3) for (let i = 0; i < 8; i++) { const k = ((t * 2.6 + i / 8) % 1); w += `<circle cx="${lerp(gx + 30, PLANT.x - 20, k)}" cy="${gy - 60 + Math.sin(k * Math.PI) * -50 + k * (PLANT.y - 110 - gy + 60)}" r="${7 - k * 3}" fill="#9CCBFF" opacity="0.9"/>`; }
+    }
+    if (t >= 7.3 && K.LAST.hand && K.LAST.hand[1]) { const [mx, my] = K.LAST.hand[1]; w += mug(mx + 6, my + 6, 0); }
+    sun = sm((t - 4.9) / 0.6);
+    cam = { z: 0.86 + (t - 4.6) * 0.008, cx: 1470, cy: 1160 };
+  } else if (t < 14.0) {   // year 1: window open, waves to the neighbour
+    const up = prog(t, 10.0, 10.3) * (1 - prog(t, 12.6, 13.0)), wv = Math.sin(t * 12) * 14;
+    w += K.draw({ view: 'q', f: 1, x: 1360, y: GY, scale: SC, pose: { a1: [lerp(-6, 110, up), lerp(6, 40 + wv * up, up)], a2: [9, 10], l1: [-3, 1], l2: [5, 2] }, face: 'happy', hands: [up > 0.4 ? 'open' : 'relax', 'relax'], look: [0.7, -0.2], wind: 0.2, phase: t });
+    sun = 1; const u = (t - 9) / 5; cam = { z: 0.86 + u * 0.03, cx: 1480, cy: 1150 };
+  } else if (t < 19.0) {   // year 5: sketching at the desk in warm lamp light
+    w += S2.chair(DESK.x0 - 40, { GY }, SC, false);
+    const sk = Math.sin(t * 18) * 6;
+    w += K.draw({ view: 'side', f: 1, x: DESK.x0 - 40, y: GY, scale: SC, pose: { seat: 150, l1: [88, 92], l2: [84, 86], lean: 10, tilt: 12, a1: [58, 34 + sk], a2: [40, 50] }, face: 'happy', look: [0.6, 0.7], blink: blinkAt(t, 0.3) });
+    const bx = DESK.x0 + 190, by = DESK.top - 6, pr = clamp((t - 14.6) / 3.2);
+    w += `<g transform="translate(${bx} ${by}) rotate(-14)"><rect x="-10" y="-200" width="190" height="200" rx="8" fill="#FBF7EE" stroke="#2A231C" stroke-width="5"/>
+      <circle cx="85" cy="-110" r="34" fill="none" stroke="#E69B2E" stroke-width="7" stroke-dasharray="214" stroke-dashoffset="${214 * (1 - clamp(pr * 1.6))}"/>
+      ${[0, 45, 90, 135, 180, 225, 270, 315].map((a, i) => { const rr = (a * Math.PI) / 180, k = clamp(pr * 8 / 3 - 0.6 - i * 0.12); return `<path d="M${85 + Math.cos(rr) * 46} ${-110 + Math.sin(rr) * 46} L${85 + Math.cos(rr) * (46 + 26 * k)} ${-110 + Math.sin(rr) * (46 + 26 * k)}" stroke="#E69B2E" stroke-width="6" stroke-linecap="round" opacity="${k > 0 ? 1 : 0}"/>`; }).join('')}</g>`;
+    // desk lamp glow
+    w += `<path d="M${DESK.x1 - 90} ${DESK.top} L${DESK.x1 - 90} ${DESK.top - 170} L${DESK.x1 - 150} ${DESK.top - 230}" stroke="#2A231C" stroke-width="9" fill="none" stroke-linecap="round"/><path d="M${DESK.x1 - 205} ${DESK.top - 215} L${DESK.x1 - 120} ${DESK.top - 265} L${DESK.x1 - 100} ${DESK.top - 225} Z" fill="#3A3D45" stroke="#2A231C" stroke-width="5"/>`;
+    w += `<circle cx="${DESK.x1 - 170}" cy="${DESK.top - 120}" r="260" fill="url(#s2glow)" opacity="0.0"/>`;
+    w += `<radialGradient id="lampG"><stop offset="0" stop-color="#FFD58A" stop-opacity="0.55"/><stop offset="1" stop-color="#FFD58A" stop-opacity="0"/></radialGradient><circle cx="${DESK.x1 - 180}" cy="${DESK.top - 110}" r="320" fill="url(#lampG)"/>`;
+    const u = (t - 14) / 5; cam = { z: 0.92 + u * 0.04, cx: DESK.x0 + 110, cy: 1190 };
+  } else {   // years later: the plant in bloom, he smiles at it
+    const tl = prog(t, 19.6, 20.2);
+    w += K.draw({ view: 'q', f: 1, x: 1360, y: GY, scale: SC, pose: { a1: [lerp(-6, 60, tl), lerp(6, 20, tl)], a2: [9, 10], l1: [-3, 1], l2: [5, 2], tilt: lerp(0, 6, tl) }, face: t > 20.2 ? 'happy' : 'smile', hands: ['open', 'relax'], look: [0.9, -0.3] });
+    sun = 1; const u = (t - 19) / 3.4; cam = { z: 0.88 + u * 0.12, cx: lerp(1500, 1540, u), cy: lerp(1150, 1080, u) };
+  }
+  if (sun > 0) w += `<polygon points="${WIN.x0 + 60},${WIN.y0} ${WIN.x1},${WIN.y0} ${PLANT.x + 160},${GY + 260} ${PLANT.x - 480},${GY + 260}" fill="#FFE7A8" opacity="${0.28 * sun}" style="mix-blend-mode:screen"/>`;
+  return { w, cam, sat: 1, satC: 1, night: 0, light, tint: '#F2B66B', tintA: 0.34 };
+}
+
+// ---------------- compose one panel ----------------
+function panel(P, R, id, t) {
+  const camT = `translate(${P.x + P.w / 2} ${P.y + P.h / 2}) scale(${R.cam.z}) translate(${-R.cam.cx} ${-R.cam.cy})`;
+  let s = `<clipPath id="cl${id}"><rect x="${P.x}" y="${P.y}" width="${P.w}" height="${P.h}"/></clipPath><g clip-path="url(#cl${id})">`;
+  s += satFilter('fs' + id, R.sat);
+  s += `<g transform="${camT}"><g filter="url(#fs${id})">${R.w}</g></g>`;
+  // colour grade: cold blue vs warm amber, multiply
+  s += `<rect x="${P.x}" y="${P.y}" width="${P.w}" height="${P.h}" fill="${R.tint}" opacity="${R.tintA}" style="mix-blend-mode:multiply"/>`;
+  if (R.night > 0) s += `<g transform="${camT}">${S2.night(R.night, R.light, { W: 3600, H: 3000 }).replace(/<rect width="3600" height="3000"/g, '<rect x="-800" y="-600" width="3600" height="3000"')}</g>`;
+  else if (R.light > 0 && K.LAST.phone) s += `<g transform="${camT}"><circle cx="${K.LAST.phone[0]}" cy="${K.LAST.phone[1]}" r="170" fill="url(#s2glow)" opacity="${R.light}"/></g>`;
+  // stage spotlight + vignette
+  s += `<radialGradient id="vg${id}" cx="50%" cy="46%" r="72%"><stop offset="0.55" stop-color="#000" stop-opacity="0"/><stop offset="1" stop-color="#000" stop-opacity="0.72"/></radialGradient>`;
+  s += `<rect x="${P.x}" y="${P.y}" width="${P.w}" height="${P.h}" fill="url(#vg${id})"/>`;
+  return s + '</g>';
+}
+
+// ---------------- frame ----------------
+function frame(t) {
+  uid = 0;
+  let s = K.defs();
+  s += `<rect width="${W}" height="${H}" fill="#07080B"/>`;
+  if (t < END) {
+    K.LAST.phone = null;
+    const top = topPanel(t); s += panel(PT, top, 'T', t);
+    K.LAST.phone = null;
+    const bot = bottomPanel(t); s += panel(PB, bot, 'B', t);
+    // segment change: a quick light flash over both panels
+    for (const sg of SEGS.slice(1)) { const d = t - sg[0]; if (d >= 0 && d < 0.35) s += `<rect y="${PT.y}" width="${W}" height="${PB.y + PB.h - PT.y}" fill="#FFFFFF" opacity="${0.55 * (1 - d / 0.35)}"/>`; }
+    // panel labels + counters
+    const cIn = prog(t, 6.6, 7.0);
+    const topN = 0, botN = t < 6.6 ? 0 : t < 9 ? 1 : t < 14 ? lerp(1, 52, prog(t, 9.2, 10.4)) : t < 19 ? lerp(52, 260, prog(t, 14.2, 15.4)) : lerp(260, 1565, prog(t, 19.2, 20.6));
+    s += `<g opacity="${cIn}">` + counter(46, PT.y + 70, topN, '#FF5A5F', 'MONDAYS REMEMBERED') + counter(46, PB.y + 70, botN, '#F6B73C', 'MONDAYS REMEMBERED') + `</g>`;
+    s += `<linearGradient id="lb" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#07080B" stop-opacity="0"/><stop offset="1" stop-color="#07080B" stop-opacity="0.85"/></linearGradient>`;
+    s += `<rect x="0" y="${PT.y + PT.h - 110}" width="${W}" height="110" fill="url(#lb)"/><rect x="0" y="${PB.y + PB.h - 110}" width="${W}" height="110" fill="url(#lb)"/>`;
+    s += S('S N O O Z E', W / 2, PT.y + PT.h - 30, 36, { ls: 4, op: 0.96 });
+    s += S('G E T S   U P', W / 2, PB.y + PB.h - 30, 36, { ls: 4, op: 0.96 });
+    // header: title + time chip
+    const drop = backOut(t / 0.35);
+    s += `<g transform="translate(${W / 2} ${154 + (1 - clamp(drop, 0, 2)) * -60}) scale(${t < 0.35 ? lerp(1.4, 1, t / 0.35) : 1})">` + S('MONDAY.', 0, 0, 100, { w: 900, ls: 2 }) + `</g>`;
+    const si = segAt(t), chipT = si >= 0 ? SEGS[si][2] : '';
+    const pop = si >= 0 ? backOut(clamp((t - SEGS[si][0]) / 0.25)) : 1;
+    if (t > 0.9) s += `<g transform="translate(${W / 2} 40) scale(${pop})" opacity="${prog(t, 0.9, 1.2)}"><rect x="-175" y="-32" width="350" height="46" rx="23" fill="#F2EDE3"/>` + S(chipT, 0, 2, 30, { ls: 6, fill: '#07080B', w: 900 }) + `</g>`;
+    // captions for the voice lines (centred on the panel divider)
+    const cap = TIMING && TIMING.lines.find((l) => t >= l.start - 0.05 && t <= l.end + 0.3);
+    if (cap) {
+      const words = cap.words || []; let k = words.findIndex((w) => t < w[2]); if (k < 0) k = words.length - 1;
+      const page = Math.floor(k / 6), shown = words.slice(page * 6, page * 6 + 6);
+      let line = '';
+      shown.forEach((w, i) => { const on = t >= w[1] && t < w[2] + 0.05; line += `<tspan fill="${on ? '#F6B73C' : '#FFFFFF'}" fill-opacity="${t >= w[1] ? 1 : 0.5}">${w[0]}${i < shown.length - 1 ? ' ' : ''}</tspan>`; });
+      s += `<text x="${W / 2}" y="222" font-size="44" text-anchor="middle" font-family="${SANS}" font-weight="800">${line}</text>`;
+    }
+    const f0 = 1 - prog(t, 0, 0.12), f1 = prog(t, END - 0.5, END);
+    if (f1 > 0) s += `<rect width="${W}" height="${H}" fill="#07080B" opacity="${f1}"/>`;
+  } else {
+    // ---------- end card ----------
+    const a = prog(t, END + 0.25, END + 0.65), b = prog(t, END + 0.85, END + 1.25);
+    s += `<g opacity="${a}" transform="translate(0 ${lerp(14, 0, a)})">` + S('SAME DAY?', W / 2, 860, 96, { w: 900, ls: 2 }) + `</g>`;
+    s += `<g opacity="${b}" transform="translate(0 ${lerp(14, 0, b)})">` + S('CHANGE <tspan fill="#E63946">ONE THING.</tspan>', W / 2, 990, 88, { w: 900, ls: 1 }) + `</g>`;
+    s += `<path d="M560 1024 Q760 1014 960 1022" stroke="#E63946" stroke-width="9" fill="none" stroke-linecap="round" stroke-dasharray="410" stroke-dashoffset="${410 * (1 - prog(t, END + 1.35, END + 1.9))}"/>`;
+    const out = prog(t, DUR - 0.25, DUR);
+    if (out > 0) s += `<rect width="${W}" height="${H}" fill="#000" opacity="${out}"/>`;
+  }
+  svg.innerHTML = s;
+}
+window.__duration = DUR;
+window.__seek = (t) => frame(t);
+const q = new URLSearchParams(location.search);
+frame(q.has('t') ? +q.get('t') : 2);
+</script>
+</body></html>

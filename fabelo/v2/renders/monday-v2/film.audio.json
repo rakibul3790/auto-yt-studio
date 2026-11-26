@@ -1,0 +1,43 @@
+{
+  "duration": 26.4,
+  "voice_ready": "voice/timing.json (ElevenLabs v3, Shelby: lines 0, 1, 8 of the approved takes)",
+  "voices": { "narrator": { "voice": "af_heart", "space": "room", "gain": 0.95 } },
+  "lines": [],
+  "sfx": [
+    ["impact", 0.0, 0.45],
+    ["click", 1.25, 0.15],
+    ["step", 3.3, 0.25, {"every": 0.45, "until": 4.5}],
+    ["page", 8.95, 0.3], ["whoosh", 8.9, 0.18, {"d": 0.5}],
+    ["chime", 10.3, 0.14],
+    ["page", 13.95, 0.3], ["whoosh", 13.9, 0.18, {"d": 0.5}],
+    ["page", 18.95, 0.3], ["whoosh", 18.9, 0.18, {"d": 0.5}],
+    ["sub_boom", 22.4, 0.3]
+  ],
+  "sfx_files": [
+    ["alarm", 0.0, -6, {"cut": 1.6, "fade_out": 0.08}],
+    ["snooze", 1.52, -8, {"pan": -0.2}],
+    ["snooze", 1.22, -12, {"pan": 0.2}],
+    ["pillow", 1.75, -13],
+    ["curtain", 4.78, -7],
+    ["water", 6.45, -11, {"cut": 0.85, "fade_out": 0.2}],
+    ["morning", 4.9, -22, {"loop_until": 22.3, "fade_in": 1.0, "fade_out": 0.6}],
+    ["window", 9.0, -15],
+    ["pencil", 14.6, -15],
+    ["tick", 14.0, -21, {"loop_until": 19.0, "fade_in": 0.4, "fade_out": 0.4}],
+    ["leaf", 19.3, -10],
+    ["bloom", 19.25, -11]
+  ],
+  "beds": [["roomtone", 0.0, 22.4, 0.04]],
+  "music": {
+    "level": 0.08, "bpm": 76, "reverb": 0.32, "final_chord": true,
+    "sections": [
+      [0.3, 9.0, ["C", "G", "Am", "F"], 4, 76, "tender", 0.55],
+      [9.0, 14.0, ["C", "G", "Am", "F"], 2, 76, "warm", 0.6],
+      [14.0, 19.0, ["Am", "F", "C", "G"], 2, 76, "build", 0.65],
+      [19.0, 22.4, ["F", "G", "C", "C"], 2, 76, "warm", 0.8],
+      [22.4, 26.2, ["F", "C"], 4, 76, "tender", 0.6]
+    ],
+    "hits": [[19.0, "swell", 0.2], [22.45, "boom", 0.22]]
+  },
+  "mix": { "duck_db": 8, "bed_duck_db": 4, "auto_sfx": false }
+}

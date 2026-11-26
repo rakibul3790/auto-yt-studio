@@ -1,0 +1,140 @@
+{
+ "lines": [
+  {
+   "i": 0,
+   "file": "line_00.wav",
+   "speaker": "narrator",
+   "start": 0.45,
+   "dur": 5.68,
+   "end": 6.13,
+   "text": "If you're thirty... you've lived over fifteen hundred Mondays.",
+   "take": 1,
+   "words": [
+    [
+     "If",
+     0.663,
+     0.69
+    ],
+    [
+     "you're",
+     0.73,
+     1.09
+    ],
+    [
+     "thirty...",
+     1.159,
+     2.37
+    ],
+    [
+     "you've",
+     2.41,
+     2.69
+    ],
+    [
+     "lived",
+     2.757,
+     3.09
+    ],
+    [
+     "over",
+     3.138,
+     3.33
+    ],
+    [
+     "fifteen",
+     3.43,
+     4.13
+    ],
+    [
+     "hundred",
+     4.21,
+     4.77
+    ],
+    [
+     "Mondays.",
+     4.87,
+     6.13
+    ]
+   ]
+  },
+  {
+   "i": 1,
+   "file": "line_01.wav",
+   "speaker": "narrator",
+   "start": 6.4,
+   "dur": 2.48,
+   "end": 8.88,
+   "text": "How many do you actually remember?",
+   "take": 1,
+   "words": [
+    [
+     "How",
+     6.623,
+     6.64
+    ],
+    [
+     "many",
+     6.704,
+     6.96
+    ],
+    [
+     "do",
+     7.013,
+     7.12
+    ],
+    [
+     "you",
+     7.2,
+     7.44
+    ],
+    [
+     "actually",
+     7.52,
+     8.16
+    ],
+    [
+     "remember?",
+     8.222,
+     8.88
+    ]
+   ]
+  },
+  {
+   "i": 8,
+   "file": "line_08.wav",
+   "speaker": "narrator",
+   "start": 23.0,
+   "dur": 2.72,
+   "end": 25.72,
+   "text": "Same day? Change one thing.",
+   "take": 1,
+   "words": [
+    [
+     "Same",
+     23.296,
+     23.32
+    ],
+    [
+     "day?",
+     23.42,
+     24.16
+    ],
+    [
+     "Change",
+     24.223,
+     24.6
+    ],
+    [
+     "one",
+     24.72,
+     25.08
+    ],
+    [
+     "thing.",
+     25.16,
+     25.72
+    ]
+   ]
+  }
+ ]
+}
