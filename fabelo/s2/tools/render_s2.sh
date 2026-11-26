@@ -40,4 +40,5 @@ mkdir -p "$D/qc"
 DUR=$(ffprobe -v error -show_entries format=duration -of csv=p=0 "$D/final.mp4")
 ffmpeg -y -v error -i "$D/final.mp4" -vf "fps=2,scale=216:-1,tile=10x6" -frames:v 1 "$D/qc/sheet_0-30s.jpg"
 ffmpeg -y -v error -ss 30 -i "$D/final.mp4" -vf "fps=2,scale=216:-1,tile=10x6" -frames:v 1 "$D/qc/sheet_30s-end.jpg" || true
+{ echo "## Smooth Scribble render: $(basename "$D")"; echo; echo "- duration: ${DUR}s"; echo "- QC sheets: qc/sheet_0-30s.jpg, qc/sheet_30s-end.jpg (2 fps)"; echo; echo '```'; cat "$D/finish.json"; echo; echo '```'; } > "$D/qc/report.md"   # the cloud workflow prints this into the run summary
 echo "done → $D/final.mp4  (${DUR}s)"
