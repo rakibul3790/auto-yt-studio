@@ -1,0 +1,10 @@
+[
+ {"id": "s2_feet_one", "text": "one woman's bare feet dancing alone on wet cobblestones, slow rhythmic stamping and shuffling, long wool skirt swishing, quiet empty stone street, close, no music", "duration": 8, "loop": true},
+ {"id": "s2_feet_crowd", "text": "dozens of people stamping and shuffling their feet on a stone town square, exhausted rhythmic dancing, heavy breathing and faint moans, outdoors, no music", "duration": 10, "loop": true},
+ {"id": "s2_town_dawn", "text": "old medieval stone town at dawn, distant church bells ringing slowly, birds, a far-away horse cart on cobbles, faint distant voices, no cars, no music", "duration": 20, "loop": true},
+ {"id": "s2_fife_drum", "text": "a small medieval band of fife and drum playing a fast folk dance tune in a stone town square, heard from far away, thin and reverberant", "duration": 8},
+ {"id": "s2_pilgrims", "text": "a small group of tired people walking slowly on a dirt path through a quiet forest, soft footsteps on earth and leaves, distant birds, light wind in the trees, no music", "duration": 8, "loop": true},
+ {"id": "s2_whispers", "text": "anxious whispers spreading through a frightened crowd, many overlapping hushed voices slowly rising, no words clear, no music", "duration": 5},
+ {"id": "s2_harbor1919", "text": "1919 city harbor ambience, distant steamship horn, seagulls, horse carts and an old motor truck far away, crowd murmur, no music", "duration": 15, "loop": true},
+ {"id": "s2_tank_groan", "text": "huge riveted steel storage tank groaning and creaking under enormous pressure, deep metallic stress, ominous low rumble, slow", "duration": 4.5}
+]
