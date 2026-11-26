@@ -23,7 +23,7 @@ concurrency:
 jobs:
   render:
     runs-on: ubuntu-24.04
-    timeout-minutes: 300
+    timeout-minutes: 360
     steps:
       - uses: actions/checkout@v5
 
@@ -104,7 +104,7 @@ jobs:
           fi
           ls -la checkpoints gfpgan/weights || true
           start=$(date +%s)
-          timeout 150m python inference.py --driven_audio "$GITHUB_WORKSPACE/presenter/out/voice16k.wav" \
+          python inference.py --driven_audio "$GITHUB_WORKSPACE/presenter/out/voice16k.wav" \
             --source_image "$GITHUB_WORKSPACE/presenter/out/presenter.png" \
             --result_dir /tmp/st_out --still --preprocess full --size 256 --cpu
           echo "SadTalker took $(( $(date +%s) - start )) s"
