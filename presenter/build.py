@@ -19,6 +19,7 @@ import os
 import random
 import subprocess
 import sys
+import time
 import urllib.parse
 from pathlib import Path
 
@@ -112,25 +113,63 @@ def make_voice(data: dict) -> None:
     log(f"voice: {dur:.1f}s, {len(words)} words")
 
 
+def _host_from_square(img: Image.Image) -> Image.Image:
+    """A square face photo on a 1080x1350 canvas, with a soft blurred copy filling the top."""
+    from PIL import ImageFilter
+    sq = img.resize((HOST_W, HOST_W), Image.LANCZOS)
+    bg = cover(img, (HOST_W, HOST_H)).filter(ImageFilter.GaussianBlur(40))
+    canvas = bg.copy()
+    mask = Image.new("L", (HOST_W, HOST_W), 255)
+    fade = 140
+    for y in range(fade):
+        for_line = int(255 * y / fade)
+        mask.paste(for_line, (0, y, HOST_W, y + 1))
+    canvas.paste(sq, (0, HOST_H - HOST_W), mask)
+    return canvas
+
+
 def make_host(data: dict) -> None:
     out = OUT / "presenter.png"
     if out.exists():
         log("host picture: kept")
         return
     prompt = data["presenter_prompt"]
-    url = "https://image.pollinations.ai/prompt/" + urllib.parse.quote(prompt)
-    for seed in (101, 202, 303, 404):
+    ua = {"User-Agent": "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 Chrome/124 Safari/537.36"}
+    tries = []
+    for seed in (101, 202):
+        tries.append(("https://image.pollinations.ai/prompt/" + urllib.parse.quote(prompt),
+                      {"width": 1080, "height": 1350, "seed": seed, "model": "flux", "nologo": "true"}))
+    tries.append(("https://image.pollinations.ai/prompt/" + urllib.parse.quote(prompt),
+                  {"width": 1080, "height": 1350, "seed": 303}))
+    for url, params in tries:
         try:
-            r = requests.get(url, timeout=180, params={"width": 1080, "height": 1350, "seed": seed,
-                                                       "model": "flux", "nologo": "true"})
+            r = requests.get(url, timeout=180, params=params, headers=ua)
+            ctype = r.headers.get("content-type", "")
+            if r.status_code != 200 or not ctype.startswith("image"):
+                log(f"host picture: pollinations said {r.status_code} {ctype}: {r.text[:200]!r}")
+                time.sleep(5)
+                continue
             img = Image.open(io.BytesIO(r.content)).convert("RGB")
             if img.width >= 700:
                 img = cover(img, (HOST_W, HOST_H))
                 img.save(out)
-                log(f"host picture: made (seed {seed}, {img.size})")
+                log(f"host picture: made by pollinations ({params.get('seed')}, {img.size})")
                 return
         except Exception as e:  # noqa: BLE001
             log(f"host picture attempt failed: {type(e).__name__}: {e}")
+    # Fallback: a made-up face from a StyleGAN generator (not a real person).
+    for _ in range(3):
+        try:
+            r = requests.get("https://thispersondoesnotexist.com/", timeout=60, headers=ua)
+            if r.status_code == 200 and r.headers.get("content-type", "").startswith("image"):
+                img = Image.open(io.BytesIO(r.content)).convert("RGB")
+                _host_from_square(img).save(out)
+                log(f"host picture: made by thispersondoesnotexist ({img.size})")
+                return
+            log(f"host picture: fallback said {r.status_code} {r.headers.get('content-type')}")
+        except Exception as e:  # noqa: BLE001
+            log(f"host picture fallback failed: {type(e).__name__}: {e}")
+        time.sleep(3)
     raise SystemExit("Could not make the host picture")
 
 
