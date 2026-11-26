@@ -1,14 +1,16 @@
 ---
 name: "fabelo-studio-v2"
-description: "Use when Rakib asks for a Fabelo Studio Version 2 (v2) video or a professional, pro-level Scribble video with pro animation, camera, transitions, sound and finishing."
+description: "Use when Rakib asks for a Fabelo Studio Version 2 (v2) video or a professional, pro-level Scribble video with pro animation, camera, transitions, sound and finishing. Two characters: Classic Scribble or Smooth Scribble; always ask which one first."
 ---
 
 # Fabelo Studio Version 2: professional Scribble films from a prompt
 
 Fabelo Studio is Rakib's animated YouTube channel for a US audience, in English.
-It has ONE main character, **Scribble**: an ink stick figure with a red scarf on warm paper.
+It has TWO main characters and Rakib picks one for every video (section 0):
+- **Classic Scribble**: an ink stick figure with a red scarf on warm paper.
+- **Smooth Scribble**: the thumbnail-style Scribble with a big shaded head, a smooth black body and a puffy knitted red scarf (`fabelo/s2/`).
 
-Version 2 keeps Scribble and the whole Fabelo look exactly as in Version 1, and adds the craft of a
+Version 2 keeps Classic Scribble and the whole Fabelo look exactly as in Version 1, and adds the craft of a
 professional studio around him:
 - pro animation;
 - camera and editing;
@@ -32,12 +34,25 @@ Everything lives in his private GitHub repo:
 | `fabelo/v2/templates/` | Starter `film.src.html` and `film.audio.json`. |
 | `fabelo/v2/examples/plane/` | "Learn the Wind", a 44 s reference Short. |
 | `.github/workflows/render-fabelo-v2.yml` | Cloud render. It never uploads. |
+| `fabelo/s2/` | Smooth Scribble kit: `lib/scribble2.js` (character), `lib/sets2.js` (sets, night light, captions), `tools/` (emo_voice.py, build_s2.py, preview_s2.js, render_s2.sh), `templates/`, `examples/meet-scribble/`, `sheets/` (approved model sheets). |
 
 **Language:**
 - Talk to Rakib in Bengali.
 - Everything in the video is in English: titles, on-screen text, captions and voices.
 
-## 0. Production rules (read FIRST, every video: long films AND Shorts)
+## 0. FIRST message: which character? (long videos AND Shorts)
+
+Fabelo Studio has **two** main characters. Whenever Rakib asks you to make anything (a film, a Short, an explainer, a test), your FIRST reply asks which one, in Bengali, and you wait for the answer. Use AskUserQuestion when it is available:
+
+1. **Classic Scribble:** the ink line stick figure with the tuft and the thin red scarf. Library `fabelo/lib/scribble.js`; build with the classic workflow in this skill.
+2. **Smooth Scribble (new, thumbnail style):** big shaded white head, smooth solid black body, puffy knitted red scarf with fringe. Library `fabelo/s2/lib/scribble2.js`; kit and workflow in `fabelo/s2/README.md`.
+
+- Skip the question only when the request already names the character ("Smooth দিয়ে বানাও", "Classic Scribble").
+- After the pick, write the full A–Z script as Markdown (`SCRIPT.md` in the project folder, and show it in chat): logline, character, cast and voices with the emotion of each line, then a scene-by-scene table (time, action, camera 🎥, line, SFX 🔊, music 🎵). Then build the video with the chosen character, following the production rules below.
+- Never mix the two characters in one film unless Rakib asks. Smooth-style side characters use `scarf:false`.
+- The same question and flow apply to Shorts (1080x1920).
+
+## 0.1 Production rules (read before every video: long films AND Shorts)
 
 Before anything else, read `fabelo/PRODUCTION_RULES.md` in the repo and follow it; it overrides older lines here where they differ.
 - Stages with Rakib's OK at each: ideas, full A-Z script, raw cut, full-frame QC (1 fps + close-up crops, 16:9 and 9:16), review, full edit, 1080p review, then 4K (`--w 3840 --h 2160 --scale 2`, at most 3 workers on 15 GB RAM), Shorts, thumbnail and EN/BN SRT. Projects live in `video for yt\Project File N\` (never touch `Project 2`).
@@ -62,9 +77,10 @@ Before anything else, read `fabelo/PRODUCTION_RULES.md` in the repo and follow i
    - `fabelo/v2/README.md`: the v2 engine and tools.
    - `fabelo/v2/templates/film.src.html`
    - `fabelo/v2/examples/plane/film.src.html`
+   - Smooth Scribble instead: `fabelo/s2/README.md`, `fabelo/s2/templates/film.src.html`, `fabelo/s2/examples/meet-scribble/film.src.html`, and look at `fabelo/s2/sheets/*.png`.
 5. If `CHROME_PATH` is empty after setup, don't install a browser some other way. Record in the cloud instead (step 4.7).
 
-## 2. Character lock: never break this (same as Version 1)
+## 2. Character lock: Classic Scribble (same as Version 1)
 
 **Locked:**
 - Ink `#1B1B1B` stick figure with stroke 7.
@@ -101,6 +117,14 @@ Side characters use `scarf:false` and a different hair style (`none bun long spi
 - Hair styles: tuft none bun long spiky bald
 - Extras: `rotateTo(at,dur,deg)`, `anchor:'hip'` (for lying or sitting), `custom(fn,'back'|'front')` for anything else.
 
+### 2.1 Character lock: Smooth Scribble
+
+The full canon is in `fabelo/s2/README.md` §1 (approved by Rakib on 2026-11-26, proportions "B"). In short:
+- Draw him ONLY with `Scribble2.draw` / `Scribble2.head` from `fabelo/s2/lib/scribble2.js`. Never hand-draw or restyle him.
+- Locked: big shaded white round head with a clean outline; tall oval eyes, thin brows, one-line mouth; solid black tapered body with mitten hands and small shoes; puffy two-roll red knitted scarf with fringe, always on.
+- Never: nose, ears, hair, fingers, recolouring, a scarf on side characters (`scarf:false`), mixing him with Classic Scribble in one film.
+- Staging: raised arms stay outside the head (wave `a2:[100,48±15]`); hand-to-face poses use `over`; crouches in q/side view, not front; turn side → q → front; night scenes use `S2.night` after the figure.
+
 ## 3. Pick the format from the prompt (same as Version 1)
 
 **A. Emotional short** (Day One Films style, 30–140 s, 9:16 or 16:9)
@@ -127,7 +151,20 @@ If the prompt is unclear about format, length or aspect ratio, pick the best fit
 
 ## 4. Build (Version 2 workflow)
 
-Work in `fabelo/work/<slug>/`. Start from `v2/templates/`.
+Work in `fabelo/work/<slug>/`. Start from `v2/templates/` (Classic) or `s2/templates/` (Smooth).
+
+### 4.0 Smooth Scribble: use the s2 workflow
+
+For Smooth Scribble, skip the Fabelo2 engine steps (4.2–4.4, 4.6–4.7) and follow `fabelo/s2/README.md` §4. The sound spec, the QC and the delivery rules below stay the same.
+```bash
+python3 s2/tools/emo_voice.py --spec work/<slug>/film.audio.json --models "$FABELO_MODELS" --out work/<slug>/voice   # free Kokoro, emotion-shaped
+python3 s2/tools/build_s2.py work/<slug>/film.src.html work/<slug>/film.html --timing work/<slug>/voice/timing.json
+node s2/tools/preview_s2.js work/<slug>/film.html work/<slug>/prev.png "1,3,5,8" --w 1920 --h 1080   # Shorts: --w 1080 --h 1920
+bash s2/tools/render_s2.sh work/<slug> --w 1920 --h 1080 --fps 30 --blur 2 --workers 3
+```
+- Time every action to `voice/timing.json`. Write positions from the stage `{W, H, GY}` so one file renders 16:9 and 9:16.
+- Shorts always get `S2.caption(...)` word-by-word captions.
+- ElevenLabs v3 only if Rakib says yes; then write its line files and a matching `timing.json` in the same `voice/` format.
 
 ### 4.1 Script and audio spec first
 

@@ -1,21 +1,35 @@
 ---
 name: "fabelo-studio"
-description: "Use when Rakib asks for a Fabelo Studio video, a Scribble video, or any animated explainer or emotional short from a prompt. Always uses the same main character: Scribble, the ink stick figure with the red scarf."
+description: "Use when Rakib asks for a Fabelo Studio video, a Scribble video, or any animated explainer or emotional short from a prompt. Two main characters: Classic Scribble (ink stick figure) or Smooth Scribble (thumbnail style); always ask which one first."
 ---
 
 # Fabelo Studio: make a Scribble video from a prompt
 
 Fabelo Studio is Rakib's animated YouTube channel for a US audience, in English.
-It has ONE main character, **Scribble**: an ink stick figure with a red scarf on warm paper.
+It has TWO main characters and Rakib picks one for every video (section 0):
+- **Classic Scribble**: an ink stick figure with a red scarf on warm paper.
+- **Smooth Scribble**: the thumbnail-style Scribble with a big shaded head, a smooth black body and a puffy knitted red scarf (`fabelo/s2/`).
 
-The character, the engine and the tools all live in his private GitHub repo:
+The characters, the engine and the tools all live in his private GitHub repo:
 - Repo: `rakibul3790/auto-yt-studio`
 - Branch: `main`
 - Folder: `fabelo/`
 
-Never redraw Scribble by hand. Always render him with `fabelo/lib/scribble.js`, so he looks identical in every video.
+Never redraw either character by hand. Classic Scribble is rendered only with `fabelo/lib/scribble.js`, Smooth Scribble only with `fabelo/s2/lib/scribble2.js`, so each looks identical in every video.
 
-## 0. Production rules (read FIRST, every video: long films AND Shorts)
+## 0. FIRST message: which character? (long videos AND Shorts)
+
+Fabelo Studio has **two** main characters. Whenever Rakib asks you to make anything (a film, a Short, an explainer, a test), your FIRST reply asks which one, in Bengali, and you wait for the answer. Use AskUserQuestion when it is available:
+
+1. **Classic Scribble:** the ink line stick figure with the tuft and the thin red scarf. Library `fabelo/lib/scribble.js`; build with the classic workflow in this skill.
+2. **Smooth Scribble (new, thumbnail style):** big shaded white head, smooth solid black body, puffy knitted red scarf with fringe. Library `fabelo/s2/lib/scribble2.js`; kit and workflow in `fabelo/s2/README.md`.
+
+- Skip the question only when the request already names the character ("Smooth দিয়ে বানাও", "Classic Scribble").
+- After the pick, write the full A–Z script as Markdown (`SCRIPT.md` in the project folder, and show it in chat): logline, character, cast and voices with the emotion of each line, then a scene-by-scene table (time, action, camera 🎥, line, SFX 🔊, music 🎵). Then build the video with the chosen character, following the production rules below.
+- Never mix the two characters in one film unless Rakib asks. Smooth-style side characters use `scarf:false`.
+- The same question and flow apply to Shorts (1080x1920).
+
+## 0.1 Production rules (read before every video: long films AND Shorts)
 
 Before anything else, read `fabelo/PRODUCTION_RULES.md` in the repo and follow it. It overrides older lines in this skill wherever they differ. In short:
 - **Stages, each needs Rakib's OK:** ideas, then a full A-Z script, then a raw cut (locked camera), then a full-frame QC by you (one frame per second plus close-up crops, at 16:9 and 9:16), then Rakib's review, then the full edit (camera, meaningful transitions, typography with word-by-word captions and sparse red keyword underlines, flashback, end card, grade/paper/grain), then a 1080p review copy, then 4K (`--w 3840 --h 2160 --scale 2`, at most 3 workers on 15 GB RAM), Shorts, thumbnail and EN/BN SRT. Each project lives in `video for yt\Project File N\` (never touch `Project 2`).
@@ -45,8 +59,9 @@ Before anything else, read `fabelo/PRODUCTION_RULES.md` in the repo and follow i
    - `templates/scene.src.html`: the starter scene.
    - For emotional shorts, also `examples/stand/stand.src.html`.
    - For explainers, also `examples/night/night.src.html`.
+   - Smooth Scribble instead: `s2/README.md` (canon, API, workflow), `s2/templates/`, `s2/examples/meet-scribble/`, and look at `s2/sheets/*.png`.
 
-## 2. Character lock: never break this
+## 2. Character lock: Classic Scribble (never break this)
 
 **Locked:**
 - Ink `#1B1B1B` stick figure with stroke 7.
@@ -80,6 +95,13 @@ Side characters use `scarf:false` and a different hair style (`none bun long spi
 - Hair styles: tuft none bun long spiky bald
 - Extras: `rotateTo(at,dur,deg)`, `anchor:'hip'` (for lying or sitting in bed), `sc.custom(fn,'back'|'front')` for anything else (shadows, rain, tints).
 
+### 2.1 Character lock: Smooth Scribble
+
+The canon is in `fabelo/s2/README.md` §1 (approved 2026-11-26, proportions "B").
+- Draw him only with `Scribble2.draw` / `Scribble2.head`.
+- Locked: big shaded white head with a clean outline, tall oval eyes, a solid black tapered body, mitten hands, and the puffy red knitted scarf with fringe, always on.
+- Never: nose, ears, hair, fingers, recolouring, a scarf on side characters (`scarf:false`), mixing him with Classic Scribble.
+
 ## 3. Pick the format from the prompt
 
 **A. Emotional short** (Day One Films style, 60–140 s, 16:9 or 9:16)
@@ -109,6 +131,10 @@ If the prompt is unclear about format, length or aspect ratio, pick the best fit
 ## 4. Build
 
 Work in `fabelo/work/<slug>/`.
+
+**Smooth Scribble:** use the s2 workflow in `fabelo/s2/README.md` §4 instead of steps 2–6 below: `s2/tools/emo_voice.py` (free emotional Kokoro voices) → `build_s2.py` → `preview_s2.js` → `render_s2.sh`. Shorts use `--w 1080 --h 1920` and `S2.caption` captions. Delivery (section 5) is the same.
+
+**Classic Scribble:**
 
 1. **Script.** Write the script as a `LINES` array of `[speaker, start, end, text]`. Plan timing at about 2.6 words per second for each line.
 2. **Scene.** Copy `templates/scene.src.html` and write the scene.
