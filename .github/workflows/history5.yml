@@ -5,7 +5,8 @@ on:
   push:
     branches: [history-5]
     paths:
-      - "tools/history5_*.py"
+      - "tools/history5_build.py"
+      - "tools/history5_voice.py"
       - "scripts/queue/_history5.json"
       - ".github/workflows/history5.yml"
   workflow_dispatch:
