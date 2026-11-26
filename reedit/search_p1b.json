@@ -1,0 +1,18 @@
+[
+ {"id": "x_cloth", "q": "khaki fabric", "n": 8},
+ {"id": "x_cloth2", "q": "worn cloth texture", "n": 8},
+ {"id": "x_rifle", "q": "old rifle", "n": 9},
+ {"id": "x_rifle2", "q": "hunting rifle", "n": 9},
+ {"id": "x_emu1", "q": "emu bird", "n": 9},
+ {"id": "x_emu2", "q": "emus", "n": 9},
+ {"id": "x_emu3", "q": "emu farm", "n": 9},
+ {"id": "x_emu4", "q": "emu australia", "n": 9},
+ {"id": "x_emuimg", "q": "emus", "n": 9, "kind": "image"},
+ {"id": "x_emuimg2", "q": "emu walking", "n": 9, "kind": "image"},
+ {"id": "x_sold", "q": "soldier silhouette", "n": 9},
+ {"id": "x_sold2", "q": "army silhouette", "n": 9},
+ {"id": "x_walksun", "q": "silhouette walking sunset", "n": 9},
+ {"id": "x_mgun", "q": "machine gun", "n": 9},
+ {"id": "x_ammo", "q": "ammunition belt", "n": 9},
+ {"id": "x_truck", "q": "old truck", "n": 9}
+]
