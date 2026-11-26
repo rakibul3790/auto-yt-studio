@@ -42,11 +42,13 @@ jobs:
           pip install "rembg[cpu]==2.0.59" || pip install rembg onnxruntime
 
       - name: Sharper NASA Blue Marble map for this run
+        timeout-minutes: 6
+        continue-on-error: true
         run: |
           for u in \
             https://eoimages.gsfc.nasa.gov/images/imagerecords/73000/73909/world.topo.bathy.200412.3x5400x2700.jpg \
             https://eoimages.gsfc.nasa.gov/images/imagerecords/74000/74042/world.topo.bathy.200412.3x5400x2700.jpg; do
-            if curl -fsSL --retry 3 -o /tmp/bm.jpg "$u"; then
+            if curl -fsSL --connect-timeout 20 --max-time 120 --retry 2 -o /tmp/bm.jpg "$u"; then
               python -c "from PIL import Image; im=Image.open('/tmp/bm.jpg'); assert im.width>=5000; print(im.size)" \
                 && cp /tmp/bm.jpg assets/map/blue-marble.jpg && break
             fi
