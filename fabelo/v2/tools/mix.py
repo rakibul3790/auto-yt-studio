@@ -267,7 +267,7 @@ def main():
         d = a1 - a0
         L_ = BEDS[name](d, **args); R_ = BEDS[name](d, **args)
         m = min(len(L_), len(R_)); sig = np.stack([L_[:m] * 0.8 + R_[:m] * 0.2, R_[:m] * 0.8 + L_[:m] * 0.2], 1)
-        tt = T(m / SR); fd = min(1.5, d / 3)
+        tt = np.arange(m) / SR; fd = min(1.5, d / 3)
         sig *= np.minimum(1, np.minimum(tt / fd, (m / SR - tt) / fd))[:, None] * g
         put(beds, sig, a0)
 

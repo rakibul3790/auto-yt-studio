@@ -19,7 +19,8 @@
      scarf  false = no scarf (SIDE CHARACTERS ONLY; Scribble always wears it)
      over   [1] / [1,2] arms drawn on top of the head (hand-to-face poses)
      blink  true = eyes closed for this frame
-   Scribble2.LAST after draw(): { phone:[x,y] | null, head:[x,y,r] } in page coordinates (for light layers)
+     noHead true = body only (draw the head yourself with Scribble2.head, e.g. on a pillow)
+   Scribble2.LAST after draw(): { phone:[x,y] | null, head:[x,y,r], hand:{1:[x,y],2:[x,y]} } in page coordinates (light layers, props in hands)
 */
 (function () {
   const INK = '#151314', LINE = '#1B1817', EDGE = '#3B3737';
@@ -360,6 +361,7 @@
       let s = `<circle cx="${fx(A.sh[0])}" cy="${fx(A.sh[1])}" r="${fx(armW * 0.6)}" fill="${INK}"/>`;
       s += pair(limb(seg(A.sh, A.el), armW0), limb(seg(A.el, A.wr), armW1), true);
       const d = dirv(A.fS), hc = [A.wr[0] + d[0] * armW * 0.5, A.wr[1] + d[1] * armW * 0.5];
+      LAST.hand = LAST.hand || {}; LAST.hand[A.i] = [(o.x || 0) + hc[0] * (o.scale || 1), (o.y || 0) + hc[1] * (o.scale || 1)];
       const k = isFront ? (A.i === 1 ? -1 : 1) : -f;
       if (handType(A.i) === 'phone' && o.phone) {
         const ph = o.phone, pc = [hc[0] + f * (ph.dx || 0), hc[1] + (ph.dy || -14)];
@@ -389,14 +391,14 @@
       s += drawTorso();
       s += drawArm(arms[0], false) + drawArm(arms[1], false);
       s += SC_('rolls', scarfN[0], scarfN[1], r * 1.42, sOpt);
-      s += head(headC[0], headC[1], r, { view, f, tilt: P.tilt });
+      if (!o.noHead) s += head(headC[0], headC[1], r, { view, f, tilt: P.tilt });
     } else if (isFront) {
       s += drawLeg(legs[0], false) + drawLeg(legs[1], false);
       s += drawTorso();
       s += SC_('front', scarfN[0], scarfN[1], r * 1.42, sOpt);
       for (const A of arms) if (!over.includes(A.i)) s += drawArm(A, true);
       s += SC_('rolls', scarfN[0], scarfN[1], r * 1.42, sOpt);
-      s += head(headC[0], headC[1], r, { view, f, face: o.face, look: o.look, tilt: P.tilt, glow: o.glow, blink: o.blink });
+      if (!o.noHead) s += head(headC[0], headC[1], r, { view, f, face: o.face, look: o.look, tilt: P.tilt, glow: o.glow, blink: o.blink });
       for (const A of arms) if (over.includes(A.i)) s += drawArm(A, true);
     } else {
       s += SC_('behind', scarfN[0], scarfN[1], r * 1.42, sOpt);
@@ -407,9 +409,34 @@
       s += SC_('front', scarfN[0], scarfN[1], r * 1.42, sOpt);
       if (!over.includes(1)) s += drawArm(arms[near - 1], true);
       s += SC_('rolls', scarfN[0], scarfN[1], r * 1.42, sOpt);
-      s += head(headC[0], headC[1], r, { view, f, face: o.face, look: o.look, tilt: P.tilt, glow: o.glow, blink: o.blink });
+      if (!o.noHead) s += head(headC[0], headC[1], r, { view, f, face: o.face, look: o.look, tilt: P.tilt, glow: o.glow, blink: o.blink });
       if (over.includes(1)) s += drawArm(arms[near - 1], true);
     }
+    return s + '</g>';
+  }
+
+
+  // A single arm (for characters mostly hidden: in bed under a blanket, behind a counter...).
+  // o: { x, y } shoulder in page coords, deg (0 = down, + toward +x), bend, scale, hand ('relax'|'fist'|'open'|'point'|'phone'),
+  //    k (thumb side: -1 / 1), phone: { ang, dx, dy }, glow, us/fs (segment scales). Sets LAST.phone when holding a phone.
+  function arm(o) {
+    const sc = o.scale || 1, { armW, upper, fore } = B;
+    const uS = o.deg, fS = o.deg + (o.bend || 0);
+    const sh = [0, 0], el = [dirv(uS)[0] * upper * (o.us || 1), dirv(uS)[1] * upper * (o.us || 1)];
+    const wr = [el[0] + dirv(fS)[0] * fore * (o.fs || 1), el[1] + dirv(fS)[1] * fore * (o.fs || 1)];
+    const w0 = (t) => armW * (1.12 - 0.13 * t), w1 = (t) => armW * (0.99 - 0.13 * t);
+    let s = `<g transform="translate(${fx(o.x)} ${fx(o.y)}) scale(${sc})">`;
+    const d1 = limb(seg(sh, el), w0), d2 = limb(seg(el, wr), w1);
+    s += `<path d="${d1}" fill="none" stroke="${EDGE}" stroke-width="3.2"/><path d="${d2}" fill="none" stroke="${EDGE}" stroke-width="3.2"/>`;
+    s += `<path d="${d1}" fill="${INK}"/><path d="${d2}" fill="${INK}"/>`;
+    const d = dirv(fS), hc = [wr[0] + d[0] * armW * 0.5, wr[1] + d[1] * armW * 0.5];
+    const type = o.hand || 'relax';
+    if (type === 'phone') {
+      const ph = o.phone || {}, pc = [hc[0] + (ph.dx || 0), hc[1] + (ph.dy == null ? -14 : ph.dy)];
+      s += phone(pc[0], pc[1], ph.ang || 0, 44, o.glow);
+      LAST.phone = [o.x + pc[0] * sc, o.y + pc[1] * sc];
+    }
+    s += hand(hc[0], hc[1], armW * 1.3, -fS, o.k || 1, type === 'phone' ? 'fist' : type);
     return s + '</g>';
   }
 
@@ -436,5 +463,5 @@
   ];
   const RUN = R4.concat(R4.map(swap));
 
-  window.Scribble2 = { draw, head, defs, POSES, WALK, RUN, B, phone, LAST };
+  window.Scribble2 = { draw, head, arm, defs, POSES, WALK, RUN, B, phone, LAST };
 })();

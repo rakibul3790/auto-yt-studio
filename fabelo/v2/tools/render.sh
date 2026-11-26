@@ -9,6 +9,8 @@
 set -euo pipefail
 D="${1:?usage: render.sh <dir> [record options]}"; shift
 V2="$(cd "$(dirname "$0")/.." && pwd)"
+# Smooth Scribble films (scene uses scribble2.js) go through the s2 pipeline instead.
+if grep -q 'scribble2\.js' "$D/film.src.html" 2>/dev/null; then exec bash "$V2/../s2/tools/render_s2.sh" "$D" "$@"; fi
 W="$D/work"; mkdir -p "$W"
 : "${FABELO_MODELS:?set FABELO_MODELS (run tools/setup.sh, then source .env.sh)}"
 

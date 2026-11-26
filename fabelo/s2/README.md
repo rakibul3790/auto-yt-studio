@@ -37,7 +37,9 @@ Scribble2.defs()                       // put once at the top of the SVG
 Scribble2.draw({ view, f, x, y, scale, pose, face, look, hands, phone, glow, wind, phase, over, blink, scarf })
 Scribble2.head(cx, cy, r, { view, f, face, look, tilt, glow, blink })   // head only (close-ups, expression sheets)
 Scribble2.POSES.idleFront / idleQ / idleSide,  Scribble2.WALK (8 keys),  Scribble2.RUN (8 keys)
-Scribble2.LAST  // after draw(): { phone:[x,y] or null, head:[x,y,r] } for light layers
+Scribble2.LAST  // after draw(): { phone:[x,y] or null, head:[x,y,r], hand:{1:[x,y],2:[x,y]} } for light layers and props in hands
+Scribble2.arm({ x, y, deg, bend, scale, hand, k, phone, glow })   // one arm alone (in bed under a blanket, behind a counter)
+// draw({ ..., noHead: true }) draws the body only, so a head can be placed on a pillow with Scribble2.head
 ```
 
 - `view`: `front`, `q` (3/4), `side`, `back`. `f`: 1 faces right, -1 faces left (q and side).
@@ -86,6 +88,11 @@ Staging rules (learned while building him):
    bash s2/tools/render_s2.sh work/<slug> --w 1920 --h 1080 --fps 30 --blur 2 --workers 3
    ```
    For a Short use `--w 1080 --h 1920`. For 4K use `--w 3840 --h 2160 --scale 2` with at most 3 workers.
-5. QC: 2 fps contact sheets of `final.mp4`; check every tile. To fix one span, re-record only it with `--start/--end` and splice it in by frame number.
+5. QC: `render_s2.sh` writes 2 fps contact sheets to `qc/`; check every tile.
+   - Prepared voices (ElevenLabs v3): put `voice/line_XX.wav` + `voice/timing.json` in the film folder; the Kokoro step is skipped.
+   - Real effect files: list them in `"sfx_files"` (files in `sfx/`); `tools/overlay_files.py` lays them over the mix.
+   - Cloud render (nothing heavy on Rakib's PC): put the film folder in `fabelo/v2/renders/<slug>/` with a `RENDER` file
+     (`--w 1080 --h 1920 --fps 30 --blur 4`), push a `fabelo-v2-render-<slug>` branch; `v2/tools/render.sh` sees `scribble2.js`
+     and runs this pipeline, then the workflow commits `final.mp4` and `qc/` back to the branch. To fix one span, re-record only it with `--start/--end` and splice it in by frame number.
 
 `examples/meet-scribble/` is the approved 40 s test film: walk in, wave, phone, night on the bed, looking up, a jump, and an end card.
