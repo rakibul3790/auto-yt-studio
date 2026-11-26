@@ -1,0 +1,7 @@
+[
+ {"id": "tw_a", "text": "1930s heavy manual typewriter, a person typing steadily at medium speed, loud crisp mechanical key strikes, metal typebars clacking against the rubber platen, close microphone, dry room, no music", "duration": 4.0, "influence": 0.6},
+ {"id": "tw_b", "text": "vintage Underwood typewriter close up, slow deliberate typing, each key a solid mechanical clack with a little spring rattle, dry, no music", "duration": 4.0, "influence": 0.6},
+ {"id": "tw_return", "text": "vintage typewriter carriage return, ratchet zip then a bell ding", "duration": 1.2},
+ {"id": "paper_slide", "text": "sheet of paper sliding onto a wooden desk, soft swish and light tap", "duration": 0.8},
+ {"id": "file_folder", "text": "old cardboard file folder dropped on a desk and flipped open, soft paper thud", "duration": 1.0}
+]
