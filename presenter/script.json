@@ -1,0 +1,218 @@
+{
+ "title": "This Bird Flies to the Moon and Back Three Times",
+ "voice": "en-US-AndrewNeural",
+ "voice_rate": "+6%",
+ "music": "investigations.mp3",
+ "presenter_prompt": "photorealistic photo of a friendly 28 year old South Asian male science YouTuber, chest-up, facing the camera, looking straight into the lens, mouth closed, slight warm smile, short neat hair, light stubble, wearing a plain dark olive t-shirt, sitting in a cozy modern home studio with soft warm bokeh lights, a plant and a bookshelf behind, soft key light, natural skin texture, sharp focus, shot on 50mm",
+ "beats": [
+  {
+   "text": "This tiny bird flies farther than any other animal on Earth.",
+   "layout": "globe",
+   "label": "FARTHEST FLYER ON EARTH"
+  },
+  {
+   "text": "Meet the Arctic tern. It weighs less than a smartphone.",
+   "layout": "face",
+   "card": {
+    "kind": "photo",
+    "query": "arctic tern",
+    "subject": "tern",
+    "tag": "ARCTIC TERN",
+    "chip": "about 100 g",
+    "chip_word": "smartphone"
+   }
+  },
+  {
+   "text": "Every summer, it nests near the top of the world, in Greenland and northern Canada.",
+   "layout": "map",
+   "map": {
+    "from": [
+     -56,
+     60,
+     44
+    ],
+    "to": [
+     -50,
+     63,
+     38
+    ],
+    "arctic_circle": true,
+    "nests": [
+     [
+      -42,
+      72
+     ],
+     [
+      -68,
+      68
+     ],
+     [
+      -52,
+      64.5
+     ]
+    ],
+    "place_labels": [
+     [
+      "GREENLAND",
+      -41,
+      74
+     ],
+     [
+      "CANADA",
+      -75,
+      60
+     ]
+    ]
+   }
+  },
+  {
+   "text": "When the Arctic turns cold, it flies all the way down to Antarctica, chasing a second summer.",
+   "layout": "map",
+   "map": {
+    "from": [
+     -30,
+     50,
+     70
+    ],
+    "to": [
+     -5,
+     -40,
+     80
+    ],
+    "route": "tern",
+    "route_draw": [
+     0.05,
+     0.85
+    ],
+    "label": "A SECOND SUMMER",
+    "label_word": "summer",
+    "equator": true,
+    "follow": true
+   }
+  },
+  {
+   "text": "Then it flies all the way back. That's about seventy thousand kilometers, every single year.",
+   "layout": "face",
+   "card": {
+    "kind": "number",
+    "value": 70000,
+    "suffix": " km",
+    "sub": "EVERY YEAR",
+    "start_word": "seventy"
+   }
+  },
+  {
+   "text": "Over a thirty year life, that's like flying to the Moon and back three times.",
+   "layout": "face",
+   "card": {
+    "kind": "photo",
+    "query": "full moon",
+    "subject": "moon",
+    "tag": "TO THE MOON",
+    "chip": "x3",
+    "chip_word": "three"
+   }
+  },
+  {
+   "text": "But the bar-tailed godwit has an even crazier record.",
+   "layout": "face",
+   "card": {
+    "kind": "photo",
+    "query": "bar-tailed godwit",
+    "subject": "godwit",
+    "tag": "BAR-TAILED GODWIT"
+   }
+  },
+  {
+   "text": "It flies from Alaska to New Zealand, more than twelve thousand kilometers, without stopping.",
+   "layout": "map",
+   "map": {
+    "from": [
+     -163,
+     55,
+     75
+    ],
+    "to": [
+     -180,
+     -20,
+     85
+    ],
+    "route": "godwit",
+    "route_draw": [
+     0.15,
+     0.9
+    ],
+    "label": "12,000+ KM NONSTOP",
+    "label_word": "twelve",
+    "follow": true
+   }
+  },
+  {
+   "text": "No food. No water. No landing. For about eleven days.",
+   "layout": "map",
+   "map": {
+    "from": [
+     -190,
+     8,
+     100
+    ],
+    "to": [
+     -195,
+     6,
+     96
+    ],
+    "route": "godwit",
+    "route_draw": [
+     0,
+     0
+    ],
+    "icons": [
+     [
+      "no_food",
+      "food"
+     ],
+     [
+      "no_water",
+      "water"
+     ],
+     [
+      "no_landing",
+      "landing"
+     ]
+    ],
+    "label": "11 DAYS IN THE AIR",
+    "label_word": "eleven"
+   }
+  },
+  {
+   "text": "So how do they find their way? They read the sun, the stars, and even Earth's magnetic field.",
+   "layout": "face",
+   "card": {
+    "kind": "video",
+    "query": "flock of birds flying sky",
+    "subject": "birds",
+    "chips": [
+     [
+      "SUN",
+      "sun"
+     ],
+     [
+      "STARS",
+      "stars"
+     ],
+     [
+      "MAGNETIC FIELD",
+      "magnetic"
+     ]
+    ]
+   }
+  },
+  {
+   "text": "Follow for more facts that sound fake, but aren't.",
+   "layout": "globe",
+   "label": "FOLLOW FOR MORE",
+   "label_word": "follow",
+   "end": true
+  }
+ ]
+}
