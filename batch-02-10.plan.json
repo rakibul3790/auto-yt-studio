@@ -1,0 +1,300 @@
+{
+ "title": "Earth Has More Trees Than the Milky Way Has Stars",
+ "format": "short",
+ "style": "pro",
+ "description": "Scientists estimate there are about three trillion trees on Earth, far more than the stars in our galaxy.",
+ "tags": [
+  "trees",
+  "milky way",
+  "stars",
+  "nature facts",
+  "space facts",
+  "weird facts",
+  "forests",
+  "mind blowing facts"
+ ],
+ "hashtags": [
+  "nature",
+  "facts"
+ ],
+ "thumbnail_text": "More trees than stars",
+ "music_mood": "calm",
+ "scenes": [
+  {
+   "on_screen": "Trees > stars",
+   "visual": "forest from above",
+   "subject": "forest",
+   "text": "Earth has more trees than our galaxy has stars.",
+   "highlight": [
+    "more trees"
+   ],
+   "say": "[curious] Earth has more trees than our galaxy has stars.",
+   "beats": [
+    {
+     "shot": "clip",
+     "camera": "punch",
+     "sfx": [
+      "impact"
+     ],
+     "hook": {
+      "angle": 0.38,
+      "seconds": 0.7
+     },
+     "at_word": 0,
+     "query": "forest from above",
+     "subject": "forest"
+    }
+   ]
+  },
+  {
+   "on_screen": "3 trillion trees",
+   "visual": "green forest",
+   "subject": "forest",
+   "text": "A huge study estimated about three trillion trees on our planet.",
+   "highlight": [
+    "three trillion trees"
+   ],
+   "say": "A huge study estimated about three trillion trees on our planet.",
+   "beats": [
+    {
+     "shot": "number",
+     "bg": "new",
+     "number": {
+      "from": 0,
+      "to": 3,
+      "suffix": " TRILLION",
+      "label": "TREES ON EARTH",
+      "keys": [
+       [
+        0,
+        0,
+        "start"
+       ],
+       [
+        6,
+        3,
+        "end"
+       ]
+      ]
+     },
+     "sfx": [
+      "tick"
+     ],
+     "query": "green forest",
+     "at_word": 0,
+     "subject": "forest",
+     "transition": "cut"
+    }
+   ]
+  },
+  {
+   "on_screen": "100–400 billion stars",
+   "visual": "milky way galaxy",
+   "subject": "galaxy",
+   "text": "The Milky Way has somewhere between one hundred and four hundred billion stars.",
+   "highlight": [
+    "four hundred billion"
+   ],
+   "say": "The Milky Way has somewhere between one hundred and four hundred billion stars.",
+   "beats": [
+    {
+     "shot": "number",
+     "bg": "new",
+     "number": {
+      "from": 0,
+      "to": 400,
+      "suffix": " BILLION",
+      "label": "STARS IN OUR GALAXY",
+      "keys": [
+       [
+        0,
+        0,
+        "start"
+       ],
+       [
+        7,
+        100,
+        "end"
+       ],
+       [
+        11,
+        400,
+        "end"
+       ]
+      ]
+     },
+     "sfx": [
+      "tick"
+     ],
+     "query": "milky way galaxy",
+     "at_word": 0,
+     "subject": "galaxy",
+     "transition": "cut"
+    }
+   ]
+  },
+  {
+   "on_screen": "7 trees per star",
+   "visual": "trees in a row",
+   "subject": "tree",
+   "text": "That's at least seven trees for every single star.",
+   "highlight": [
+    "seven trees"
+   ],
+   "say": "[excited] That's at least seven trees for every single star.",
+   "look": "excited",
+   "beats": [
+    {
+     "shot": "compare",
+     "bg": "prev",
+     "sfx": [
+      "tick"
+     ],
+     "compare": {
+      "style": "stack",
+      "left": {
+       "label": "TREES",
+       "value": 7,
+       "from_word": 0,
+       "land_word": 4
+      },
+      "right": {
+       "label": "STAR",
+       "value": 1,
+       "from_word": 5,
+       "land_word": 8
+      },
+      "badge": "7x"
+     },
+     "at_word": 0,
+     "query": "trees in a row",
+     "subject": "tree",
+     "transition": "cut",
+     "look": "excited"
+    }
+   ]
+  },
+  {
+   "on_screen": "But...",
+   "visual": "foggy forest",
+   "subject": "forest",
+   "text": "But that number is falling.",
+   "highlight": [
+    "falling"
+   ],
+   "say": "[sighs] But that number is falling.",
+   "look": "sad",
+   "beats": [
+    {
+     "at_word": 0,
+     "shot": "clip",
+     "query": "foggy forest",
+     "subject": "forest",
+     "camera": "pan_left",
+     "transition": "whip_left",
+     "sfx": [
+      "swish"
+     ],
+     "look": "sad"
+    }
+   ]
+  },
+  {
+   "on_screen": "Cut every year",
+   "visual": "tree stumps",
+   "subject": "stumps",
+   "text": "Billions of trees are cut down every single year.",
+   "highlight": [
+    "every single year"
+   ],
+   "say": "Billions of trees are cut down every single year.",
+   "look": "sad",
+   "beats": [
+    {
+     "at_word": 0,
+     "shot": "clip",
+     "query": "tree stumps",
+     "subject": "stumps",
+     "camera": "pull_out",
+     "transition": "slide_up",
+     "sfx": [
+      "whoosh"
+     ],
+     "look": "sad"
+    }
+   ]
+  },
+  {
+   "on_screen": "Every one counts",
+   "visual": "tree sunlight",
+   "subject": "tree",
+   "text": "And every one of them is home to something.",
+   "highlight": [
+    "home to something"
+   ],
+   "say": "And every one of them is home to something.",
+   "beats": [
+    {
+     "shot": "card",
+     "at_word": 0,
+     "bg": "prev",
+     "card": {
+      "style": "polaroid",
+      "query": "owl in tree",
+      "subject": "owl",
+      "y": 0.24,
+      "width": 0.6,
+      "caption": "Home"
+     },
+     "subject": "owl",
+     "query": "owl in tree",
+     "transition": "cut",
+     "sfx": []
+    }
+   ]
+  },
+  {
+   "on_screen": "Look up",
+   "visual": "night sky through trees",
+   "subject": "tree",
+   "text": "So next time you look up at the night sky, remember...",
+   "highlight": [
+    "the night sky"
+   ],
+   "say": "[softly] So next time you look up at the night sky, remember...",
+   "look": "whisper",
+   "beats": [
+    {
+     "shot": "clip",
+     "at_word": 0,
+     "query": "night sky through trees",
+     "subject": "tree",
+     "camera": "push_in",
+     "transition": "cut",
+     "sfx": [],
+     "look": "whisper"
+    },
+    {
+     "shot": "card",
+     "at_word": 8,
+     "bg": "prev",
+     "card": {
+      "style": "rounded",
+      "query": "starry night sky",
+      "subject": "stars",
+      "y": 0.24,
+      "width": 0.6
+     },
+     "subject": "stars",
+     "query": "starry night sky",
+     "transition": "cut",
+     "sfx": [],
+     "look": "whisper"
+    }
+   ]
+  }
+ ],
+ "_keep": true,
+ "_fit_style": "refill",
+ "_gen_used": []
+}

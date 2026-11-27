@@ -1,0 +1,40 @@
+{
+ "file": "batch-02-10-short.mp4",
+ "ok": true,
+ "errors": [],
+ "warnings": [
+  "refill: no footage filled the screen at 0.0s, shown full screen centred on the subject",
+  "refill: no footage filled the screen at 17.1s, shown full screen centred on the subject",
+  "framecheck: subject still cut at 0.0s (first: left+right+bottom; last: left+right+bottom)",
+  "framecheck: subject still cut at 17.1s (last: left+right)"
+ ],
+ "info": {
+  "duration": 29.9,
+  "size": "1080x1920",
+  "fps": 30.0,
+  "black": [],
+  "lufs": -14.5,
+  "true_peak": -2.4,
+  "caption_boxes": 43,
+  "framecheck": {
+   "checked": 4,
+   "refit": 3,
+   "modes": [
+    "fill",
+    "fill",
+    "fill",
+    "fill",
+    "fill",
+    "fill",
+    "fill",
+    "fill",
+    "fill"
+   ],
+   "replaced": [
+    "0.0s other footage (would only fit shrunk)",
+    "17.1s other footage (would only fit shrunk)",
+    "26.5s other footage (would only fit shrunk)"
+   ]
+  }
+ }
+}
