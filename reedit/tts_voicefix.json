@@ -1,0 +1,538 @@
+[
+ {
+  "id": "l113_a",
+  "voice": "XA3P1cj7XJexe6Zq0ATX",
+  "stability": 0.5,
+  "similarity": 0.8,
+  "seed": 11,
+  "text": "[amused] Birds beating an army is funny. [softly] What happened in one European city, four centuries earlier... was not."
+ },
+ {
+  "id": "l113_b",
+  "voice": "XA3P1cj7XJexe6Zq0ATX",
+  "stability": 0.5,
+  "similarity": 0.8,
+  "seed": 29,
+  "text": "[amused] Birds beating an army is funny. [softly] What happened in one European city, four centuries earlier... was not."
+ },
+ {
+  "id": "l113_c",
+  "voice": "XA3P1cj7XJexe6Zq0ATX",
+  "stability": 0.0,
+  "similarity": 0.8,
+  "seed": 7,
+  "text": "[amused] Birds beating an army is funny. [softly] What happened in one European city, four centuries earlier... was not."
+ },
+ {
+  "id": "l130_a",
+  "voice": "XA3P1cj7XJexe6Zq0ATX",
+  "stability": 0.5,
+  "similarity": 0.8,
+  "seed": 11,
+  "text": "[mysterious] No music. [softly] No reason."
+ },
+ {
+  "id": "l130_b",
+  "voice": "XA3P1cj7XJexe6Zq0ATX",
+  "stability": 0.5,
+  "similarity": 0.8,
+  "seed": 29,
+  "text": "[mysterious] No music. [softly] No reason."
+ },
+ {
+  "id": "l130_c",
+  "voice": "XA3P1cj7XJexe6Zq0ATX",
+  "stability": 0.0,
+  "similarity": 0.8,
+  "seed": 7,
+  "text": "[mysterious] No music. [softly] No reason."
+ },
+ {
+  "id": "l136_a",
+  "voice": "XA3P1cj7XJexe6Zq0ATX",
+  "stability": 0.5,
+  "similarity": 0.8,
+  "seed": 11,
+  "text": "[uneasy] The next day, on swollen, bleeding feet... she danced again."
+ },
+ {
+  "id": "l136_b",
+  "voice": "XA3P1cj7XJexe6Zq0ATX",
+  "stability": 0.5,
+  "similarity": 0.8,
+  "seed": 29,
+  "text": "[uneasy] The next day, on swollen, bleeding feet... she danced again."
+ },
+ {
+  "id": "l136_c",
+  "voice": "XA3P1cj7XJexe6Zq0ATX",
+  "stability": 0.0,
+  "similarity": 0.8,
+  "seed": 7,
+  "text": "[uneasy] The next day, on swollen, bleeding feet... she danced again."
+ },
+ {
+  "id": "l148_a",
+  "voice": "XA3P1cj7XJexe6Zq0ATX",
+  "stability": 0.5,
+  "similarity": 0.8,
+  "seed": 11,
+  "text": "[sadly] People who wanted to stop... and couldn't."
+ },
+ {
+  "id": "l148_b",
+  "voice": "XA3P1cj7XJexe6Zq0ATX",
+  "stability": 0.5,
+  "similarity": 0.8,
+  "seed": 29,
+  "text": "[sadly] People who wanted to stop... and couldn't."
+ },
+ {
+  "id": "l148_c",
+  "voice": "XA3P1cj7XJexe6Zq0ATX",
+  "stability": 0.0,
+  "similarity": 0.8,
+  "seed": 7,
+  "text": "[sadly] People who wanted to stop... and couldn't."
+ },
+ {
+  "id": "l164_a",
+  "voice": "XA3P1cj7XJexe6Zq0ATX",
+  "stability": 0.5,
+  "similarity": 0.8,
+  "seed": 11,
+  "text": "[serious] It made everything worse."
+ },
+ {
+  "id": "l164_b",
+  "voice": "XA3P1cj7XJexe6Zq0ATX",
+  "stability": 0.5,
+  "similarity": 0.8,
+  "seed": 29,
+  "text": "[serious] It made everything worse."
+ },
+ {
+  "id": "l164_c",
+  "voice": "XA3P1cj7XJexe6Zq0ATX",
+  "stability": 0.0,
+  "similarity": 0.8,
+  "seed": 7,
+  "text": "[serious] It made everything worse."
+ },
+ {
+  "id": "l197_a",
+  "voice": "XA3P1cj7XJexe6Zq0ATX",
+  "stability": 0.5,
+  "similarity": 0.8,
+  "seed": 11,
+  "text": "[softly, sad] A whole town, dancing... and not one of them wanted to."
+ },
+ {
+  "id": "l197_b",
+  "voice": "XA3P1cj7XJexe6Zq0ATX",
+  "stability": 0.5,
+  "similarity": 0.8,
+  "seed": 29,
+  "text": "[softly, sad] A whole town, dancing... and not one of them wanted to."
+ },
+ {
+  "id": "l197_c",
+  "voice": "XA3P1cj7XJexe6Zq0ATX",
+  "stability": 0.0,
+  "similarity": 0.8,
+  "seed": 7,
+  "text": "[softly, sad] A whole town, dancing... and not one of them wanted to."
+ },
+ {
+  "id": "l236_a",
+  "voice": "XA3P1cj7XJexe6Zq0ATX",
+  "stability": 0.5,
+  "similarity": 0.8,
+  "seed": 11,
+  "text": "The company's fix? [scoffs] They painted the tank brown."
+ },
+ {
+  "id": "l236_b",
+  "voice": "XA3P1cj7XJexe6Zq0ATX",
+  "stability": 0.5,
+  "similarity": 0.8,
+  "seed": 29,
+  "text": "The company's fix? [scoffs] They painted the tank brown."
+ },
+ {
+  "id": "l236_c",
+  "voice": "XA3P1cj7XJexe6Zq0ATX",
+  "stability": 0.0,
+  "similarity": 0.8,
+  "seed": 7,
+  "text": "The company's fix? [scoffs] They painted the tank brown."
+ },
+ {
+  "id": "l241_a",
+  "voice": "XA3P1cj7XJexe6Zq0ATX",
+  "stability": 0.5,
+  "similarity": 0.8,
+  "seed": 11,
+  "text": "[tense, quiet] Just after noon, people heard a deep rumble... then a rattling, like machine guns."
+ },
+ {
+  "id": "l241_b",
+  "voice": "XA3P1cj7XJexe6Zq0ATX",
+  "stability": 0.5,
+  "similarity": 0.8,
+  "seed": 29,
+  "text": "[tense, quiet] Just after noon, people heard a deep rumble... then a rattling, like machine guns."
+ },
+ {
+  "id": "l241_c",
+  "voice": "XA3P1cj7XJexe6Zq0ATX",
+  "stability": 0.0,
+  "similarity": 0.8,
+  "seed": 7,
+  "text": "[tense, quiet] Just after noon, people heard a deep rumble... then a rattling, like machine guns."
+ },
+ {
+  "id": "l250_a",
+  "voice": "XA3P1cj7XJexe6Zq0ATX",
+  "stability": 0.5,
+  "similarity": 0.8,
+  "seed": 11,
+  "text": "[shocked] And then the whole tank split open."
+ },
+ {
+  "id": "l250_b",
+  "voice": "XA3P1cj7XJexe6Zq0ATX",
+  "stability": 0.5,
+  "similarity": 0.8,
+  "seed": 29,
+  "text": "[shocked] And then the whole tank split open."
+ },
+ {
+  "id": "l250_c",
+  "voice": "XA3P1cj7XJexe6Zq0ATX",
+  "stability": 0.0,
+  "similarity": 0.8,
+  "seed": 7,
+  "text": "[shocked] And then the whole tank split open."
+ },
+ {
+  "id": "l261_a",
+  "voice": "XA3P1cj7XJexe6Zq0ATX",
+  "stability": 0.5,
+  "similarity": 0.8,
+  "seed": 11,
+  "text": "[urgent] Faster than any person can run."
+ },
+ {
+  "id": "l261_b",
+  "voice": "XA3P1cj7XJexe6Zq0ATX",
+  "stability": 0.5,
+  "similarity": 0.8,
+  "seed": 29,
+  "text": "[urgent] Faster than any person can run."
+ },
+ {
+  "id": "l261_c",
+  "voice": "XA3P1cj7XJexe6Zq0ATX",
+  "stability": 0.0,
+  "similarity": 0.8,
+  "seed": 7,
+  "text": "[urgent] Faster than any person can run."
+ },
+ {
+  "id": "l274_a",
+  "voice": "XA3P1cj7XJexe6Zq0ATX",
+  "stability": 0.5,
+  "similarity": 0.8,
+  "seed": 11,
+  "text": "[sad] Twenty-one people died. [softly] Around a hundred and fifty were hurt."
+ },
+ {
+  "id": "l274_b",
+  "voice": "XA3P1cj7XJexe6Zq0ATX",
+  "stability": 0.5,
+  "similarity": 0.8,
+  "seed": 29,
+  "text": "[sad] Twenty-one people died. [softly] Around a hundred and fifty were hurt."
+ },
+ {
+  "id": "l274_c",
+  "voice": "XA3P1cj7XJexe6Zq0ATX",
+  "stability": 0.0,
+  "similarity": 0.8,
+  "seed": 7,
+  "text": "[sad] Twenty-one people died. [softly] Around a hundred and fifty were hurt."
+ },
+ {
+  "id": "l279_a",
+  "voice": "XA3P1cj7XJexe6Zq0ATX",
+  "stability": 0.5,
+  "similarity": 0.8,
+  "seed": 11,
+  "text": "[somber] Rescuers struggled for days, because as the air cooled, the molasses grew thicker... trapping anyone caught inside."
+ },
+ {
+  "id": "l279_b",
+  "voice": "XA3P1cj7XJexe6Zq0ATX",
+  "stability": 0.5,
+  "similarity": 0.8,
+  "seed": 29,
+  "text": "[somber] Rescuers struggled for days, because as the air cooled, the molasses grew thicker... trapping anyone caught inside."
+ },
+ {
+  "id": "l279_c",
+  "voice": "XA3P1cj7XJexe6Zq0ATX",
+  "stability": 0.0,
+  "similarity": 0.8,
+  "seed": 7,
+  "text": "[somber] Rescuers struggled for days, because as the air cooled, the molasses grew thicker... trapping anyone caught inside."
+ },
+ {
+  "id": "l295_a",
+  "voice": "XA3P1cj7XJexe6Zq0ATX",
+  "stability": 0.5,
+  "similarity": 0.8,
+  "seed": 11,
+  "text": "[wistful] And locals said that for decades, on hot summer days, the neighborhood still smelled sweet."
+ },
+ {
+  "id": "l295_b",
+  "voice": "XA3P1cj7XJexe6Zq0ATX",
+  "stability": 0.5,
+  "similarity": 0.8,
+  "seed": 29,
+  "text": "[wistful] And locals said that for decades, on hot summer days, the neighborhood still smelled sweet."
+ },
+ {
+  "id": "l295_c",
+  "voice": "XA3P1cj7XJexe6Zq0ATX",
+  "stability": 0.0,
+  "similarity": 0.8,
+  "seed": 7,
+  "text": "[wistful] And locals said that for decades, on hot summer days, the neighborhood still smelled sweet."
+ },
+ {
+  "id": "l302_a",
+  "voice": "XA3P1cj7XJexe6Zq0ATX",
+  "stability": 0.5,
+  "similarity": 0.8,
+  "seed": 11,
+  "text": "[reflective] That disaster came from cutting corners."
+ },
+ {
+  "id": "l302_b",
+  "voice": "XA3P1cj7XJexe6Zq0ATX",
+  "stability": 0.5,
+  "similarity": 0.8,
+  "seed": 29,
+  "text": "[reflective] That disaster came from cutting corners."
+ },
+ {
+  "id": "l302_c",
+  "voice": "XA3P1cj7XJexe6Zq0ATX",
+  "stability": 0.0,
+  "similarity": 0.8,
+  "seed": 7,
+  "text": "[reflective] That disaster came from cutting corners."
+ },
+ {
+  "id": "l305_a",
+  "voice": "XA3P1cj7XJexe6Zq0ATX",
+  "stability": 0.5,
+  "similarity": 0.8,
+  "seed": 11,
+  "text": "[curious] Our next one came from a very careful plan... [mischievously] to sell something that wasn't for sale."
+ },
+ {
+  "id": "l305_b",
+  "voice": "XA3P1cj7XJexe6Zq0ATX",
+  "stability": 0.5,
+  "similarity": 0.8,
+  "seed": 29,
+  "text": "[curious] Our next one came from a very careful plan... [mischievously] to sell something that wasn't for sale."
+ },
+ {
+  "id": "l305_c",
+  "voice": "XA3P1cj7XJexe6Zq0ATX",
+  "stability": 0.0,
+  "similarity": 0.8,
+  "seed": 7,
+  "text": "[curious] Our next one came from a very careful plan... [mischievously] to sell something that wasn't for sale."
+ },
+ {
+  "id": "g01_a",
+  "voice": "XA3P1cj7XJexe6Zq0ATX",
+  "stability": 0.5,
+  "similarity": 0.8,
+  "seed": 11,
+  "text": "[curious] In 1925, a smooth-talking con man named Victor Lustig read a small story in a Paris newspaper. The Eiffel Tower was rusting, and repairs were costing the city a fortune."
+ },
+ {
+  "id": "g01_b",
+  "voice": "XA3P1cj7XJexe6Zq0ATX",
+  "stability": 0.0,
+  "similarity": 0.8,
+  "seed": 7,
+  "text": "[curious] In 1925, a smooth-talking con man named Victor Lustig read a small story in a Paris newspaper. The Eiffel Tower was rusting, and repairs were costing the city a fortune."
+ },
+ {
+  "id": "g02_a",
+  "voice": "XA3P1cj7XJexe6Zq0ATX",
+  "stability": 0.5,
+  "similarity": 0.8,
+  "seed": 11,
+  "text": "[mischievously] Most people saw a news story. Lustig saw a product."
+ },
+ {
+  "id": "g02_b",
+  "voice": "XA3P1cj7XJexe6Zq0ATX",
+  "stability": 0.0,
+  "similarity": 0.8,
+  "seed": 7,
+  "text": "[mischievously] Most people saw a news story. Lustig saw a product."
+ },
+ {
+  "id": "g03_a",
+  "voice": "XA3P1cj7XJexe6Zq0ATX",
+  "stability": 0.5,
+  "similarity": 0.8,
+  "seed": 11,
+  "text": "[confident] He had fake government letterhead made, posing as a top official from France's Ministry of Posts and Telegraphs. Then he invited a handful of scrap metal dealers to one of the fanciest hotels in Paris. [softly] There, he told them a secret."
+ },
+ {
+  "id": "g03_b",
+  "voice": "XA3P1cj7XJexe6Zq0ATX",
+  "stability": 0.0,
+  "similarity": 0.8,
+  "seed": 7,
+  "text": "[confident] He had fake government letterhead made, posing as a top official from France's Ministry of Posts and Telegraphs. Then he invited a handful of scrap metal dealers to one of the fanciest hotels in Paris. [softly] There, he told them a secret."
+ },
+ {
+  "id": "g04_a",
+  "voice": "XA3P1cj7XJexe6Zq0ATX",
+  "stability": 0.5,
+  "similarity": 0.8,
+  "seed": 11,
+  "text": "[whispers] The city was going to tear down the Eiffel Tower... and sell it for scrap. And it all had to stay quiet."
+ },
+ {
+  "id": "g04_b",
+  "voice": "XA3P1cj7XJexe6Zq0ATX",
+  "stability": 0.0,
+  "similarity": 0.8,
+  "seed": 7,
+  "text": "[whispers] The city was going to tear down the Eiffel Tower... and sell it for scrap. And it all had to stay quiet."
+ },
+ {
+  "id": "g05_a",
+  "voice": "XA3P1cj7XJexe6Zq0ATX",
+  "stability": 0.5,
+  "similarity": 0.8,
+  "seed": 11,
+  "text": "[excited] One dealer, André Poisson, wanted the deal badly. He was new in town, and wanted to make a name for himself."
+ },
+ {
+  "id": "g05_b",
+  "voice": "XA3P1cj7XJexe6Zq0ATX",
+  "stability": 0.0,
+  "similarity": 0.8,
+  "seed": 7,
+  "text": "[excited] One dealer, André Poisson, wanted the deal badly. He was new in town, and wanted to make a name for himself."
+ },
+ {
+  "id": "g06_a",
+  "voice": "XA3P1cj7XJexe6Zq0ATX",
+  "stability": 0.5,
+  "similarity": 0.8,
+  "seed": 11,
+  "text": "[slyly] Then Lustig hinted that government officials don't earn very much... So Poisson paid him a bribe, on top of the price."
+ },
+ {
+  "id": "g06_b",
+  "voice": "XA3P1cj7XJexe6Zq0ATX",
+  "stability": 0.0,
+  "similarity": 0.8,
+  "seed": 7,
+  "text": "[slyly] Then Lustig hinted that government officials don't earn very much... So Poisson paid him a bribe, on top of the price."
+ },
+ {
+  "id": "g07_a",
+  "voice": "XA3P1cj7XJexe6Zq0ATX",
+  "stability": 0.5,
+  "similarity": 0.8,
+  "seed": 11,
+  "text": "[laughs softly] Lustig grabbed the money and caught a train to Vienna. And Poisson? [amused] He was too embarrassed to go to the police."
+ },
+ {
+  "id": "g07_b",
+  "voice": "XA3P1cj7XJexe6Zq0ATX",
+  "stability": 0.0,
+  "similarity": 0.8,
+  "seed": 7,
+  "text": "[laughs softly] Lustig grabbed the money and caught a train to Vienna. And Poisson? [amused] He was too embarrassed to go to the police."
+ },
+ {
+  "id": "g08_a",
+  "voice": "XA3P1cj7XJexe6Zq0ATX",
+  "stability": 0.5,
+  "similarity": 0.8,
+  "seed": 11,
+  "text": "[amused] Lustig watched the newspapers. Not a word. So not long after, he came back... and tried to sell the tower again."
+ },
+ {
+  "id": "g08_b",
+  "voice": "XA3P1cj7XJexe6Zq0ATX",
+  "stability": 0.0,
+  "similarity": 0.8,
+  "seed": 7,
+  "text": "[amused] Lustig watched the newspapers. Not a word. So not long after, he came back... and tried to sell the tower again."
+ },
+ {
+  "id": "g09_a",
+  "voice": "XA3P1cj7XJexe6Zq0ATX",
+  "stability": 0.5,
+  "similarity": 0.8,
+  "seed": 11,
+  "text": "[tense] This time, a dealer did go to the police, and Lustig had to run. [serious] Years later, he was caught in the United States, for printing fake money."
+ },
+ {
+  "id": "g09_b",
+  "voice": "XA3P1cj7XJexe6Zq0ATX",
+  "stability": 0.0,
+  "similarity": 0.8,
+  "seed": 7,
+  "text": "[tense] This time, a dealer did go to the police, and Lustig had to run. [serious] Years later, he was caught in the United States, for printing fake money."
+ },
+ {
+  "id": "g10_a",
+  "voice": "XA3P1cj7XJexe6Zq0ATX",
+  "stability": 0.5,
+  "similarity": 0.8,
+  "seed": 11,
+  "text": "[warmly amused] But for a few days in 1925, a scrap dealer truly believed he owned the most famous tower in the world."
+ },
+ {
+  "id": "g10_b",
+  "voice": "XA3P1cj7XJexe6Zq0ATX",
+  "stability": 0.0,
+  "similarity": 0.8,
+  "seed": 7,
+  "text": "[warmly amused] But for a few days in 1925, a scrap dealer truly believed he owned the most famous tower in the world."
+ },
+ {
+  "id": "g11_a",
+  "voice": "XA3P1cj7XJexe6Zq0ATX",
+  "stability": 0.5,
+  "similarity": 0.8,
+  "seed": 11,
+  "text": "[serious] Lustig lied, and everyone believed him. [softly] Our last man was told the truth, again and again... and refused to believe it for twenty-nine years."
+ },
+ {
+  "id": "g11_b",
+  "voice": "XA3P1cj7XJexe6Zq0ATX",
+  "stability": 0.0,
+  "similarity": 0.8,
+  "seed": 7,
+  "text": "[serious] Lustig lied, and everyone believed him. [softly] Our last man was told the truth, again and again... and refused to believe it for twenty-nine years."
+ }
+]

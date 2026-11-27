@@ -141,6 +141,8 @@ def tts(job):
     for s in job:
         body = {"text": s["text"], "model_id": s.get("model", "eleven_v3"),
                 "voice_settings": {"stability": s.get("stability", 0.0), "similarity_boost": s.get("similarity", 0.8)}}
+        if s.get("seed") is not None:
+            body["seed"] = s["seed"]
         r = requests.post(f"https://api.elevenlabs.io/v1/text-to-speech/{s['voice']}/with-timestamps",
                           params={"output_format": "mp3_44100_192"},
                           headers={"xi-api-key": XI, "Content-Type": "application/json"}, json=body, timeout=300)
