@@ -1,0 +1,50 @@
+[
+ {
+  "id": "k1_a",
+  "voice": "XA3P1cj7XJexe6Zq0ATX",
+  "stability": 0.5,
+  "similarity": 0.8,
+  "seed": 11,
+  "text": "[serious] As American forces landed, his commander, Major Yoshimi Taniguchi, made him a promise. [softly] Whatever happens, we'll come back for you. A few months later, World War Two ended. [sadly] But no one came. [curious] Leaflets fell from planes saying the war was over. Onoda decided they were fake. Newspapers were left for him. Letters from his family. He believed none of it."
+ },
+ {
+  "id": "k1_b",
+  "voice": "XA3P1cj7XJexe6Zq0ATX",
+  "stability": 0.5,
+  "similarity": 0.8,
+  "seed": 29,
+  "text": "[serious] As American forces landed, his commander, Major Yoshimi Taniguchi, made him a promise. [softly] Whatever happens, we'll come back for you. A few months later, World War Two ended. [sadly] But no one came. [curious] Leaflets fell from planes saying the war was over. Onoda decided they were fake. Newspapers were left for him. Letters from his family. He believed none of it."
+ },
+ {
+  "id": "k1_c",
+  "voice": "XA3P1cj7XJexe6Zq0ATX",
+  "stability": 0.0,
+  "similarity": 0.8,
+  "seed": 7,
+  "text": "[serious] As American forces landed, his commander, Major Yoshimi Taniguchi, made him a promise. [softly] Whatever happens, we'll come back for you. A few months later, World War Two ended. [sadly] But no one came. [curious] Leaflets fell from planes saying the war was over. Onoda decided they were fake. Newspapers were left for him. Letters from his family. He believed none of it."
+ },
+ {
+  "id": "k2_a",
+  "voice": "XA3P1cj7XJexe6Zq0ATX",
+  "stability": 0.5,
+  "similarity": 0.8,
+  "seed": 11,
+  "text": "[somber] So he stayed hidden in the jungle with a few other soldiers, still fighting his war. [serious] And that war was real for the people of Lubang. Over the years, Onoda's group killed local islanders. As many as thirty, by some accounts. [sad] One by one, his companions were gone. By 1972, Onoda was alone."
+ },
+ {
+  "id": "k2_b",
+  "voice": "XA3P1cj7XJexe6Zq0ATX",
+  "stability": 0.5,
+  "similarity": 0.8,
+  "seed": 29,
+  "text": "[somber] So he stayed hidden in the jungle with a few other soldiers, still fighting his war. [serious] And that war was real for the people of Lubang. Over the years, Onoda's group killed local islanders. As many as thirty, by some accounts. [sad] One by one, his companions were gone. By 1972, Onoda was alone."
+ },
+ {
+  "id": "k2_c",
+  "voice": "XA3P1cj7XJexe6Zq0ATX",
+  "stability": 0.0,
+  "similarity": 0.8,
+  "seed": 7,
+  "text": "[somber] So he stayed hidden in the jungle with a few other soldiers, still fighting his war. [serious] And that war was real for the people of Lubang. Over the years, Onoda's group killed local islanders. As many as thirty, by some accounts. [sad] One by one, his companions were gone. By 1972, Onoda was alone."
+ }
+]

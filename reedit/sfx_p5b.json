@@ -1,0 +1,14 @@
+[
+ {
+  "id": "s5_dawn_birds",
+  "text": "gentle tropical dawn, a few soft bird songs waking up, calm sea lapping softly, warm and peaceful, no music",
+  "duration": 6,
+  "loop": true
+ },
+ {
+  "id": "s5_far_waves",
+  "text": "distant slow waves on an empty beach at grey dawn, very quiet, lonely, faint wind, no birds, no music",
+  "duration": 6,
+  "loop": true
+ }
+]
