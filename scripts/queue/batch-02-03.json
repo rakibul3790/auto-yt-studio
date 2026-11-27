@@ -1,6 +1,7 @@
 {
   "title": "Koala Fingerprints Look Almost Exactly Like Ours",
   "format": "short",
+  "style": "pro",
   "description": "Koalas have fingerprints so similar to human ones that they are hard to tell apart, even under a microscope.",
   "tags": [
     "koala",
@@ -17,59 +18,192 @@
     "facts"
   ],
   "thumbnail_text": "Koala fingerprints",
+  "music_mood": "quirky",
   "scenes": [
     {
-      "on_screen": "Koala fingerprints",
+      "on_screen": "Fingerprints like yours",
       "visual": "koala in tree",
-      "text": "Koalas have fingerprints. And they look almost exactly like ours.",
-      "highlight": [
-        "fingerprints"
-      ],
       "subject": "koala",
-      "say": "[curious] Koalas have fingerprints. And... [laughs] they look almost exactly like ours.",
-      "look": "excited"
-    },
-    {
-      "on_screen": "Loops and swirls",
-      "visual": "fingerprint close up",
-      "text": "They have the same loops, arches and swirls that we have on our fingertips.",
+      "text": "There's an animal whose fingerprints look almost exactly like yours.",
       "highlight": [
-        "loops, arches and swirls"
+        "exactly like yours"
       ],
-      "subject": "fingerprint",
-      "say": "They have the same loops, arches and swirls that we have on our fingertips."
+      "say": "[mischievously] There's an animal whose fingerprints look almost exactly like yours.",
+      "beats": [
+        {
+          "shot": "clip",
+          "camera": "punch",
+          "sfx": [
+            "impact"
+          ],
+          "hook": {
+            "angle": 0.38,
+            "seconds": 0.7
+          },
+          "at_word": 0,
+          "query": "koala in tree",
+          "subject": "koala"
+        }
+      ]
     },
     {
-      "on_screen": "Hard to tell apart",
+      "on_screen": "Not a monkey",
       "visual": "koala close up",
-      "text": "Scientists have said that even under a microscope, koala prints can be very hard to tell apart from human ones.",
+      "subject": "koala",
+      "text": "It's not a monkey. It's a koala.",
+      "highlight": [
+        "it's a koala"
+      ],
+      "say": "[chuckles] It's not a monkey. It's a koala.",
+      "look": "excited",
+      "beats": [
+        {
+          "shot": "card",
+          "at_word": 0,
+          "bg": "prev",
+          "card": {
+            "style": "polaroid",
+            "query": "monkey sitting",
+            "subject": "monkey",
+            "y": 0.24,
+            "width": 0.6,
+            "caption": "Monkey?"
+          },
+          "subject": "monkey",
+          "query": "monkey sitting",
+          "transition": "cut"
+        },
+        {
+          "shot": "clip",
+          "at_word": 4,
+          "query": "koala close up",
+          "subject": "koala",
+          "camera": "push_in",
+          "transition": "cut"
+        }
+      ]
+    },
+    {
+      "on_screen": "Loops & swirls",
+      "visual": "fingerprint close up",
+      "subject": "fingerprint",
+      "text": "Same loops, same arches, same swirls.",
+      "highlight": [
+        "same swirls"
+      ],
+      "say": "Same loops, same arches, same swirls.",
+      "beats": [
+        {
+          "shot": "text",
+          "text": "SAME SWIRLS",
+          "at_word": 0,
+          "bg": "prev",
+          "query": "fingerprint close up",
+          "subject": "fingerprint",
+          "transition": "cut"
+        }
+      ]
+    },
+    {
+      "on_screen": "Under a microscope",
+      "visual": "microscope laboratory",
+      "subject": "microscope",
+      "text": "Even under a microscope, they can be very hard to tell apart from human prints.",
       "highlight": [
         "hard to tell apart"
       ],
-      "subject": "koala",
-      "say": "[whispers] Scientists have said that even under a microscope, koala prints can be very hard to tell apart from human ones.",
-      "look": "whisper"
+      "say": "[curious] Even under a microscope, they can be very hard to tell apart from human prints.",
+      "beats": [
+        {
+          "shot": "clip",
+          "at_word": 0,
+          "query": "microscope laboratory",
+          "subject": "microscope",
+          "camera": "pan_left",
+          "transition": "cut"
+        },
+        {
+          "shot": "card",
+          "at_word": 3,
+          "bg": "prev",
+          "card": {
+            "style": "print",
+            "query": "microscope laboratory",
+            "subject": "microscope",
+            "y": 0.24,
+            "width": 0.6
+          },
+          "subject": "microscope",
+          "query": "microscope laboratory",
+          "transition": "cut"
+        }
+      ]
     },
     {
-      "on_screen": "Why?",
+      "on_screen": "Not close family",
       "visual": "koala eating eucalyptus",
-      "text": "Koalas are not close relatives of ours. Their prints probably developed to help them grip branches and handle their leafy food.",
+      "subject": "koala",
+      "text": "And koalas aren't even close relatives of ours.",
+      "highlight": [
+        "close relatives"
+      ],
+      "say": "And koalas aren't even close relatives of ours."
+    },
+    {
+      "on_screen": "Built for grip",
+      "visual": "koala climbing tree",
+      "subject": "koala",
+      "text": "Their prints probably evolved to help them grip branches and handle leaves.",
       "highlight": [
         "grip branches"
       ],
-      "subject": "koala",
-      "say": "Koalas are not close relatives of ours. Their prints probably developed to help them grip branches and handle their leafy food."
+      "say": "Their prints probably evolved to help them grip branches and handle leaves.",
+      "beats": [
+        {
+          "shot": "clip",
+          "at_word": 0,
+          "query": "koala climbing tree",
+          "subject": "koala",
+          "camera": "pull_out",
+          "transition": "cut"
+        },
+        {
+          "shot": "card",
+          "at_word": 10,
+          "bg": "prev",
+          "card": {
+            "style": "torn",
+            "query": "eucalyptus leaves",
+            "subject": "leaves",
+            "y": 0.24,
+            "width": 0.6
+          },
+          "subject": "leaves",
+          "query": "eucalyptus leaves",
+          "transition": "cut"
+        }
+      ]
     },
     {
-      "on_screen": "Follow for more",
+      "on_screen": "Same answer twice",
       "visual": "koala sleeping",
-      "text": "Nature sometimes solves the same problem twice. Follow for more weird facts.",
-      "highlight": [
-        "the same problem twice"
-      ],
       "subject": "koala",
-      "say": "[warmly] Nature sometimes solves the same problem twice. [chuckles] Follow for more weird facts."
+      "text": "Nature solved the same problem twice.",
+      "highlight": [
+        "same problem twice"
+      ],
+      "say": "[softly] Nature solved the same problem twice.",
+      "look": "whisper"
+    },
+    {
+      "on_screen": "Check your hands",
+      "visual": "fingertips close up",
+      "subject": "hand",
+      "text": "So look at your fingertips, because somewhere in Australia...",
+      "highlight": [
+        "your fingertips"
+      ],
+      "say": "So look at your fingertips, because somewhere in Australia..."
     }
-  ],
-  "music_mood": "quirky"
+  ]
 }

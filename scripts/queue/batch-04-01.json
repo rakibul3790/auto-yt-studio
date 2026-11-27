@@ -74,7 +74,7 @@
       "highlight": [
         "one single second"
       ],
-      "say": "That is one single second on Earth."
+      "say": "[amazed] That is one single second on Earth."
     },
     {
       "region": "space",
@@ -102,7 +102,7 @@
       "highlight": [
         "almost half a kilometer"
       ],
-      "say": "If you live near the equator, the ground under you spun almost half a kilometer."
+      "say": "[curious] If you live near the equator, the ground under you spun almost half a kilometer."
     },
     {
       "region": "world",
@@ -145,7 +145,7 @@
       "highlight": [
         "never waits"
       ],
-      "say": "The planet never pauses, never slows, never waits for anyone."
+      "say": "[serious] The planet never pauses, never slows, never waits for anyone."
     },
     {
       "region": "world",

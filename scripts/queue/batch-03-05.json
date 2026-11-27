@@ -1,6 +1,7 @@
 {
   "title": "You Can't See the Great Wall From Space",
   "format": "short",
+  "style": "pro",
   "description": "Despite the famous myth, the Great Wall of China is not visible to the naked eye from the Moon, and is very hard to see from orbit.",
   "tags": [
     "great wall of china",
@@ -16,57 +17,158 @@
     "facts"
   ],
   "thumbnail_text": "Not visible from space",
+  "music_mood": "mysterious",
   "scenes": [
     {
-      "on_screen": "A famous myth",
+      "on_screen": "From space?",
       "visual": "great wall of china",
-      "text": "You may have heard that the Great Wall of China is the only human-made thing you can see from space. It is a myth.",
-      "highlight": [
-        "It is a myth"
-      ],
       "subject": "wall",
-      "say": "You may have heard that the Great Wall of China is the only human-made thing you can see from space. [chuckles] It is a myth.",
-      "look": "excited"
+      "text": "You can see the Great Wall of China from space, right?",
+      "highlight": [
+        "from space"
+      ],
+      "say": "[skeptical] You can see the Great Wall of China from space, right?",
+      "beats": [
+        {
+          "shot": "clip",
+          "camera": "punch",
+          "sfx": [
+            "impact"
+          ],
+          "hook": {
+            "angle": -0.38,
+            "seconds": 0.7
+          },
+          "at_word": 0,
+          "query": "great wall of china",
+          "subject": "wall"
+        }
+      ]
     },
     {
-      "on_screen": "Too narrow",
+      "on_screen": "Not really",
       "visual": "great wall mountains",
-      "text": "The wall is very long, but mostly only a few meters wide, and its color blends in with the land around it.",
+      "subject": "wall",
+      "text": "Not really.",
+      "highlight": [
+        "not really"
+      ],
+      "say": "[mischievously] Not really."
+    },
+    {
+      "on_screen": "Long but thin",
+      "visual": "great wall aerial",
+      "subject": "wall",
+      "text": "The wall is incredibly long, but mostly just a few meters wide.",
       "highlight": [
         "a few meters wide"
       ],
+      "say": "The wall is incredibly long, but mostly just a few meters wide.",
+      "beats": [
+        {
+          "shot": "text",
+          "text": "A FEW METERS WIDE",
+          "at_word": 0,
+          "bg": "prev",
+          "query": "great wall aerial",
+          "subject": "wall",
+          "transition": "cut"
+        }
+      ]
+    },
+    {
+      "on_screen": "Blends in",
+      "visual": "great wall landscape",
       "subject": "wall",
-      "say": "The wall is very long, but mostly only a few meters wide, and its color blends in with the land around it."
+      "text": "And its color blends right into the land around it.",
+      "highlight": [
+        "blends right into"
+      ],
+      "say": "And its color blends right into the land around it."
     },
     {
       "on_screen": "From the Moon",
       "visual": "full moon",
-      "text": "From the Moon, astronauts say you cannot see any single human-made structure at all.",
-      "highlight": [
-        "from the Moon"
-      ],
       "subject": "moon",
-      "say": "[curious] From the Moon, astronauts say you cannot see any single human-made structure at all."
+      "text": "From the Moon, you can't see any single human-made structure at all.",
+      "highlight": [
+        "at all"
+      ],
+      "say": "From the Moon, you can't see any single human-made structure at all.",
+      "beats": [
+        {
+          "shot": "card",
+          "at_word": 0,
+          "bg": "prev",
+          "card": {
+            "style": "polaroid",
+            "query": "full moon",
+            "subject": "moon",
+            "y": 0.24,
+            "width": 0.6,
+            "caption": "Moon"
+          },
+          "subject": "moon",
+          "query": "full moon",
+          "transition": "cut"
+        }
+      ]
     },
     {
       "on_screen": "From orbit",
       "visual": "earth from space",
-      "text": "Even from low orbit, astronauts say the wall is very hard to spot with the naked eye. City lights at night are much easier.",
+      "subject": "earth",
+      "text": "Even from low orbit, astronauts say it's very hard to spot with the naked eye.",
+      "highlight": [
+        "very hard to spot"
+      ],
+      "say": "[curious] Even from low orbit, astronauts say it's very hard to spot with the naked eye.",
+      "beats": [
+        {
+          "shot": "clip",
+          "at_word": 0,
+          "query": "earth from space",
+          "subject": "earth",
+          "camera": "push_in",
+          "transition": "cut"
+        },
+        {
+          "shot": "card",
+          "at_word": 4,
+          "bg": "prev",
+          "card": {
+            "style": "rounded",
+            "query": "astronaut",
+            "subject": "astronaut",
+            "y": 0.24,
+            "width": 0.6
+          },
+          "subject": "astronaut",
+          "query": "astronaut",
+          "transition": "cut"
+        }
+      ]
+    },
+    {
+      "on_screen": "City lights win",
+      "visual": "city lights night earth",
+      "subject": "city",
+      "text": "City lights at night are much easier.",
       "highlight": [
         "city lights"
       ],
-      "say": "Even from low orbit, astronauts say the wall is very hard to spot with the naked eye. City lights at night are much easier."
+      "say": "City lights at night are much easier.",
+      "look": "excited"
     },
     {
-      "on_screen": "Big, not wide",
+      "on_screen": "Long ≠ visible",
       "visual": "great wall sunset",
-      "text": "Long does not mean visible. Follow for more weird facts.",
-      "highlight": [
-        "Long does not mean visible"
-      ],
       "subject": "wall",
-      "say": "[laughs] Long does not mean visible. Follow for more weird facts."
+      "text": "Long doesn't mean visible. So next time someone tells you...",
+      "highlight": [
+        "doesn't mean visible"
+      ],
+      "say": "[softly] Long doesn't mean visible. So next time someone tells you..."
     }
-  ],
-  "music_mood": "mysterious"
+  ]
 }

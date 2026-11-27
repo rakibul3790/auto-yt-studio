@@ -48,6 +48,21 @@ Retention rules (follow every one):
   spoken ("two hundred and forty three").
 - Titles: curiosity-driven and searchable, under 70 characters, no clickbait lies.
 
+Voice and emotion (the voice is ElevenLabs eleven_v3, which reads audio tags):
+- Every scene has "say": the same words as "text" plus at most one emotion tag in square
+  brackets at the START of the line, e.g. "[curious]", "[amazed]", "[gasps]", "[whispers]",
+  "[chuckles]", "[laughs]", "[sighs]", "[softly]", "[warmly]", "[worried]", "[dramatically]",
+  "[mischievously]", "[skeptical]". With the tags removed, "say" must equal "text" exactly
+  (one word in CAPS for emphasis is allowed).
+- Tag about half of the scenes, not all. The emotion follows the fact: curious or mischievous
+  for the hook, a whisper just before the twist, amazed or a gasp for the reveal, a chuckle
+  for something funny, a sigh for something sad. Light and natural, never over-acted.
+  Change the feeling at least three times in a Short.
+- Optional "look" on a scene: "excited", "sad", "angry" or "whisper", matching its tag.
+- "music_mood" for the whole Short: mysterious, quirky, upbeat, calm or epic.
+- Visuals match the words: each scene's "visual" shows the thing that scene names, and the
+  whole subject (e.g. "owl perched branch", not "owl eye close up").
+
 Reply with ONLY one JSON list inside one code block, nothing else, in exactly this format:
 
 [
@@ -58,18 +73,26 @@ Reply with ONLY one JSON list inside one code block, nothing else, in exactly th
     "tags": ["6–10 relevant search tags"],
     "hashtags": ["2", "hashtags"],
     "thumbnail_text": "2–5 punchy words",
+    "music_mood": "mysterious",
     "scenes": [
       {
         "on_screen": "2–5 word kinetic text shown big on screen",
         "visual": "stock clip search words, e.g. octopus swimming",
         "subject": "the one main thing the clip must show, e.g. octopus",
         "text": "One short sentence the voice says",
+        "say": "[curious] One short sentence the voice says",
+        "look": "excited",
         "highlight": ["1–3 most surprising words, copied exactly from text"]
       }
     ]
   }
 ]
 ```
+
+For a pro edit with word-timed counts, stacks, the hook twist and 2–3 floating cards, give the
+JSON to the `mindblip-director` skill (`skills/mindblip-director/SKILL.md`) for a director pass.
+Without it the renderer plans the shots by itself (hook twist on the first shot, counts that
+land on the spoken number).
 
 ---
 

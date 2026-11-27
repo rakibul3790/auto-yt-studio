@@ -1,6 +1,7 @@
 {
   "title": "Napoleon Wasn't Actually Short",
   "format": "short",
+  "style": "pro",
   "description": "The idea that Napoleon was tiny is a myth that came from a measurement mix up and wartime cartoons.",
   "tags": [
     "napoleon",
@@ -17,58 +18,216 @@
     "facts"
   ],
   "thumbnail_text": "Not short at all",
+  "music_mood": "quirky",
   "scenes": [
     {
-      "on_screen": "Was Napoleon short?",
+      "on_screen": "Short? No.",
       "visual": "napoleon painting",
-      "text": "Napoleon is famous for being short. But he probably wasn't.",
-      "highlight": [
-        "he probably wasn't"
-      ],
       "subject": "napoleon",
-      "say": "Napoleon is famous for being short. [chuckles] But he probably wasn't.",
-      "look": "excited"
+      "text": "Napoleon is famous for being short. He wasn't.",
+      "highlight": [
+        "he wasn't"
+      ],
+      "say": "[mischievously] Napoleon is famous for being short. He wasn't.",
+      "beats": [
+        {
+          "shot": "clip",
+          "camera": "punch",
+          "sfx": [
+            "impact"
+          ],
+          "hook": {
+            "angle": -0.38,
+            "seconds": 0.7
+          },
+          "at_word": 0,
+          "query": "napoleon painting",
+          "subject": "napoleon"
+        }
+      ]
     },
     {
-      "on_screen": "About 1.7 meters",
+      "on_screen": "About 1.7 m",
       "visual": "napoleon statue",
-      "text": "Most historians think he was around one point seven meters tall, roughly average for a Frenchman of his time.",
+      "subject": "napoleon",
+      "text": "Most historians think he stood about one point seven meters,",
+      "highlight": [
+        "one point seven meters"
+      ],
+      "say": "Most historians think he stood about one point seven meters,",
+      "beats": [
+        {
+          "shot": "number",
+          "bg": "new",
+          "number": {
+            "from": 1.0,
+            "to": 1.7,
+            "suffix": " M",
+            "label": "NAPOLEON",
+            "keys": [
+              [
+                0,
+                1.0,
+                "start"
+              ],
+              [
+                9,
+                1.7,
+                "end"
+              ]
+            ]
+          },
+          "sfx": [
+            "tick"
+          ],
+          "query": "napoleon statue",
+          "at_word": 0,
+          "subject": "napoleon",
+          "transition": "cut"
+        }
+      ]
+    },
+    {
+      "on_screen": "Average height",
+      "visual": "napoleon portrait",
+      "subject": "napoleon",
+      "text": "roughly average for a Frenchman of his time.",
       "highlight": [
         "roughly average"
       ],
-      "subject": "napoleon",
-      "say": "Most historians think he was around one point seven meters tall, roughly average for a Frenchman of his time."
+      "say": "roughly average for a Frenchman of his time."
     },
     {
-      "on_screen": "Inches got mixed up",
-      "visual": "old ruler measurement",
-      "text": "Part of the confusion came from measurements. French inches were longer than British inches, so his height sounded smaller than it was.",
+      "on_screen": "Where's the myth from?",
+      "visual": "old books",
+      "subject": "book",
+      "text": "So where did the myth come from?",
       "highlight": [
-        "French inches"
+        "the myth"
       ],
-      "say": "[curious] Part of the confusion came from measurements. French inches were longer than British inches, so his height sounded smaller than it was."
+      "say": "[curious] So where did the myth come from?",
+      "beats": [
+        {
+          "shot": "card",
+          "at_word": 0,
+          "bg": "prev",
+          "card": {
+            "style": "rounded",
+            "query": "old books library",
+            "subject": "books",
+            "y": 0.24,
+            "width": 0.6
+          },
+          "subject": "books",
+          "query": "old books library",
+          "transition": "cut"
+        }
+      ]
     },
     {
-      "on_screen": "Cartoons did the rest",
-      "visual": "napoleon",
-      "text": "British cartoonists also loved drawing him as a tiny, angry man, and the image stuck.",
+      "on_screen": "Inches",
+      "visual": "old ruler measurement",
+      "subject": "ruler",
+      "text": "Part of it came down to inches.",
+      "highlight": [
+        "inches"
+      ],
+      "say": "Part of it came down to inches.",
+      "beats": [
+        {
+          "shot": "text",
+          "text": "INCHES",
+          "at_word": 0,
+          "bg": "prev",
+          "query": "old ruler measurement",
+          "subject": "ruler",
+          "transition": "cut"
+        }
+      ]
+    },
+    {
+      "on_screen": "Longer inches",
+      "visual": "old map france",
+      "subject": "map",
+      "text": "French inches were longer than British ones, so his height sounded smaller in England.",
+      "highlight": [
+        "longer than british"
+      ],
+      "say": "French inches were longer than British ones, so his height sounded smaller in England.",
+      "beats": [
+        {
+          "shot": "clip",
+          "at_word": 0,
+          "query": "old map france",
+          "subject": "map",
+          "camera": "push_in",
+          "transition": "cut"
+        },
+        {
+          "shot": "card",
+          "at_word": 1,
+          "bg": "prev",
+          "card": {
+            "style": "print",
+            "query": "old ruler",
+            "subject": "ruler",
+            "y": 0.24,
+            "width": 0.6
+          },
+          "subject": "ruler",
+          "query": "old ruler",
+          "transition": "cut"
+        }
+      ]
+    },
+    {
+      "on_screen": "Cartoons",
+      "visual": "old cartoon drawing",
+      "subject": "cartoon",
+      "text": "And British cartoonists loved drawing him as a tiny, angry man.",
       "highlight": [
         "tiny, angry man"
       ],
-      "subject": "napoleon",
-      "say": "[laughs] British cartoonists also loved drawing him as a tiny, ANGRY man, and the image stuck.",
-      "look": "angry"
+      "say": "[laughs] And British cartoonists loved drawing him as a tiny, angry man.",
+      "look": "excited",
+      "beats": [
+        {
+          "shot": "card",
+          "at_word": 0,
+          "bg": "prev",
+          "card": {
+            "style": "polaroid",
+            "query": "old cartoon drawing",
+            "subject": "cartoon",
+            "y": 0.24,
+            "width": 0.6,
+            "caption": "Tiny?"
+          },
+          "subject": "cartoon",
+          "query": "old cartoon drawing",
+          "transition": "cut"
+        }
+      ]
     },
     {
-      "on_screen": "Follow for more",
+      "on_screen": "It stuck",
       "visual": "napoleon monument",
-      "text": "Sometimes history remembers the joke, not the truth. Follow for more weird facts.",
-      "highlight": [
-        "the joke"
-      ],
       "subject": "napoleon",
-      "say": "[sighs] Sometimes history remembers the joke, not the truth. Follow for more weird facts."
+      "text": "That joke has stuck for over two hundred years.",
+      "highlight": [
+        "two hundred years"
+      ],
+      "say": "That joke has stuck for over two hundred years."
+    },
+    {
+      "on_screen": "Remember...",
+      "visual": "napoleon on horse",
+      "subject": "napoleon",
+      "text": "So next time you hear it, remember...",
+      "highlight": [
+        "remember"
+      ],
+      "say": "[softly] So next time you hear it, remember..."
     }
-  ],
-  "music_mood": "quirky"
+  ]
 }

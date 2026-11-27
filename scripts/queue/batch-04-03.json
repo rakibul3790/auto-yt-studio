@@ -1,6 +1,7 @@
 {
   "title": "This Giant Heart Can Beat Just Twice a Minute",
   "format": "short",
+  "style": "pro",
   "description": "A blue whale's heart weighs nearly 400 pounds and can slow to two beats a minute on a dive. Your heart beats about 70.",
   "tags": [
     "blue whale",
@@ -17,6 +18,7 @@
     "facts"
   ],
   "thumbnail_text": "2 beats a minute",
+  "music_mood": "calm",
   "scenes": [
     {
       "on_screen": "You: about 70",
@@ -26,7 +28,52 @@
       "highlight": [
         "seventy times a minute"
       ],
-      "say": "Your heart beats about seventy times a minute."
+      "say": "[curious] Your heart beats about seventy times a minute.",
+      "beats": [
+        {
+          "shot": "clip",
+          "camera": "punch",
+          "sfx": [
+            "impact"
+          ],
+          "hook": {
+            "angle": 0.38,
+            "seconds": 0.7
+          },
+          "at_word": 0,
+          "query": "heart beat monitor",
+          "subject": "heart"
+        },
+        {
+          "shot": "number",
+          "bg": "prev",
+          "number": {
+            "from": 0,
+            "to": 70,
+            "suffix": " BPM",
+            "label": "YOU",
+            "keys": [
+              [
+                3,
+                0,
+                "start"
+              ],
+              [
+                5,
+                70,
+                "end"
+              ]
+            ]
+          },
+          "sfx": [
+            "tick"
+          ],
+          "query": "heart beat monitor",
+          "at_word": 3,
+          "subject": "heart",
+          "transition": "cut"
+        }
+      ]
     },
     {
       "on_screen": "This one: 2",
@@ -37,7 +84,31 @@
         "just twice"
       ],
       "say": "[whispers] This one can beat just twice.",
-      "look": "whisper"
+      "look": "whisper",
+      "beats": [
+        {
+          "shot": "compare",
+          "bg": "prev",
+          "sfx": [
+            "tick"
+          ],
+          "compare": {
+            "left": {
+              "label": "YOU",
+              "value": 70
+            },
+            "right": {
+              "label": "BLUE WHALE",
+              "value": 2
+            },
+            "unit": "beats a minute"
+          },
+          "at_word": 0,
+          "query": "blue whale underwater",
+          "subject": "whale",
+          "transition": "cut"
+        }
+      ]
     },
     {
       "on_screen": "Blue whale",
@@ -57,8 +128,39 @@
       "highlight": [
         "four hundred pounds"
       ],
-      "say": "[excited] and it weighs nearly FOUR HUNDRED pounds,",
-      "look": "excited"
+      "say": "[excited] and it weighs nearly FOUR hundred pounds,",
+      "look": "excited",
+      "beats": [
+        {
+          "shot": "number",
+          "bg": "new",
+          "number": {
+            "from": 0,
+            "to": 400,
+            "suffix": " LB",
+            "label": "ONE HEART",
+            "keys": [
+              [
+                0,
+                0,
+                "start"
+              ],
+              [
+                6,
+                400,
+                "end"
+              ]
+            ]
+          },
+          "sfx": [
+            "tick"
+          ],
+          "query": "blue whale ocean",
+          "at_word": 0,
+          "subject": "whale",
+          "transition": "cut"
+        }
+      ]
     },
     {
       "on_screen": "= 2 adults",
@@ -68,17 +170,25 @@
       "highlight": [
         "two adults"
       ],
-      "say": "[laughs] about as much as two adults."
-    },
-    {
-      "on_screen": "2 meters tall",
-      "visual": "whale close up",
-      "subject": "whale",
-      "text": "With its main blood vessels, it stands roughly two meters tall.",
-      "highlight": [
-        "two meters tall"
-      ],
-      "say": "With its main blood vessels, it stands roughly two meters tall."
+      "say": "[chuckles] about as much as two adults.",
+      "beats": [
+        {
+          "shot": "card",
+          "at_word": 0,
+          "bg": "prev",
+          "card": {
+            "style": "polaroid",
+            "query": "two people walking",
+            "subject": "people",
+            "y": 0.24,
+            "width": 0.6,
+            "caption": "2 adults"
+          },
+          "subject": "people",
+          "query": "two people walking",
+          "transition": "cut"
+        }
+      ]
     },
     {
       "on_screen": "Dive: 2 beats",
@@ -110,7 +220,32 @@
       "highlight": [
         "slower than you breathe"
       ],
-      "say": "The biggest heart on Earth, beating slower than you breathe."
+      "say": "[amazed] The biggest heart on Earth, beating slower than you breathe.",
+      "beats": [
+        {
+          "shot": "clip",
+          "at_word": 0,
+          "query": "whale eye",
+          "subject": "whale",
+          "camera": "push_in",
+          "transition": "cut"
+        },
+        {
+          "shot": "card",
+          "at_word": 6,
+          "bg": "prev",
+          "card": {
+            "style": "rounded",
+            "query": "deep breath meditation",
+            "subject": "person",
+            "y": 0.24,
+            "width": 0.6
+          },
+          "subject": "person",
+          "query": "deep breath meditation",
+          "transition": "cut"
+        }
+      ]
     },
     {
       "on_screen": "Feel it",
@@ -120,8 +255,8 @@
       "highlight": [
         "your chest"
       ],
-      "say": "[whispers] Now put a hand on your chest..."
+      "say": "[whispers] Now put a hand on your chest...",
+      "look": "whisper"
     }
-  ],
-  "music_mood": "calm"
+  ]
 }

@@ -1,6 +1,7 @@
 {
   "title": "Lightning Is Hotter Than the Surface of the Sun",
   "format": "short",
+  "style": "pro",
   "description": "A bolt of lightning heats the air around it to about five times the temperature of the Sun's surface.",
   "tags": [
     "lightning",
@@ -17,60 +18,233 @@
     "facts"
   ],
   "thumbnail_text": "Hotter than the Sun",
+  "music_mood": "epic",
   "scenes": [
     {
       "on_screen": "Hotter than the Sun",
-      "visual": "lightning storm",
+      "visual": "lightning strike night",
+      "subject": "lightning",
       "text": "Every bolt of lightning is hotter than the surface of the Sun.",
       "highlight": [
-        "hotter than"
+        "surface of the sun"
       ],
-      "subject": "lightning",
-      "say": "[gasps] Every bolt of lightning is HOTTER than the surface of the Sun.",
-      "look": "excited"
+      "say": "[dramatically] Every bolt of lightning is hotter than the surface of the Sun.",
+      "look": "excited",
+      "beats": [
+        {
+          "shot": "clip",
+          "camera": "punch",
+          "sfx": [
+            "impact"
+          ],
+          "hook": {
+            "angle": -0.38,
+            "seconds": 0.7
+          },
+          "at_word": 0,
+          "query": "lightning strike night",
+          "subject": "lightning"
+        }
+      ]
     },
     {
-      "on_screen": "About 30,000 degrees",
-      "visual": "lightning strike night",
-      "text": "Lightning can heat the air around it to roughly thirty thousand degrees Celsius, in a fraction of a second.",
-      "highlight": [
-        "thirty thousand degrees"
-      ],
-      "subject": "lightning",
-      "say": "Lightning can heat the air around it to roughly thirty thousand degrees Celsius, in a fraction of a second."
-    },
-    {
-      "on_screen": "The Sun: about 5,500",
+      "on_screen": "Sun: 5,500°C",
       "visual": "sun surface",
-      "text": "The surface of the Sun is about five and a half thousand degrees. So lightning is around five times hotter.",
+      "subject": "sun",
+      "text": "The Sun's surface sits at about five and a half thousand degrees Celsius.",
+      "highlight": [
+        "five and a half thousand"
+      ],
+      "say": "The Sun's surface sits at about five and a half thousand degrees Celsius.",
+      "beats": [
+        {
+          "shot": "number",
+          "bg": "new",
+          "number": {
+            "from": 0,
+            "to": 5500,
+            "suffix": "°C",
+            "label": "SUN'S SURFACE",
+            "keys": [
+              [
+                0,
+                0,
+                "start"
+              ],
+              [
+                10,
+                5500,
+                "end"
+              ]
+            ]
+          },
+          "sfx": [
+            "tick"
+          ],
+          "query": "sun surface",
+          "at_word": 0,
+          "subject": "sun",
+          "transition": "cut"
+        }
+      ]
+    },
+    {
+      "on_screen": "Lightning: 30,000°C",
+      "visual": "lightning bolt sky",
+      "subject": "lightning",
+      "text": "A lightning bolt heats the air to around thirty thousand.",
+      "highlight": [
+        "thirty thousand"
+      ],
+      "say": "[excited] A lightning bolt heats the air to around THIRTY thousand.",
+      "look": "excited",
+      "beats": [
+        {
+          "shot": "number",
+          "bg": "new",
+          "number": {
+            "from": 0,
+            "to": 30000,
+            "suffix": "°C",
+            "label": "LIGHTNING",
+            "keys": [
+              [
+                0,
+                0,
+                "start"
+              ],
+              [
+                9,
+                30000,
+                "end"
+              ]
+            ]
+          },
+          "sfx": [
+            "tick"
+          ],
+          "query": "lightning bolt sky",
+          "at_word": 0,
+          "subject": "lightning",
+          "transition": "cut"
+        }
+      ]
+    },
+    {
+      "on_screen": "5x hotter",
+      "visual": "lightning storm",
+      "subject": "lightning",
+      "text": "That's roughly five times hotter,",
       "highlight": [
         "five times hotter"
       ],
-      "subject": "sun",
-      "say": "The surface of the Sun is about five and a half thousand degrees. [excited] So lightning is around FIVE times hotter.",
-      "look": "excited"
+      "say": "That's roughly five times hotter,",
+      "beats": [
+        {
+          "shot": "text",
+          "text": "5X HOTTER",
+          "at_word": 0,
+          "bg": "prev",
+          "query": "lightning storm",
+          "subject": "lightning",
+          "transition": "cut"
+        }
+      ]
     },
     {
-      "on_screen": "That's the thunder",
+      "on_screen": "In a blink",
+      "visual": "lightning flash slow motion",
+      "subject": "lightning",
+      "text": "and it happens in a fraction of a second.",
+      "highlight": [
+        "fraction of a second"
+      ],
+      "say": "and it happens in a fraction of a second.",
+      "beats": [
+        {
+          "shot": "clip",
+          "at_word": 0,
+          "query": "lightning flash slow motion",
+          "subject": "lightning",
+          "camera": "push_in",
+          "transition": "cut"
+        },
+        {
+          "shot": "card",
+          "at_word": 5,
+          "bg": "prev",
+          "card": {
+            "style": "print",
+            "query": "stopwatch",
+            "subject": "stopwatch",
+            "y": 0.24,
+            "width": 0.6
+          },
+          "subject": "stopwatch",
+          "query": "stopwatch",
+          "transition": "cut"
+        }
+      ]
+    },
+    {
+      "on_screen": "Here's the wild part",
+      "visual": "dark storm clouds",
+      "subject": "clouds",
+      "text": "And here's the wild part.",
+      "highlight": [
+        "wild part"
+      ],
+      "say": "[whispers] And here's the wild part.",
+      "look": "whisper"
+    },
+    {
+      "on_screen": "Air explodes",
       "visual": "lightning thunder storm",
-      "text": "That sudden heat makes the air expand explosively. The boom you hear is thunder.",
-      "highlight": [
-        "thunder"
-      ],
       "subject": "lightning",
-      "say": "That sudden heat makes the air expand explosively. [shouts] The BOOM you hear is thunder.",
-      "look": "angry"
+      "text": "That sudden heat makes the air expand so fast it bursts outward.",
+      "highlight": [
+        "bursts outward"
+      ],
+      "say": "That sudden heat makes the air expand so fast it bursts outward."
     },
     {
-      "on_screen": "Follow for more",
-      "visual": "lightning bolt sky",
-      "text": "A tiny piece of something hotter than the Sun, right outside your window. Follow for more weird facts.",
+      "on_screen": "That's thunder",
+      "visual": "storm over city",
+      "subject": "storm",
+      "text": "That boom you hear? That's thunder.",
       "highlight": [
-        "hotter than the Sun"
+        "that's thunder"
       ],
-      "subject": "lightning",
-      "say": "[whispers] A tiny piece of something hotter than the Sun, right outside your window. [chuckles] Follow for more weird facts."
+      "say": "[amazed] That boom you hear? That's thunder.",
+      "look": "excited",
+      "beats": [
+        {
+          "shot": "card",
+          "at_word": 0,
+          "bg": "prev",
+          "card": {
+            "style": "polaroid",
+            "query": "thunderstorm clouds",
+            "subject": "storm",
+            "y": 0.24,
+            "width": 0.6,
+            "caption": "BOOM"
+          },
+          "subject": "storm",
+          "query": "thunderstorm clouds",
+          "transition": "cut"
+        }
+      ]
+    },
+    {
+      "on_screen": "Next storm...",
+      "visual": "rain on window storm",
+      "subject": "window",
+      "text": "So the next time a storm rolls in, remember...",
+      "highlight": [
+        "remember"
+      ],
+      "say": "[softly] So the next time a storm rolls in, remember..."
     }
-  ],
-  "music_mood": "epic"
+  ]
 }

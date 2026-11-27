@@ -1,6 +1,7 @@
 {
   "title": "Spider Silk Is Stronger Than Steel",
   "format": "short",
+  "style": "pro",
   "description": "Ounce for ounce, some spider silk is stronger than steel, and it can stretch too.",
   "tags": [
     "spider silk",
@@ -17,57 +18,192 @@
     "facts"
   ],
   "thumbnail_text": "Stronger than steel",
+  "music_mood": "upbeat",
   "scenes": [
     {
       "on_screen": "Stronger than steel",
       "visual": "spider web dew",
+      "subject": "spider",
       "text": "Spider silk can be stronger than steel.",
       "highlight": [
         "stronger than steel"
       ],
-      "subject": "spider",
-      "say": "[excited] Spider silk can be STRONGER than steel.",
-      "look": "excited"
+      "say": "[curious] Spider silk can be stronger than steel.",
+      "beats": [
+        {
+          "shot": "clip",
+          "camera": "punch",
+          "sfx": [
+            "impact"
+          ],
+          "hook": {
+            "angle": 0.38,
+            "seconds": 0.7
+          },
+          "at_word": 0,
+          "query": "spider web dew",
+          "subject": "spider"
+        }
+      ]
     },
     {
       "on_screen": "Weight for weight",
       "visual": "spider on web",
-      "text": "Compared weight for weight, some kinds of spider silk are stronger than steel.",
+      "subject": "spider",
+      "text": "Compared weight for weight, some kinds really are.",
       "highlight": [
         "weight for weight"
       ],
-      "subject": "spider",
-      "say": "Compared weight for weight, some kinds of spider silk are stronger than steel."
+      "say": "Compared weight for weight, some kinds really are.",
+      "beats": [
+        {
+          "shot": "card",
+          "at_word": 0,
+          "bg": "prev",
+          "card": {
+            "style": "torn",
+            "query": "steel beams",
+            "subject": "steel",
+            "y": 0.24,
+            "width": 0.6
+          },
+          "subject": "steel",
+          "query": "steel beams",
+          "transition": "cut"
+        }
+      ]
     },
     {
-      "on_screen": "And it stretches",
+      "on_screen": "It stretches",
       "visual": "spider web close up",
-      "text": "Unlike steel, it can also stretch a long way before it breaks. That is why a web can stop a flying insect without snapping.",
+      "subject": "web",
+      "text": "And unlike steel, it can stretch a long way before it snaps.",
       "highlight": [
         "stretch a long way"
       ],
-      "subject": "web",
-      "say": "Unlike steel, it can also stretch a long way before it breaks. [chuckles] That is why a web can stop a flying insect without snapping."
+      "say": "[impressed] And unlike steel, it can stretch a long way before it snaps.",
+      "look": "excited",
+      "beats": [
+        {
+          "shot": "clip",
+          "at_word": 0,
+          "query": "spider web close up",
+          "subject": "web",
+          "camera": "push_in",
+          "transition": "cut"
+        },
+        {
+          "shot": "text",
+          "text": "IT STRETCHES",
+          "at_word": 5,
+          "bg": "prev",
+          "query": "spider web close up",
+          "subject": "web",
+          "transition": "cut"
+        }
+      ]
     },
     {
-      "on_screen": "Scientists want it",
+      "on_screen": "Catches insects",
+      "visual": "insect caught in web",
+      "subject": "web",
+      "text": "That's how a web stops a flying insect without breaking.",
+      "highlight": [
+        "without breaking"
+      ],
+      "say": "That's how a web stops a flying insect without breaking."
+    },
+    {
+      "on_screen": "Copying it",
       "visual": "laboratory",
-      "text": "Researchers have spent years trying to copy it, for things like medical stitches and lightweight protective gear.",
+      "subject": "lab",
+      "text": "Scientists have spent years trying to copy it,",
+      "highlight": [
+        "trying to copy it"
+      ],
+      "say": "Scientists have spent years trying to copy it,"
+    },
+    {
+      "on_screen": "Stitches & gear",
+      "visual": "medical stitches",
+      "subject": "lab",
+      "text": "for things like medical stitches and lightweight protective gear.",
       "highlight": [
         "medical stitches"
       ],
-      "say": "Researchers have spent years trying to copy it, for things like medical stitches and lightweight protective gear."
+      "say": "for things like medical stitches and lightweight protective gear.",
+      "beats": [
+        {
+          "shot": "clip",
+          "at_word": 0,
+          "query": "medical stitches",
+          "subject": "lab",
+          "camera": "pan_left",
+          "transition": "cut"
+        },
+        {
+          "shot": "card",
+          "at_word": 3,
+          "bg": "prev",
+          "card": {
+            "style": "polaroid",
+            "query": "medical stitches",
+            "subject": "stitches",
+            "y": 0.24,
+            "width": 0.6,
+            "caption": "Stitches"
+          },
+          "subject": "stitches",
+          "query": "medical stitches",
+          "transition": "cut"
+        }
+      ]
     },
     {
-      "on_screen": "Follow for more",
-      "visual": "spider web sunlight",
-      "text": "One of the strongest materials on Earth is spun by a spider. Follow for more weird facts.",
+      "on_screen": "Spider wins",
+      "visual": "spider spinning web",
+      "subject": "spider",
+      "text": "But the spider still does it better,",
       "highlight": [
-        "spun by a spider"
+        "still does it better"
       ],
+      "say": "[chuckles] But the spider still does it better,"
+    },
+    {
+      "on_screen": "In your house",
+      "visual": "spider web sunlight",
       "subject": "web",
-      "say": "[laughs] One of the strongest materials on Earth is spun by a spider. Follow for more weird facts."
+      "text": "quietly, in a corner of your house, proving once again that...",
+      "highlight": [
+        "a corner of your house"
+      ],
+      "say": "[softly] quietly, in a corner of your house, proving once again that...",
+      "look": "whisper",
+      "beats": [
+        {
+          "shot": "clip",
+          "at_word": 0,
+          "query": "spider web sunlight",
+          "subject": "web",
+          "camera": "pull_out",
+          "transition": "cut"
+        },
+        {
+          "shot": "card",
+          "at_word": 3,
+          "bg": "prev",
+          "card": {
+            "style": "rounded",
+            "query": "house room corner",
+            "subject": "room",
+            "y": 0.24,
+            "width": 0.6
+          },
+          "subject": "room",
+          "query": "house room corner",
+          "transition": "cut"
+        }
+      ]
     }
-  ],
-  "music_mood": "upbeat"
+  ]
 }

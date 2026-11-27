@@ -1,6 +1,7 @@
 {
   "title": "Your Stomach Gets a New Lining Every Few Days",
   "format": "short",
+  "style": "pro",
   "description": "Your stomach replaces the cells of its inner lining every few days to protect itself from its own acid.",
   "tags": [
     "human body",
@@ -16,57 +17,177 @@
     "facts"
   ],
   "thumbnail_text": "A new lining",
+  "music_mood": "calm",
   "scenes": [
     {
-      "on_screen": "New every few days",
+      "on_screen": "A new lining",
       "visual": "stomach anatomy",
-      "text": "Your stomach gives itself a fresh new lining every few days.",
+      "subject": "stomach",
+      "text": "Your stomach builds itself a brand new lining every few days.",
       "highlight": [
         "every few days"
       ],
-      "subject": "stomach",
-      "say": "[curious] Your stomach gives itself a fresh new lining every few days.",
-      "look": "excited"
+      "say": "[curious] Your stomach builds itself a brand new lining every few days.",
+      "beats": [
+        {
+          "shot": "clip",
+          "camera": "punch",
+          "sfx": [
+            "impact"
+          ],
+          "hook": {
+            "angle": -0.38,
+            "seconds": 0.7
+          },
+          "at_word": 0,
+          "query": "stomach anatomy",
+          "subject": "stomach"
+        }
+      ]
     },
     {
       "on_screen": "Strong acid",
       "visual": "lemon slices",
-      "text": "That is because stomach acid is strong enough to break down tough food, and it would slowly damage the stomach too.",
+      "subject": "acid",
+      "text": "Its acid is strong enough to break down tough food,",
       "highlight": [
-        "stomach acid"
+        "tough food"
       ],
-      "say": "[serious] That is because stomach acid is strong enough to break down tough food, and it would slowly damage the stomach too.",
-      "look": "angry"
+      "say": "Its acid is strong enough to break down tough food,",
+      "beats": [
+        {
+          "shot": "clip",
+          "at_word": 0,
+          "query": "lemon slices",
+          "subject": "acid",
+          "camera": "push_in",
+          "transition": "cut"
+        },
+        {
+          "shot": "card",
+          "at_word": 8,
+          "bg": "prev",
+          "card": {
+            "style": "rounded",
+            "query": "steak",
+            "subject": "steak",
+            "y": 0.24,
+            "width": 0.6
+          },
+          "subject": "steak",
+          "query": "steak",
+          "transition": "cut"
+        }
+      ]
+    },
+    {
+      "on_screen": "Self-damage",
+      "visual": "stomach anatomy illustration",
+      "subject": "stomach",
+      "text": "and over time, it would damage the stomach itself.",
+      "highlight": [
+        "the stomach itself"
+      ],
+      "say": "[worried] and over time, it would damage the stomach itself.",
+      "look": "sad"
     },
     {
       "on_screen": "Mucus shield",
-      "visual": "stomach anatomy illustration",
-      "text": "A thick layer of mucus protects the wall, and the cells underneath are replaced again and again.",
-      "highlight": [
-        "layer of mucus"
-      ],
+      "visual": "stomach lining microscope",
       "subject": "stomach",
-      "say": "A thick layer of mucus protects the wall, and the cells underneath are replaced again and again."
+      "text": "So a thick layer of mucus coats the wall like a shield.",
+      "highlight": [
+        "like a shield"
+      ],
+      "say": "So a thick layer of mucus coats the wall like a shield.",
+      "beats": [
+        {
+          "shot": "text",
+          "text": "MUCUS SHIELD",
+          "at_word": 0,
+          "bg": "prev",
+          "query": "stomach lining microscope",
+          "subject": "stomach",
+          "transition": "cut"
+        }
+      ]
     },
     {
-      "on_screen": "Always repairing",
-      "visual": "doctor anatomy",
-      "text": "Those cells only last a few days before new ones take their place, so the damage never builds up.",
+      "on_screen": "A few days",
+      "visual": "cells microscope",
+      "subject": "cells",
+      "text": "And the cells underneath only last a few days,",
       "highlight": [
         "a few days"
       ],
-      "subject": "anatomy",
-      "say": "Those cells only last a few days before new ones take their place, so the damage never builds up."
+      "say": "And the cells underneath only last a few days,",
+      "beats": [
+        {
+          "shot": "text",
+          "text": "A FEW DAYS",
+          "at_word": 0,
+          "bg": "prev",
+          "query": "cells microscope",
+          "subject": "cells",
+          "transition": "cut"
+        }
+      ]
     },
     {
-      "on_screen": "Self repair",
+      "on_screen": "Fresh cells",
+      "visual": "doctor anatomy",
+      "subject": "anatomy",
+      "text": "before fresh ones take their place.",
+      "highlight": [
+        "fresh ones"
+      ],
+      "say": "before fresh ones take their place."
+    },
+    {
+      "on_screen": "No build-up",
       "visual": "healthy breakfast",
-      "text": "Your body is always quietly rebuilding itself. Follow for more weird facts.",
+      "subject": "food",
+      "text": "So the damage never gets a chance to build up.",
+      "highlight": [
+        "never gets a chance"
+      ],
+      "say": "[softly] So the damage never gets a chance to build up.",
+      "look": "whisper"
+    },
+    {
+      "on_screen": "Rebuilding now",
+      "visual": "person eating",
+      "subject": "person",
+      "text": "Your body is quietly rebuilding itself right now, and by next week...",
       "highlight": [
         "rebuilding itself"
       ],
-      "say": "[softly] Your body is always quietly rebuilding itself. [chuckles] Follow for more weird facts."
+      "say": "Your body is quietly rebuilding itself right now, and by next week...",
+      "beats": [
+        {
+          "shot": "clip",
+          "at_word": 0,
+          "query": "person eating",
+          "subject": "person",
+          "camera": "pan_left",
+          "transition": "cut"
+        },
+        {
+          "shot": "card",
+          "at_word": 4,
+          "bg": "prev",
+          "card": {
+            "style": "print",
+            "query": "construction crane",
+            "subject": "crane",
+            "y": 0.24,
+            "width": 0.6
+          },
+          "subject": "crane",
+          "query": "construction crane",
+          "transition": "cut"
+        }
+      ]
     }
-  ],
-  "music_mood": "calm"
+  ]
 }

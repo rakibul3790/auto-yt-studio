@@ -15,7 +15,7 @@ import shutil
 from datetime import datetime, timezone
 from pathlib import Path
 
-from .common import DONE_DIR, LOG_FILE, QUEUE_DIR
+from .common import DONE_DIR, LOG_FILE, QUEUE_DIR, WORKING_DIR
 
 REQUIRED = ("title", "scenes")
 
@@ -100,6 +100,7 @@ def mark_done(path: Path, data: dict, result: dict) -> Path:
     target = DONE_DIR / path.name
     target.write_text(json.dumps(data, ensure_ascii=False, indent=2), encoding="utf-8")
     path.unlink()
+    drop_claim(path)
 
     new_file = not LOG_FILE.exists()
     LOG_FILE.parent.mkdir(parents=True, exist_ok=True)
@@ -121,3 +122,24 @@ def copy_to_failed(path: Path) -> None:
     bad = QUEUE_DIR / "_failed"
     bad.mkdir(exist_ok=True)
     shutil.move(str(path), bad / path.name)
+    drop_claim(path)
+
+
+def claim_file(path: Path) -> Path:
+    return WORKING_DIR / (path.stem + ".claim")
+
+
+def drop_claim(path: Path) -> None:
+    """A claimed script (scripts/working/) is finished or parked: remove its claim note."""
+    if path.parent.resolve() == WORKING_DIR.resolve():
+        claim_file(path).unlink(missing_ok=True)
+
+
+def release(path: Path) -> Path:
+    """Give a claimed script back to the queue (the render failed), so the next run makes it."""
+    if path.parent.resolve() != WORKING_DIR.resolve() or not path.exists():
+        return path
+    target = QUEUE_DIR / path.name
+    shutil.move(str(path), target)
+    drop_claim(path)
+    return target

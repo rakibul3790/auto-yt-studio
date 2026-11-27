@@ -13,6 +13,7 @@ import yaml
 ROOT = Path(__file__).resolve().parent.parent
 QUEUE_DIR = ROOT / "scripts" / "queue"
 DONE_DIR = ROOT / "scripts" / "done"
+WORKING_DIR = ROOT / "scripts" / "working"   # scripts claimed by a running daily job (studio/claim.py)
 OUTPUT_DIR = ROOT / "output"
 WORK_DIR = ROOT / "work"
 MUSIC_DIR = ROOT / "assets" / "music"

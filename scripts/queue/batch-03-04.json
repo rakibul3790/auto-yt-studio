@@ -1,6 +1,7 @@
 {
   "title": "Crows Never Forget a Face",
   "format": "short",
+  "style": "pro",
   "description": "Crows can recognize individual human faces and remember people who treated them badly for years.",
   "tags": [
     "crows",
@@ -16,60 +17,170 @@
     "facts"
   ],
   "thumbnail_text": "They remember you",
+  "music_mood": "mysterious",
   "scenes": [
     {
-      "on_screen": "They remember you",
+      "on_screen": "They remember",
       "visual": "black crow",
-      "text": "Crows can recognize your face, and they can remember it for years.",
-      "highlight": [
-        "for years"
-      ],
       "subject": "crow",
-      "say": "[whispers] Crows can recognize your face... and they can remember it for YEARS.",
-      "look": "whisper"
+      "text": "Crows can remember your face for years.",
+      "highlight": [
+        "your face"
+      ],
+      "say": "[whispers] Crows can remember your face for years.",
+      "look": "whisper",
+      "beats": [
+        {
+          "shot": "clip",
+          "camera": "punch",
+          "sfx": [
+            "impact"
+          ],
+          "hook": {
+            "angle": 0.38,
+            "seconds": 0.7
+          },
+          "at_word": 0,
+          "query": "black crow",
+          "subject": "crow"
+        }
+      ]
     },
     {
-      "on_screen": "The mask test",
+      "on_screen": "Seattle study",
       "visual": "crow on branch",
-      "text": "In one famous study in Seattle, researchers wore a mask while they caught and tagged crows.",
+      "subject": "crow",
+      "text": "In a famous study in Seattle,",
+      "highlight": [
+        "seattle"
+      ],
+      "say": "In a famous study in Seattle,",
+      "beats": [
+        {
+          "shot": "card",
+          "at_word": 0,
+          "bg": "prev",
+          "card": {
+            "style": "polaroid",
+            "query": "seattle skyline",
+            "subject": "city",
+            "y": 0.24,
+            "width": 0.6,
+            "caption": "Seattle"
+          },
+          "subject": "city",
+          "query": "seattle skyline",
+          "transition": "cut"
+        }
+      ]
+    },
+    {
+      "on_screen": "The mask",
+      "visual": "scary mask",
+      "subject": "mask",
+      "text": "researchers wore a mask while catching and tagging crows.",
       "highlight": [
         "wore a mask"
       ],
-      "subject": "crow",
-      "say": "In one famous study in Seattle, researchers wore a mask while they caught and tagged crows."
+      "say": "researchers wore a mask while catching and tagging crows.",
+      "beats": [
+        {
+          "shot": "clip",
+          "at_word": 0,
+          "query": "scary mask",
+          "subject": "mask",
+          "camera": "push_in",
+          "transition": "cut"
+        },
+        {
+          "shot": "card",
+          "at_word": 3,
+          "bg": "prev",
+          "card": {
+            "style": "rounded",
+            "query": "scary mask",
+            "subject": "mask",
+            "y": 0.24,
+            "width": 0.6
+          },
+          "subject": "mask",
+          "query": "scary mask",
+          "transition": "cut"
+        }
+      ]
     },
     {
-      "on_screen": "Scolding",
+      "on_screen": "Years later",
       "visual": "crows flying sky",
-      "text": "Years later, crows still scolded and dive bombed anyone who wore that same mask.",
+      "subject": "crow",
+      "text": "Years later, crows still scolded anyone wearing that mask,",
+      "highlight": [
+        "still scolded"
+      ],
+      "say": "[tense] Years later, crows still scolded anyone wearing that mask,",
+      "beats": [
+        {
+          "shot": "text",
+          "text": "YEARS LATER",
+          "at_word": 0,
+          "bg": "prev",
+          "query": "crows flying sky",
+          "subject": "crow",
+          "transition": "cut"
+        }
+      ]
+    },
+    {
+      "on_screen": "Dive bombs",
+      "visual": "crow attacking",
+      "subject": "crow",
+      "text": "and even dive bombed them.",
       "highlight": [
         "dive bombed"
       ],
-      "subject": "crow",
-      "say": "[angry] Years later, crows still scolded and dive bombed anyone who wore that same mask.",
+      "say": "and even dive bombed them.",
       "look": "angry"
     },
     {
-      "on_screen": "Passing it on",
+      "on_screen": "Never caught",
       "visual": "flock of crows",
-      "text": "Even crows that were never caught joined in. They seemed to learn who to dislike from the others.",
+      "subject": "crow",
+      "text": "Even crows that were never caught joined in.",
       "highlight": [
         "never caught"
       ],
-      "subject": "crow",
-      "say": "[gasps] Even crows that were never caught joined in. They seemed to learn who to dislike from the others.",
+      "say": "[amazed] Even crows that were never caught joined in.",
       "look": "excited"
+    },
+    {
+      "on_screen": "They learn",
+      "visual": "crows group",
+      "subject": "crow",
+      "text": "They seemed to learn who to dislike from the others.",
+      "highlight": [
+        "who to dislike"
+      ],
+      "say": "They seemed to learn who to dislike from the others."
+    },
+    {
+      "on_screen": "Passed on",
+      "visual": "young crow",
+      "subject": "crow",
+      "text": "Even young crows born later picked up the grudge.",
+      "highlight": [
+        "picked up the grudge"
+      ],
+      "say": "Even young crows born later picked up the grudge."
     },
     {
       "on_screen": "Be nice",
       "visual": "crow close up",
-      "text": "So be kind to the crows. They are watching. Follow for more weird facts.",
-      "highlight": [
-        "They are watching"
-      ],
       "subject": "crow",
-      "say": "[nervous laugh] So be kind to the crows. [whispers] They are watching. Follow for more weird facts."
+      "text": "So be nice to the crows. They're watching, because...",
+      "highlight": [
+        "they're watching"
+      ],
+      "say": "[mischievously] So be nice to the crows. They're watching, because..."
     }
-  ],
-  "music_mood": "mysterious"
+  ]
 }

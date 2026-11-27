@@ -1,6 +1,7 @@
 {
   "title": "Tiny Water Bears Have Survived Outer Space",
   "format": "short",
+  "style": "pro",
   "description": "Tardigrades are microscopic animals tough enough to survive being exposed to space.",
   "tags": [
     "tardigrade",
@@ -17,59 +18,199 @@
     "facts"
   ],
   "thumbnail_text": "Survived space",
+  "music_mood": "epic",
   "scenes": [
     {
-      "on_screen": "Meet the water bear",
+      "on_screen": "Survived space",
       "visual": "tardigrade",
-      "text": "There is a tiny animal that has survived a trip into outer space. It is the tardigrade, also called the water bear.",
-      "highlight": [
-        "outer space"
-      ],
       "subject": "tardigrade",
-      "say": "[excited] There is a tiny animal that has survived a trip into OUTER SPACE. It is the tardigrade, also called the water bear.",
-      "look": "excited"
-    },
-    {
-      "on_screen": "Smaller than a millimeter",
-      "visual": "moss close up",
-      "text": "Tardigrades are smaller than a millimeter long and live almost everywhere, even in the moss on a garden wall.",
+      "text": "This tiny animal survived outer space.",
       "highlight": [
-        "a millimeter"
+        "survived outer space"
       ],
-      "subject": "moss",
-      "say": "Tardigrades are smaller than a millimeter long and live almost everywhere, even in the moss on a garden wall."
+      "say": "[amazed] This tiny animal survived outer space.",
+      "look": "excited",
+      "beats": [
+        {
+          "shot": "clip",
+          "camera": "punch",
+          "sfx": [
+            "impact"
+          ],
+          "hook": {
+            "angle": -0.38,
+            "seconds": 0.7
+          },
+          "at_word": 0,
+          "query": "tardigrade",
+          "subject": "tardigrade"
+        }
+      ]
     },
     {
-      "on_screen": "Exposed to space",
+      "on_screen": "Water bear",
+      "visual": "tardigrade microscope",
+      "subject": "tardigrade",
+      "text": "It's a tardigrade, also called a water bear.",
+      "highlight": [
+        "water bear"
+      ],
+      "say": "It's a tardigrade, also called a water bear."
+    },
+    {
+      "on_screen": "Under 1 mm",
+      "visual": "moss close up",
+      "subject": "moss",
+      "text": "It's smaller than a millimeter, and it lives almost everywhere.",
+      "highlight": [
+        "smaller than a millimeter"
+      ],
+      "say": "It's smaller than a millimeter, and it lives almost everywhere.",
+      "beats": [
+        {
+          "shot": "text",
+          "text": "UNDER 1 MM",
+          "at_word": 0,
+          "bg": "prev",
+          "query": "moss close up",
+          "subject": "moss",
+          "transition": "cut"
+        }
+      ]
+    },
+    {
+      "on_screen": "2007",
       "visual": "earth from space",
-      "text": "In two thousand seven, scientists sent some into orbit and exposed them to the vacuum of space. Some survived and even had babies afterward.",
+      "subject": "earth",
+      "text": "In two thousand seven, scientists sent some into orbit,",
+      "highlight": [
+        "into orbit"
+      ],
+      "say": "In two thousand seven, scientists sent some into orbit,",
+      "beats": [
+        {
+          "shot": "text",
+          "text": "2007",
+          "at_word": 0,
+          "bg": "prev",
+          "query": "earth from space",
+          "subject": "earth",
+          "transition": "cut"
+        }
+      ]
+    },
+    {
+      "on_screen": "The vacuum",
+      "visual": "outer space stars",
+      "subject": "space",
+      "text": "and exposed them to the vacuum of space.",
+      "highlight": [
+        "vacuum of space"
+      ],
+      "say": "[tense] and exposed them to the vacuum of space.",
+      "look": "whisper",
+      "beats": [
+        {
+          "shot": "card",
+          "at_word": 0,
+          "bg": "prev",
+          "card": {
+            "style": "rounded",
+            "query": "satellite orbit earth",
+            "subject": "satellite",
+            "y": 0.24,
+            "width": 0.6
+          },
+          "subject": "satellite",
+          "query": "satellite orbit earth",
+          "transition": "cut"
+        }
+      ]
+    },
+    {
+      "on_screen": "They lived",
+      "visual": "tardigrade swimming",
+      "subject": "tardigrade",
+      "text": "Some survived, and even had babies afterward.",
       "highlight": [
         "had babies"
       ],
-      "say": "In two thousand seven, scientists sent some into orbit and exposed them to the vacuum of space. [gasps] Some survived and even had babies afterward.",
+      "say": "[excited] Some survived, and even had babies afterward.",
       "look": "excited"
     },
     {
-      "on_screen": "Their secret",
-      "visual": "tardigrade microscope",
-      "text": "When conditions get harsh, they dry out and curl up into a tiny ball, almost shutting down their bodies until things get better.",
+      "on_screen": "The secret",
+      "visual": "tardigrade curled",
+      "subject": "tardigrade",
+      "text": "Their secret? They dry out and curl into a tiny ball,",
       "highlight": [
         "a tiny ball"
       ],
-      "subject": "tardigrade",
-      "say": "[softly] When conditions get harsh, they dry out and curl up into a tiny ball, almost shutting down their bodies until things get better.",
-      "look": "whisper"
+      "say": "[whispers] Their secret? They dry out and curl into a tiny ball,",
+      "look": "whisper",
+      "beats": [
+        {
+          "shot": "card",
+          "at_word": 0,
+          "bg": "prev",
+          "card": {
+            "style": "polaroid",
+            "query": "dry moss",
+            "subject": "moss",
+            "y": 0.24,
+            "width": 0.6,
+            "caption": "Tun"
+          },
+          "subject": "moss",
+          "query": "dry moss",
+          "transition": "cut"
+        }
+      ]
     },
     {
-      "on_screen": "Follow for more",
-      "visual": "moss garden",
-      "text": "The toughest animal on Earth might be living in your garden. Follow for more weird facts.",
-      "highlight": [
-        "in your garden"
-      ],
+      "on_screen": "Shut down",
+      "visual": "dry moss",
       "subject": "moss",
-      "say": "[chuckles] The toughest animal on Earth might be living in your garden. Follow for more weird facts."
+      "text": "almost shutting their bodies down until things get better.",
+      "highlight": [
+        "shutting their bodies down"
+      ],
+      "say": "almost shutting their bodies down until things get better."
+    },
+    {
+      "on_screen": "Your garden",
+      "visual": "moss garden wall",
+      "subject": "moss",
+      "text": "So look closely at the moss outside your door, because...",
+      "highlight": [
+        "outside your door"
+      ],
+      "say": "[chuckles] So look closely at the moss outside your door, because...",
+      "beats": [
+        {
+          "shot": "clip",
+          "at_word": 0,
+          "query": "moss garden wall",
+          "subject": "moss",
+          "camera": "push_in",
+          "transition": "cut"
+        },
+        {
+          "shot": "card",
+          "at_word": 5,
+          "bg": "prev",
+          "card": {
+            "style": "torn",
+            "query": "moss on wall",
+            "subject": "moss",
+            "y": 0.24,
+            "width": 0.6
+          },
+          "subject": "moss",
+          "query": "moss on wall",
+          "transition": "cut"
+        }
+      ]
     }
-  ],
-  "music_mood": "epic"
+  ]
 }

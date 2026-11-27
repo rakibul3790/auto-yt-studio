@@ -1,6 +1,7 @@
 {
   "title": "Saturn Would Float in a Giant Bathtub",
   "format": "short",
+  "style": "pro",
   "description": "Saturn is the only planet in our solar system less dense than water.",
   "tags": [
     "saturn",
@@ -17,57 +18,190 @@
     "facts"
   ],
   "thumbnail_text": "Saturn floats",
+  "music_mood": "epic",
   "scenes": [
     {
-      "on_screen": "A floating planet",
+      "on_screen": "Saturn would float",
       "visual": "planet saturn",
-      "text": "If you could find a bathtub big enough, Saturn would float in it.",
-      "highlight": [
-        "Saturn would float"
-      ],
       "subject": "saturn",
-      "say": "[curious] If you could find a bathtub big enough... Saturn would FLOAT in it.",
-      "look": "excited"
+      "text": "If you found a bathtub big enough, Saturn would float.",
+      "highlight": [
+        "saturn would float"
+      ],
+      "say": "[curious] If you found a bathtub big enough, Saturn would float.",
+      "beats": [
+        {
+          "shot": "clip",
+          "camera": "punch",
+          "sfx": [
+            "impact"
+          ],
+          "hook": {
+            "angle": -0.38,
+            "seconds": 0.7
+          },
+          "at_word": 0,
+          "query": "planet saturn",
+          "subject": "saturn"
+        }
+      ]
     },
     {
-      "on_screen": "Huge but light",
+      "on_screen": "700+ Earths",
       "visual": "saturn rings",
-      "text": "Saturn is enormous. More than seven hundred Earths could fit inside it. But it is mostly hydrogen and helium gas.",
-      "highlight": [
-        "seven hundred Earths"
-      ],
       "subject": "saturn",
-      "say": "[excited] Saturn is enormous. More than seven hundred Earths could fit inside it. But it is mostly hydrogen and helium gas.",
-      "look": "excited"
+      "text": "It's so huge that more than seven hundred Earths could fit inside.",
+      "highlight": [
+        "seven hundred earths"
+      ],
+      "say": "[amazed] It's so huge that more than seven hundred Earths could fit inside.",
+      "look": "excited",
+      "beats": [
+        {
+          "shot": "number",
+          "bg": "new",
+          "number": {
+            "from": 0,
+            "to": 700,
+            "suffix": "+",
+            "label": "EARTHS INSIDE",
+            "keys": [
+              [
+                0,
+                0,
+                "start"
+              ],
+              [
+                8,
+                700,
+                "end"
+              ]
+            ]
+          },
+          "sfx": [
+            "tick"
+          ],
+          "query": "saturn rings",
+          "at_word": 0,
+          "subject": "saturn",
+          "transition": "cut"
+        }
+      ]
     },
     {
-      "on_screen": "Less dense than water",
+      "on_screen": "Mostly gas",
+      "visual": "gas giant clouds",
+      "subject": "planet",
+      "text": "But it's made mostly of hydrogen and helium gas.",
+      "highlight": [
+        "hydrogen and helium"
+      ],
+      "say": "But it's made mostly of hydrogen and helium gas.",
+      "beats": [
+        {
+          "shot": "clip",
+          "at_word": 0,
+          "query": "gas giant clouds",
+          "subject": "planet",
+          "camera": "push_in",
+          "transition": "cut"
+        },
+        {
+          "shot": "card",
+          "at_word": 7,
+          "bg": "prev",
+          "card": {
+            "style": "torn",
+            "query": "balloons floating sky",
+            "subject": "balloons",
+            "y": 0.24,
+            "width": 0.6
+          },
+          "subject": "balloons",
+          "query": "balloons floating sky",
+          "transition": "cut"
+        }
+      ]
+    },
+    {
+      "on_screen": "Lighter than water",
       "visual": "water surface",
-      "text": "That makes it the only planet in our solar system that is less dense than water, on average.",
+      "subject": "water",
+      "text": "On average, it's less dense than water.",
       "highlight": [
         "less dense than water"
       ],
-      "say": "That makes it the only planet in our solar system that is less dense than water, on average."
+      "say": "[excited] On average, it's less dense than WATER.",
+      "look": "excited",
+      "beats": [
+        {
+          "shot": "text",
+          "text": "LIGHTER THAN WATER",
+          "at_word": 0,
+          "bg": "prev",
+          "query": "water surface",
+          "subject": "water",
+          "transition": "cut"
+        }
+      ]
     },
     {
-      "on_screen": "Just a thought experiment",
+      "on_screen": "The only one",
       "visual": "solar system planets",
-      "text": "Of course, no such bathtub exists, and the planet would not stay in one piece. But on paper, it floats.",
+      "subject": "planet",
+      "text": "The only planet in our solar system like that.",
+      "highlight": [
+        "the only planet"
+      ],
+      "say": "The only planet in our solar system like that."
+    },
+    {
+      "on_screen": "Reality check",
+      "visual": "saturn close up",
+      "subject": "saturn",
+      "text": "Of course, no tub that big exists, and the planet would fall apart.",
+      "highlight": [
+        "would fall apart"
+      ],
+      "say": "[chuckles] Of course, no tub that big exists, and the planet would fall apart.",
+      "beats": [
+        {
+          "shot": "card",
+          "at_word": 0,
+          "bg": "prev",
+          "card": {
+            "style": "polaroid",
+            "query": "bathtub",
+            "subject": "bathtub",
+            "y": 0.24,
+            "width": 0.6,
+            "caption": "Too small"
+          },
+          "subject": "bathtub",
+          "query": "bathtub",
+          "transition": "cut"
+        }
+      ]
+    },
+    {
+      "on_screen": "On paper: floats",
+      "visual": "planet saturn rings",
+      "subject": "saturn",
+      "text": "But on paper, it floats.",
       "highlight": [
         "it floats"
       ],
-      "say": "[laughs] Of course, no such bathtub exists, and the planet would not stay in one piece. But on paper, it floats."
+      "say": "But on paper, it floats."
     },
     {
-      "on_screen": "Follow for more",
-      "visual": "planet saturn",
-      "text": "A giant that weighs less than it looks. Follow for more weird facts.",
+      "on_screen": "Picture it",
+      "visual": "bathtub water",
+      "subject": "bathtub",
+      "text": "So picture the biggest bath in the universe, because...",
       "highlight": [
-        "weighs less"
+        "biggest bath"
       ],
-      "subject": "saturn",
-      "say": "A giant that weighs less than it looks. [chuckles] Follow for more weird facts."
+      "say": "[softly] So picture the biggest bath in the universe, because..."
     }
-  ],
-  "music_mood": "epic"
+  ]
 }

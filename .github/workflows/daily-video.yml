@@ -1,5 +1,11 @@
 # Makes the next video from scripts/queue/ and uploads it to YouTube (privacy from config.yaml).
 # Started by cron-job.org 3 times a day; you can also run it any time from the Actions tab.
+# Scheduled publishing (studio/slots.py): cron-job.org starts the runs at 1:00, 2:00 and 3:00 AM
+# Bangladesh time with the input slot = 04:40, 05:40 or 06:40. Each run uploads Private with
+# publishAt at its slot, and YouTube makes it Public then. A run with no slot at another time
+# (or one whose slot has passed or is under 10 minutes away) uploads Public at once, as before.
+# Runs may overlap: each run claims its own script first (studio/claim.py), so two runs never
+# make the same video, and every save to the repo retries until it lands.
 name: Daily video
 
 on:
@@ -22,13 +28,16 @@ on:
       file:
         description: "Make only this script, e.g. scripts/queue/_sample.json (empty = next in queue)"
         default: ""
+      slot:
+        description: "Publish slot, e.g. 04:40 (Bangladesh time), or now (empty = from the start time)"
+        default: ""
 
 permissions:
-  contents: write                # to move finished scripts to scripts/done/
+  contents: write                # to claim scripts and move finished ones to scripts/done/
+  actions: read                  # to read when this run was started (its publish slot)
 
-concurrency:
-  group: daily-video
-  cancel-in-progress: false
+# no concurrency group on purpose: a second daily run must never be cancelled or held back
+# behind the first one; the claim step keeps overlapping runs on different scripts
 
 jobs:
   make-video:
@@ -40,6 +49,16 @@ jobs:
           # always the newest queue of the branch it was started on (main for the daily runs),
           # so a queued second run never redoes a video; a test branch can be dry-run the same way
           ref: ${{ github.ref_name }}
+
+      - name: When was this run started (for its publish slot)
+        id: started
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          t=$(gh api "repos/${GITHUB_REPOSITORY}/actions/runs/${GITHUB_RUN_ID}" --jq .created_at 2>/dev/null || true)
+          [[ "$t" =~ ^[0-9]{4}-[0-9]{2}-[0-9]{2}T[0-9:]{8}Z$ ]] || t=$(date -u +%Y-%m-%dT%H:%M:%SZ)
+          echo "Run started at $t (UTC)"
+          echo "at=$t" >> "$GITHUB_OUTPUT"
 
       - uses: actions/setup-python@v6
         with:
@@ -54,6 +73,18 @@ jobs:
 
       - name: Install Python packages
         run: pip install -r requirements.txt
+
+      - name: Claim the next script for this run (overlapping runs never share one)
+        id: claim
+        if: ${{ inputs.upload != 'no' && inputs.file == '' }}
+        run: |
+          git config user.name  "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          python -m studio.claim
+
+      - name: Get the ElevenLabs library sound effects (only the missing ones, no credits)
+        continue-on-error: true
+        run: python tools/fetch_sfx.py
 
       - name: Keep downloaded voice models between runs
         uses: actions/cache@v4
@@ -78,6 +109,8 @@ jobs:
         run: |
           pip install torch torchvision --index-url https://download.pytorch.org/whl/cpu
           pip install open_clip_torch faster-whisper
+          # subject detector for whole-subject framing (studio/framing.py)
+          pip install "transformers>=4.45"
 
       - name: Keep the shot picker model between runs
         uses: actions/cache@v4
@@ -91,6 +124,22 @@ jobs:
           path: ~/.cache/huggingface/hub/models--Systran--faster-whisper-small.en
           key: whisper-small-en-v1
 
+      - name: Keep the subject detector between runs (OWLv2)
+        uses: actions/cache@v4
+        with:
+          path: ~/.cache/huggingface/hub/models--google--owlv2-base-patch16-ensemble
+          key: owlv2-base-ensemble-v1
+
+      - name: Load the subject detector once
+        continue-on-error: true
+        run: |
+          python - <<'PY'
+          from transformers import Owlv2ForObjectDetection, Owlv2Processor
+          Owlv2Processor.from_pretrained("google/owlv2-base-patch16-ensemble")
+          Owlv2ForObjectDetection.from_pretrained("google/owlv2-base-patch16-ensemble")
+          print("Subject detector ready")
+          PY
+
       - name: Load the shot picker model once
         continue-on-error: true
         run: |
@@ -101,6 +150,7 @@ jobs:
           PY
 
       - name: Make and upload video
+        if: ${{ steps.claim.outcome == 'skipped' || steps.claim.outputs.file != '' }}
         env:
           ELEVENLABS_API_KEY: ${{ secrets.ELEVENLABS_API_KEY }}
           YT_CLIENT_ID: ${{ secrets.YT_CLIENT_ID }}
@@ -112,10 +162,14 @@ jobs:
           UPLOAD: ${{ inputs.upload }}
           VOICE: ${{ inputs.voice }}
           FILE: ${{ inputs.file }}
+          CLAIMED: ${{ steps.claim.outputs.file }}
+          RUN_STARTED_AT: ${{ steps.started.outputs.at }}
+          PUBLISH_SLOT: ${{ inputs.slot }}
         run: |
           args=()
           if [[ "$VOICE" =~ ^[A-Za-z0-9\ ():_-]+$ ]]; then args+=(--voice "$VOICE"); fi
           if [[ "$FILE" =~ ^scripts/queue/[A-Za-z0-9._-]+\.json$ ]]; then args+=(--file "$FILE"); fi
+          if [[ "$CLAIMED" =~ ^scripts/working/[A-Za-z0-9._-]+\.json$ ]]; then args+=(--file "$CLAIMED"); fi
           if [[ "$COUNT" =~ ^[0-9]+$ ]]; then args+=(--count "$COUNT"); fi
           if [[ "$UPLOAD" == "no" ]]; then args+=(--no-upload); fi
           python -m studio.main "${args[@]}"
@@ -135,10 +189,18 @@ jobs:
           GH_TOKEN: ${{ github.token }}
         run: |
           shopt -s nullglob
-          files=(output/*.mp4 output/*.qc.json)
+          files=(output/*.mp4 output/*.qc.json output/*.framecheck.jpg)
           [ ${#files[@]} -eq 0 ] && { echo "Nothing rendered"; exit 0; }
           mkdir -p /tmp/prev && cp "${files[@]}" /tmp/prev/
           for d in work/*/; do [ -f "$d/plan.json" ] && cp "$d/plan.json" "/tmp/prev/$(basename "$d").plan.json"; done
+          # the paid voice read, so a re-render of the same script costs no new ElevenLabs credits
+          for d in work/*/; do
+            v=("$d"pro_*_whole.mp3)
+            if [ -f "${v[0]}" ]; then
+              mkdir -p "/tmp/prev/voice/$(basename "$d")"
+              cp "$d"pro_*_whole.mp3 "$d"pro_*_whole.json "/tmp/prev/voice/$(basename "$d")/" 2>/dev/null || true
+            fi
+          done
           cd /tmp/prev
           git init -q -b previews
           git config user.name  "github-actions[bot]"
@@ -149,11 +211,26 @@ jobs:
 
       - name: Move finished scripts to scripts/done
         if: always()
+        env:
+          CLAIMED: ${{ steps.claim.outputs.file }}
         run: |
           git config user.name  "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add -A scripts logs
+          # a claimed script still in scripts/working (the run stopped early) goes back to the queue
+          if [[ "$CLAIMED" =~ ^scripts/working/[A-Za-z0-9._-]+\.json$ ]] && [ -f "$CLAIMED" ]; then
+            python -m studio.claim --release "$CLAIMED" || true
+          fi
+          git add -A scripts logs assets/sfx
           if git diff --cached --quiet; then echo "Nothing to save"; exit 0; fi
           git commit -m "Uploaded video(s) from the queue"
-          git pull --rebase --autostash
-          git push
+          # another run may have saved in between: take its changes and try again until it lands
+          branch="${GITHUB_REF_NAME}"
+          for i in $(seq 1 15); do
+            if git pull --rebase --autostash origin "$branch" && git push origin "HEAD:$branch"; then
+              echo "Saved (try $i)"; exit 0
+            fi
+            git rebase --abort 2>/dev/null || true
+            sleep $(( (RANDOM % 8) + 3 ))
+          done
+          echo "::error title=Could not save the queue::the finished script could not be pushed after 15 tries"
+          exit 1

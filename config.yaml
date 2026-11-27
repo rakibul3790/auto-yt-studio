@@ -67,8 +67,9 @@ video:
   pro_shorts: true
   # ElevenLabs-এ পুরো স্ক্রিপ্ট একবারে পড়ানো হয় (একটা কল), যাতে কথা টানা আর স্বাভাবিক শোনায়
   eleven_whole: true
-  # প্রতিটা Short এই লাইন দিয়ে শেষ হবে (স্ক্রিপ্টে আগে থেকে "follow" থাকলে আর যোগ হবে না)
-  follow_line: "Follow for more weird facts!"
+  # ফাঁকা = শেষে কোনো follow লাইন যোগ হবে না, যাতে Short-এর শেষ লাইন ঘুরে প্রথম লাইনে মিশে loop হয়
+  # (রাকিবের সিদ্ধান্ত, ২৮ নভেম্বর ২০২৬; আগে ছিল "Follow for more weird facts!")
+  follow_line: ""
   width: 1920
   height: 1080
   fps: 30
@@ -79,6 +80,14 @@ video:
   music_volume: 0.06         # assets/music-এর গানের আওয়াজ (0 = বন্ধ); কথার সময় আরও নামে
   map_music_volume: 0.06     # ম্যাপ-স্টাইলের ভিডিওতে গানের আওয়াজ
   sfx_volume: 0.25           # পপ, হুশ ইত্যাদির আওয়াজ, ভয়েসের তুলনায় মেপে বসে (0 = বন্ধ)
+  # mindblip-studio স্কিলের নিয়ম (lab-এ owl Short দিয়ে পরীক্ষিত): এই শব্দগুলো বন্ধ।
+  # assets/sfx-এ ElevenLabs library-র আসল সাউন্ড আছে (impact, thud, riser, ding, tick, shimmer)।
+  pro_banned_sfx: [pop, glitch, whoosh, swish]   # এই সাউন্ড বাজবে না (গ্রাফিক আর ক্যাপশনের অটো পপও না)
+  pro_banned_transitions: [glitch]               # এই ট্রানজিশন হলে সাধারণ কাট হবে
+  pro_framing: keep            # বিষয়ের পুরো শরীর পর্দায় (studio/framing.py), ভাসমান কার্ড, ফ্রেমচেক
+  # refill = ছবি কখনো ছোট হবে না: বিষয় পুরো স্ক্রিনে না আঁটলে অন্য ফুটেজ, তারপর gen_pool ছবি,
+  # শেষে বিষয় ঘিরে ফুল-স্ক্রিন ক্রপ। (box আর blend রাকিব বাতিল করেছেন, কোডের ডিফল্ট box, তাই এখানে লেখা জরুরি)
+  pro_fit_style: refill
   clips: true                # Pixabay থেকে ছবির বদলে ছোট ভিডিও ক্লিপ (না পেলে ছবি)
   cut_after_seconds: 5.5     # এর চেয়ে লম্বা দৃশ্যে মাঝখানে নতুন ক্লিপে কাট
   transitions: true          # দৃশ্য বদলের সময় স্লাইড/জুম ট্রানজিশন আর হুশ শব্দ
@@ -112,3 +121,9 @@ run:
   # এক দিনে (বাংলাদেশ সময়) সর্বোচ্চ কয়টা কিউর ভিডিও আপলোড হবে। এর বেশি হলে রান কিছু না করে থামবে।
   # 0 = কোনো সীমা নেই।
   max_uploads_per_day: 3
+  # শিডিউল করে পাবলিশ (studio/slots.py): cron-job.org রাত ১:০০, ২:০০, ৩:০০-তে রান শুরু করে,
+  # ভিডিও Private আপলোড হয় publishAt সহ, আর YouTube নিজেই ভোর ৪:৪০, ৫:৪০, ৬:৪০-এ Public করে।
+  # slot সময় পার হয়ে গেলে বা ১০ মিনিটের কম বাকি থাকলে সাথে সাথে Public। খালি লিস্ট [] = সবসময় সাথে সাথে Public।
+  publish_slots: ["04:40", "05:40", "06:40"]   # বাংলাদেশ সময়
+  # cron job-এর "slot" input না এলে: রান শুরুর সময় + এত মিনিট = slot (১:০০ + ২২০ মিনিট = ৪:৪০)
+  publish_lead_minutes: 220

@@ -1,6 +1,7 @@
 {
   "title": "The Shortest War in History Lasted Under an Hour",
   "format": "short",
+  "style": "pro",
   "description": "In 1896, a war between Britain and Zanzibar was over in less than an hour.",
   "tags": [
     "history facts",
@@ -16,61 +17,220 @@
     "history",
     "facts"
   ],
-  "thumbnail_text": "Under one hour",
+  "thumbnail_text": "Over in 40 minutes",
+  "music_mood": "epic",
   "scenes": [
     {
-      "on_screen": "The shortest war",
+      "on_screen": "Under 1 hour",
       "visual": "old warship sea",
-      "text": "The shortest war in recorded history lasted less than an hour.",
+      "subject": "ship",
+      "text": "The shortest war in history lasted less than an hour.",
       "highlight": [
         "less than an hour"
       ],
-      "subject": "ship",
-      "say": "[gasps] The shortest war in recorded history lasted less than an HOUR.",
-      "look": "excited"
+      "say": "[dramatically] The shortest war in history lasted less than an hour.",
+      "look": "excited",
+      "beats": [
+        {
+          "shot": "clip",
+          "camera": "punch",
+          "sfx": [
+            "impact"
+          ],
+          "hook": {
+            "angle": 0.38,
+            "seconds": 0.7
+          },
+          "at_word": 0,
+          "query": "old warship sea",
+          "subject": "ship"
+        }
+      ]
     },
     {
       "on_screen": "1896",
       "visual": "zanzibar coast",
-      "text": "It happened in eighteen ninety six, between Britain and Zanzibar, an island off the coast of East Africa.",
-      "highlight": [
-        "Britain and Zanzibar"
-      ],
       "subject": "zanzibar",
-      "say": "It happened in eighteen ninety six, between Britain and Zanzibar, an island off the coast of East Africa."
+      "text": "It was eighteen ninety six.",
+      "highlight": [
+        "eighteen ninety six"
+      ],
+      "say": "It was eighteen ninety six.",
+      "beats": [
+        {
+          "shot": "text",
+          "text": "1896",
+          "at_word": 0,
+          "bg": "prev",
+          "query": "zanzibar coast",
+          "subject": "zanzibar",
+          "transition": "cut"
+        }
+      ]
     },
     {
-      "on_screen": "A disputed ruler",
+      "on_screen": "Britain vs Zanzibar",
+      "visual": "zanzibar island",
+      "subject": "zanzibar",
+      "text": "Britain against Zanzibar, an island off East Africa.",
+      "highlight": [
+        "britain against zanzibar"
+      ],
+      "say": "Britain against Zanzibar, an island off East Africa.",
+      "beats": [
+        {
+          "shot": "clip",
+          "at_word": 0,
+          "query": "zanzibar island",
+          "subject": "zanzibar",
+          "camera": "push_in",
+          "transition": "cut"
+        },
+        {
+          "shot": "card",
+          "at_word": 2,
+          "bg": "prev",
+          "card": {
+            "style": "rounded",
+            "query": "zanzibar beach",
+            "subject": "beach",
+            "y": 0.24,
+            "width": 0.6
+          },
+          "subject": "beach",
+          "query": "zanzibar beach",
+          "transition": "cut"
+        }
+      ]
+    },
+    {
+      "on_screen": "New sultan",
       "visual": "zanzibar palace",
-      "text": "A new sultan took power without British approval. Britain gave him a deadline to step down, and he refused.",
+      "subject": "palace",
+      "text": "A new sultan took power without British approval.",
+      "highlight": [
+        "without british approval"
+      ],
+      "say": "A new sultan took power without British approval."
+    },
+    {
+      "on_screen": "A deadline",
+      "visual": "old pocket watch",
+      "subject": "clock",
+      "text": "Britain gave him a deadline to step down.",
+      "highlight": [
+        "a deadline"
+      ],
+      "say": "[tense] Britain gave him a deadline to step down.",
+      "beats": [
+        {
+          "shot": "card",
+          "at_word": 0,
+          "bg": "prev",
+          "card": {
+            "style": "polaroid",
+            "query": "old pocket watch",
+            "subject": "watch",
+            "y": 0.24,
+            "width": 0.6,
+            "caption": "Deadline"
+          },
+          "subject": "watch",
+          "query": "old pocket watch",
+          "transition": "cut"
+        }
+      ]
+    },
+    {
+      "on_screen": "He refused",
+      "visual": "old palace",
+      "subject": "palace",
+      "text": "He refused.",
       "highlight": [
         "he refused"
       ],
-      "subject": "zanzibar",
-      "say": "A new sultan took power without British approval. [serious] Britain gave him a deadline to step down, and he refused.",
+      "say": "He refused.",
+      "look": "whisper"
+    },
+    {
+      "on_screen": "Just after 9 AM",
+      "visual": "old warship cannon",
+      "subject": "ship",
+      "text": "Just after nine in the morning, British warships opened fire.",
+      "highlight": [
+        "opened fire"
+      ],
+      "say": "[serious] Just after nine in the morning, British warships opened fire.",
       "look": "angry"
     },
     {
       "on_screen": "About 40 minutes",
-      "visual": "old warship cannon",
-      "text": "When the deadline passed, British ships opened fire. The fighting ended in roughly forty minutes.",
+      "visual": "cannon smoke",
+      "subject": "cannon",
+      "text": "Around forty minutes later, the palace was in ruins, and it was all over.",
       "highlight": [
         "forty minutes"
       ],
-      "subject": "ship",
-      "say": "When the deadline passed, British ships opened fire. [sighs] The fighting ended in roughly forty minutes.",
-      "look": "sad"
+      "say": "Around forty minutes later, the palace was in ruins, and it was all over.",
+      "beats": [
+        {
+          "shot": "number",
+          "bg": "new",
+          "number": {
+            "from": 0,
+            "to": 40,
+            "suffix": " MIN",
+            "label": "THE WHOLE WAR",
+            "keys": [
+              [
+                0,
+                0,
+                "start"
+              ],
+              [
+                2,
+                40,
+                "end"
+              ]
+            ],
+            "dial": true
+          },
+          "sfx": [
+            "tick"
+          ],
+          "query": "cannon smoke",
+          "at_word": 0,
+          "subject": "cannon",
+          "transition": "cut"
+        }
+      ]
     },
     {
-      "on_screen": "Follow for more",
+      "on_screen": "Shorter than a movie",
       "visual": "old map",
-      "text": "Shorter than most movies. Follow for more weird facts.",
-      "highlight": [
-        "most movies"
-      ],
       "subject": "map",
-      "say": "[laughs] Shorter than most movies. Follow for more weird facts."
+      "text": "Shorter than most movies, which is why it's remembered as...",
+      "highlight": [
+        "shorter than most movies"
+      ],
+      "say": "[chuckles] Shorter than most movies, which is why it's remembered as...",
+      "beats": [
+        {
+          "shot": "card",
+          "at_word": 0,
+          "bg": "prev",
+          "card": {
+            "style": "print",
+            "query": "cinema seats",
+            "subject": "seats",
+            "y": 0.24,
+            "width": 0.6
+          },
+          "subject": "seats",
+          "query": "cinema seats",
+          "transition": "cut"
+        }
+      ]
     }
-  ],
-  "music_mood": "epic"
+  ]
 }

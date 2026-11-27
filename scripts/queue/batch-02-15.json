@@ -1,6 +1,7 @@
 {
   "title": "Water Can Boil and Freeze at the Same Time",
   "format": "short",
+  "style": "pro",
   "description": "At one special temperature and pressure, water can be solid, liquid and gas all at once.",
   "tags": [
     "water",
@@ -17,57 +18,190 @@
     "facts"
   ],
   "thumbnail_text": "Boil and freeze",
+  "music_mood": "mysterious",
   "scenes": [
     {
-      "on_screen": "Boiling ice?",
+      "on_screen": "Boil + freeze",
       "visual": "ice cubes water",
+      "subject": "ice",
       "text": "Water can boil and freeze at the exact same time.",
       "highlight": [
-        "boil and freeze"
+        "the exact same time"
       ],
-      "subject": "ice",
-      "say": "[curious] Water can boil and freeze... at the EXACT same time.",
-      "look": "excited"
+      "say": "[curious] Water can boil and freeze at the exact same time.",
+      "beats": [
+        {
+          "shot": "clip",
+          "camera": "punch",
+          "sfx": [
+            "impact"
+          ],
+          "hook": {
+            "angle": -0.38,
+            "seconds": 0.7
+          },
+          "at_word": 0,
+          "query": "ice cubes water",
+          "subject": "ice"
+        }
+      ]
     },
     {
-      "on_screen": "The triple point",
+      "on_screen": "Triple point",
       "visual": "science laboratory",
-      "text": "It happens at something called the triple point, where ice, liquid water and water vapor can all exist together.",
+      "subject": "lab",
+      "text": "It's called the triple point.",
       "highlight": [
-        "the triple point"
+        "triple point"
       ],
-      "say": "It happens at something called the triple point, where ice, liquid water and water vapor can all exist together."
+      "say": "It's called the triple point.",
+      "beats": [
+        {
+          "shot": "text",
+          "text": "TRIPLE POINT",
+          "at_word": 0,
+          "bg": "prev",
+          "query": "science laboratory",
+          "subject": "lab",
+          "transition": "cut"
+        }
+      ]
     },
     {
-      "on_screen": "Very low pressure",
-      "visual": "glass of water bubbles",
-      "text": "It needs a temperature just above zero degrees Celsius, and a pressure far lower than the air around us.",
+      "on_screen": "Ice, liquid, vapor",
+      "visual": "water drop",
+      "subject": "water",
+      "text": "Ice, liquid water and vapor, all existing together.",
+      "highlight": [
+        "all existing together"
+      ],
+      "say": "Ice, liquid water and vapor, all existing together.",
+      "beats": [
+        {
+          "shot": "clip",
+          "at_word": 0,
+          "query": "water drop",
+          "subject": "water",
+          "camera": "push_in",
+          "transition": "cut"
+        },
+        {
+          "shot": "card",
+          "at_word": 4,
+          "bg": "prev",
+          "card": {
+            "style": "rounded",
+            "query": "steam rising",
+            "subject": "steam",
+            "y": 0.24,
+            "width": 0.6
+          },
+          "subject": "steam",
+          "query": "steam rising",
+          "transition": "cut"
+        }
+      ]
+    },
+    {
+      "on_screen": "Just above 0°C",
+      "visual": "thermometer cold",
+      "subject": "thermometer",
+      "text": "It needs a temperature just above zero degrees Celsius,",
       "highlight": [
         "just above zero"
       ],
-      "subject": "water",
-      "say": "It needs a temperature just above zero degrees Celsius, and a pressure far lower than the air around us."
+      "say": "It needs a temperature just above zero degrees Celsius,",
+      "beats": [
+        {
+          "shot": "card",
+          "at_word": 0,
+          "bg": "prev",
+          "card": {
+            "style": "polaroid",
+            "query": "thermometer",
+            "subject": "thermometer",
+            "y": 0.24,
+            "width": 0.6,
+            "caption": "Just above 0"
+          },
+          "subject": "thermometer",
+          "query": "thermometer",
+          "transition": "cut"
+        }
+      ]
     },
     {
-      "on_screen": "Seen in labs",
-      "visual": "frozen water ice",
-      "text": "In a lab with a vacuum pump, you can watch water bubble like it is boiling while ice forms on top.",
+      "on_screen": "150x lower pressure",
+      "visual": "vacuum chamber",
+      "subject": "lab",
+      "text": "and air pressure more than a hundred and fifty times lower than ours.",
       "highlight": [
-        "ice forms on top"
+        "times lower"
       ],
-      "subject": "ice",
-      "say": "[excited] In a lab with a vacuum pump, you can watch water bubble like it is boiling while ice forms on top.",
+      "say": "and air pressure more than a hundred and fifty times lower than ours.",
+      "beats": [
+        {
+          "shot": "number",
+          "bg": "new",
+          "number": {
+            "from": 0,
+            "to": 150,
+            "suffix": "x",
+            "label": "LOWER PRESSURE",
+            "keys": [
+              [
+                0,
+                0,
+                "start"
+              ],
+              [
+                9,
+                150,
+                "end"
+              ]
+            ]
+          },
+          "sfx": [
+            "tick"
+          ],
+          "query": "vacuum chamber",
+          "at_word": 0,
+          "subject": "lab",
+          "transition": "cut"
+        }
+      ]
+    },
+    {
+      "on_screen": "Bubbling...",
+      "visual": "glass of water bubbles",
+      "subject": "water",
+      "text": "In a lab, you can watch the water bubble like it's boiling,",
+      "highlight": [
+        "like it's boiling"
+      ],
+      "say": "[excited] In a lab, you can watch the water bubble like it's boiling,",
       "look": "excited"
     },
     {
-      "on_screen": "Follow for more",
-      "visual": "water drop",
-      "text": "Water is weirder than it looks. Follow for more weird facts.",
+      "on_screen": "...while freezing",
+      "visual": "frozen water ice",
+      "subject": "ice",
+      "text": "while ice forms right on top.",
       "highlight": [
-        "weirder"
+        "ice forms"
       ],
-      "say": "[chuckles] Water is weirder than it looks. Follow for more weird facts."
+      "say": "[whispers] while ice forms right on top.",
+      "look": "whisper"
+    },
+    {
+      "on_screen": "Ordinary, but weird",
+      "visual": "water splash",
+      "subject": "water",
+      "text": "The most ordinary stuff on Earth is also the weirdest, because...",
+      "highlight": [
+        "also the weirdest"
+      ],
+      "say": "[chuckles] The most ordinary stuff on Earth is also the weirdest, because..."
     }
-  ],
-  "music_mood": "mysterious"
+  ]
 }

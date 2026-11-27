@@ -1,6 +1,7 @@
 {
-  "title": "This Shrimp Snaps Hard Enough to Create Heat Like the Sun",
+  "title": "This Shrimp's Snap Is Almost as Hot as the Sun",
   "format": "short",
+  "style": "pro",
   "description": "The pistol shrimp snaps its claw so fast that it makes a bubble that briefly gets incredibly hot.",
   "tags": [
     "pistol shrimp",
@@ -16,61 +17,247 @@
     "ocean",
     "facts"
   ],
-  "thumbnail_text": "Shrimp vs the Sun",
+  "thumbnail_text": "Almost as hot as the Sun",
+  "music_mood": "epic",
   "scenes": [
     {
-      "on_screen": "The pistol shrimp",
+      "on_screen": "A tiny weapon",
       "visual": "shrimp underwater",
-      "text": "There is a shrimp with a claw that works like a weapon. It is called the pistol shrimp.",
+      "subject": "shrimp",
+      "text": "This tiny shrimp carries a weapon.",
+      "highlight": [
+        "a weapon"
+      ],
+      "say": "[dramatically] This tiny shrimp carries a weapon.",
+      "look": "excited",
+      "beats": [
+        {
+          "shot": "clip",
+          "camera": "punch",
+          "sfx": [
+            "impact"
+          ],
+          "hook": {
+            "angle": 0.38,
+            "seconds": 0.7
+          },
+          "at_word": 0,
+          "query": "shrimp underwater",
+          "subject": "shrimp"
+        }
+      ]
+    },
+    {
+      "on_screen": "Pistol shrimp",
+      "visual": "shrimp claw",
+      "subject": "shrimp",
+      "text": "It's called the pistol shrimp.",
       "highlight": [
         "pistol shrimp"
       ],
-      "subject": "shrimp",
-      "say": "[curious] There is a shrimp with a claw that works like a WEAPON. It is called the pistol shrimp.",
-      "look": "excited"
+      "say": "It's called the pistol shrimp."
     },
     {
-      "on_screen": "A super fast snap",
-      "visual": "shrimp claw",
-      "text": "It snaps its claw shut so quickly that it shoots out a jet of water and creates a tiny bubble.",
+      "on_screen": "Snap!",
+      "visual": "shrimp claw close up",
+      "subject": "shrimp",
+      "text": "It snaps its claw shut so fast it fires a jet of water,",
       "highlight": [
         "a jet of water"
       ],
-      "subject": "shrimp",
-      "say": "It snaps its claw shut so quickly that it shoots out a jet of water and creates a tiny bubble."
+      "say": "It snaps its claw shut so fast it fires a jet of water,",
+      "beats": [
+        {
+          "shot": "clip",
+          "at_word": 0,
+          "query": "shrimp claw close up",
+          "subject": "shrimp",
+          "camera": "push_in",
+          "transition": "cut"
+        },
+        {
+          "shot": "card",
+          "at_word": 10,
+          "bg": "prev",
+          "card": {
+            "style": "torn",
+            "query": "water splash",
+            "subject": "water",
+            "y": 0.24,
+            "width": 0.6
+          },
+          "subject": "water",
+          "query": "water splash",
+          "transition": "cut"
+        }
+      ]
+    },
+    {
+      "on_screen": "A bubble",
+      "visual": "underwater bubbles",
+      "subject": "bubbles",
+      "text": "and that jet creates a tiny bubble.",
+      "highlight": [
+        "a tiny bubble"
+      ],
+      "say": "and that jet creates a tiny bubble."
+    },
+    {
+      "on_screen": "Collapse",
+      "visual": "bubble slow motion",
+      "subject": "bubbles",
+      "text": "Then the bubble collapses.",
+      "highlight": [
+        "collapses"
+      ],
+      "say": "[whispers] Then the bubble collapses.",
+      "look": "whisper"
     },
     {
       "on_screen": "Thousands of degrees",
-      "visual": "underwater bubbles",
-      "text": "When that bubble collapses, the inside briefly reaches thousands of degrees, close to the temperature of the Sun's surface.",
+      "visual": "fire flash",
+      "subject": "fire",
+      "text": "For an instant, the inside reaches thousands of degrees,",
       "highlight": [
         "thousands of degrees"
       ],
-      "subject": "bubbles",
-      "say": "[gasps] When that bubble collapses, the inside briefly reaches THOUSANDS of degrees, close to the temperature of the Sun's surface.",
-      "look": "excited"
+      "say": "[excited] For an instant, the inside reaches thousands of degrees,",
+      "look": "excited",
+      "beats": [
+        {
+          "shot": "number",
+          "bg": "new",
+          "number": {
+            "from": 0,
+            "to": 4700,
+            "suffix": "°C",
+            "label": "INSIDE THE BUBBLE",
+            "keys": [
+              [
+                0,
+                0,
+                "start"
+              ],
+              [
+                8,
+                4700,
+                "end"
+              ]
+            ]
+          },
+          "sfx": [
+            "tick"
+          ],
+          "query": "underwater bubbles",
+          "at_word": 0,
+          "subject": "fire",
+          "transition": "cut"
+        }
+      ]
     },
     {
-      "on_screen": "Loud and stunning",
-      "visual": "shrimp reef",
-      "text": "The snap is also one of the loudest sounds in the ocean, and it can stun small fish nearby.",
+      "on_screen": "Near the Sun",
+      "visual": "sun surface",
+      "subject": "sun",
+      "text": "close to the temperature of the Sun's surface.",
+      "highlight": [
+        "the sun's surface"
+      ],
+      "say": "close to the temperature of the Sun's surface.",
+      "beats": [
+        {
+          "shot": "compare",
+          "bg": "prev",
+          "sfx": [
+            "tick"
+          ],
+          "compare": {
+            "left": {
+              "label": "BUBBLE",
+              "value": 4700
+            },
+            "right": {
+              "label": "SUN",
+              "value": 5500
+            },
+            "unit": "°C"
+          },
+          "at_word": 0,
+          "query": "sun surface",
+          "subject": "sun",
+          "transition": "cut"
+        }
+      ]
+    },
+    {
+      "on_screen": "Loudest snap",
+      "visual": "coral reef",
+      "subject": "reef",
+      "text": "The snap is one of the loudest sounds in the ocean, and it can stun small fish.",
       "highlight": [
         "loudest sounds"
       ],
-      "subject": "shrimp",
-      "say": "[shouts] The snap is also one of the LOUDEST sounds in the ocean, and it can stun small fish nearby.",
-      "look": "angry"
+      "say": "The snap is one of the loudest sounds in the ocean, and it can stun small fish.",
+      "beats": [
+        {
+          "shot": "clip",
+          "at_word": 0,
+          "query": "coral reef",
+          "subject": "reef",
+          "camera": "pan_left",
+          "transition": "cut"
+        },
+        {
+          "shot": "card",
+          "at_word": 14,
+          "bg": "prev",
+          "card": {
+            "style": "rounded",
+            "query": "small fish reef",
+            "subject": "fish",
+            "y": 0.24,
+            "width": 0.6
+          },
+          "subject": "fish",
+          "query": "small fish reef",
+          "transition": "cut"
+        }
+      ]
     },
     {
-      "on_screen": "Follow for more",
+      "on_screen": "That crackle...",
       "visual": "shrimp sea floor",
-      "text": "Small shrimp, huge power. Follow for more weird facts.",
-      "highlight": [
-        "huge power"
-      ],
       "subject": "shrimp",
-      "say": "[laughs] Small shrimp, huge power. Follow for more weird facts."
+      "text": "So if you hear a crackle on the reef, remember...",
+      "highlight": [
+        "a crackle"
+      ],
+      "say": "[chuckles] So if you hear a crackle on the reef, remember...",
+      "beats": [
+        {
+          "shot": "clip",
+          "at_word": 0,
+          "query": "shrimp sea floor",
+          "subject": "shrimp",
+          "camera": "pull_out",
+          "transition": "cut"
+        },
+        {
+          "shot": "card",
+          "at_word": 5,
+          "bg": "prev",
+          "card": {
+            "style": "print",
+            "query": "coral reef",
+            "subject": "reef",
+            "y": 0.24,
+            "width": 0.6
+          },
+          "subject": "reef",
+          "query": "coral reef",
+          "transition": "cut"
+        }
+      ]
     }
-  ],
-  "music_mood": "epic"
+  ]
 }

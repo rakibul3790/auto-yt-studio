@@ -160,7 +160,15 @@ def process(path: Path, cfg: dict, upload: bool, voice: str | None = None) -> No
         log(f"Test render done (not uploaded): {main_mp4 or short_mp4}")
         return
 
+    # scheduled publishing: a daily run started ahead of its slot uploads Private with publishAt
+    # (YouTube makes it Public at the slot); no slot or a passed slot = Public at once
+    from . import slots
+    when = slots.publish_at(cfg)
+    if when:
+        cfg = {**cfg, "run": {**cfg["run"], "publish_at": when}}
     result = {"uploaded_at": queue.now_utc()}
+    if when:
+        result["publish_at"] = when
     if short_only:
         st = data.get("short_title") or data["title"]
         if "#shorts" not in st.lower() and len(st) <= 92:
@@ -256,6 +264,8 @@ def main() -> int:
             log(f"Skipping broken script: {e}")
             queue.copy_to_failed(f)
         except Exception as e:
+            if f.exists() and not str(e).startswith("Quality check failed"):
+                queue.release(f)          # a claimed script goes back to the queue for the next run
             if str(e).startswith("Quality check failed"):
                 # a broken render is never uploaded; park the script and make the next one
                 print(f"::warning title=Quality check failed::{f.name}: {e}. Moved to "

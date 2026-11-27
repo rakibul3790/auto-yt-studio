@@ -1,6 +1,7 @@
 {
   "title": "The Sunlight You See Is 8 Minutes Old",
   "format": "short",
+  "style": "pro",
   "description": "Light takes time to travel, so when you look at the Sun you are seeing it as it was about eight minutes ago.",
   "tags": [
     "sun",
@@ -17,58 +18,191 @@
     "facts"
   ],
   "thumbnail_text": "8 minutes old",
+  "music_mood": "calm",
   "scenes": [
     {
-      "on_screen": "Old sunlight",
+      "on_screen": "8 minutes old",
       "visual": "sunrise",
-      "text": "The sunlight hitting your face right now left the Sun about eight minutes ago.",
-      "highlight": [
-        "eight minutes ago"
-      ],
       "subject": "sunrise",
-      "say": "[whispers] The sunlight hitting your face right now... left the Sun about eight minutes ago.",
-      "look": "whisper"
-    },
-    {
-      "on_screen": "150 million kilometers",
-      "visual": "sun in space",
-      "text": "The Sun is about one hundred and fifty million kilometers away. Even light needs time to cross that distance.",
+      "text": "The sunlight on your face right now is about eight minutes old.",
       "highlight": [
-        "fifty million kilometers"
+        "eight minutes old"
       ],
-      "subject": "sun",
-      "say": "The Sun is about one hundred and fifty million kilometers away. Even light needs time to cross that distance."
+      "say": "[softly] The sunlight on your face right now is about eight minutes old.",
+      "look": "whisper",
+      "beats": [
+        {
+          "shot": "clip",
+          "camera": "punch",
+          "sfx": [
+            "impact"
+          ],
+          "hook": {
+            "angle": -0.38,
+            "seconds": 0.7
+          },
+          "at_word": 0,
+          "query": "sunrise",
+          "subject": "sunrise"
+        }
+      ]
     },
     {
-      "on_screen": "About 8 minutes 20 seconds",
+      "on_screen": "150 million km",
+      "visual": "sun in space",
+      "subject": "sun",
+      "text": "The Sun is about one hundred and fifty million kilometers away.",
+      "highlight": [
+        "million kilometers"
+      ],
+      "say": "The Sun is about one hundred and fifty million kilometers away.",
+      "beats": [
+        {
+          "shot": "number",
+          "bg": "new",
+          "number": {
+            "from": 0,
+            "to": 150,
+            "suffix": " MILLION KM",
+            "label": "TO THE SUN",
+            "keys": [
+              [
+                0,
+                0,
+                "start"
+              ],
+              [
+                9,
+                150,
+                "end"
+              ]
+            ]
+          },
+          "sfx": [
+            "tick"
+          ],
+          "query": "sun in space",
+          "at_word": 0,
+          "subject": "sun",
+          "transition": "cut"
+        }
+      ]
+    },
+    {
+      "on_screen": "Light takes time",
       "visual": "sun rays",
-      "text": "Traveling at the speed of light, it takes around eight minutes and twenty seconds to reach us.",
+      "subject": "sun",
+      "text": "Even light needs time to cross that gap.",
+      "highlight": [
+        "even light"
+      ],
+      "say": "[curious] Even light needs time to cross that gap.",
+      "beats": [
+        {
+          "shot": "card",
+          "at_word": 0,
+          "bg": "prev",
+          "card": {
+            "style": "print",
+            "query": "flashlight beam",
+            "subject": "flashlight",
+            "y": 0.24,
+            "width": 0.6
+          },
+          "subject": "flashlight",
+          "query": "flashlight beam",
+          "transition": "cut"
+        }
+      ]
+    },
+    {
+      "on_screen": "8 min 20 s",
+      "visual": "light beam space",
+      "subject": "space",
+      "text": "At the speed of light, the trip takes around eight minutes and twenty seconds.",
       "highlight": [
         "twenty seconds"
       ],
-      "subject": "sun",
-      "say": "Traveling at the speed of light, it takes around eight minutes and twenty seconds to reach us."
+      "say": "At the speed of light, the trip takes around eight minutes and twenty seconds.",
+      "beats": [
+        {
+          "shot": "text",
+          "text": "8 MIN 20 SEC",
+          "at_word": 0,
+          "bg": "prev",
+          "query": "light beam space",
+          "subject": "space",
+          "transition": "cut"
+        }
+      ]
     },
     {
-      "on_screen": "Looking into the past",
-      "visual": "starry night sky",
-      "text": "So you always see the Sun as it was, not as it is. And for distant stars, that light can be thousands of years old.",
+      "on_screen": "Seeing the past",
+      "visual": "sun close up",
+      "subject": "sun",
+      "text": "So you always see the Sun as it was, not as it is.",
       "highlight": [
-        "thousands of years old"
+        "as it was"
       ],
-      "say": "[curious] So you always see the Sun as it was, not as it is. [gasps] And for distant stars, that light can be THOUSANDS of years old.",
+      "say": "[amazed] So you always see the Sun as it was, not as it is.",
       "look": "excited"
     },
     {
-      "on_screen": "Follow for more",
-      "visual": "sunset",
-      "text": "Every time you look up, you are looking back in time. Follow for more weird facts.",
+      "on_screen": "Stars: older",
+      "visual": "starry night sky",
+      "subject": "stars",
+      "text": "And for distant stars, that light can be thousands of years old.",
+      "highlight": [
+        "thousands of years"
+      ],
+      "say": "And for distant stars, that light can be thousands of years old."
+    },
+    {
+      "on_screen": "Back in time",
+      "visual": "milky way night sky",
+      "subject": "stars",
+      "text": "Every time you look up, you're looking back in time.",
       "highlight": [
         "back in time"
       ],
-      "subject": "sunset",
-      "say": "[softly] Every time you look up, you are looking back in time. [chuckles] Follow for more weird facts."
+      "say": "[whispers] Every time you look up, you're looking back in time.",
+      "look": "whisper",
+      "beats": [
+        {
+          "shot": "clip",
+          "at_word": 0,
+          "query": "milky way night sky",
+          "subject": "stars",
+          "camera": "push_in",
+          "transition": "cut"
+        },
+        {
+          "shot": "card",
+          "at_word": 3,
+          "bg": "prev",
+          "card": {
+            "style": "polaroid",
+            "query": "telescope night",
+            "subject": "telescope",
+            "y": 0.24,
+            "width": 0.6,
+            "caption": "Look up"
+          },
+          "subject": "telescope",
+          "query": "telescope night",
+          "transition": "cut"
+        }
+      ]
+    },
+    {
+      "on_screen": "Tomorrow morning",
+      "visual": "morning sun window",
+      "subject": "sun",
+      "text": "So step outside tomorrow morning, and remember...",
+      "highlight": [
+        "tomorrow morning"
+      ],
+      "say": "So step outside tomorrow morning, and remember..."
     }
-  ],
-  "music_mood": "calm"
+  ]
 }

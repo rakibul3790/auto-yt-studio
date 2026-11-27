@@ -1,6 +1,7 @@
 {
   "title": "The Eiffel Tower Grows Taller in Summer",
   "format": "short",
+  "style": "pro",
   "description": "The iron tower in Paris expands in the heat and can stand about fifteen centimeters taller on hot days.",
   "tags": [
     "eiffel tower",
@@ -17,59 +18,233 @@
     "facts"
   ],
   "thumbnail_text": "It grows in summer",
+  "music_mood": "upbeat",
   "scenes": [
     {
-      "on_screen": "A tower that grows",
+      "on_screen": "Not the same height",
       "visual": "eiffel tower",
-      "text": "The Eiffel Tower gets taller every summer.",
-      "highlight": [
-        "taller every summer"
-      ],
       "subject": "eiffel",
-      "say": "[excited] The Eiffel Tower gets TALLER every summer.",
+      "text": "The Eiffel Tower is not the same height all year.",
+      "highlight": [
+        "not the same height"
+      ],
+      "say": "[curious] The Eiffel Tower is not the same height all year.",
+      "beats": [
+        {
+          "shot": "clip",
+          "camera": "punch",
+          "sfx": [
+            "impact"
+          ],
+          "hook": {
+            "angle": -0.38,
+            "seconds": 0.7
+          },
+          "at_word": 0,
+          "query": "eiffel tower",
+          "subject": "eiffel"
+        }
+      ]
+    },
+    {
+      "on_screen": "Summer = taller",
+      "visual": "eiffel tower summer",
+      "subject": "eiffel",
+      "text": "Every summer, it gets taller.",
+      "highlight": [
+        "it gets taller"
+      ],
+      "say": "[excited] Every summer, it gets taller.",
       "look": "excited"
     },
     {
       "on_screen": "Iron expands",
       "visual": "eiffel tower structure",
-      "text": "It is built from iron, and metal expands when it heats up.",
-      "highlight": [
-        "metal expands"
-      ],
       "subject": "eiffel",
-      "say": "It is built from iron, and metal expands when it heats up."
+      "text": "It's made of iron, and iron expands when it heats up.",
+      "highlight": [
+        "iron expands"
+      ],
+      "say": "It's made of iron, and iron expands when it heats up.",
+      "beats": [
+        {
+          "shot": "clip",
+          "at_word": 0,
+          "query": "eiffel tower structure",
+          "subject": "eiffel",
+          "camera": "push_in",
+          "transition": "cut"
+        },
+        {
+          "shot": "card",
+          "at_word": 3,
+          "bg": "prev",
+          "card": {
+            "style": "print",
+            "query": "iron metal beams",
+            "subject": "beams",
+            "y": 0.24,
+            "width": 0.6
+          },
+          "subject": "beams",
+          "query": "iron metal beams",
+          "transition": "cut"
+        }
+      ]
     },
     {
-      "on_screen": "Up to 15 cm",
-      "visual": "eiffel tower summer",
-      "text": "On hot days, the tower can grow by up to about fifteen centimeters. That is about six inches.",
+      "on_screen": "+15 cm",
+      "visual": "eiffel tower sunny day",
+      "subject": "eiffel",
+      "text": "On hot days, it can grow by up to fifteen centimeters,",
       "highlight": [
         "fifteen centimeters"
       ],
-      "subject": "eiffel",
-      "say": "On hot days, the tower can grow by up to about fifteen centimeters. [gasps] That is about six inches.",
-      "look": "excited"
+      "say": "On hot days, it can grow by up to fifteen centimeters,",
+      "beats": [
+        {
+          "shot": "number",
+          "bg": "new",
+          "number": {
+            "from": 0,
+            "to": 15,
+            "suffix": " CM",
+            "label": "SUMMER GROWTH",
+            "keys": [
+              [
+                0,
+                0,
+                "start"
+              ],
+              [
+                10,
+                15,
+                "end"
+              ]
+            ]
+          },
+          "sfx": [
+            "tick"
+          ],
+          "query": "eiffel tower sunny day",
+          "at_word": 0,
+          "subject": "eiffel",
+          "transition": "cut"
+        }
+      ]
     },
     {
-      "on_screen": "It even leans",
+      "on_screen": "About 6 inches",
+      "visual": "measuring tape",
+      "subject": "ruler",
+      "text": "about six inches.",
+      "highlight": [
+        "six inches"
+      ],
+      "say": "about six inches."
+    },
+    {
+      "on_screen": "Even stranger",
       "visual": "eiffel tower sunset",
-      "text": "And because the Sun heats one side more than the other, the top can lean slightly away from the Sun during the day.",
-      "highlight": [
-        "lean slightly"
-      ],
       "subject": "eiffel",
-      "say": "And because the Sun heats one side more than the other, the top can lean slightly away from the Sun during the day."
+      "text": "And it does something even stranger.",
+      "highlight": [
+        "even stranger"
+      ],
+      "say": "[whispers] And it does something even stranger.",
+      "look": "whisper",
+      "beats": [
+        {
+          "shot": "text",
+          "text": "EVEN STRANGER",
+          "at_word": 0,
+          "bg": "prev",
+          "query": "eiffel tower sunset",
+          "subject": "eiffel",
+          "transition": "cut"
+        }
+      ]
     },
     {
-      "on_screen": "Follow for more",
-      "visual": "eiffel tower winter",
-      "text": "In winter, it shrinks back down again. Follow for more weird facts.",
-      "highlight": [
-        "shrinks back"
-      ],
+      "on_screen": "It leans",
+      "visual": "eiffel tower top",
       "subject": "eiffel",
-      "say": "[sighs] In winter, it shrinks back down again. [chuckles] Follow for more weird facts."
+      "text": "The Sun heats one side more than the other, so the top leans slightly away from it.",
+      "highlight": [
+        "leans slightly away"
+      ],
+      "say": "The Sun heats one side more than the other, so the top leans slightly away from it.",
+      "beats": [
+        {
+          "shot": "clip",
+          "at_word": 0,
+          "query": "eiffel tower top",
+          "subject": "eiffel",
+          "camera": "pan_left",
+          "transition": "cut"
+        },
+        {
+          "shot": "card",
+          "at_word": 1,
+          "bg": "prev",
+          "card": {
+            "style": "rounded",
+            "query": "bright sun sky",
+            "subject": "sun",
+            "y": 0.24,
+            "width": 0.6
+          },
+          "subject": "sun",
+          "query": "bright sun sky",
+          "transition": "cut"
+        }
+      ]
+    },
+    {
+      "on_screen": "Winter = shorter",
+      "visual": "eiffel tower winter",
+      "subject": "eiffel",
+      "text": "In winter, it shrinks back down.",
+      "highlight": [
+        "shrinks back down"
+      ],
+      "say": "[chuckles] In winter, it shrinks back down."
+    },
+    {
+      "on_screen": "Come in summer",
+      "visual": "paris skyline",
+      "subject": "eiffel",
+      "text": "So if you want the tallest view in Paris, come in summer, because...",
+      "highlight": [
+        "come in summer"
+      ],
+      "say": "So if you want the tallest view in Paris, come in summer, because...",
+      "beats": [
+        {
+          "shot": "clip",
+          "at_word": 0,
+          "query": "paris skyline",
+          "subject": "eiffel",
+          "camera": "pull_out",
+          "transition": "cut"
+        },
+        {
+          "shot": "card",
+          "at_word": 8,
+          "bg": "prev",
+          "card": {
+            "style": "polaroid",
+            "query": "paris street summer",
+            "subject": "street",
+            "y": 0.24,
+            "width": 0.6,
+            "caption": "Summer"
+          },
+          "subject": "street",
+          "query": "paris street summer",
+          "transition": "cut"
+        }
+      ]
     }
-  ],
-  "music_mood": "upbeat"
+  ]
 }

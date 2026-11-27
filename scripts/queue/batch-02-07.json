@@ -1,6 +1,7 @@
 {
   "title": "Sea Otters Hold Hands While They Sleep",
   "format": "short",
+  "style": "pro",
   "description": "Sea otters sleep floating on their backs, and they often hold on to each other so they don't drift apart.",
   "tags": [
     "sea otter",
@@ -17,60 +18,160 @@
     "facts"
   ],
   "thumbnail_text": "Holding hands",
+  "music_mood": "calm",
   "scenes": [
     {
-      "on_screen": "Sleeping together",
+      "on_screen": "Holding hands",
       "visual": "sea otter floating",
-      "text": "Sea otters often hold hands while they sleep.",
+      "subject": "otter",
+      "text": "Sea otters hold hands while they sleep.",
       "highlight": [
         "hold hands"
       ],
-      "subject": "otter",
-      "say": "[warmly] Sea otters often hold hands... [chuckles] while they sleep.",
-      "look": "excited"
+      "say": "[warmly] Sea otters hold hands while they sleep.",
+      "beats": [
+        {
+          "shot": "clip",
+          "camera": "punch",
+          "sfx": [
+            "impact"
+          ],
+          "hook": {
+            "angle": 0.38,
+            "seconds": 0.7
+          },
+          "at_word": 0,
+          "query": "sea otter floating",
+          "subject": "otter"
+        }
+      ]
     },
     {
-      "on_screen": "Sleeping on water",
+      "on_screen": "Asleep on the waves",
       "visual": "otters in water",
-      "text": "They sleep floating on their backs in the ocean, which means the waves could easily carry them away.",
-      "highlight": [
-        "carry them away"
-      ],
       "subject": "otter",
-      "say": "They sleep floating on their backs in the ocean, [worried] which means the waves could easily carry them away.",
+      "text": "They nap floating on their backs, out on the open ocean.",
+      "highlight": [
+        "on their backs"
+      ],
+      "say": "They nap floating on their backs, out on the open ocean."
+    },
+    {
+      "on_screen": "Drifting danger",
+      "visual": "ocean waves",
+      "subject": "waves",
+      "text": "But the waves could easily carry them far apart.",
+      "highlight": [
+        "far apart"
+      ],
+      "say": "[worried] But the waves could easily carry them far apart.",
       "look": "sad"
     },
     {
-      "on_screen": "Don't drift apart",
+      "on_screen": "Paw in paw",
       "visual": "two otters",
-      "text": "So they grab on to each other's paws, forming little groups that stay together through the night.",
+      "subject": "otter",
+      "text": "So they grab each other's paws and hang on.",
       "highlight": [
         "each other's paws"
       ],
-      "subject": "otter",
-      "say": "[softly] So they grab on to each other's paws, forming little groups that stay together through the night.",
-      "look": "whisper"
+      "say": "So they grab each other's paws and hang on.",
+      "beats": [
+        {
+          "shot": "card",
+          "at_word": 0,
+          "bg": "prev",
+          "card": {
+            "style": "polaroid",
+            "query": "two sea otters",
+            "subject": "otter",
+            "y": 0.24,
+            "width": 0.6,
+            "caption": "Paws"
+          },
+          "subject": "otter",
+          "query": "two sea otters",
+          "transition": "cut"
+        }
+      ]
     },
     {
-      "on_screen": "Seaweed anchors",
+      "on_screen": "A raft",
+      "visual": "group of sea otters",
+      "subject": "otter",
+      "text": "Whole groups link up into a floating raft.",
+      "highlight": [
+        "floating raft"
+      ],
+      "say": "Whole groups link up into a floating raft."
+    },
+    {
+      "on_screen": "Kelp blanket",
       "visual": "sea otter kelp",
-      "text": "Some also wrap themselves in long strands of seaweed, like a blanket that keeps them in place.",
+      "subject": "otter",
+      "text": "Some also wrap themselves in seaweed, like a blanket that keeps them in place.",
       "highlight": [
         "like a blanket"
       ],
-      "subject": "otter",
-      "say": "Some also wrap themselves in long strands of seaweed, like a blanket that keeps them in place."
+      "say": "Some also wrap themselves in seaweed, like a blanket that keeps them in place.",
+      "beats": [
+        {
+          "shot": "clip",
+          "at_word": 0,
+          "query": "sea otter kelp",
+          "subject": "otter",
+          "camera": "push_in",
+          "transition": "cut"
+        },
+        {
+          "shot": "card",
+          "at_word": 5,
+          "bg": "prev",
+          "card": {
+            "style": "rounded",
+            "query": "kelp seaweed underwater",
+            "subject": "seaweed",
+            "y": 0.24,
+            "width": 0.6
+          },
+          "subject": "seaweed",
+          "query": "kelp seaweed underwater",
+          "transition": "cut"
+        }
+      ]
     },
     {
-      "on_screen": "Follow for more",
+      "on_screen": "Cutest sleepover",
       "visual": "sea otter close up",
-      "text": "The ocean's cutest sleepover. Follow for more weird facts.",
+      "subject": "otter",
+      "text": "It's the ocean's cutest sleepover.",
       "highlight": [
         "cutest sleepover"
       ],
+      "say": "[chuckles] It's the ocean's cutest sleepover.",
+      "look": "excited",
+      "beats": [
+        {
+          "shot": "text",
+          "text": "CUTEST SLEEPOVER",
+          "at_word": 0,
+          "bg": "prev",
+          "query": "sea otter close up",
+          "subject": "otter",
+          "transition": "cut"
+        }
+      ]
+    },
+    {
+      "on_screen": "Tonight...",
+      "visual": "otters sunset",
       "subject": "otter",
-      "say": "[laughs] The ocean's cutest sleepover. [chuckles] Follow for more weird facts."
+      "text": "So tonight, somewhere out on the cold Pacific...",
+      "highlight": [
+        "the cold pacific"
+      ],
+      "say": "[softly] So tonight, somewhere out on the cold Pacific...",
+      "look": "whisper"
     }
-  ],
-  "music_mood": "calm"
+  ]
 }

@@ -1,6 +1,7 @@
 {
   "title": "This Frog Turns See-Through When It Sleeps",
   "format": "short",
+  "style": "pro",
   "description": "Glass frogs hide almost all their red blood cells in their liver while sleeping, becoming nearly invisible.",
   "tags": [
     "glass frog",
@@ -17,59 +18,192 @@
     "facts"
   ],
   "thumbnail_text": "Invisible frog",
+  "music_mood": "mysterious",
   "scenes": [
     {
-      "on_screen": "A see-through frog",
+      "on_screen": "Almost invisible",
       "visual": "glass frog",
-      "text": "There is a frog that can make itself almost see-through. It is called the glass frog.",
-      "highlight": [
-        "see-through"
-      ],
       "subject": "frog",
-      "say": "[whispers] There is a frog that can make itself almost see-through. It is called the glass frog.",
-      "look": "whisper"
+      "text": "This frog can make itself almost invisible.",
+      "highlight": [
+        "almost invisible"
+      ],
+      "say": "[whispers] This frog can make itself almost invisible.",
+      "look": "whisper",
+      "beats": [
+        {
+          "shot": "clip",
+          "camera": "punch",
+          "sfx": [
+            "impact"
+          ],
+          "hook": {
+            "angle": 0.38,
+            "seconds": 0.7
+          },
+          "at_word": 0,
+          "query": "glass frog",
+          "subject": "frog"
+        }
+      ]
     },
     {
-      "on_screen": "Clear skin",
+      "on_screen": "Glass frog",
       "visual": "frog on leaf",
-      "text": "Glass frogs live in rainforests in Central and South America, and the skin on their bellies is clear.",
-      "highlight": [
-        "clear"
-      ],
       "subject": "frog",
-      "say": "Glass frogs live in rainforests in Central and South America, and the skin on their bellies is clear."
+      "text": "It's called the glass frog.",
+      "highlight": [
+        "glass frog"
+      ],
+      "say": "It's called the glass frog."
     },
     {
-      "on_screen": "Hiding its blood",
-      "visual": "glass frog",
-      "text": "Scientists found that when they sleep, these frogs pack most of their red blood cells into their liver.",
-      "highlight": [
-        "into their liver"
-      ],
+      "on_screen": "See-through belly",
+      "visual": "glass frog belly",
       "subject": "frog",
-      "say": "[curious] Scientists found that when they sleep, these frogs pack most of their red blood cells into their liver."
+      "text": "Its belly skin is clear. You can see its organs.",
+      "highlight": [
+        "see its organs"
+      ],
+      "say": "Its belly skin is clear. You can see its organs."
     },
     {
-      "on_screen": "Nearly invisible",
+      "on_screen": "Red gives it away",
       "visual": "frog rainforest",
-      "text": "With their red blood tucked away, they become two to three times more transparent, and much harder for predators to spot.",
+      "subject": "frog",
+      "text": "But red blood is hard to hide.",
+      "highlight": [
+        "hard to hide"
+      ],
+      "say": "[curious] But red blood is hard to hide.",
+      "beats": [
+        {
+          "shot": "card",
+          "at_word": 0,
+          "bg": "prev",
+          "card": {
+            "style": "polaroid",
+            "query": "red blood cells",
+            "subject": "blood",
+            "y": 0.24,
+            "width": 0.6,
+            "caption": "Blood"
+          },
+          "subject": "blood",
+          "query": "red blood cells",
+          "transition": "cut"
+        }
+      ]
+    },
+    {
+      "on_screen": "Hidden in the liver",
+      "visual": "glass frog sleeping",
+      "subject": "frog",
+      "text": "So when it sleeps, it packs almost ninety percent of its red blood cells into its liver.",
+      "highlight": [
+        "ninety percent"
+      ],
+      "say": "[amazed] So when it sleeps, it packs almost ninety percent of its red blood cells into its liver.",
+      "look": "excited",
+      "beats": [
+        {
+          "shot": "number",
+          "bg": "new",
+          "number": {
+            "from": 0,
+            "to": 89,
+            "suffix": "%",
+            "label": "BLOOD HIDDEN",
+            "keys": [
+              [
+                0,
+                0,
+                "start"
+              ],
+              [
+                8,
+                89,
+                "end"
+              ]
+            ],
+            "dial": true
+          },
+          "sfx": [
+            "tick"
+          ],
+          "query": "glass frog sleeping",
+          "at_word": 0,
+          "subject": "frog",
+          "transition": "cut"
+        }
+      ]
+    },
+    {
+      "on_screen": "2–3x clearer",
+      "visual": "glass frog leaf",
+      "subject": "frog",
+      "text": "That makes it two to three times more transparent.",
       "highlight": [
         "more transparent"
       ],
-      "subject": "frog",
-      "say": "[excited] With their red blood tucked away, they become two to three times more transparent, and much harder for predators to spot.",
-      "look": "excited"
+      "say": "That makes it two to three times more transparent.",
+      "beats": [
+        {
+          "shot": "text",
+          "text": "3X CLEARER",
+          "at_word": 0,
+          "bg": "prev",
+          "query": "glass frog leaf",
+          "subject": "frog",
+          "transition": "cut"
+        }
+      ]
     },
     {
-      "on_screen": "Follow for more",
-      "visual": "tree frog",
-      "text": "Its own built in invisibility trick. Follow for more weird facts.",
+      "on_screen": "Just a leaf",
+      "visual": "rainforest leaf",
+      "subject": "leaf",
+      "text": "To a hungry bird, it's just another leaf.",
       "highlight": [
-        "invisibility trick"
+        "just another leaf"
       ],
+      "say": "[softly] To a hungry bird, it's just another leaf.",
+      "look": "whisper",
+      "beats": [
+        {
+          "shot": "clip",
+          "at_word": 0,
+          "query": "rainforest leaf",
+          "subject": "leaf",
+          "camera": "push_in",
+          "transition": "cut"
+        },
+        {
+          "shot": "card",
+          "at_word": 2,
+          "bg": "prev",
+          "card": {
+            "style": "rounded",
+            "query": "small bird branch",
+            "subject": "bird",
+            "y": 0.24,
+            "width": 0.6
+          },
+          "subject": "bird",
+          "query": "small bird branch",
+          "transition": "cut"
+        }
+      ]
+    },
+    {
+      "on_screen": "Every night",
+      "visual": "tree frog night",
       "subject": "frog",
-      "say": "[laughs] Its own built in invisibility trick. Follow for more weird facts."
+      "text": "When it wakes, the blood flows back, ready for tomorrow night, when...",
+      "highlight": [
+        "tomorrow night"
+      ],
+      "say": "When it wakes, the blood flows back, ready for tomorrow night, when..."
     }
-  ],
-  "music_mood": "mysterious"
+  ]
 }

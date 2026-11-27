@@ -1,6 +1,7 @@
 {
   "title": "On Venus, One Spin Takes Longer Than a Year",
   "format": "short",
+  "style": "pro",
   "description": "Venus takes about 243 Earth days to spin once, but only about 225 Earth days to orbit the Sun. And it spins backwards.",
   "tags": [
     "venus",
@@ -17,38 +18,86 @@
     "space",
     "facts"
   ],
-  "thumbnail_text": "Birthday before bedtime",
+  "thumbnail_text": "1 spin > 1 year",
+  "music_mood": "mysterious",
   "scenes": [
     {
-      "on_screen": "Birthday before bedtime",
+      "on_screen": "1 spin > 1 year",
       "visual": "planet venus",
       "subject": "venus",
-      "text": "On Venus, you'd celebrate a birthday before a single day is over.",
+      "text": "On Venus, one spin takes longer than a whole year.",
       "highlight": [
-        "before a single day"
+        "longer than a whole year"
       ],
-      "say": "[laughs] On Venus, you'd celebrate a birthday before a single day is over.",
-      "look": "excited"
+      "say": "[curious] On Venus, one spin takes longer than a whole year.",
+      "beats": [
+        {
+          "shot": "clip",
+          "camera": "punch",
+          "sfx": [
+            "impact"
+          ],
+          "hook": {
+            "angle": -0.38,
+            "seconds": 0.7
+          },
+          "at_word": 0,
+          "query": "planet venus",
+          "subject": "venus"
+        }
+      ]
     },
     {
-      "on_screen": "Slowest spin",
+      "on_screen": "So slow",
       "visual": "venus planet space",
       "subject": "venus",
-      "text": "Our closest neighbor spins so slowly",
+      "text": "Our closest neighbor turns so slowly",
       "highlight": [
         "so slowly"
       ],
-      "say": "Our closest neighbor spins so slowly"
+      "say": "Our closest neighbor turns so slowly"
     },
     {
       "on_screen": "1 spin = 243 days",
       "visual": "planet rotating space",
       "subject": "planet",
-      "text": "that one full turn takes two hundred and forty three Earth days.",
+      "text": "that one full spin takes two hundred and forty three Earth days.",
       "highlight": [
-        "forty three Earth days"
+        "forty three earth days"
       ],
-      "say": "that one full turn takes two hundred and forty three Earth days."
+      "say": "that one full spin takes two hundred and forty three Earth days.",
+      "beats": [
+        {
+          "shot": "number",
+          "bg": "new",
+          "number": {
+            "from": 0,
+            "to": 243,
+            "suffix": " DAYS",
+            "label": "ONE SPIN",
+            "keys": [
+              [
+                0,
+                0,
+                "start"
+              ],
+              [
+                11,
+                243,
+                "end"
+              ]
+            ],
+            "dial": true
+          },
+          "sfx": [
+            "tick"
+          ],
+          "query": "planet rotating space",
+          "at_word": 0,
+          "subject": "planet",
+          "transition": "cut"
+        }
+      ]
     },
     {
       "on_screen": "1 year = 225 days",
@@ -58,10 +107,41 @@
       "highlight": [
         "twenty five"
       ],
-      "say": "[curious] But one trip around the Sun takes only about two hundred and twenty five."
+      "say": "[amazed] But one trip around the Sun takes only about two hundred and twenty five.",
+      "beats": [
+        {
+          "shot": "number",
+          "bg": "new",
+          "number": {
+            "from": 0,
+            "to": 225,
+            "suffix": " DAYS",
+            "label": "ONE YEAR",
+            "keys": [
+              [
+                0,
+                0,
+                "start"
+              ],
+              [
+                13,
+                225,
+                "end"
+              ]
+            ]
+          },
+          "sfx": [
+            "tick"
+          ],
+          "query": "solar system orbit sun",
+          "at_word": 0,
+          "subject": "sun",
+          "transition": "cut"
+        }
+      ]
     },
     {
-      "on_screen": "Spin longer than year",
+      "on_screen": "Spin outlasts year",
       "visual": "venus surface",
       "subject": "venus",
       "text": "So one spin outlasts a whole year.",
@@ -69,17 +149,41 @@
         "outlasts a whole year"
       ],
       "say": "[gasps] So one spin outlasts a whole year.",
-      "look": "excited"
+      "look": "excited",
+      "beats": [
+        {
+          "shot": "compare",
+          "bg": "prev",
+          "sfx": [
+            "tick"
+          ],
+          "compare": {
+            "left": {
+              "label": "1 SPIN",
+              "value": 243
+            },
+            "right": {
+              "label": "1 YEAR",
+              "value": 225
+            },
+            "unit": "days"
+          },
+          "at_word": 0,
+          "query": "venus surface",
+          "subject": "venus",
+          "transition": "cut"
+        }
+      ]
     },
     {
       "on_screen": "It gets weirder",
       "visual": "yellow clouds planet",
       "subject": "planet",
-      "text": "It gets weirder.",
+      "text": "And it gets weirder.",
       "highlight": [
         "weirder"
       ],
-      "say": "[whispers] It gets weirder.",
+      "say": "[whispers] And it gets weirder.",
       "look": "whisper"
     },
     {
@@ -90,7 +194,7 @@
       "highlight": [
         "spins backwards"
       ],
-      "say": "Venus spins BACKWARDS,",
+      "say": "[excited] Venus spins BACKWARDS,",
       "look": "excited"
     },
     {
@@ -101,7 +205,33 @@
       "highlight": [
         "rises in the west"
       ],
-      "say": "so the Sun rises in the west and sets in the east."
+      "say": "so the Sun rises in the west and sets in the east.",
+      "beats": [
+        {
+          "shot": "clip",
+          "at_word": 0,
+          "query": "sunrise sky",
+          "subject": "sunrise",
+          "camera": "push_in",
+          "transition": "cut"
+        },
+        {
+          "shot": "card",
+          "at_word": 6,
+          "bg": "prev",
+          "card": {
+            "style": "polaroid",
+            "query": "compass",
+            "subject": "compass",
+            "y": 0.24,
+            "width": 0.6,
+            "caption": "West"
+          },
+          "subject": "compass",
+          "query": "compass",
+          "transition": "cut"
+        }
+      ]
     },
     {
       "on_screen": "All upside down",
@@ -111,18 +241,67 @@
       "highlight": [
         "all upside down"
       ],
-      "say": "[laughs] Clocks, calendars, even sunrise, all upside down."
+      "say": "[laughs] Clocks, calendars, even sunrise, all upside down.",
+      "beats": [
+        {
+          "shot": "clip",
+          "at_word": 0,
+          "query": "old clock",
+          "subject": "clock",
+          "camera": "pan_left",
+          "transition": "cut"
+        },
+        {
+          "shot": "card",
+          "at_word": 1,
+          "bg": "prev",
+          "card": {
+            "style": "rounded",
+            "query": "calendar",
+            "subject": "calendar",
+            "y": 0.24,
+            "width": 0.6
+          },
+          "subject": "calendar",
+          "query": "calendar",
+          "transition": "cut"
+        }
+      ]
     },
     {
-      "on_screen": "Which is why",
+      "on_screen": "Now you know",
       "visual": "planet venus",
       "subject": "venus",
-      "text": "Which is exactly why...",
+      "text": "Now you know why astronomers say...",
       "highlight": [
-        "exactly why"
+        "now you know"
       ],
-      "say": "Which is exactly why..."
+      "say": "[softly] Now you know why astronomers say...",
+      "beats": [
+        {
+          "shot": "clip",
+          "at_word": 0,
+          "query": "planet venus",
+          "subject": "venus",
+          "camera": "pull_out",
+          "transition": "cut"
+        },
+        {
+          "shot": "card",
+          "at_word": 4,
+          "bg": "prev",
+          "card": {
+            "style": "print",
+            "query": "telescope night",
+            "subject": "telescope",
+            "y": 0.24,
+            "width": 0.6
+          },
+          "subject": "telescope",
+          "query": "telescope night",
+          "transition": "cut"
+        }
+      ]
     }
-  ],
-  "music_mood": "mysterious"
+  ]
 }

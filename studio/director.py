@@ -12,7 +12,7 @@ import copy
 import hashlib
 import re
 
-SHOTS = {"clip", "photo", "number", "compare", "text"}
+SHOTS = {"clip", "photo", "number", "compare", "text", "card"}
 CAMERAS = ["push_in", "pan_left", "pull_out", "pan_right", "tilt_up", "drift", "tilt_down"]
 SCENE_TRANSITIONS = ["whip_left", "slide_up", "zoom", "whip_right", "cut", "slide_up", "whip_left", "zoom"]
 TRANSITION_SFX = {"whip_left": "swish", "whip_right": "swish", "slide_up": "whoosh",
@@ -116,11 +116,21 @@ def plan(data: dict) -> dict:
                     "unit": n["suffix"].strip()})
                 graphics += 1
             elif graphics < 2:
+                n = dict(n)
+                land = _highlight_end(tokens, sc)
+                if land is not None:
+                    # the count lands on the spoken number (its last highlight word), not on a timer
+                    n["keys"] = [[0, n.get("from", 0), "start"], [land, n["to"], "end"]]
                 first.update(shot="number", number=n)
                 graphics += 1
         # camera and transition
         if i == 0:
             first.update(camera="punch", sfx=["impact"])
+            if data.get("hook", True) is not False:
+                # hook twist: the first picture starts turned and swings straight on the impact;
+                # the direction alternates between Shorts so it never feels the same
+                angle = -0.38 if _seed(data.get("title"), "hook") % 2 else 0.38
+                first["hook"] = {"angle": angle, "seconds": 0.7}
         else:
             first["camera"] = CAMERAS[cam_i % len(CAMERAS)]
             cam_i += 1
@@ -147,6 +157,21 @@ def plan(data: dict) -> dict:
             cam_i += 1
         sc["beats"] = beats
     return data
+
+
+def _highlight_end(tokens: list[str], sc: dict) -> int | None:
+    """Word index (in tokens) of the last word of the scene's first highlight phrase, or None."""
+    hl = sc.get("highlight") or []
+    hl = [hl] if isinstance(hl, str) else hl
+    norm = [t.lower().strip(".,!?;:\"'…") for t in tokens]
+    for ph in hl:
+        words = [w.strip(".,!?;:\"'…") for w in str(ph).lower().split()]
+        if not words:
+            continue
+        for s in range(len(norm) - len(words) + 1):
+            if norm[s:s + len(words)] == words:
+                return s + len(words) - 1
+    return None
 
 
 def _clean(beats: list[dict], tokens: list[str], sc: dict) -> list[dict]:

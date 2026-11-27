@@ -1,6 +1,7 @@
 {
   "title": "Some Bamboo Grows Almost a Meter a Day",
   "format": "short",
+  "style": "pro",
   "description": "Some kinds of bamboo can grow close to a meter in a single day, making them among the fastest growing plants on Earth.",
   "tags": [
     "bamboo",
@@ -16,60 +17,198 @@
     "facts"
   ],
   "thumbnail_text": "A meter a day",
+  "music_mood": "upbeat",
   "scenes": [
     {
-      "on_screen": "Fastest plant",
+      "on_screen": "A meter a day",
       "visual": "bamboo forest",
-      "text": "Some kinds of bamboo can grow almost a meter in a single day.",
+      "subject": "bamboo",
+      "text": "Some bamboo can grow almost a meter in a single day.",
       "highlight": [
         "almost a meter"
       ],
-      "subject": "bamboo",
-      "say": "[excited] Some kinds of bamboo can grow almost a METER in a single day.",
-      "look": "excited"
+      "say": "[excited] Some bamboo can grow almost a meter in a single day.",
+      "look": "excited",
+      "beats": [
+        {
+          "shot": "clip",
+          "camera": "punch",
+          "sfx": [
+            "impact"
+          ],
+          "hook": {
+            "angle": 0.38,
+            "seconds": 0.7
+          },
+          "at_word": 0,
+          "query": "bamboo forest",
+          "subject": "bamboo"
+        }
+      ]
     },
     {
-      "on_screen": "Watch it grow",
+      "on_screen": "Watch it move",
       "visual": "green bamboo",
-      "text": "At that speed, you could almost see it moving if you watched closely for an hour.",
-      "highlight": [
-        "for an hour"
-      ],
       "subject": "bamboo",
-      "say": "[whispers] At that speed, you could almost see it moving if you watched closely for an hour.",
-      "look": "whisper"
+      "text": "That's so fast you could almost watch it move.",
+      "highlight": [
+        "watch it move"
+      ],
+      "say": "That's so fast you could almost watch it move.",
+      "beats": [
+        {
+          "shot": "number",
+          "bg": "new",
+          "number": {
+            "from": 0,
+            "to": 91,
+            "suffix": " CM",
+            "label": "IN ONE DAY",
+            "keys": [
+              [
+                0,
+                0,
+                "start"
+              ],
+              [
+                8,
+                91,
+                "end"
+              ]
+            ]
+          },
+          "sfx": [
+            "tick"
+          ],
+          "query": "green bamboo",
+          "at_word": 0,
+          "subject": "bamboo",
+          "transition": "cut"
+        }
+      ]
     },
     {
-      "on_screen": "A grass",
+      "on_screen": "4 cm an hour",
+      "visual": "bamboo shoot",
+      "subject": "bamboo",
+      "text": "That's nearly four centimeters every single hour.",
+      "highlight": [
+        "four centimeters"
+      ],
+      "say": "That's nearly four centimeters every single hour."
+    },
+    {
+      "on_screen": "Not a tree",
       "visual": "bamboo stalks",
-      "text": "Bamboo is not a tree. It is actually a giant kind of grass.",
-      "highlight": [
-        "giant kind of grass"
-      ],
       "subject": "bamboo",
-      "say": "[gasps] Bamboo is not a tree. It is actually a giant kind of grass.",
-      "look": "excited"
+      "text": "And here's the twist. Bamboo isn't a tree.",
+      "highlight": [
+        "isn't a tree"
+      ],
+      "say": "[curious] And here's the twist. Bamboo isn't a tree.",
+      "beats": [
+        {
+          "shot": "clip",
+          "at_word": 0,
+          "query": "bamboo stalks",
+          "subject": "bamboo",
+          "camera": "push_in",
+          "transition": "cut"
+        },
+        {
+          "shot": "card",
+          "at_word": 5,
+          "bg": "prev",
+          "card": {
+            "style": "polaroid",
+            "query": "oak tree",
+            "subject": "tree",
+            "y": 0.24,
+            "width": 0.6,
+            "caption": "Not this"
+          },
+          "subject": "tree",
+          "query": "oak tree",
+          "transition": "cut"
+        }
+      ]
     },
     {
-      "on_screen": "Stretching",
+      "on_screen": "It's grass",
+      "visual": "grass close up",
+      "subject": "grass",
+      "text": "It's a giant grass.",
+      "highlight": [
+        "giant grass"
+      ],
+      "say": "It's a giant grass.",
+      "look": "excited",
+      "beats": [
+        {
+          "shot": "text",
+          "text": "GIANT GRASS",
+          "at_word": 0,
+          "bg": "prev",
+          "query": "grass close up",
+          "subject": "grass",
+          "transition": "cut"
+        }
+      ]
+    },
+    {
+      "on_screen": "No new sections",
+      "visual": "bamboo shoot ground",
+      "subject": "bamboo",
+      "text": "A new shoot doesn't add sections as it grows.",
+      "highlight": [
+        "add sections"
+      ],
+      "say": "A new shoot doesn't add sections as it grows."
+    },
+    {
+      "on_screen": "It stretches",
       "visual": "bamboo sky",
-      "text": "A new shoot does not add new sections as it grows. The sections it already has just stretch out, very fast.",
+      "subject": "bamboo",
+      "text": "The sections it already has just stretch out, really fast.",
       "highlight": [
         "stretch out"
       ],
-      "subject": "bamboo",
-      "say": "A new shoot does not add new sections as it grows. The sections it already has just stretch out, very fast."
+      "say": "The sections it already has just stretch out, really fast."
     },
     {
-      "on_screen": "Grass power",
+      "on_screen": "Lawn's cousin",
       "visual": "bamboo path",
-      "text": "The world's fastest growing plant is a grass. Follow for more weird facts.",
-      "highlight": [
-        "fastest growing plant"
-      ],
       "subject": "bamboo",
-      "say": "[laughs] The world's fastest growing plant is a grass. Follow for more weird facts."
+      "text": "The fastest growing plant on Earth is a cousin of your lawn, and...",
+      "highlight": [
+        "a cousin of your lawn"
+      ],
+      "say": "[chuckles] The fastest growing plant on Earth is a cousin of your lawn, and...",
+      "beats": [
+        {
+          "shot": "clip",
+          "at_word": 0,
+          "query": "bamboo path",
+          "subject": "bamboo",
+          "camera": "pan_left",
+          "transition": "cut"
+        },
+        {
+          "shot": "card",
+          "at_word": 8,
+          "bg": "prev",
+          "card": {
+            "style": "rounded",
+            "query": "green lawn grass",
+            "subject": "grass",
+            "y": 0.24,
+            "width": 0.6
+          },
+          "subject": "grass",
+          "query": "green lawn grass",
+          "transition": "cut"
+        }
+      ]
     }
-  ],
-  "music_mood": "upbeat"
+  ]
 }

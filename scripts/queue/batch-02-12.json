@@ -1,6 +1,7 @@
 {
   "title": "Scotland's National Animal Is the Unicorn",
   "format": "short",
+  "style": "pro",
   "description": "Scotland chose a mythical creature as its national animal, and it has been a symbol there for centuries.",
   "tags": [
     "scotland",
@@ -17,59 +18,184 @@
     "facts"
   ],
   "thumbnail_text": "A unicorn nation",
+  "music_mood": "epic",
   "scenes": [
     {
-      "on_screen": "A unicorn nation",
+      "on_screen": "A mythical choice",
       "visual": "unicorn statue",
-      "text": "The national animal of Scotland is the unicorn.",
+      "subject": "unicorn",
+      "text": "One real country picked an animal that doesn't exist.",
+      "highlight": [
+        "doesn't exist"
+      ],
+      "say": "[mischievously] One real country picked an animal that doesn't exist.",
+      "beats": [
+        {
+          "shot": "clip",
+          "camera": "punch",
+          "sfx": [
+            "impact"
+          ],
+          "hook": {
+            "angle": 0.38,
+            "seconds": 0.7
+          },
+          "at_word": 0,
+          "query": "unicorn statue",
+          "subject": "unicorn"
+        }
+      ]
+    },
+    {
+      "on_screen": "Scotland: unicorn",
+      "visual": "scotland landscape",
+      "subject": "scotland",
+      "text": "Scotland's national animal is the unicorn.",
       "highlight": [
         "the unicorn"
       ],
-      "subject": "unicorn",
-      "say": "[laughs] The national animal of Scotland is... the UNICORN.",
-      "look": "excited"
+      "say": "[excited] Scotland's national animal is the unicorn.",
+      "look": "excited",
+      "beats": [
+        {
+          "shot": "clip",
+          "at_word": 0,
+          "query": "scotland landscape",
+          "subject": "scotland",
+          "camera": "push_in",
+          "transition": "cut"
+        },
+        {
+          "shot": "text",
+          "text": "THE UNICORN",
+          "at_word": 4,
+          "bg": "prev",
+          "query": "scotland landscape",
+          "subject": "scotland",
+          "transition": "cut"
+        }
+      ]
     },
     {
       "on_screen": "Centuries old",
       "visual": "castle scotland",
-      "text": "It has been a Scottish symbol for hundreds of years, and it appeared on the royal coat of arms.",
+      "subject": "castle",
+      "text": "It's been a Scottish symbol for hundreds of years,",
       "highlight": [
         "hundreds of years"
       ],
-      "subject": "castle",
-      "say": "It has been a Scottish symbol for hundreds of years, and it appeared on the royal coat of arms."
+      "say": "It's been a Scottish symbol for hundreds of years,"
     },
     {
-      "on_screen": "Pure and powerful",
-      "visual": "unicorn",
-      "text": "In old stories, the unicorn stood for purity, strength and pride, and it was said that only a king could tame one.",
-      "highlight": [
-        "only a king"
-      ],
+      "on_screen": "Royal arms",
+      "visual": "royal coat of arms",
       "subject": "unicorn",
-      "say": "[whispers] In old stories, the unicorn stood for purity, strength and pride, and it was said that only a king could tame one.",
+      "text": "even on the royal coat of arms.",
+      "highlight": [
+        "royal coat of arms"
+      ],
+      "say": "even on the royal coat of arms.",
+      "beats": [
+        {
+          "shot": "card",
+          "at_word": 0,
+          "bg": "prev",
+          "card": {
+            "style": "rounded",
+            "query": "coat of arms",
+            "subject": "unicorn",
+            "y": 0.24,
+            "width": 0.6
+          },
+          "subject": "unicorn",
+          "query": "coat of arms",
+          "transition": "cut"
+        }
+      ]
+    },
+    {
+      "on_screen": "Pure & proud",
+      "visual": "white horse running",
+      "subject": "unicorn",
+      "text": "In old legends, the unicorn stood for purity, strength and pride.",
+      "highlight": [
+        "strength and pride"
+      ],
+      "say": "In old legends, the unicorn stood for purity, strength and pride.",
+      "beats": [
+        {
+          "shot": "card",
+          "at_word": 0,
+          "bg": "prev",
+          "card": {
+            "style": "polaroid",
+            "query": "old book",
+            "subject": "book",
+            "y": 0.24,
+            "width": 0.6,
+            "caption": "Legend"
+          },
+          "subject": "book",
+          "query": "old book",
+          "transition": "cut"
+        }
+      ]
+    },
+    {
+      "on_screen": "Untamable",
+      "visual": "unicorn",
+      "subject": "unicorn",
+      "text": "And it was said to be almost impossible to tame.",
+      "highlight": [
+        "impossible to tame"
+      ],
+      "say": "[whispers] And it was said to be almost impossible to tame.",
       "look": "whisper"
     },
     {
-      "on_screen": "Look for the chains",
+      "on_screen": "In chains",
       "visual": "unicorn carving",
-      "text": "Many old carvings show the unicorn in chains, a sign of how wild and powerful it was believed to be.",
-      "highlight": [
-        "in chains"
-      ],
       "subject": "unicorn",
-      "say": "[serious] Many old carvings show the unicorn in chains, a sign of how wild and powerful it was believed to be.",
-      "look": "angry"
+      "text": "That's why old carvings often show it wearing chains.",
+      "highlight": [
+        "wearing chains"
+      ],
+      "say": "That's why old carvings often show it wearing chains.",
+      "beats": [
+        {
+          "shot": "clip",
+          "at_word": 0,
+          "query": "unicorn carving",
+          "subject": "unicorn",
+          "camera": "pan_left",
+          "transition": "cut"
+        },
+        {
+          "shot": "card",
+          "at_word": 7,
+          "bg": "prev",
+          "card": {
+            "style": "torn",
+            "query": "old iron chains",
+            "subject": "chains",
+            "y": 0.24,
+            "width": 0.6
+          },
+          "subject": "chains",
+          "query": "old iron chains",
+          "transition": "cut"
+        }
+      ]
     },
     {
-      "on_screen": "Follow for more",
-      "visual": "scotland landscape",
-      "text": "A real country, with an imaginary animal. Follow for more weird facts.",
+      "on_screen": "Visit Scotland",
+      "visual": "scotland castle",
+      "subject": "castle",
+      "text": "So if you ever visit Scotland, keep your eyes open, because...",
       "highlight": [
-        "imaginary animal"
+        "visit scotland"
       ],
-      "say": "[chuckles] A real country, with an imaginary animal. Follow for more weird facts."
+      "say": "[chuckles] So if you ever visit Scotland, keep your eyes open, because..."
     }
-  ],
-  "music_mood": "epic"
+  ]
 }

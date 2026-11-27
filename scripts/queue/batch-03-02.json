@@ -1,6 +1,7 @@
 {
   "title": "A Spoon of Neutron Star Weighs Billions of Tons",
   "format": "short",
+  "style": "pro",
   "description": "A single teaspoon of neutron star material would weigh billions of tons on Earth.",
   "tags": [
     "neutron star",
@@ -16,57 +17,225 @@
     "facts"
   ],
   "thumbnail_text": "One spoon, billions of tons",
+  "music_mood": "mysterious",
   "scenes": [
     {
       "on_screen": "One teaspoon",
       "visual": "neutron star space",
-      "text": "A single teaspoon of a neutron star would weigh billions of tons here on Earth.",
+      "subject": "star",
+      "text": "One teaspoon of this star would weigh billions of tons.",
       "highlight": [
         "billions of tons"
       ],
+      "say": "[curious] One teaspoon of this star would weigh billions of tons.",
+      "beats": [
+        {
+          "shot": "clip",
+          "camera": "punch",
+          "sfx": [
+            "impact"
+          ],
+          "hook": {
+            "angle": 0.38,
+            "seconds": 0.7
+          },
+          "at_word": 0,
+          "query": "neutron star space",
+          "subject": "star"
+        },
+        {
+          "shot": "card",
+          "at_word": 5,
+          "bg": "prev",
+          "card": {
+            "style": "polaroid",
+            "query": "teaspoon",
+            "subject": "spoon",
+            "y": 0.24,
+            "width": 0.6,
+            "caption": "One spoon"
+          },
+          "subject": "spoon",
+          "query": "teaspoon",
+          "transition": "cut"
+        }
+      ]
+    },
+    {
+      "on_screen": "Neutron star",
+      "visual": "neutron star",
       "subject": "star",
-      "say": "[whispers] A single teaspoon of a neutron star... [gasps] would weigh BILLIONS of tons here on Earth.",
+      "text": "It's a neutron star.",
+      "highlight": [
+        "neutron star"
+      ],
+      "say": "It's a neutron star.",
+      "beats": [
+        {
+          "shot": "text",
+          "text": "NEUTRON STAR",
+          "at_word": 0,
+          "bg": "prev",
+          "query": "neutron star",
+          "subject": "star",
+          "transition": "cut"
+        }
+      ]
+    },
+    {
+      "on_screen": "Born from a blast",
+      "visual": "supernova space",
+      "subject": "supernova",
+      "text": "It's what's left after a giant star explodes.",
+      "highlight": [
+        "explodes"
+      ],
+      "say": "[dramatically] It's what's left after a giant star explodes.",
       "look": "excited"
     },
     {
-      "on_screen": "Dead star",
-      "visual": "supernova space",
-      "text": "A neutron star is what can be left after a giant star explodes. Its core collapses into a tiny ball.",
+      "on_screen": "Collapse",
+      "visual": "star collapse",
+      "subject": "star",
+      "text": "Its core collapses into a tiny ball,",
       "highlight": [
-        "giant star explodes"
+        "a tiny ball"
       ],
-      "subject": "supernova",
-      "say": "A neutron star is what can be left after a giant star explodes. Its core collapses into a tiny ball."
+      "say": "Its core collapses into a tiny ball,"
     },
     {
-      "on_screen": "City sized",
+      "on_screen": "More than the Sun",
+      "visual": "sun in space",
+      "subject": "sun",
+      "text": "packing more mass than our Sun",
+      "highlight": [
+        "more mass"
+      ],
+      "say": "packing more mass than our Sun",
+      "beats": [
+        {
+          "shot": "clip",
+          "at_word": 0,
+          "query": "sun in space",
+          "subject": "sun",
+          "camera": "push_in",
+          "transition": "cut"
+        },
+        {
+          "shot": "card",
+          "at_word": 4,
+          "bg": "prev",
+          "card": {
+            "style": "rounded",
+            "query": "sun in space",
+            "subject": "sun",
+            "y": 0.24,
+            "width": 0.6
+          },
+          "subject": "sun",
+          "query": "sun in space",
+          "transition": "cut"
+        }
+      ]
+    },
+    {
+      "on_screen": "City-sized",
       "visual": "city aerial view",
-      "text": "It packs more mass than our Sun into a sphere about the size of a city.",
+      "subject": "city",
+      "text": "into a sphere about the size of a city.",
       "highlight": [
         "size of a city"
       ],
-      "subject": "city",
-      "say": "It packs more mass than our Sun into a sphere about the size of a city."
+      "say": "into a sphere about the size of a city."
     },
     {
-      "on_screen": "Crushed atoms",
-      "visual": "galaxy deep space",
-      "text": "Gravity there is so strong that atoms are crushed together, until they are mostly packed neutrons.",
+      "on_screen": "Hundreds of spins a second",
+      "visual": "pulsar space",
+      "subject": "star",
+      "text": "And some of them spin hundreds of times every second.",
       "highlight": [
-        "atoms are crushed"
+        "hundreds of times"
       ],
-      "say": "[serious] Gravity there is so strong that atoms are crushed together, until they are mostly packed neutrons.",
-      "look": "angry"
+      "say": "[amazed] And some of them spin hundreds of times every second.",
+      "look": "excited",
+      "beats": [
+        {
+          "shot": "number",
+          "bg": "new",
+          "number": {
+            "from": 0,
+            "to": 700,
+            "suffix": "",
+            "label": "SPINS A SECOND",
+            "keys": [
+              [
+                0,
+                0,
+                "start"
+              ],
+              [
+                9,
+                700,
+                "end"
+              ]
+            ],
+            "dial": true
+          },
+          "sfx": [
+            "tick"
+          ],
+          "query": "pulsar space",
+          "at_word": 0,
+          "subject": "star",
+          "transition": "cut"
+        }
+      ]
     },
     {
-      "on_screen": "Heavy stuff",
+      "on_screen": "Atoms crushed",
+      "visual": "galaxy deep space",
+      "subject": "space",
+      "text": "Gravity there crushes atoms until they're mostly packed neutrons.",
+      "highlight": [
+        "crushes atoms"
+      ],
+      "say": "[whispers] Gravity there crushes atoms until they're mostly packed neutrons.",
+      "look": "whisper"
+    },
+    {
+      "on_screen": "Heaviest spoonful",
       "visual": "milky way night",
-      "text": "The heaviest spoonful in the universe. Follow for more weird facts.",
+      "subject": "galaxy",
+      "text": "It's the heaviest spoonful in the universe, so be careful, because...",
       "highlight": [
         "heaviest spoonful"
       ],
-      "say": "[chuckles] The heaviest spoonful in the universe. Follow for more weird facts."
+      "say": "[chuckles] It's the heaviest spoonful in the universe, so be careful, because...",
+      "beats": [
+        {
+          "shot": "clip",
+          "at_word": 0,
+          "query": "milky way night",
+          "subject": "galaxy",
+          "camera": "pan_left",
+          "transition": "cut"
+        },
+        {
+          "shot": "card",
+          "at_word": 3,
+          "bg": "prev",
+          "card": {
+            "style": "print",
+            "query": "silver spoon close up",
+            "subject": "spoon",
+            "y": 0.24,
+            "width": 0.6
+          },
+          "subject": "spoon",
+          "query": "silver spoon close up",
+          "transition": "cut"
+        }
+      ]
     }
-  ],
-  "music_mood": "mysterious"
+  ]
 }

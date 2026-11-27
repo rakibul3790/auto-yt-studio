@@ -1,6 +1,7 @@
 {
   "title": "The Largest Desert on Earth Is Covered in Ice",
   "format": "short",
+  "style": "pro",
   "description": "A desert is defined by how little rain or snow it gets, not by heat. That makes Antarctica the biggest one.",
   "tags": [
     "antarctica",
@@ -17,58 +18,180 @@
     "facts"
   ],
   "thumbnail_text": "An icy desert",
+  "music_mood": "mysterious",
   "scenes": [
     {
-      "on_screen": "The biggest desert",
+      "on_screen": "Biggest desert",
       "visual": "antarctica ice",
-      "text": "The largest desert in the world is not hot or sandy. It is Antarctica.",
-      "highlight": [
-        "Antarctica"
-      ],
       "subject": "antarctica",
-      "say": "The largest desert in the world is not hot or sandy. [gasps] It is ANTARCTICA.",
+      "text": "The biggest desert on Earth has almost no sand.",
+      "highlight": [
+        "almost no sand"
+      ],
+      "say": "[curious] The biggest desert on Earth has almost no sand.",
+      "beats": [
+        {
+          "shot": "clip",
+          "camera": "punch",
+          "sfx": [
+            "impact"
+          ],
+          "hook": {
+            "angle": -0.38,
+            "seconds": 0.7
+          },
+          "at_word": 0,
+          "query": "antarctica ice",
+          "subject": "antarctica"
+        }
+      ]
+    },
+    {
+      "on_screen": "Antarctica",
+      "visual": "antarctica snow",
+      "subject": "antarctica",
+      "text": "It's covered in ice. It's Antarctica.",
+      "highlight": [
+        "it's antarctica"
+      ],
+      "say": "It's covered in ice. It's Antarctica.",
       "look": "excited"
     },
     {
-      "on_screen": "What makes a desert",
+      "on_screen": "Not about heat",
       "visual": "sand desert dunes",
-      "text": "A desert is any place that gets very little rain or snow each year. Heat has nothing to do with it.",
+      "subject": "desert",
+      "text": "A desert isn't about heat at all.",
+      "highlight": [
+        "isn't about heat"
+      ],
+      "say": "A desert isn't about heat at all.",
+      "beats": [
+        {
+          "shot": "card",
+          "at_word": 0,
+          "bg": "prev",
+          "card": {
+            "style": "polaroid",
+            "query": "sand desert dunes",
+            "subject": "desert",
+            "y": 0.24,
+            "width": 0.6,
+            "caption": "Desert?"
+          },
+          "subject": "desert",
+          "query": "sand desert dunes",
+          "transition": "cut"
+        }
+      ]
+    },
+    {
+      "on_screen": "Very little rain",
+      "visual": "dry cracked ground",
+      "subject": "desert",
+      "text": "It's any place that gets very little rain or snow.",
       "highlight": [
         "very little rain"
       ],
-      "say": "A desert is any place that gets very little rain or snow each year. Heat has nothing to do with it."
+      "say": "It's any place that gets very little rain or snow."
     },
     {
-      "on_screen": "Almost no snowfall",
-      "visual": "antarctica snow",
-      "text": "The middle of Antarctica gets less yearly snowfall than many famous hot deserts get in rain.",
-      "highlight": [
-        "less yearly snowfall"
-      ],
+      "on_screen": "About 2 inches",
+      "visual": "antarctica plateau",
       "subject": "antarctica",
-      "say": "[whispers] The middle of Antarctica gets less yearly snowfall than many famous hot deserts get in rain.",
+      "text": "Deep in the middle of Antarctica, only about two inches of water falls in a whole year.",
+      "highlight": [
+        "two inches"
+      ],
+      "say": "Deep in the middle of Antarctica, only about two inches of water falls in a whole year.",
+      "beats": [
+        {
+          "shot": "text",
+          "text": "2 INCHES A YEAR",
+          "at_word": 0,
+          "bg": "new",
+          "query": "antarctica plateau",
+          "subject": "antarctica",
+          "transition": "cut"
+        }
+      ]
+    },
+    {
+      "on_screen": "So why the ice?",
+      "visual": "antarctica glacier",
+      "subject": "glacier",
+      "text": "So why all the ice?",
+      "highlight": [
+        "why all the ice"
+      ],
+      "say": "So why all the ice?"
+    },
+    {
+      "on_screen": "It never melts",
+      "visual": "ice cave blue",
+      "subject": "ice",
+      "text": "Because it almost never melts.",
+      "highlight": [
+        "never melts"
+      ],
+      "say": "[whispers] Because it almost never melts.",
       "look": "whisper"
     },
     {
-      "on_screen": "Then why all the ice?",
-      "visual": "antarctica glacier",
-      "text": "The ice is there because it almost never melts. It has built up slowly over hundreds of thousands of years.",
+      "on_screen": "Built over ages",
+      "visual": "ice layers",
+      "subject": "ice",
+      "text": "It piled up, snowflake by snowflake, over hundreds of thousands of years.",
       "highlight": [
-        "almost never melts"
+        "snowflake by snowflake"
       ],
-      "subject": "glacier",
-      "say": "The ice is there because it almost never melts. It has built up slowly over hundreds of thousands of years."
+      "say": "It piled up, snowflake by snowflake, over hundreds of thousands of years.",
+      "beats": [
+        {
+          "shot": "clip",
+          "at_word": 0,
+          "query": "ice layers",
+          "subject": "ice",
+          "camera": "push_in",
+          "transition": "cut"
+        },
+        {
+          "shot": "card",
+          "at_word": 3,
+          "bg": "prev",
+          "card": {
+            "style": "rounded",
+            "query": "snowflake close up",
+            "subject": "snowflake",
+            "y": 0.24,
+            "width": 0.6
+          },
+          "subject": "snowflake",
+          "query": "snowflake close up",
+          "transition": "cut"
+        }
+      ]
     },
     {
-      "on_screen": "Follow for more",
+      "on_screen": "Coldest & driest",
       "visual": "penguins ice",
-      "text": "The driest continent is also the coldest. Follow for more weird facts.",
-      "highlight": [
-        "the coldest"
-      ],
       "subject": "penguin",
-      "say": "[chuckles] The driest continent is also the coldest. Follow for more weird facts."
+      "text": "The coldest continent is also the driest.",
+      "highlight": [
+        "also the driest"
+      ],
+      "say": "[amazed] The coldest continent is also the driest.",
+      "look": "excited"
+    },
+    {
+      "on_screen": "Where to find...",
+      "visual": "antarctica aerial",
+      "subject": "antarctica",
+      "text": "So if someone asks where to find...",
+      "highlight": [
+        "where to find"
+      ],
+      "say": "So if someone asks where to find..."
     }
-  ],
-  "music_mood": "mysterious"
+  ]
 }

@@ -1,6 +1,7 @@
 {
   "title": "Earth Has More Trees Than the Milky Way Has Stars",
   "format": "short",
+  "style": "pro",
   "description": "Scientists estimate there are about three trillion trees on Earth, far more than the stars in our galaxy.",
   "tags": [
     "trees",
@@ -17,58 +18,246 @@
     "facts"
   ],
   "thumbnail_text": "More trees than stars",
+  "music_mood": "calm",
   "scenes": [
     {
-      "on_screen": "Trees vs stars",
+      "on_screen": "Trees > stars",
       "visual": "forest from above",
-      "text": "There are more trees on Earth than stars in our galaxy.",
+      "subject": "forest",
+      "text": "Earth has more trees than our galaxy has stars.",
       "highlight": [
         "more trees"
       ],
-      "subject": "forest",
-      "say": "[excited] There are more trees on Earth... than stars in our galaxy.",
-      "look": "excited"
+      "say": "[curious] Earth has more trees than our galaxy has stars.",
+      "beats": [
+        {
+          "shot": "clip",
+          "camera": "punch",
+          "sfx": [
+            "impact"
+          ],
+          "hook": {
+            "angle": 0.38,
+            "seconds": 0.7
+          },
+          "at_word": 0,
+          "query": "forest from above",
+          "subject": "forest"
+        }
+      ]
     },
     {
-      "on_screen": "About 3 trillion trees",
+      "on_screen": "3 trillion trees",
       "visual": "green forest",
-      "text": "A large study estimated there are about three trillion trees on our planet.",
+      "subject": "forest",
+      "text": "A huge study estimated about three trillion trees on our planet.",
       "highlight": [
         "three trillion trees"
       ],
-      "subject": "forest",
-      "say": "A large study estimated there are about THREE TRILLION trees on our planet.",
-      "look": "excited"
+      "say": "A huge study estimated about three trillion trees on our planet.",
+      "beats": [
+        {
+          "shot": "number",
+          "bg": "new",
+          "number": {
+            "from": 0,
+            "to": 3,
+            "suffix": " TRILLION",
+            "label": "TREES ON EARTH",
+            "keys": [
+              [
+                0,
+                0,
+                "start"
+              ],
+              [
+                6,
+                3,
+                "end"
+              ]
+            ]
+          },
+          "sfx": [
+            "tick"
+          ],
+          "query": "green forest",
+          "at_word": 0,
+          "subject": "forest",
+          "transition": "cut"
+        }
+      ]
     },
     {
-      "on_screen": "100 to 400 billion stars",
+      "on_screen": "100–400 billion stars",
       "visual": "milky way galaxy",
-      "text": "The Milky Way is thought to have somewhere between one hundred and four hundred billion stars.",
+      "subject": "galaxy",
+      "text": "The Milky Way has somewhere between one hundred and four hundred billion stars.",
       "highlight": [
         "four hundred billion"
       ],
-      "subject": "galaxy",
-      "say": "The Milky Way is thought to have somewhere between one hundred and four hundred billion stars."
+      "say": "The Milky Way has somewhere between one hundred and four hundred billion stars.",
+      "beats": [
+        {
+          "shot": "number",
+          "bg": "new",
+          "number": {
+            "from": 0,
+            "to": 400,
+            "suffix": " BILLION",
+            "label": "STARS IN OUR GALAXY",
+            "keys": [
+              [
+                0,
+                0,
+                "start"
+              ],
+              [
+                7,
+                100,
+                "end"
+              ],
+              [
+                11,
+                400,
+                "end"
+              ]
+            ]
+          },
+          "sfx": [
+            "tick"
+          ],
+          "query": "milky way galaxy",
+          "at_word": 0,
+          "subject": "galaxy",
+          "transition": "cut"
+        }
+      ]
     },
     {
-      "on_screen": "But we're losing them",
-      "visual": "tree stumps",
-      "text": "The same study found that billions of trees are cut down every year, so that number keeps shrinking.",
+      "on_screen": "7 trees per star",
+      "visual": "trees in a row",
+      "subject": "tree",
+      "text": "That's at least seven trees for every single star.",
       "highlight": [
-        "keeps shrinking"
+        "seven trees"
       ],
-      "say": "[sighs] [sad] The same study found that billions of trees are cut down every year, so that number keeps shrinking.",
+      "say": "[excited] That's at least seven trees for every single star.",
+      "look": "excited",
+      "beats": [
+        {
+          "shot": "compare",
+          "bg": "prev",
+          "sfx": [
+            "tick"
+          ],
+          "compare": {
+            "style": "stack",
+            "left": {
+              "label": "TREES",
+              "value": 7,
+              "from_word": 0,
+              "land_word": 4
+            },
+            "right": {
+              "label": "STAR",
+              "value": 1,
+              "from_word": 5,
+              "land_word": 8
+            },
+            "badge": "7x"
+          },
+          "at_word": 0,
+          "query": "trees in a row",
+          "subject": "tree",
+          "transition": "cut"
+        }
+      ]
+    },
+    {
+      "on_screen": "But...",
+      "visual": "foggy forest",
+      "subject": "forest",
+      "text": "But that number is falling.",
+      "highlight": [
+        "falling"
+      ],
+      "say": "[sighs] But that number is falling.",
       "look": "sad"
     },
     {
-      "on_screen": "Follow for more",
-      "visual": "tree sunlight",
-      "text": "Every one of those trees counts. Follow for more weird facts.",
+      "on_screen": "Cut every year",
+      "visual": "tree stumps",
+      "subject": "stumps",
+      "text": "Billions of trees are cut down every single year.",
       "highlight": [
-        "counts"
+        "every single year"
       ],
-      "say": "[warmly] Every one of those trees counts. Follow for more weird facts."
+      "say": "Billions of trees are cut down every single year.",
+      "look": "sad"
+    },
+    {
+      "on_screen": "Every one counts",
+      "visual": "tree sunlight",
+      "subject": "tree",
+      "text": "And every one of them is home to something.",
+      "highlight": [
+        "home to something"
+      ],
+      "say": "And every one of them is home to something.",
+      "beats": [
+        {
+          "shot": "card",
+          "at_word": 0,
+          "bg": "prev",
+          "card": {
+            "style": "polaroid",
+            "query": "owl in tree",
+            "subject": "owl",
+            "y": 0.24,
+            "width": 0.6,
+            "caption": "Home"
+          },
+          "subject": "owl",
+          "query": "owl in tree",
+          "transition": "cut"
+        }
+      ]
+    },
+    {
+      "on_screen": "Look up",
+      "visual": "night sky through trees",
+      "subject": "tree",
+      "text": "So next time you look up at the night sky, remember...",
+      "highlight": [
+        "the night sky"
+      ],
+      "say": "[softly] So next time you look up at the night sky, remember...",
+      "look": "whisper",
+      "beats": [
+        {
+          "shot": "clip",
+          "at_word": 0,
+          "query": "night sky through trees",
+          "subject": "tree",
+          "camera": "push_in",
+          "transition": "cut"
+        },
+        {
+          "shot": "card",
+          "at_word": 8,
+          "bg": "prev",
+          "card": {
+            "style": "rounded",
+            "query": "starry night sky",
+            "subject": "stars",
+            "y": 0.24,
+            "width": 0.6
+          },
+          "subject": "stars",
+          "query": "starry night sky",
+          "transition": "cut"
+        }
+      ]
     }
-  ],
-  "music_mood": "calm"
+  ]
 }
