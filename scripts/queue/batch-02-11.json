@@ -67,8 +67,16 @@
       "say": "Its peak stands about eight thousand eight hundred and fifty meters above sea level.",
       "beats": [
         {
+          "at_word": 0,
+          "shot": "clip",
+          "query": "mount everest peak",
+          "subject": "everest",
+          "camera": "push_in",
+          "transition": "cut"
+        },
+        {
           "shot": "number",
-          "bg": "new",
+          "bg": "prev",
           "number": {
             "from": 0,
             "to": 8850,
@@ -76,7 +84,7 @@
             "label": "EVEREST",
             "keys": [
               [
-                0,
+                3,
                 0,
                 "start"
               ],
@@ -96,7 +104,7 @@
             "tick"
           ],
           "query": "mount everest peak",
-          "at_word": 0,
+          "at_word": 3,
           "subject": "everest",
           "transition": "cut"
         }
@@ -161,8 +169,16 @@
       "look": "excited",
       "beats": [
         {
+          "at_word": 0,
+          "shot": "clip",
+          "query": "hawaii volcano ocean",
+          "subject": "volcano",
+          "camera": "push_in",
+          "transition": "cut"
+        },
+        {
           "shot": "number",
-          "bg": "new",
+          "bg": "prev",
           "number": {
             "from": 0,
             "to": 10000,
@@ -170,7 +186,7 @@
             "label": "MAUNA KEA",
             "keys": [
               [
-                0,
+                10,
                 0,
                 "start"
               ],
@@ -185,7 +201,7 @@
             "tick"
           ],
           "query": "hawaii volcano ocean",
-          "at_word": 0,
+          "at_word": 10,
           "subject": "volcano",
           "transition": "cut"
         }

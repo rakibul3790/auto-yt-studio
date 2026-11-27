@@ -103,8 +103,16 @@
       "say": "On hot days, it can grow by up to fifteen centimeters,",
       "beats": [
         {
+          "at_word": 0,
+          "shot": "clip",
+          "query": "eiffel tower sunny day",
+          "subject": "eiffel",
+          "camera": "push_in",
+          "transition": "cut"
+        },
+        {
           "shot": "number",
-          "bg": "new",
+          "bg": "prev",
           "number": {
             "from": 0,
             "to": 15,
@@ -112,7 +120,7 @@
             "label": "SUMMER GROWTH",
             "keys": [
               [
-                0,
+                8,
                 0,
                 "start"
               ],
@@ -127,7 +135,7 @@
             "tick"
           ],
           "query": "eiffel tower sunny day",
-          "at_word": 0,
+          "at_word": 8,
           "subject": "eiffel",
           "transition": "cut"
         }

@@ -57,8 +57,16 @@
       "say": "Most historians think he stood about one point seven meters,",
       "beats": [
         {
+          "at_word": 0,
+          "shot": "clip",
+          "query": "napoleon statue",
+          "subject": "napoleon",
+          "camera": "push_in",
+          "transition": "cut"
+        },
+        {
           "shot": "number",
-          "bg": "new",
+          "bg": "prev",
           "number": {
             "from": 1.0,
             "to": 1.7,
@@ -66,7 +74,7 @@
             "label": "NAPOLEON",
             "keys": [
               [
-                0,
+                5,
                 1.0,
                 "start"
               ],
@@ -81,7 +89,7 @@
             "tick"
           ],
           "query": "napoleon statue",
-          "at_word": 0,
+          "at_word": 5,
           "subject": "napoleon",
           "transition": "cut"
         }

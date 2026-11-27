@@ -58,8 +58,16 @@
       "say": "The Sun is about one hundred and fifty million kilometers away.",
       "beats": [
         {
+          "at_word": 0,
+          "shot": "clip",
+          "query": "sun in space",
+          "subject": "sun",
+          "camera": "push_in",
+          "transition": "cut"
+        },
+        {
           "shot": "number",
-          "bg": "new",
+          "bg": "prev",
           "number": {
             "from": 0,
             "to": 150,
@@ -67,7 +75,7 @@
             "label": "TO THE SUN",
             "keys": [
               [
-                0,
+                3,
                 0,
                 "start"
               ],
@@ -82,7 +90,7 @@
             "tick"
           ],
           "query": "sun in space",
-          "at_word": 0,
+          "at_word": 3,
           "subject": "sun",
           "transition": "cut"
         }

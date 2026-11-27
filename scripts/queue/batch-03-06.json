@@ -57,8 +57,16 @@
       "say": "That's so fast you could almost watch it move.",
       "beats": [
         {
+          "at_word": 0,
+          "shot": "clip",
+          "query": "green bamboo",
+          "subject": "bamboo",
+          "camera": "push_in",
+          "transition": "cut"
+        },
+        {
           "shot": "number",
-          "bg": "new",
+          "bg": "prev",
           "number": {
             "from": 0,
             "to": 91,
@@ -66,7 +74,7 @@
             "label": "IN ONE DAY",
             "keys": [
               [
-                0,
+                4,
                 0,
                 "start"
               ],
@@ -81,7 +89,7 @@
             "tick"
           ],
           "query": "green bamboo",
-          "at_word": 0,
+          "at_word": 4,
           "subject": "bamboo",
           "transition": "cut"
         }

@@ -57,8 +57,16 @@
       "say": "A huge study estimated about three trillion trees on our planet.",
       "beats": [
         {
+          "at_word": 0,
+          "shot": "clip",
+          "query": "green forest",
+          "subject": "forest",
+          "camera": "push_in",
+          "transition": "cut"
+        },
+        {
           "shot": "number",
-          "bg": "new",
+          "bg": "prev",
           "number": {
             "from": 0,
             "to": 3,
@@ -66,7 +74,7 @@
             "label": "TREES ON EARTH",
             "keys": [
               [
-                0,
+                4,
                 0,
                 "start"
               ],
@@ -81,7 +89,7 @@
             "tick"
           ],
           "query": "green forest",
-          "at_word": 0,
+          "at_word": 4,
           "subject": "forest",
           "transition": "cut"
         }
@@ -98,8 +106,16 @@
       "say": "The Milky Way has somewhere between one hundred and four hundred billion stars.",
       "beats": [
         {
+          "at_word": 0,
+          "shot": "clip",
+          "query": "milky way galaxy",
+          "subject": "galaxy",
+          "camera": "push_in",
+          "transition": "cut"
+        },
+        {
           "shot": "number",
-          "bg": "new",
+          "bg": "prev",
           "number": {
             "from": 0,
             "to": 400,
@@ -107,7 +123,7 @@
             "label": "STARS IN OUR GALAXY",
             "keys": [
               [
-                0,
+                5,
                 0,
                 "start"
               ],
@@ -127,7 +143,7 @@
             "tick"
           ],
           "query": "milky way galaxy",
-          "at_word": 0,
+          "at_word": 5,
           "subject": "galaxy",
           "transition": "cut"
         }

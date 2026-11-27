@@ -160,8 +160,16 @@
       "look": "excited",
       "beats": [
         {
+          "at_word": 0,
+          "shot": "clip",
+          "query": "pulsar space",
+          "subject": "star",
+          "camera": "push_in",
+          "transition": "cut"
+        },
+        {
           "shot": "number",
-          "bg": "new",
+          "bg": "prev",
           "number": {
             "from": 0,
             "to": 700,
@@ -169,7 +177,7 @@
             "label": "SPINS A SECOND",
             "keys": [
               [
-                0,
+                4,
                 0,
                 "start"
               ],
@@ -185,7 +193,7 @@
             "tick"
           ],
           "query": "pulsar space",
-          "at_word": 0,
+          "at_word": 4,
           "subject": "star",
           "transition": "cut"
         }

@@ -119,8 +119,12 @@ def plan(data: dict) -> dict:
                 n = dict(n)
                 land = _highlight_end(tokens, sc)
                 if land is not None:
-                    # the count lands on the spoken number (its last highlight word), not on a timer
-                    n["keys"] = [[0, n.get("from", 0), "start"], [land, n["to"], "end"]]
+                    # the count starts just before the number is spoken and lands on its last
+                    # highlight word, so it never sits at 0 waiting
+                    start = _count_start(tokens, land)
+                    n["keys"] = [[start, n.get("from", 0), "start"], [land, n["to"], "end"]]
+                    if start >= 2:
+                        first["_count_from"] = start
                 first.update(shot="number", number=n)
                 graphics += 1
         # camera and transition
@@ -149,6 +153,15 @@ def plan(data: dict) -> dict:
             if first["shot"] in ("number", "compare"):
                 first.setdefault("sfx", [])
                 first["sfx"] = list(dict.fromkeys(first["sfx"] + ["tick"]))
+        start = first.pop("_count_from", None)
+        if start:
+            # footage first, the counter cuts in over it on the word before the number
+            clip = {k: v for k, v in first.items() if k not in ("number", "sfx")}
+            clip["shot"] = "clip"
+            first = {"at_word": start, "shot": "number", "query": query, "subject": subject,
+                     "number": first["number"], "bg": "prev", "transition": "cut", "sfx": ["tick"]}
+            sc["beats"] = [clip, first]
+            continue
         beats = [first]
         k = _split_point(tokens)
         if k and first["shot"] in ("clip", "photo"):
@@ -157,6 +170,18 @@ def plan(data: dict) -> dict:
             cam_i += 1
         sc["beats"] = beats
     return data
+
+
+_NUM_WORDS = set("two three four five six seven eight nine ten eleven twelve thirteen fourteen fifteen "
+                 "sixteen seventeen eighteen nineteen twenty thirty forty fifty sixty seventy eighty "
+                 "ninety hundred hundreds thousand thousands million billion trillion".split())
+
+
+def _count_start(tokens: list[str], land: int) -> int:
+    """The word just before the first spoken number word (up to the landing word)."""
+    norm = [t.lower().strip(".,!?;:\"'…") for t in tokens]
+    first = next((k for k in range(land + 1) if norm[k] in _NUM_WORDS), land)
+    return max(0, first - 1)
 
 
 def _highlight_end(tokens: list[str], sc: dict) -> int | None:

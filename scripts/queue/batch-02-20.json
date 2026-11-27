@@ -125,8 +125,16 @@
       "look": "excited",
       "beats": [
         {
+          "at_word": 0,
+          "shot": "clip",
+          "query": "underwater bubbles",
+          "subject": "fire",
+          "camera": "push_in",
+          "transition": "cut"
+        },
+        {
           "shot": "number",
-          "bg": "new",
+          "bg": "prev",
           "number": {
             "from": 0,
             "to": 4700,
@@ -134,7 +142,7 @@
             "label": "INSIDE THE BUBBLE",
             "keys": [
               [
-                0,
+                5,
                 0,
                 "start"
               ],
@@ -149,7 +157,7 @@
             "tick"
           ],
           "query": "underwater bubbles",
-          "at_word": 0,
+          "at_word": 5,
           "subject": "fire",
           "transition": "cut"
         }

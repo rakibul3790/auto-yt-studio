@@ -132,8 +132,16 @@
       "look": "excited",
       "beats": [
         {
+          "at_word": 0,
+          "shot": "clip",
+          "query": "blue whale ocean",
+          "subject": "whale",
+          "camera": "push_in",
+          "transition": "cut"
+        },
+        {
           "shot": "number",
-          "bg": "new",
+          "bg": "prev",
           "number": {
             "from": 0,
             "to": 400,
@@ -141,7 +149,7 @@
             "label": "ONE HEART",
             "keys": [
               [
-                0,
+                3,
                 0,
                 "start"
               ],
@@ -156,7 +164,7 @@
             "tick"
           ],
           "query": "blue whale ocean",
-          "at_word": 0,
+          "at_word": 3,
           "subject": "whale",
           "transition": "cut"
         }

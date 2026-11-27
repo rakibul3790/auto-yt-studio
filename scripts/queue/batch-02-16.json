@@ -107,8 +107,16 @@
       "look": "excited",
       "beats": [
         {
+          "at_word": 0,
+          "shot": "clip",
+          "query": "glass frog sleeping",
+          "subject": "frog",
+          "camera": "push_in",
+          "transition": "cut"
+        },
+        {
           "shot": "number",
-          "bg": "new",
+          "bg": "prev",
           "number": {
             "from": 0,
             "to": 89,
@@ -116,7 +124,7 @@
             "label": "BLOOD HIDDEN",
             "keys": [
               [
-                0,
+                6,
                 0,
                 "start"
               ],
@@ -132,7 +140,7 @@
             "tick"
           ],
           "query": "glass frog sleeping",
-          "at_word": 0,
+          "at_word": 6,
           "subject": "frog",
           "transition": "cut"
         }

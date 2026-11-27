@@ -58,8 +58,16 @@
       "say": "The Sun's surface sits at about five and a half thousand degrees Celsius.",
       "beats": [
         {
+          "at_word": 0,
+          "shot": "clip",
+          "query": "sun surface",
+          "subject": "sun",
+          "camera": "push_in",
+          "transition": "cut"
+        },
+        {
           "shot": "number",
-          "bg": "new",
+          "bg": "prev",
           "number": {
             "from": 0,
             "to": 5500,
@@ -67,7 +75,7 @@
             "label": "SUN'S SURFACE",
             "keys": [
               [
-                0,
+                5,
                 0,
                 "start"
               ],
@@ -82,7 +90,7 @@
             "tick"
           ],
           "query": "sun surface",
-          "at_word": 0,
+          "at_word": 5,
           "subject": "sun",
           "transition": "cut"
         }
@@ -100,8 +108,16 @@
       "look": "excited",
       "beats": [
         {
+          "at_word": 0,
+          "shot": "clip",
+          "query": "lightning bolt sky",
+          "subject": "lightning",
+          "camera": "push_in",
+          "transition": "cut"
+        },
+        {
           "shot": "number",
-          "bg": "new",
+          "bg": "prev",
           "number": {
             "from": 0,
             "to": 30000,
@@ -109,7 +125,7 @@
             "label": "LIGHTNING",
             "keys": [
               [
-                0,
+                7,
                 0,
                 "start"
               ],
@@ -124,7 +140,7 @@
             "tick"
           ],
           "query": "lightning bolt sky",
-          "at_word": 0,
+          "at_word": 7,
           "subject": "lightning",
           "transition": "cut"
         }
