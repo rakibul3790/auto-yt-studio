@@ -1,0 +1,14 @@
+[
+ {"id": "s4_paris1925", "text": "1920s Paris street ambience, horse carriages on cobblestones, an old motor car passing with a honk horn, cafe chatter, a distant accordion, no modern traffic, no music", "duration": 15, "loop": true},
+ {"id": "s4_cashreg", "text": "old mechanical cash register cha-ching with a bright bell, single hit, close", "duration": 2.0},
+ {"id": "s4_hotel", "text": "elegant 1920s grand hotel salon ambience, soft murmur of men talking, glasses clinking, a distant string quartet playing quietly, warm room tone", "duration": 15, "loop": true},
+ {"id": "s4_scrapyard", "text": "old scrapyard ambience, iron beams clanking, a distant hammer on metal, creaking crane chain, light wind, no music", "duration": 8, "loop": true},
+ {"id": "s4_envelope", "text": "a thick paper envelope full of banknotes slid across a wooden table, paper rustle and soft slide, close", "duration": 2.5},
+ {"id": "s4_train", "text": "1920s steam train departing a station, loud steam whistle followed by heavy chuffing that speeds up, hiss of steam", "duration": 5.0},
+ {"id": "s4_whistle", "text": "a French police whistle blown twice in a stone street at night, short echo", "duration": 2.5},
+ {"id": "s4_run", "text": "a man running fast in leather shoes on wet cobblestones at night, footsteps splashing, heavy breathing, moving away", "duration": 4.0},
+ {"id": "s4_nyc1935", "text": "1930s New York street ambience, old car horns, streetcar bell, crowd of pedestrians, distant newsboy shout, no modern sounds, no music", "duration": 10, "loop": true},
+ {"id": "s4_press", "text": "old printing press running in a basement, rhythmic mechanical clatter and thumps of paper sheets, close", "duration": 4.0},
+ {"id": "s4_pageturn", "text": "a large newspaper being opened and pages turned quickly, crisp paper rustle, close", "duration": 2.5},
+ {"id": "s4_rustcreak", "text": "huge old iron structure creaking and groaning in the wind, metallic stress, flakes of rust falling, high up, slow", "duration": 4.0}
+]
