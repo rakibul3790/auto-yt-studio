@@ -1,0 +1,290 @@
+[
+ {
+  "id": "h01_a",
+  "voice": "XA3P1cj7XJexe6Zq0ATX",
+  "stability": 0.5,
+  "similarity": 0.8,
+  "seed": 11,
+  "text": "[serious] In December 1944, a young Japanese officer named Hiroo Onoda was sent to Lubang, a small island in the Philippines. His orders: keep fighting, and never surrender."
+ },
+ {
+  "id": "h01_b",
+  "voice": "XA3P1cj7XJexe6Zq0ATX",
+  "stability": 0.0,
+  "similarity": 0.8,
+  "seed": 7,
+  "text": "[serious] In December 1944, a young Japanese officer named Hiroo Onoda was sent to Lubang, a small island in the Philippines. His orders: keep fighting, and never surrender."
+ },
+ {
+  "id": "h02_a",
+  "voice": "XA3P1cj7XJexe6Zq0ATX",
+  "stability": 0.5,
+  "similarity": 0.8,
+  "seed": 11,
+  "text": "[serious] As American forces landed, his commander, Major Yoshimi Taniguchi, made him a promise. [softly] Whatever happens... we'll come back for you."
+ },
+ {
+  "id": "h02_b",
+  "voice": "XA3P1cj7XJexe6Zq0ATX",
+  "stability": 0.0,
+  "similarity": 0.8,
+  "seed": 7,
+  "text": "[serious] As American forces landed, his commander, Major Yoshimi Taniguchi, made him a promise. [softly] Whatever happens... we'll come back for you."
+ },
+ {
+  "id": "h03_a",
+  "voice": "XA3P1cj7XJexe6Zq0ATX",
+  "stability": 0.5,
+  "similarity": 0.8,
+  "seed": 11,
+  "text": "[softly] A few months later, World War Two ended. [sadly] But no one came."
+ },
+ {
+  "id": "h03_b",
+  "voice": "XA3P1cj7XJexe6Zq0ATX",
+  "stability": 0.0,
+  "similarity": 0.8,
+  "seed": 7,
+  "text": "[softly] A few months later, World War Two ended. [sadly] But no one came."
+ },
+ {
+  "id": "h04_a",
+  "voice": "XA3P1cj7XJexe6Zq0ATX",
+  "stability": 0.5,
+  "similarity": 0.8,
+  "seed": 11,
+  "text": "[curious] Leaflets fell from planes saying the war was over. Onoda decided they were fake. Newspapers were left for him. Letters from his family. [sighs] He believed none of it."
+ },
+ {
+  "id": "h04_b",
+  "voice": "XA3P1cj7XJexe6Zq0ATX",
+  "stability": 0.0,
+  "similarity": 0.8,
+  "seed": 7,
+  "text": "[curious] Leaflets fell from planes saying the war was over. Onoda decided they were fake. Newspapers were left for him. Letters from his family. [sighs] He believed none of it."
+ },
+ {
+  "id": "h05_a",
+  "voice": "XA3P1cj7XJexe6Zq0ATX",
+  "stability": 0.5,
+  "similarity": 0.8,
+  "seed": 11,
+  "text": "[somber] So he stayed hidden in the jungle with a few other soldiers, still fighting his war."
+ },
+ {
+  "id": "h05_b",
+  "voice": "XA3P1cj7XJexe6Zq0ATX",
+  "stability": 0.0,
+  "similarity": 0.8,
+  "seed": 7,
+  "text": "[somber] So he stayed hidden in the jungle with a few other soldiers, still fighting his war."
+ },
+ {
+  "id": "h06_a",
+  "voice": "XA3P1cj7XJexe6Zq0ATX",
+  "stability": 0.5,
+  "similarity": 0.8,
+  "seed": 11,
+  "text": "[serious, quiet] And that war was real for the people of Lubang. Over the years, Onoda's group killed local islanders. As many as thirty, by some accounts."
+ },
+ {
+  "id": "h06_b",
+  "voice": "XA3P1cj7XJexe6Zq0ATX",
+  "stability": 0.0,
+  "similarity": 0.8,
+  "seed": 7,
+  "text": "[serious, quiet] And that war was real for the people of Lubang. Over the years, Onoda's group killed local islanders. As many as thirty, by some accounts."
+ },
+ {
+  "id": "h07_a",
+  "voice": "XA3P1cj7XJexe6Zq0ATX",
+  "stability": 0.5,
+  "similarity": 0.8,
+  "seed": 11,
+  "text": "[sad] One by one, his companions were gone. By 1972... Onoda was alone."
+ },
+ {
+  "id": "h07_b",
+  "voice": "XA3P1cj7XJexe6Zq0ATX",
+  "stability": 0.0,
+  "similarity": 0.8,
+  "seed": 7,
+  "text": "[sad] One by one, his companions were gone. By 1972... Onoda was alone."
+ },
+ {
+  "id": "h08_a",
+  "voice": "XA3P1cj7XJexe6Zq0ATX",
+  "stability": 0.5,
+  "similarity": 0.8,
+  "seed": 11,
+  "text": "[curious] Then, in 1974, a young Japanese traveler named Norio Suzuki arrived. He'd told friends he was searching for three things: Lieutenant Onoda, a panda, and the Abominable Snowman... in that order."
+ },
+ {
+  "id": "h08_b",
+  "voice": "XA3P1cj7XJexe6Zq0ATX",
+  "stability": 0.0,
+  "similarity": 0.8,
+  "seed": 7,
+  "text": "[curious] Then, in 1974, a young Japanese traveler named Norio Suzuki arrived. He'd told friends he was searching for three things: Lieutenant Onoda, a panda, and the Abominable Snowman... in that order."
+ },
+ {
+  "id": "h09_a",
+  "voice": "XA3P1cj7XJexe6Zq0ATX",
+  "stability": 0.5,
+  "similarity": 0.8,
+  "seed": 11,
+  "text": "[chuckles] He found the first one in four days."
+ },
+ {
+  "id": "h09_b",
+  "voice": "XA3P1cj7XJexe6Zq0ATX",
+  "stability": 0.0,
+  "similarity": 0.8,
+  "seed": 7,
+  "text": "[chuckles] He found the first one in four days."
+ },
+ {
+  "id": "h10_a",
+  "voice": "XA3P1cj7XJexe6Zq0ATX",
+  "stability": 0.5,
+  "similarity": 0.8,
+  "seed": 11,
+  "text": "[warm] The two became friends. [serious] But Onoda still wouldn't come out. He would only stop if his commanding officer ordered him to."
+ },
+ {
+  "id": "h10_b",
+  "voice": "XA3P1cj7XJexe6Zq0ATX",
+  "stability": 0.0,
+  "similarity": 0.8,
+  "seed": 7,
+  "text": "[warm] The two became friends. [serious] But Onoda still wouldn't come out. He would only stop if his commanding officer ordered him to."
+ },
+ {
+  "id": "h11_a",
+  "voice": "XA3P1cj7XJexe6Zq0ATX",
+  "stability": 0.5,
+  "similarity": 0.8,
+  "seed": 11,
+  "text": "[emotional] So Japan found Major Taniguchi, now an old man working in a bookshop, and flew him to the island."
+ },
+ {
+  "id": "h11_b",
+  "voice": "XA3P1cj7XJexe6Zq0ATX",
+  "stability": 0.0,
+  "similarity": 0.8,
+  "seed": 7,
+  "text": "[emotional] So Japan found Major Taniguchi, now an old man working in a bookshop, and flew him to the island."
+ },
+ {
+  "id": "h12_a",
+  "voice": "XA3P1cj7XJexe6Zq0ATX",
+  "stability": 0.5,
+  "similarity": 0.8,
+  "seed": 11,
+  "text": "[serious] On March 9, 1974, Taniguchi stood in front of Onoda and read him his final orders. [softly] The war was over."
+ },
+ {
+  "id": "h12_b",
+  "voice": "XA3P1cj7XJexe6Zq0ATX",
+  "stability": 0.0,
+  "similarity": 0.8,
+  "seed": 7,
+  "text": "[serious] On March 9, 1974, Taniguchi stood in front of Onoda and read him his final orders. [softly] The war was over."
+ },
+ {
+  "id": "h13_a",
+  "voice": "XA3P1cj7XJexe6Zq0ATX",
+  "stability": 0.5,
+  "similarity": 0.8,
+  "seed": 11,
+  "text": "[softly] Onoda handed over his sword and his rifle. It still worked."
+ },
+ {
+  "id": "h13_b",
+  "voice": "XA3P1cj7XJexe6Zq0ATX",
+  "stability": 0.0,
+  "similarity": 0.8,
+  "seed": 7,
+  "text": "[softly] Onoda handed over his sword and his rifle. It still worked."
+ },
+ {
+  "id": "h14_a",
+  "voice": "XA3P1cj7XJexe6Zq0ATX",
+  "stability": 0.5,
+  "similarity": 0.8,
+  "seed": 11,
+  "text": "[sad] He had fought for twenty-nine years... for a war that had ended long before."
+ },
+ {
+  "id": "h14_b",
+  "voice": "XA3P1cj7XJexe6Zq0ATX",
+  "stability": 0.0,
+  "similarity": 0.8,
+  "seed": 7,
+  "text": "[sad] He had fought for twenty-nine years... for a war that had ended long before."
+ },
+ {
+  "id": "h15_a",
+  "voice": "XA3P1cj7XJexe6Zq0ATX",
+  "stability": 0.5,
+  "similarity": 0.8,
+  "seed": 11,
+  "text": "[emotional] And Taniguchi had promised to come back. Twenty-nine years later... he did."
+ },
+ {
+  "id": "h15_b",
+  "voice": "XA3P1cj7XJexe6Zq0ATX",
+  "stability": 0.0,
+  "similarity": 0.8,
+  "seed": 7,
+  "text": "[emotional] And Taniguchi had promised to come back. Twenty-nine years later... he did."
+ },
+ {
+  "id": "e01_a",
+  "voice": "XA3P1cj7XJexe6Zq0ATX",
+  "stability": 0.5,
+  "similarity": 0.8,
+  "seed": 11,
+  "text": "[warm] So, which one got you? The emus, the dancers, the syrup wave, the con man, or the soldier? Tell me in the comments."
+ },
+ {
+  "id": "e01_b",
+  "voice": "XA3P1cj7XJexe6Zq0ATX",
+  "stability": 0.0,
+  "similarity": 0.8,
+  "seed": 7,
+  "text": "[warm] So, which one got you? The emus, the dancers, the syrup wave, the con man, or the soldier? Tell me in the comments."
+ },
+ {
+  "id": "e02_a",
+  "voice": "XA3P1cj7XJexe6Zq0ATX",
+  "stability": 0.5,
+  "similarity": 0.8,
+  "seed": 11,
+  "text": "[excited] Next time: a war shorter than a lunch break, a dead pope put on trial, [whispers] and a man who survived two atomic bombs."
+ },
+ {
+  "id": "e02_b",
+  "voice": "XA3P1cj7XJexe6Zq0ATX",
+  "stability": 0.0,
+  "similarity": 0.8,
+  "seed": 7,
+  "text": "[excited] Next time: a war shorter than a lunch break, a dead pope put on trial, [whispers] and a man who survived two atomic bombs."
+ },
+ {
+  "id": "e03_a",
+  "voice": "XA3P1cj7XJexe6Zq0ATX",
+  "stability": 0.5,
+  "similarity": 0.8,
+  "seed": 11,
+  "text": "[chuckles] Subscribe for more weird facts."
+ },
+ {
+  "id": "e03_b",
+  "voice": "XA3P1cj7XJexe6Zq0ATX",
+  "stability": 0.0,
+  "similarity": 0.8,
+  "seed": 7,
+  "text": "[chuckles] Subscribe for more weird facts."
+ }
+]
