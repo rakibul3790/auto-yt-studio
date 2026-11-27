@@ -1,0 +1,16 @@
+[
+ {"id": "s3_city1919", "text": "busy 1919 city street on a mild winter day, horse hooves clopping on cobblestones, wooden wagon wheels, crowd murmur, a distant streetcar bell, seagulls far away, no cars honking, no music", "duration": 15, "loop": true},
+ {"id": "s3_ooze", "text": "thick sticky syrup slowly oozing and dripping down a metal wall, slow viscous drips and gloopy squelches, close, quiet", "duration": 5.5},
+ {"id": "s3_brush", "text": "wide paintbrush making a few slow strokes of thick paint across a steel plate, close, bristles dragging", "duration": 3.0},
+ {"id": "s3_watch", "text": "old mechanical pocket watch ticking close up, steady quiet ticks", "duration": 3.0},
+ {"id": "s3_rumble", "text": "deep low ominous rumble slowly growing from beneath the ground, a huge steel structure straining, sub bass, building tension", "duration": 5.5},
+ {"id": "s3_rivets", "text": "steel rivets bursting out of a huge metal tank one after another in a rapid rattling burst like machine gun fire, sharp metallic pings and cracks, ricochets", "duration": 5.0},
+ {"id": "s3_burst", "text": "enormous steel tank tearing open, a massive metallic rip and deep boom followed by a gushing roar of thick liquid", "duration": 4.5},
+ {"id": "s3_wave", "text": "a towering wave of thick heavy liquid roaring down a city street, deep sloshing rumble, wood cracking and debris tumbling inside it", "duration": 8.0},
+ {"id": "s3_crunch", "text": "wooden buildings being crushed and torn off their foundations, timber splintering and collapsing, heavy crash", "duration": 4.0},
+ {"id": "s3_steel_bend", "text": "steel girders of an elevated railway bending and screeching under a massive impact, metal groaning and snapping", "duration": 4.0},
+ {"id": "s3_low_tone", "text": "a single low somber sustained cinematic tone, dark and quiet, slowly fading, mournful", "duration": 5.5},
+ {"id": "s3_wade", "text": "people slowly wading through thick sticky mud, heavy squelching steps, struggling, wet suction sounds, distant muffled shouts, cold outdoor air", "duration": 8.0, "loop": true},
+ {"id": "s3_thick", "text": "very slow thick viscous liquid settling and congealing, soft deep gloops and creaks, quiet cold wind", "duration": 5.0},
+ {"id": "s3_summer", "text": "hot summer afternoon on a 1930s city street, children playing and laughing far away, a distant ice cream bell, pigeons, gentle crowd murmur, no cars, no music", "duration": 12, "loop": true}
+]
