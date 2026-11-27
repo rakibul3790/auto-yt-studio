@@ -2,6 +2,9 @@
 
 Privacy: Fabelo Studio uploads are public by default; MindBlip uploads are private by default.
 Either can be overridden per video with "privacy": "public" | "unlisted" | "private" in its JSON.
+Scheduled publishing: add "publish_at": "2026-11-28T07:00:00+06:00" (any ISO time with a zone, or Z) to
+the JSON. The video is uploaded as Private and YouTube makes it Public at that time. The time must be at
+least 15 minutes in the future; otherwise the video is uploaded as Private and nothing is scheduled.
 
 Put three files in ready/:
     my-video.mp4          the finished video
@@ -36,6 +39,22 @@ from studio.youtube import credentials_present, upload  # noqa: E402
 
 
 
+def _publish_at(value) -> str | None:
+    """Turn a JSON "publish_at" into YouTube's RFC3339 UTC form, or None if missing, invalid or too soon."""
+    if not value:
+        return None
+    try:
+        t = dt.datetime.fromisoformat(str(value).strip().replace("Z", "+00:00"))
+    except ValueError:
+        return None
+    if t.tzinfo is None:
+        return None
+    t = t.astimezone(dt.timezone.utc)
+    if t < dt.datetime.now(dt.timezone.utc) + dt.timedelta(minutes=15):
+        return None
+    return t.strftime("%Y-%m-%dT%H:%M:%SZ")
+
+
 def main() -> int:
     ap = argparse.ArgumentParser()
     ap.add_argument("--folder", default="ready")
@@ -67,6 +86,15 @@ def main() -> int:
         if privacy not in ("private", "unlisted", "public"):
             privacy = default_privacy
         run_cfg["run"] = dict(cfg.get("run", {}), privacy=privacy)
+        publish_at = _publish_at(meta.get("publish_at"))
+        if meta.get("publish_at") and not publish_at:
+            privacy = "private"
+            run_cfg["run"]["privacy"] = privacy
+            log(f"publish_at {meta['publish_at']!r} is invalid or less than 15 min away: uploading as Private, not scheduled.")
+        if publish_at:
+            privacy = "private"
+            run_cfg["run"]["privacy"] = privacy
+            run_cfg["run"]["publish_at"] = publish_at
         thumb = READY / meta["thumbnail"] if meta.get("thumbnail") else None
         vid = upload(video, meta["title"], meta.get("description", ""), meta.get("tags", []), run_cfg, thumb)
         url = f"https://youtu.be/{vid}"
@@ -80,8 +108,11 @@ def main() -> int:
                 w.writerow(["time", "file", "title", "url", "short_url"])
             w.writerow([dt.datetime.utcnow().strftime("%Y-%m-%dT%H:%M:%SZ"), f"{args.folder}/{meta_path.name}", meta["title"], url, ""])
         meta["privacy"] = privacy
+        if publish_at:
+            meta["scheduled_public_utc"] = publish_at
         meta_path.write_text(json.dumps(meta, indent=2, ensure_ascii=False) + "\n", encoding="utf-8")
-        log(f"Done ({args.channel}): {meta['title']} → {url} ({privacy.capitalize()})")
+        log(f"Done ({args.channel}): {meta['title']} → {url} ({privacy.capitalize()}"
+            f"{', public at ' + publish_at if publish_at else ''})")
         done += 1
     log(f"Uploaded {done} video(s).")
     return 0

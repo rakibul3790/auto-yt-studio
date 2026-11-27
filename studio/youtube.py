@@ -63,6 +63,11 @@ def upload(video: Path, title: str, description: str, tags: list[str],
     if privacy not in ("private", "unlisted", "public"):
         privacy = "private"
     lang = ch.get("language", "en")
+    # Scheduled publishing: with run.publish_at (RFC3339 UTC, e.g. "2026-11-28T01:00:00Z") the video is
+    # uploaded as Private and YouTube itself makes it Public at that time. Not set = old behaviour.
+    publish_at = run_cfg.get("publish_at")
+    if publish_at:
+        privacy = "private"
     body = {
         "snippet": {
             "title": title[:100],
@@ -78,6 +83,8 @@ def upload(video: Path, title: str, description: str, tags: list[str],
             "containsSyntheticMedia": bool(ch.get("synthetic_media", True)),
         },
     }
+    if publish_at:
+        body["status"]["publishAt"] = publish_at
     yt = _service()
     media = MediaFileUpload(str(video), mimetype="video/mp4",
                             chunksize=8 * 1024 * 1024, resumable=True)
@@ -103,7 +110,7 @@ def upload(video: Path, title: str, description: str, tags: list[str],
             raise
 
     vid = response["id"]
-    log(f"Uploaded as {privacy}: https://youtu.be/{vid}")
+    log(f"Uploaded as {privacy}{' (scheduled public at ' + publish_at + ')' if publish_at else ''}: https://youtu.be/{vid}")
 
     if thumb and thumb.exists():
         try:
