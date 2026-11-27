@@ -1,0 +1,12 @@
+[
+ {"id": "s5_jungle", "text": "dense tropical jungle ambience, distant birds, insects buzzing, leaves rustling, humid and quiet, no music", "duration": 15, "loop": true},
+ {"id": "s5_landing", "text": "1940s landing craft engines approaching a beach, waves breaking, distant naval guns rumbling, wartime, no music", "duration": 4.0},
+ {"id": "s5_plane_leaflets", "text": "a 1940s propeller plane flying overhead, then thousands of paper leaflets fluttering down through the air, soft paper flutter", "duration": 5.0},
+ {"id": "s5_village", "text": "quiet tropical fishing village at dusk, gentle waves, crickets and insects, distant dog, very still and sad, no music", "duration": 12, "loop": true},
+ {"id": "s5_campfire", "text": "small campfire crackling at night in a tropical jungle, crickets, soft wind in leaves, close and warm", "duration": 10, "loop": true},
+ {"id": "s5_bookshop", "text": "quiet small old bookshop, a book slid onto a wooden shelf, pages turning, a clock ticking softly, street faint outside", "duration": 6, "loop": true},
+ {"id": "s5_airliner", "text": "1970s propeller airliner flying past, steady deep engine drone with a slow pass-by", "duration": 3.5},
+ {"id": "s5_sword", "text": "a Japanese sword in a wooden scabbard handed over slowly, soft leather and metal fittings clink, quiet and solemn", "duration": 3.0},
+ {"id": "s5_rifle", "text": "an old bolt-action rifle bolt being worked, metallic click clack, close", "duration": 2.0},
+ {"id": "s5_wind", "text": "soft lonely wind through jungle trees, distant single bird call, empty", "duration": 6, "loop": true}
+]
