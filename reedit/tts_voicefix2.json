@@ -1,0 +1,34 @@
+[
+ {
+  "id": "l197_d",
+  "voice": "XA3P1cj7XJexe6Zq0ATX",
+  "stability": 0.5,
+  "similarity": 0.8,
+  "seed": 41,
+  "text": "[softly] A whole town, dancing, and not one of them wanted to."
+ },
+ {
+  "id": "l197_e",
+  "voice": "XA3P1cj7XJexe6Zq0ATX",
+  "stability": 0.5,
+  "similarity": 0.8,
+  "seed": 53,
+  "text": "[softly] A whole town, dancing, and not one of them wanted to."
+ },
+ {
+  "id": "l197_f",
+  "voice": "XA3P1cj7XJexe6Zq0ATX",
+  "stability": 0.5,
+  "similarity": 0.8,
+  "seed": 41,
+  "text": "[sad] A whole town dancing, and not one of them wanted to."
+ },
+ {
+  "id": "l197_g",
+  "voice": "XA3P1cj7XJexe6Zq0ATX",
+  "stability": 0.0,
+  "similarity": 0.8,
+  "seed": 9,
+  "text": "[sad] A whole town dancing, and not one of them wanted to."
+ }
+]
