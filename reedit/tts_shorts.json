@@ -1,0 +1,74 @@
+[
+ {
+  "id": "sh1_a",
+  "voice": "XA3P1cj7XJexe6Zq0ATX",
+  "stability": 0.5,
+  "similarity": 0.8,
+  "seed": 11,
+  "text": "[curious] In 1932, Australia went to war... with birds. [amused] And the birds won."
+ },
+ {
+  "id": "sh1_b",
+  "voice": "XA3P1cj7XJexe6Zq0ATX",
+  "stability": 0.5,
+  "similarity": 0.8,
+  "seed": 29,
+  "text": "[curious] In 1932, Australia went to war... with birds. [amused] And the birds won."
+ },
+ {
+  "id": "sh1_c",
+  "voice": "XA3P1cj7XJexe6Zq0ATX",
+  "stability": 0.0,
+  "similarity": 0.8,
+  "seed": 7,
+  "text": "[curious] In 1932, Australia went to war... with birds. [amused] And the birds won."
+ },
+ {
+  "id": "sh2_a",
+  "voice": "XA3P1cj7XJexe6Zq0ATX",
+  "stability": 0.5,
+  "similarity": 0.8,
+  "seed": 11,
+  "text": "[serious] In 1919, a wave of syrup killed twenty-one people in Boston."
+ },
+ {
+  "id": "sh2_b",
+  "voice": "XA3P1cj7XJexe6Zq0ATX",
+  "stability": 0.5,
+  "similarity": 0.8,
+  "seed": 29,
+  "text": "[serious] In 1919, a wave of syrup killed twenty-one people in Boston."
+ },
+ {
+  "id": "sh2_c",
+  "voice": "XA3P1cj7XJexe6Zq0ATX",
+  "stability": 0.0,
+  "similarity": 0.8,
+  "seed": 7,
+  "text": "[serious] In 1919, a wave of syrup killed twenty-one people in Boston."
+ },
+ {
+  "id": "sh3_a",
+  "voice": "XA3P1cj7XJexe6Zq0ATX",
+  "stability": 0.5,
+  "similarity": 0.8,
+  "seed": 11,
+  "text": "[mischievously] In 1925, a con man sold the Eiffel Tower. Then he tried to sell it again."
+ },
+ {
+  "id": "sh3_b",
+  "voice": "XA3P1cj7XJexe6Zq0ATX",
+  "stability": 0.5,
+  "similarity": 0.8,
+  "seed": 29,
+  "text": "[mischievously] In 1925, a con man sold the Eiffel Tower. Then he tried to sell it again."
+ },
+ {
+  "id": "sh3_c",
+  "voice": "XA3P1cj7XJexe6Zq0ATX",
+  "stability": 0.0,
+  "similarity": 0.8,
+  "seed": 7,
+  "text": "[mischievously] In 1925, a con man sold the Eiffel Tower. Then he tried to sell it again."
+ }
+]
